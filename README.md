@@ -286,7 +286,7 @@
     Selects a webbrowser tab
 
 ### SYNTAX
-    Select-WebbrowserTab [[-id] <Int32>] [-New] [-Edge] [-Chrome]
+    Select-WebbrowserTab [[-id] <Int32>] [-Edge] [-Chrome]
     [<CommonParameters>]
 
 ### DESCRIPTION
@@ -364,8 +364,7 @@
 
 ### SYNTAX
 ````PowerShell
-    Invoke-WebbrowserEvaluation [[-scripts] <Object[]>] [-inspect] [-Edge]
-    [-Chrome] [<CommonParameters>]
+    Invoke-WebbrowserEvaluation [[-scripts] <Object[]>] [-inspect] [<CommonParameters>]
 ````
 ### DESCRIPTION
     Runs one or more scripts inside a selected webbrowser tab.
@@ -387,24 +386,6 @@
     -inspect [<SwitchParameter>]
         Will cause the developer tools of the webbrowser to break, before
         executing the scripts, allowing you to debug it.
-
-        Required?                    false
-        Position?                    named
-        Default value                False
-        Accept pipeline input?       false
-        Accept wildcard characters?  false
-
-    -Edge [<SwitchParameter>]
-        Will use the previous selected Microsoft Edge session
-
-        Required?                    false
-        Position?                    named
-        Default value                False
-        Accept pipeline input?       false
-        Accept wildcard characters?  false
-
-    -Chrome [<SwitchParameter>]
-        Will use the previous selected Microsoft Chrome session
 
         Required?                    false
         Position?                    named
