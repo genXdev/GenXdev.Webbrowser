@@ -1494,9 +1494,6 @@ function Close-WebbrowserTab {
     [Alias("ct", "CloseTab")]
 
     param (
-        [parameter(Mandatory = $false, ValueFromPipeline = $true)]
-        [ValidateRange(0, [int]::MaxValue)]
-        [int] $id
     )
 
     Invoke-WebbrowserEvaluation "window.close()"
@@ -1549,7 +1546,7 @@ function Get-AllGoogleLinks {
     do {
         Start-Sleep 5 | Out-Null
 
-        Invoke-WebbrowserEvaluation -scripts @("$PSScriptRoot\GetAllGoogleLinks.js") | Out-Null
+        Invoke-WebbrowserEvaluation -scripts @("$PSScriptRoot\Get-AllGoogleLinks.js") | Out-Null
 
         $Global:data.urls | ForEach-Object -ErrorAction SilentlyContinue { $_ }
     }
@@ -1642,7 +1639,7 @@ function DownloadPDFs {
         [string] $Query
     )
 
-    GetAllGoogleLinks "filetype:pdf $Query" |
+    Get-AllGoogleLinks "filetype:pdf $Query" |
     ForEach-Object -ThrottleLimit 64 -Parallel {
 
         try {

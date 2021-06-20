@@ -10,20 +10,78 @@
 
 ## SYNOPSIS
 
-    Cmdlets for interacting with webbrowsers using their debugging-ports.
+    Cmdlets for interacting with chromium webbrowsers (chrome, edge) using their debugging-ports.
 
     Also offers cmdlets for starting, stopping and positioning webbrowser windows
     over different monitors.
 
 ## TYPE
     PowerShell Module
+
+## CmdLets and aliases
+````Powershell
+
+    Open-Webbrowser                                         -> wb
+        [[-Url] <String[]>] [-Private] [-Edge] [-Chrome]
+        [-Chromium] [-Firefox] [-All] [-Monitor <Int32>] [-FullScreen] [-Left]
+        [-Right] [-Top] [-Bottom] [-Foreground] [-NoNewWindow] [<CommonParameters>]
+
+
+    Select-WebbrowserTab                                    -> st
+        [[-id] <Int32>] [-New] [-Edge] [-Chrome] [<CommonParameters>]
+
+
+    Invoke-WebbrowserEvaluation                             -> Eval, et
+        [[-scripts] <Object[]>] [-inspect] [-Edge] [-Chrome] [<CommonParameters>]
+
+
+    Get-AllGoogleLinks -Query <String> [<CommonParameters>]
+
+
+    Open-AllGoogleLinks                                     -> qlinks
+        [-Query] <String> [<CommonParameters>]
+
+
+    DownloadPDFs [<CommonParameters>]
+
+
+    Close-WebbrowserTab                                     -> CloseTab, ct
+        [-Edge] [-Chrome] [<CommonParameters>]
+
+
+    Close-Webbrowser                                        -> wbc
+        [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-IncludeBackgroundProcesses]
+        [<CommonParameters>]
+
+
+    Get-Webbrowser
+
+
+    Get-DefaultWebbrowser
+
+
+    Show-WebsiteInAllBrowsers    [-Url] <String> [<CommonParameters>]
+
+
+    Get-ChromeRemoteDebuggingPort
+
+
+    Get-ChromiumRemoteDebuggingPort
+
+
+    Get-EdgeRemoteDebuggingPort
+
+
+    Set-RemoteDebuggerPortInBrowserShortcuts
+
+````
 ## DEPENDENCIES
-    GenXdev.Windows
+    GenXdev.Helpers
 
 ## INSTALLATION
 ````Powershell
 
-    Install-Module "GenXdev.Helpers" -Force
+    Install-Module "GenXdev.Webbrowser" -Force
 
 ````
 
@@ -49,7 +107,7 @@
 
 
 ### PARAMETERS
-````PowerShell
+````
     -Url <String[]>
         The url to open
 
@@ -195,7 +253,7 @@
         (https://go.microsoft.com/fwlink/?LinkID=113216).
 ````
 ### NOTES
-
+````PowerShell
         Requires the Windows 10+ Operating System
 
         This cmdlet was mend to be used, interactively.
@@ -203,21 +261,20 @@
         It performs some strange tricks to position windows, including
         invoking alt-tab keystrokes.
 
-        It's best not to touch the keyboard or mouse, while it is doing that.
+        It is best not to touch the keyboard or mouse, while it is doing that.
 
         To disable any wait times due to this, you can disable it by;
-            setting: -Monitor -1 -Foreground
-            AND    : not using any of these switches: -Left -Right -Top -Bottom
+            setting : -Monitor -1 -Foreground
+            AND     : not providing any of these switches: -Left -Right -Top -Bottom
 
-        For browsers that are not installed on the system, no actions may be
-        performed or errors occur - at all.
+        Webbrowsers that are not installed on the system, cause no actions or errors
 
     -------------------------- EXAMPLE 1 --------------------------
-````PowerShell
+
     PS C:\> Open-Webbrowser -Chrome -Left -Top -Url "https://genxdev.net/"
 
     PS C:\> @("https://genxdev.net/", "https://github.com/renevaessen/") |
-                Open-Webbrowser -Monitor -1 -Foreground -NoNewWindow
+                    Open-Webbrowser -Monitor -1 -Foreground -NoNewWindow
 ````
 <br/><hr/><hr/><hr/><hr/><br/>
 
@@ -237,7 +294,7 @@
     others
 
 ### PARAMETERS
-````PowerShell
+````
     -id <Int32>
         When '-Id' is not supplied, a list of available webbrowser tabs is
         shown, where the right value can be found
@@ -315,7 +372,7 @@
     between Powershell and the Webbrowser.
 
 ### PARAMETERS
-````PowerShell
+````
     -scripts <Object[]>
         A string containing the javascript, or a file reference to a
         javascript file
@@ -365,7 +422,7 @@
 
 ### NOTES
 ````PowerShell
-        Requires the Windows 10+ Operating System
+    Requires the Windows 10+ Operating System
 
     -------------------------- EXAMPLE 1 --------------------------
 
@@ -409,7 +466,7 @@
 ### SYNTAX
 ````PowerShell
     Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All]
-    [-IncludeBackgroundProcesses] [<CommonParameters>]
+                     [-IncludeBackgroundProcesses] [<CommonParameters>]
 ````
 ### DESCRIPTION
     Closes one or more webbrowser instances in a selective manner, using
@@ -485,7 +542,7 @@
 ### NOTES
 ````PowerShell
 
-        Requires the Windows 10+ Operating System
+    Requires the Windows 10+ Operating System
 
     -------------------------- EXAMPLE 1 --------------------------
 
@@ -527,11 +584,11 @@
 
 ### NOTES
 ````PowerShell
-        Requires the Windows 10+ Operating System
+    Requires the Windows 10+ Operating System
 
     -------------------------- EXAMPLE 1 --------------------------
 
-    PS C:\>& (Get-DefaultWebbrowser).Path https://www.github.com/
+    PS C:\> & (Get-DefaultWebbrowser).Path https://www.github.com/
 
     PS C:\> Get-DefaultWebbrowser | Format-List
 ````
@@ -562,7 +619,7 @@
 
 ### NOTES
 ````Powershell
-        Requires the Windows 10+ Operating System
+    Requires the Windows 10+ Operating System
 
     -------------------------- EXAMPLE 1 --------------------------
 
@@ -584,20 +641,13 @@
 
 ### SYNTAX
 ````Powershell
-    Close-WebbrowserTab [[-id] <Int32>] [<CommonParameters>]
+    Close-WebbrowserTab [<CommonParameters>]
 ````
 ### DESCRIPTION
     Closes the currently selected webbrowser tab
 
 ### PARAMETERS
 ````Powershell
-    -id <Int32>
-
-        Required?                    false
-        Position?                    1
-        Default value                0
-        Accept pipeline input?       true (ByValue)
-        Accept wildcard characters?  false
 
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
@@ -734,7 +784,7 @@
     Performs a google query in the previously selected webbrowser tab, and
     download all found pdf's into current directory
 ### PARAMETERS
-````Powershell
+````
     -Query <String>
         Parameter description
 
