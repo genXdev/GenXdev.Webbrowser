@@ -293,9 +293,6 @@ function Open-Webbrowser {
         # get the configured default webbrowser
         $DefaultBrowser = Get-DefaultWebbrowser
 
-        # initialize an empty argument list for the webbrowser commandline
-        $ArgumentList = @();
-
         # reference the main monitor
         $Screen = [System.Windows.Forms.Screen]::PrimaryScreen;
 
@@ -409,6 +406,9 @@ function Open-Webbrowser {
 
         function constructArgumentList($browser, $CurrentUrl) {
 
+            # initialize an empty argument list for the webbrowser commandline
+            $ArgumentList = @();
+
             ########################################################################
             if ($browser.Name -like "*Firefox*") {
 
@@ -496,13 +496,15 @@ function Open-Webbrowser {
                     $ArgumentList = @($CurrentUrl);
                 }
             }
+
+            $ArgumentList
         }
 
         function open($browser, $CurrentUrl) {
             try {
                 ########################################################################
                 # get the browser dependend argument list
-                constructArgumentList $browser $CurrentUrl
+                $ArgumentList = constructArgumentList $browser $CurrentUrl
 
                 # setup process start info
                 $si = New-Object "System.Diagnostics.ProcessStartInfo"

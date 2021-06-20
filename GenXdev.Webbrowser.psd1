@@ -6,7 +6,7 @@
     RootModule = 'GenXdev.Webbrowser.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '1.0.1'
+    ModuleVersion     = '1.0.5'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -45,7 +45,7 @@
     # ProcessorArchitecture = ''
 
     # Modules that must be imported into the global environment prior to importing this module
-    RequiredModules = @(@{ModuleName = 'GenXdev.Helpers'; ModuleVersion = '1.0.4'});
+    RequiredModules = @(@{ModuleName = 'GenXdev.Helpers'; ModuleVersion = '1.0.5'});
 
     # Assemblies that must be loaded prior to importing this module
     RequiredAssemblies = @("System.Windows.Forms", "Newtonsoft.Json.dll", "WebSocket4Net.dll", "SuperSocket.ClientEngine.dll", "GenXdev.Webbrowser.dll")
