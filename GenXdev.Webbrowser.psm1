@@ -1044,7 +1044,7 @@ function Select-WebbrowserTab {
 
         if (!(Test-Connection -TcpPort $port 127.0.0.1 -TimeoutSeconds 1)) {
 
-            Start-Webbrowser -Edge -FullScreen
+            Open-Webbrowser -Edge -FullScreen
 
             Start-Sleep 2
         }
@@ -1056,7 +1056,7 @@ function Select-WebbrowserTab {
 
             if (!(Test-Connection -TcpPort $port 127.0.0.1 -TimeoutSeconds 1)) {
 
-                Start-Webbrowser -Chrome -FullScreen
+                Open-Webbrowser -Chrome -FullScreen
 
                 Start-Sleep 2
             }
@@ -1067,7 +1067,7 @@ function Select-WebbrowserTab {
 
             if (!(Test-Connection -TcpPort $port 127.0.0.1 -TimeoutSeconds 1)) {
 
-                Start-Webbrowser -Chromium -FullScreen
+                Open-Webbrowser -Chromium -FullScreen
 
                 Start-Sleep 2
             }
@@ -1128,7 +1128,7 @@ function Select-WebbrowserTab {
                     "Webbrowser has not been opened yet, press F5 to start debugging first.." | Out-Host
                 }
                 else {
-                    "Webbrowser has not been opened yet, use Start-Webbrowser --> wb to start a browser with debugging enabled.." | Out-Host
+                    "Webbrowser has not been opened yet, use Open-Webbrowser --> wb to start a browser with debugging enabled.." | Out-Host
                 }
                 return;
             }

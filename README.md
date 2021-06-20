@@ -82,6 +82,7 @@
 ````Powershell
 
     Install-Module "GenXdev.Webbrowser" -Force
+    Import-Module "GenXdev.Webbrowser"
 
 ````
 
