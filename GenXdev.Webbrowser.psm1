@@ -281,7 +281,7 @@ function Open-Webbrowser {
         if (($null -eq $Url) -or ($Url.Length -lt 1)) {
 
             # show the help page from github
-            $Url = @("https://github.com/renevaessen/GenXdev.Webbrowser/blob/main/README.md#syntax")
+            $Url = @("https://github.com/renevaessen/GenXdev.Webbrowser/blob/master/README.md#syntax")
         }
 
         # remember current foreground window
@@ -426,7 +426,7 @@ function Open-Webbrowser {
                 if ($Private -eq $true) {
 
                     # set commandline arguments
-                    $ArgumentList = $ArgumentList + @("-private", "-private-window", $CurrentUrl)
+                    $ArgumentList = $ArgumentList + @("-private-window", $CurrentUrl)
                 }
                 else {
 
@@ -460,8 +460,14 @@ function Open-Webbrowser {
                         # force new window
                         $NoNewWindow = $false;
 
-                        # set commandline argument
-                        $ArgumentList = $ArgumentList + @("--incognito")
+                        if ($browser.Name -like "*Edge*") {
+                            # set commandline argument
+                            $ArgumentList = $ArgumentList + @("-InPrivate")
+                        }
+                        else {
+                            # set commandline argument
+                            $ArgumentList = $ArgumentList + @("--incognito")
+                        }
                     }
 
                     # '-NoNewWindow' parameter supplied'?
@@ -1139,7 +1145,8 @@ function Select-WebbrowserTab {
             Write-Verbose "Sessions set, length= $($Global:chromeSessions.count)"
 
             $id = 0;
-            while (($s[$id].url.startsWith("chrome-extension:") -or $s[$id].url.contains("/offline/")) -and ($id -lt ($s.count - 1))) {
+            while (
+                ($s[$id].url.startsWith("chrome-extension:") -or $s[$id].url.contains("/offline/") -or $s[$id].url.contains("edge:")) -and ($id -lt ($s.count - 1))) {
 
                 Write-Verbose "skipping $($s[$id].url)"
 
