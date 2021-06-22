@@ -124,7 +124,7 @@ Open in Firefox --> -ff
 Open in all registered modern browsers
 
 .PARAMETER Monitor
-The monitor to use, 0 = default, -1 is discard --> -m, -mon
+The monitor to use, 0 = default, 1 = secondary, -1 is discard --> -m, -mon
 
 .PARAMETER FullScreen
 Open in fullscreen mode --> -fs
@@ -249,7 +249,7 @@ function Open-Webbrowser {
         )]
         [int] $Monitor = 1,
         ####################################################################################################
-        [Alias("fs","f")]
+        [Alias("fs", "f")]
         [parameter(
             Mandatory = $false,
             HelpMessage = "Opens in fullscreen mode"
@@ -373,6 +373,23 @@ function Open-Webbrowser {
 
     Process {
 
+        function enforceMinimumDelays($browser) {
+
+            $last = (Get-Variable -Scope Global -Name "_LastClose$($Browser.Name)" -ErrorAction SilentlyContinue);
+
+            if (($null -ne $last) -and ($last.Value -is [DateTime])) {
+
+                $now = [DateTime]::UtcNow;
+
+                if ($now - $last.Value -lt [timespan]::FromSeconds(2)) {
+
+                    Write-Verbose "Due to recent close of $($Browser.Name) now sleeping for $(($last.Value.AddSeconds(2) - $now).TotalMilliseconds)ms"
+
+                    [System.Threading.Thread]::Sleep(($last.Value.AddSeconds(2) - $now).TotalMilliseconds)
+                }
+            }
+        }
+
         function refocusTab($browser, $CurrentUrl) {
 
             # '-RestoreFocus' parameter supplied'?
@@ -395,9 +412,10 @@ function Open-Webbrowser {
                     if ($PreviousActiveWindow.Handle -ne $CurrentActiveWindow.Handle) {
 
                         try {
-                            # Send Alt-Tab
+                            # Sending Alt-Tab
                             $helper = New-Object -ComObject WScript.Shell;
                             $helper.sendKeys("%{TAB}");
+                            Write-Verbose "Sending Alt-Tab"
 
                             # wait
                             [System.Threading.Thread]::Sleep(500);
@@ -535,9 +553,6 @@ function Open-Webbrowser {
                     # '-Fullscreen' parameter supplied'?
                     if ($FullScreen -eq $true) {
 
-                        # prevent manual F11 insertion
-                        $FullScreen = $false;
-
                         # set commandline argument
                         $ArgumentList = $ArgumentList + @("--start-fullscreen")
                     }
@@ -570,30 +585,36 @@ function Open-Webbrowser {
 
         function open($browser, $CurrentUrl) {
             try {
+                enforceMinimumDelays $browser
                 ########################################################################
 
-                # log
-                Write-Verbose "$($browser.Name) --> $($SI.ArgumentList | ConvertTo-Json)"
-
                 $StartBrowser = $true;
+                $HadVisibleBrowser = $false;
+                $process = $null;
+
+                # find any existing  process
+                $prcBefore = @(Get-Process |
+                    Where-Object -Property Path -EQ $browser.Path |
+                    Where-Object -Property MainWindowHandle -NE 0 |
+                    Sort-Object { $PSItem.StartTime } -Descending |
+                    Select-Object -First 1)
+
+                #found?
+                if (($prcBefore.Length -ge 1) -and ($null -ne $prcBefore[0])) {
+
+                    $HadVisibleBrowser = $true;
+                }
 
                 # no url specified?
                 if (($NewWindow -ne $true) -and ($HavePositioning -eq $true) -and
                     ($CurrentUrl -eq "https://github.com/renevaessen/GenXdev.Webbrowser/blob/master/README.md#syntax")
-                   ) {
+                ) {
 
-                    # find the process
-                    $prc = @(Get-Process |
-                        Where-Object -Property Path -EQ $browser.Path |
-                        Where-Object -Property MainWindowHandle -NE 0 |
-                        Sort-Object { $PSItem.StartTime } -Descending |
-                        Select-Object -First 1)
+                    if ($HadVisibleBrowser) {
 
-                    #found?
-                    if (($prc.Length -ge 1) -and ($null -ne $prc[0])) {
-
+                        Write-Verbose "No url specified, found existing webbrowser window"
                         $StartBrowser = $false;
-                        $process = $prc[0];
+                        $process = $prcBefore[0];
                     }
                 }
 
@@ -601,6 +622,9 @@ function Open-Webbrowser {
 
                     # get the browser dependend argument list
                     $ArgumentList = constructArgumentList $browser $CurrentUrl
+
+                    # log
+                    Write-Verbose "$($browser.Name) --> $($ArgumentList | ConvertTo-Json)"
 
                     # setup process start info
                     $si = New-Object "System.Diagnostics.ProcessStartInfo"
@@ -618,14 +642,16 @@ function Open-Webbrowser {
                 # nothing to do anymore? then don't waste time on positioning the window
                 if ($HavePositioning -eq $false) {
 
+                    Write-Verbose "No positioning required, done.."
                     return;
                 }
 
                 ########################################################################
                 # allow the browser to start-up, and update process handle if needed
-                # Start-Sleep 2
+                enforceMinimumDelays $browser
                 [int] $i = 0;
                 $window = @();
+                $existingWindow = $false;
                 do {
 
                     # did it only signal an already existing webbrowser instance, to create a new tab,
@@ -633,25 +659,26 @@ function Open-Webbrowser {
                     if ($process.HasExited) {
 
                         # find the process
-                        $process = @(Get-Process |
+                        $processesNew = @(Get-Process |
                             Where-Object -Property Path -EQ $browser.Path |
                             Where-Object -Property MainWindowHandle -NE 0 |
                             Sort-Object { $PSItem.StartTime } -Descending |
                             Select-Object -First 1)
 
                         # not found?
-                        if (($process.Length -eq 0) -or ($null -eq $process[0])) {
+                        if (($processesNew.Length -eq 0) -or ($null -eq $processesNew[0])) {
 
                             $window = @();
+
+                            [System.Threading.Thread]::Sleep(80);
                         }
                         else {
 
                             # get window helper utility for the mainwindow of the process
-                            $process = $process[0];
-                            $window = [GenXdev.Helpers.WindowObj]::GetMainWindow($process, 50, 80);
+                            $existingWindow = $HadVisibleBrowser;
+                            $process = $processesNew[0];
+                            $window = [GenXdev.Helpers.WindowObj]::GetMainWindow($process, 1, 80);
                         }
-
-                        break;
                     }
                     else {
 
@@ -663,6 +690,8 @@ function Open-Webbrowser {
                 ########################################################################
                 # have a handle to the mainwindow of the browser?
                 if ($window.Length -eq 1) {
+
+                    Write-Verbose "Restoring and positioning browser window"
 
                     # if maximized, restore window style
                     $window[0].Show() | Out-Null
@@ -678,7 +707,9 @@ function Open-Webbrowser {
                     $window[0].Move($X, $Y, $Width, $Height) | Out-Null
 
                     # needs to be set fullscreen manually?
-                    if ($FullScreen -eq $true) {
+                    if (($existingWindow -eq $false) -and ($Browser.Name -like "*Firefox*" -or ("--start-fullscreen" -notin $ArgumentList))) {
+
+                        Write-Verbose "Setting fullscreen"
 
                         # do some magic to make it the foreground window
                         $window[0].SetForeground() | Out-Null
@@ -692,6 +723,7 @@ function Open-Webbrowser {
                                 # send alt-tab
                                 $helper = New-Object -ComObject WScript.Shell;
                                 $helper.sendKeys("%{TAB}");
+                                Write-Verbose "Sending Alt-Tab"
                             }
                             catch {
 
@@ -709,37 +741,14 @@ function Open-Webbrowser {
                                 # send F11
                                 $helper = New-Object -ComObject WScript.Shell;
                                 $helper.sendKeys("{F11}");
+                                Write-Verbose "Sending F11"
                             }
                             catch {
 
                             }
                         }
                     }
-                    else {
-
-                        # not fullscreen, but webbrowser needs to be in foreground?
-                        if ($RestoreFocus -ne $true) {
-
-                            # do some magic
-                            $window[0].SetForeground() | Out-Null
-                            $test = [GenXdev.Helpers.WindowObj]::GetFocusedWindow();
-
-                            # did it not work?
-                            if ($test.Handle -ne $process.MainWindowHandle) {
-
-                                # send alt-tab
-                                try {
-                                    $helper = New-Object -ComObject WScript.Shell;
-                                    $helper.sendKeys("%{TAB}");
-                                }
-                                catch {
-
-                                }
-                            }
-                        }
-                    }
                 }
-
             }
             finally {
 
@@ -974,6 +983,7 @@ function Close-Webbrowser {
 
                     if ($P.HasExited) {
 
+                        Set-Variable -Scope Global -Name "_LastClose$($Browser.Name)" -Value ([DateTime]::UtcNow.AddSeconds(-1));
                         return;
                     }
                 }
@@ -981,6 +991,7 @@ function Close-Webbrowser {
 
             try {
                 $PSItem.Kill();
+                Set-Variable -Scope Global -Name "_LastClose$($Browser.Name)" -Value ([DateTime]::UtcNow);
             }
             catch {
                 [GenXdev.Helpers.WindowObj]::GetMainWindow($PSItem) | ForEach-Object -ErrorAction SilentlyContinue {

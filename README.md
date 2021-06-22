@@ -160,7 +160,7 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome]
     Accept pipeline input?       false
     Accept wildcard characters?  false
 -Monitor <Int32>
-    The monitor to use, 0 = default, -1 is discard --> -m, -mon
+    The monitor to use, 0 = default, 1 = secondary, -1 is discard --> -m, -mon
     Required?                    false
     Position?                    named
     Default value                1
@@ -268,7 +268,7 @@ function Open-GoogleQuery {
         [parameter(
             Mandatory = $true,
             Position = 0,
-            ValueFromRemainingArguments = $false,
+            ValueFromRemainingArguments = $true,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true
         )]
