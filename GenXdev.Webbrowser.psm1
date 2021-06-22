@@ -589,8 +589,9 @@ function Open-Webbrowser {
                 ########################################################################
 
                 $StartBrowser = $true;
-                $HadVisibleBrowser = $false;
+                $hadVisibleBrowser = $false;
                 $process = $null;
+                $hadNoUrl = $CurrentUrl -eq "https://github.com/renevaessen/GenXdev.Webbrowser/blob/master/README.md#syntax";
 
                 # find any existing  process
                 $prcBefore = @(Get-Process |
@@ -602,15 +603,13 @@ function Open-Webbrowser {
                 #found?
                 if (($prcBefore.Length -ge 1) -and ($null -ne $prcBefore[0])) {
 
-                    $HadVisibleBrowser = $true;
+                    $hadVisibleBrowser = $true;
                 }
 
                 # no url specified?
-                if (($NewWindow -ne $true) -and ($HavePositioning -eq $true) -and
-                    ($CurrentUrl -eq "https://github.com/renevaessen/GenXdev.Webbrowser/blob/master/README.md#syntax")
-                ) {
+                if (($NewWindow -ne $true) -and ($HavePositioning -eq $true) -and ($hadNoUrl)) {
 
-                    if ($HadVisibleBrowser) {
+                    if ($hadVisibleBrowser) {
 
                         Write-Verbose "No url specified, found existing webbrowser window"
                         $StartBrowser = $false;
@@ -675,7 +674,7 @@ function Open-Webbrowser {
                         else {
 
                             # get window helper utility for the mainwindow of the process
-                            $existingWindow = $HadVisibleBrowser;
+                            $existingWindow = $hadVisibleBrowser;
                             $process = $processesNew[0];
                             $window = [GenXdev.Helpers.WindowObj]::GetMainWindow($process, 1, 80);
                         }
@@ -707,7 +706,8 @@ function Open-Webbrowser {
                     $window[0].Move($X, $Y, $Width, $Height) | Out-Null
 
                     # needs to be set fullscreen manually?
-                    if (($existingWindow -eq $false) -and ($Browser.Name -like "*Firefox*" -or ("--start-fullscreen" -notin $ArgumentList))) {
+                    if (($existingWindow -eq $false) -and ($FullScreen -eq $true) -and
+                        ($Browser.Name -like "*Firefox*" -or ("--start-fullscreen" -notin $ArgumentList))) {
 
                         Write-Verbose "Setting fullscreen"
 
