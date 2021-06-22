@@ -33,7 +33,7 @@
 ````Powershell
     Select-WebbrowserTab -> st
 
-        [[-id] <Int32>] [-New] [-Edge] [-Chrome] [<CommonParameters>]
+        [[-id] <Int32>] [-Edge] [-Chrome] [<CommonParameters>]
 ````
 ````Powershell
     Invoke-WebbrowserEvaluation -> Eval, et
