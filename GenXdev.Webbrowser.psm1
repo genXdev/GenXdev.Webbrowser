@@ -129,6 +129,18 @@ The monitor to use, 0 = default, 1 = secondary, -1 is discard --> -m, -mon
 .PARAMETER FullScreen
 Open in fullscreen mode --> -fs
 
+.PARAMETER Width
+The initial width of the webbrowser window
+
+.PARAMETER Height
+The initial height of the webbrowser window
+
+.PARAMETER X
+The initial X position of the webbrowser window
+
+.PARAMETER Y
+The initial Y position of the webbrowser window
+
 .PARAMETER Left
 Place browser window on the left side of the screen
 
@@ -180,7 +192,7 @@ It's best not to touch the keyboard or mouse, while it is doing that, for the be
 
 To disable any wait times due to this, you can disable it by;
     setting: -Monitor -1
-    AND    : not using any of these switches: -Left -Right -Top -Bottom -RestoreFocus
+    AND    : not using any of these switches: -X, -Y, -Left, -Right, -Top, -Bottom or -RestoreFocus
 
 For browsers that are not installed on the system, no actions may be performed or errors occur - at all.
 #>
@@ -255,6 +267,30 @@ function Open-Webbrowser {
             HelpMessage = "Opens in fullscreen mode"
         )]
         [switch] $FullScreen,
+        ####################################################################################################
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "The initial width of the webbrowser window"
+        )]
+        [int] $Width = 0,
+        ####################################################################################################
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "The initial height of the webbrowser window"
+        )]
+        [int] $Height = 0,
+        ####################################################################################################
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "The initial X position of the webbrowser window"
+        )]
+        [int] $X = 0,
+        ####################################################################################################
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "The initial Y position of the webbrowser window"
+        )]
+        [int] $Y = 0,
         ####################################################################################################
         [parameter(
             Mandatory = $false,
@@ -336,37 +372,75 @@ function Open-Webbrowser {
             $Screen = [System.Windows.Forms.Screen]::AllScreens[$Monitor]
         }
 
-        # init window position
-        [int] $X = $Screen.WorkingArea.X;
-        [int] $Y = $Screen.WorkingArea.Y;
-        [int] $Width = $Screen.WorkingArea.Width;
-        [int] $Height = $Screen.WorkingArea.Height;
-
         # remember
-        [bool] $HavePositioning = ($Monitor -ge 0) -or ($Left -or $Right -or $Top -or $Bottom);
+        [bool] $HavePositioning = ($Monitor -ge 0) -or ($Left -or $Right -or $Top -or $Bottom -or (($X -is [int]) -and ($X -gt 0)) -or (($Y -is [int]) -and ($Y -gt 0)));
 
-        # setup exact window position and size
-        if ($Left -eq $true) {
+        # init window position
+        # '-X' parameter not supplied?
+        if (($X -le 0) -or ($X -isnot [int])) {
 
-            $Width = $Screen.WorkingArea.Width / 2;
+            $X = $Screen.WorkingArea.X;
         }
         else {
-            if ($Right -eq $true) {
 
-                $Width = $Screen.WorkingArea.Width / 2;
-                $X = $Screen.WorkingArea.X + $Screen.WorkingArea.Width / 2;
+            if ($Monitor -ge 0) {
+
+                $X = $Screen.WorkingArea.X + $X;
             }
         }
 
-        if ($Top -eq $true) {
+        # '-Y' parameter not supplied?
+        if (($Y -le 0) -or ($Y -isnot [int])) {
 
-            $Height = $Screen.WorkingArea.Height / 2;
+            $Y = $Screen.WorkingArea.Y;
         }
         else {
-            if ($Bottom -eq $true) {
 
-                $Height = $Screen.WorkingArea.Height / 2;
-                $Y = $Screen.WorkingArea.Y + $Screen.WorkingArea.Height / 2;
+            if ($Monitor -ge 0) {
+
+                $Y = $Screen.WorkingArea.Y + $Y;
+            }
+        }
+
+        if ($HavePositioning) {
+
+            # '-Width' parameter not supplied?
+            if (($Width -le 0) -or ($Width -isnot [int])) {
+
+                $Width = $Screen.WorkingArea.Width;
+            }
+
+            # '-Height' parameter not supplied?
+            if (($Height -le 0) -or ($Height -isnot [int])) {
+
+                $Height = $Screen.WorkingArea.Height;
+            }
+
+            # setup exact window position and size
+            if ($Left -eq $true) {
+
+                $X = $Screen.WorkingArea.X;
+                $Width = [Math]::Min($Screen.WorkingArea.Width / 2, $Width);
+            }
+            else {
+                if ($Right -eq $true) {
+
+                    $Width = [Math]::Min($Screen.WorkingArea.Width / 2, $Width);
+                    $X = $Screen.WorkingArea.X + $Screen.WorkingArea.Width - $Width;
+                }
+            }
+
+            if ($Top -eq $true) {
+
+                $Y = $Screen.WorkingArea.Y;
+                $Height = [Math]::Min($Screen.WorkingArea.Height / 2, $Height);
+            }
+            else {
+                if ($Bottom -eq $true) {
+
+                    $Height = [Math]::Min($Screen.WorkingArea.Height / 2, $Height);
+                    $Y = $Screen.WorkingArea.Y + $Screen.WorkingArea.Height - $Height;
+                }
             }
         }
     }
@@ -392,22 +466,22 @@ function Open-Webbrowser {
 
         function refocusTab($browser, $CurrentUrl) {
 
-            # '-RestoreFocus' parameter supplied'?
+            # '-RestoreFocus' parameter supplied'?
             if ($RestoreFocus -eq $true) {
 
-                # Get handle to current foreground window
+                # Get handle to current foreground window
                 $CurrentActiveWindow = [GenXdev.Helpers.WindowObj]::GetFocusedWindow();
 
-                # Is it different then the one at the start of this command?
+                # Is it different then the one at the start of this command?
                 if ($PreviousActiveWindow.Handle -ne $CurrentActiveWindow.Handle) {
 
-                    # restore it
+                    # restore it
                     $PreviousActiveWindow.SetForeground();
 
-                    # wait
+                    # wait
                     [System.Threading.Thread]::Sleep(250);
 
-                    # did it not work?
+                    # did it not work?
                     $CurrentActiveWindow = [GenXdev.Helpers.WindowObj]::GetFocusedWindow();
                     if ($PreviousActiveWindow.Handle -ne $CurrentActiveWindow.Handle) {
 
@@ -426,18 +500,18 @@ function Open-Webbrowser {
                     }
                 }
 
-                #  positioning of windows did happen?
+                #  positioning of windows did happen?
                 if ($HavePositioning -eq $true) {
 
-                    # wait a little
+                    # wait a little
                     [System.Threading.Thread]::Sleep(500);
                 }
             }
             else {
-                #  positioning of windows did happen?
+                #  positioning of windows did happen?
                 if ($HavePositioning -eq $true) {
 
-                    # wait a little
+                    # wait a little
                     [System.Threading.Thread]::Sleep(500);
                 }
             }
@@ -445,29 +519,29 @@ function Open-Webbrowser {
 
         function constructArgumentList($browser, $CurrentUrl) {
 
-            # initialize an empty argument list for the webbrowser commandline
+            # initialize an empty argument list for the webbrowser commandline
             $ArgumentList = @();
 
             ########################################################################
             if ($browser.Name -like "*Firefox*") {
 
-                # set default commandline parameters
+                # set default commandline parameters
                 $ArgumentList = $ArgumentList + @("-width", $Width, "-height", $Height)
 
-                # '-RestoreFocus' parameter supplied'?
+                # '-RestoreFocus' parameter supplied'?
                 if ($RestoreFocus -ne $true) {
 
-                    # set commandline argument
+                    # set commandline argument
                     $ArgumentList = $ArgumentList + @("-foreground")
                 }
 
-                # '-NoBrowserExtensions' parameter supplied?
+                # '-NoBrowserExtensions' parameter supplied?
                 if ($NoBrowserExtensions -eq $true) {
 
                     $ArgumentList = $ArgumentList + @("-safe-mode");
                 }
 
-                # '-Private' parameter supplied'?
+                # '-Private' parameter supplied'?
                 if ($Private -eq $true) {
 
                     # set commandline arguments
@@ -475,25 +549,27 @@ function Open-Webbrowser {
                 }
                 else {
 
-                    # '-ApplicationMode' parameter supplied?
+                    # '-ApplicationMode' parameter supplied?
                     if ($ApplicationMode -eq $true) {
+
+                        Write-Warning "Firefox does not support -ApplicationMode at this time"
 
                         Approve-FirefoxDebugging
 
-                        # set commandline argument
+                        # set commandline argument
                         $ArgumentList = $ArgumentList + @("--ssb", $CurrentUrl)
                     }
                     else {
 
-                        # '-NewWindow' parameter supplied'?
+                        # '-NewWindow' parameter supplied'?
                         if ($NewWindow -eq $true) {
 
-                            # set commandline argument
+                            # set commandline argument
                             $ArgumentList = $ArgumentList + @("--new-window", $CurrentUrl)
                         }
                         else {
 
-                            # set commandline argument
+                            # set commandline argument
                             $ArgumentList = $ArgumentList + @("-url", $CurrentUrl)
                         }
                     }
@@ -503,7 +579,7 @@ function Open-Webbrowser {
                 ########################################################################
                 if ($browser.Name -like "*Edge*" -or $browser.Name -like "*Chrome*") {
 
-                    # get the right debugging tcp port for this browser
+                    # get the right debugging tcp port for this browser
                     if ($browser.Name -like "*Edge*") {
 
                         $port = Get-EdgeRemoteDebuggingPort
@@ -512,8 +588,9 @@ function Open-Webbrowser {
                         $port = Get-ChromeRemoteDebuggingPort
                     }
 
-                    # set default commandline parameters
+                    # set default commandline parameters
                     $ArgumentList = $ArgumentList + @(
+                        "--window-size=$Width,$Height",
                         "--disable-infobars",
                         "--disable-session-crashed-bubble",
                         "--no-default-browser-check",
@@ -521,55 +598,55 @@ function Open-Webbrowser {
                         "--window-size=$Width,$Height"
                     )
 
-                    # '-NoBrowserExtensions' parameter supplied?
+                    # '-NoBrowserExtensions' parameter supplied?
                     if ($NoBrowserExtensions -eq $true) {
 
                         $ArgumentList = $ArgumentList + @("--disable-extensions");
                     }
 
-                    # '-Private' parameter supplied'?
+                    # '-Private' parameter supplied'?
                     if ($Private -eq $true) {
 
-                        # force new window
+                        # force new window
                         $NewWindow = $true;
 
                         if ($browser.Name -like "*Edge*") {
-                            # set commandline argument
+                            # set commandline argument
                             $ArgumentList = $ArgumentList + @("-InPrivate")
                         }
                         else {
-                            # set commandline argument
+                            # set commandline argument
                             $ArgumentList = $ArgumentList + @("--incognito")
                         }
                     }
 
-                    # '-NewWindow' parameter supplied'?
+                    # '-NewWindow' parameter supplied'?
                     if ($NewWindow -eq $true) {
 
-                        # set commandline argument
+                        # set commandline argument
                         $ArgumentList = $ArgumentList + @("--new-window")
                     }
 
-                    # '-Fullscreen' parameter supplied'?
+                    # '-Fullscreen' parameter supplied'?
                     if ($FullScreen -eq $true) {
 
-                        # set commandline argument
+                        # set commandline argument
                         $ArgumentList = $ArgumentList + @("--start-fullscreen")
                     }
 
-                    # '-ApplicationMode' parameter supplied?
+                    # '-ApplicationMode' parameter supplied?
                     if ($ApplicationMode -eq $true) {
 
                         $ArgumentList = $ArgumentList + @("--app=$CurrentUrl");
                     }
                     else {
-                        # Add Url to commandline arguments
+                        # Add Url to commandline arguments
                         $ArgumentList = $ArgumentList + @($CurrentUrl)
                     }
                 }
                 else {
                     ########################################################################
-                    # Default browser
+                    # Default browser
                     if ($Private -eq $true) {
 
                         return;
@@ -593,7 +670,7 @@ function Open-Webbrowser {
                 $process = $null;
                 $hadNoUrl = $CurrentUrl -eq "https://github.com/renevaessen/GenXdev.Webbrowser/blob/master/README.md#syntax";
 
-                # find any existing  process
+                # find any existing  process
                 $prcBefore = @(Get-Process |
                     Where-Object -Property Path -EQ $browser.Path |
                     Where-Object -Property MainWindowHandle -NE 0 |
@@ -606,7 +683,7 @@ function Open-Webbrowser {
                     $hadVisibleBrowser = $true;
                 }
 
-                # no url specified?
+                # no url specified?
                 if (($NewWindow -ne $true) -and ($HavePositioning -eq $true) -and ($hadNoUrl)) {
 
                     if ($hadVisibleBrowser) {
@@ -619,13 +696,13 @@ function Open-Webbrowser {
 
                 if ($StartBrowser) {
 
-                    # get the browser dependend argument list
+                    # get the browser dependend argument list
                     $ArgumentList = constructArgumentList $browser $CurrentUrl
 
-                    # log
+                    # log
                     Write-Verbose "$($browser.Name) --> $($ArgumentList | ConvertTo-Json)"
 
-                    # setup process start info
+                    # setup process start info
                     $si = New-Object "System.Diagnostics.ProcessStartInfo"
                     $si.FileName = $browser.Path
                     $si.CreateNoWindow = $true;
@@ -633,12 +710,12 @@ function Open-Webbrowser {
                     $si.WindowStyle = "Normal"
                     foreach ($arg in $ArgumentList) { $si.ArgumentList.Add($arg); }
 
-                    # start process
+                    # start process
                     $process = [System.Diagnostics.Process]::Start($si)
                 }
 
                 ########################################################################
-                # nothing to do anymore? then don't waste time on positioning the window
+                # nothing to do anymore? then don't waste time on positioning the window
                 if ($HavePositioning -eq $false) {
 
                     Write-Verbose "No positioning required, done.."
@@ -646,15 +723,15 @@ function Open-Webbrowser {
                 }
 
                 ########################################################################
-                # allow the browser to start-up, and update process handle if needed
+                # allow the browser to start-up, and update process handle if needed
                 enforceMinimumDelays $browser
                 [int] $i = 0;
                 $window = @();
                 $existingWindow = $false;
                 do {
 
-                    # did it only signal an already existing webbrowser instance, to create a new tab,
-                    # and did it then exit?
+                    # did it only signal an already existing webbrowser instance, to create a new tab,
+                    # and did it then exit?
                     if ($process.HasExited) {
 
                         # find the process
@@ -664,7 +741,7 @@ function Open-Webbrowser {
                             Sort-Object { $PSItem.StartTime } -Descending |
                             Select-Object -First 1)
 
-                        # not found?
+                        # not found?
                         if (($processesNew.Length -eq 0) -or ($null -eq $processesNew[0])) {
 
                             $window = @();
@@ -673,7 +750,7 @@ function Open-Webbrowser {
                         }
                         else {
 
-                            # get window helper utility for the mainwindow of the process
+                            # get window helper utility for the mainwindow of the process
                             $existingWindow = $hadVisibleBrowser;
                             $process = $processesNew[0];
                             $window = [GenXdev.Helpers.WindowObj]::GetMainWindow($process, 1, 80);
@@ -681,37 +758,37 @@ function Open-Webbrowser {
                     }
                     else {
 
-                        # get window helper utility for the mainwindow of the process
+                        # get window helper utility for the mainwindow of the process
                         $window = [GenXdev.Helpers.WindowObj]::GetMainWindow($process, 1, 80);
                     }
                 } while (($i++ -lt 50) -and ($window.length -le 0));
 
                 ########################################################################
-                # have a handle to the mainwindow of the browser?
+                # have a handle to the mainwindow of the browser?
                 if ($window.Length -eq 1) {
 
                     Write-Verbose "Restoring and positioning browser window"
 
-                    # if maximized, restore window style
+                    # if maximized, restore window style
                     $window[0].Show() | Out-Null
 
-                    # move it to it's place
+                    # move it to it's place
                     $window[0].Move($X, $Y, $Width, $Height)  | Out-Null
 
-                    # wait
+                    # wait
                     [System.Threading.Thread]::Sleep(1500);
 
-                    # do again
+                    # do again
                     $window[0].Show()  | Out-Null
                     $window[0].Move($X, $Y, $Width, $Height) | Out-Null
 
-                    # needs to be set fullscreen manually?
+                    # needs to be set fullscreen manually?
                     if (($existingWindow -eq $false) -and ($FullScreen -eq $true) -and
                         ($Browser.Name -like "*Firefox*" -or ("--start-fullscreen" -notin $ArgumentList))) {
 
                         Write-Verbose "Setting fullscreen"
 
-                        # do some magic to make it the foreground window
+                        # do some magic to make it the foreground window
                         $window[0].SetForeground() | Out-Null
                         $window[0].Move($X, $Y, $Width, $Height) | Out-Null
 
@@ -720,7 +797,7 @@ function Open-Webbrowser {
                         if ($test.Handle -ne $process.MainWindowHandle) {
 
                             try {
-                                # send alt-tab
+                                # send alt-tab
                                 $helper = New-Object -ComObject WScript.Shell;
                                 $helper.sendKeys("%{TAB}");
                                 Write-Verbose "Sending Alt-Tab"
@@ -729,11 +806,11 @@ function Open-Webbrowser {
 
                             }
 
-                            # wait
+                            # wait
                             Start-Sleep 1
                         }
 
-                        # is the browserwindow now focused?
+                        # is the browserwindow now focused?
                         $test = [GenXdev.Helpers.WindowObj]::GetFocusedWindow();
                         if ($test.Handle -eq $process.MainWindowHandle) {
 
@@ -752,58 +829,58 @@ function Open-Webbrowser {
             }
             finally {
 
-                # if needed, restore the focus to the Powershell terminal
+                # if needed, restore the focus to the Powershell terminal
                 refocusTab $browser $CurrentUrl
             }
         }
 
         ###############################################################################################
-        # start processing the Urls that we need to open
+        # start processing the Urls that we need to open
         $Url | ForEach-Object {
 
-            # reference the next Url
+            # reference the next Url
             $CurrentUrl = $PSItem;
 
-            # '-All' parameter was supplied?
+            # '-All' parameter was supplied?
             if ($All -eq $true) {
 
-                # open for all browsers
+                # open for all browsers
                 $Browsers | ForEach-Object { open $PSItem $CurrentUrl }
 
                 return;
             }
 
-            # '-Chromium' parameter was supplied
+            # '-Chromium' parameter was supplied
             if ($Chromium -eq $true) {
 
-                # default browser already chrome or edge?
+                # default browser already chrome or edge?
                 if (($DefaultBrowser.Name -like "*Chrome*") -or ($DefaultBrowser.Name -like "*Edge*")) {
 
-                    # open default browser
+                    # open default browser
                     open $DefaultBrowser $CurrentUrl
                     return;
                 }
 
-                # enumerate all browsers
+                # enumerate all browsers
                 $Browsers | Sort-Object { $PSItem.Name } -Descending | ForEach-Object {
 
-                    # found edge or chrome?
+                    # found edge or chrome?
                     if (($PSItem.Name -like "*Chrome*") -or ($PSItem.Name -like "*Edge*")) {
 
-                        # open it
+                        # open it
                         open $PSItem $CurrentUrl
                     }
                 }
             }
             else {
 
-                # '-Chrome' parameter supplied?
+                # '-Chrome' parameter supplied?
                 if ($Chrome -eq $true) {
 
                     # enumerate all browsers
                     $Browsers | ForEach-Object {
 
-                        # found chrome?
+                        # found chrome?
                         if ($PSItem.Name -like "*Chrome*") {
 
                             # open it
@@ -812,41 +889,41 @@ function Open-Webbrowser {
                     }
                 }
 
-                # '-Edge' parameter supplied?
+                # '-Edge' parameter supplied?
                 if ($Edge -eq $true) {
 
-                    # enumerate all browsers
+                    # enumerate all browsers
                     $Browsers | ForEach-Object {
 
                         # found Edge?
                         if ($PSItem.Name -like "*Edge*") {
 
-                            # open it
+                            # open it
                             open $PSItem $CurrentUrl
                         }
                     }
                 }
             }
 
-            # '-Firefox' parameter supplied?
+            # '-Firefox' parameter supplied?
             if ($Firefox -eq $true) {
 
-                # enumerate all browsers
+                # enumerate all browsers
                 $Browsers | ForEach-Object {
 
-                    # found Firefox?
+                    # found Firefox?
                     if ($PSItem.Name -like "*Firefox*") {
 
-                        # open it
+                        # open it
                         open $PSItem $CurrentUrl
                     }
                 }
             }
 
-            # no specific browser requested?
+            # no specific browser requested?
             if (($Chromium -ne $true) -and ($Chrome -ne $true) -and ($Edge -ne $true) -and ($Firefox -ne $true)) {
 
-                # open default browser
+                # open default browser
                 open $DefaultBrowser $CurrentUrl
             }
         }
@@ -943,40 +1020,40 @@ function Close-Webbrowser {
         [switch] $IncludeBackgroundProcesses
     )
 
-    # get a list of all available/installed modern webbrowsers
+    # get a list of all available/installed modern webbrowsers
     $Browsers = Get-Webbrowser
 
-    # get the configured default webbrowser
+    # get the configured default webbrowser
     $DefaultBrowser = Get-DefaultWebbrowser
 
     function close($browser) {
 
-        # find all running processes of this browser
+        # find all running processes of this browser
         Get-Process -Name ([IO.Path]::GetFileNameWithoutExtension($browser.Path)) -ErrorAction SilentlyContinue | ForEach-Object {
 
-            # reference next process
+            # reference next process
             $P = $PSItem;
 
-            # '-IncludeBackgroundProcesses' parameter supplied?
+            # '-IncludeBackgroundProcesses' parameter supplied?
             if ($IncludeBackgroundProcesses -ne $true) {
 
-                # this browser process has no main window?
+                # this browser process has no main window?
                 if ($PSItem.MainWindowHandle -eq 0) {
 
-                    # continue to next process
+                    # continue to next process
                     return;
                 }
 
-                # get handle to main window
+                # get handle to main window
                 [GenXdev.Helpers.WindowObj]::GetMainWindow($PSItem) | ForEach-Object -ErrorAction SilentlyContinue {
 
                     $startTime = [DateTime]::UtcNow;
-                    # send a WM_Close message
+                    # send a WM_Close message
                     $PSItem.Close() | Out-Null;
 
                     do {
 
-                        # wait a little
+                        # wait a little
                         [System.Threading.Thread]::Sleep(20);
 
                     } while (!$p.HasExited -and [datetime]::UtcNow - $startTime -lt [timespan]::FromSeconds(4))
@@ -1002,10 +1079,10 @@ function Close-Webbrowser {
         }
     }
 
-    # '-All' parameter was supplied?
+    # '-All' parameter was supplied?
     if ($All -eq $true) {
 
-        # enumerate all browsers
+        # enumerate all browsers
         $Browsers | ForEach-Object {
 
             close($PSItem)
@@ -1014,10 +1091,10 @@ function Close-Webbrowser {
         return;
     }
 
-    # '-Chromium' parameter was supplied
+    # '-Chromium' parameter was supplied
     if ($Chromium -eq $true) {
 
-        # default browser already chrome or edge?
+        # default browser already chrome or edge?
         if (($DefaultBrowser.Name -like "*Chrome*") -or ($DefaultBrowser.Name -like "*Edge*")) {
 
             close($DefaultBrowser);
@@ -1035,13 +1112,13 @@ function Close-Webbrowser {
         }
     }
 
-    # '-Chrome' parameter supplied?
+    # '-Chrome' parameter supplied?
     if ($Chrome -eq $true) {
 
-        # enumerate all browsers
+        # enumerate all browsers
         $Browsers | ForEach-Object {
 
-            # found Chrome?
+            # found Chrome?
             if ($PSItem.Name -like "*Chrome*") {
 
                 close($PSItem);
@@ -1050,13 +1127,13 @@ function Close-Webbrowser {
         }
     }
 
-    # '-Edge' parameter supplied?
+    # '-Edge' parameter supplied?
     if ($Edge -eq $true) {
 
-        # enumerate all browsers
+        # enumerate all browsers
         $Browsers | ForEach-Object {
 
-            # found Edge?
+            # found Edge?
             if ($PSItem.Name -like "*Edge*") {
 
                 close($PSItem);
@@ -1065,10 +1142,10 @@ function Close-Webbrowser {
         }
     }
 
-    # '-Firefox' parameter supplied?
+    # '-Firefox' parameter supplied?
     if ($Firefox -eq $true) {
 
-        # enumerate all browsers
+        # enumerate all browsers
         $Browsers | ForEach-Object {
 
             # found Firefox?
@@ -1080,10 +1157,10 @@ function Close-Webbrowser {
         }
     }
 
-    # no specific browser requested?
+    # no specific browser requested?
     if (($Chromium -ne $true) -and ($Chrome -ne $true) -and ($Edge -ne $true) -and ($Firefox -ne $true)) {
 
-        # open default browser
+        # open default browser
         close($DefaultBrowser);
     }
 }
@@ -1144,7 +1221,7 @@ function Select-WebbrowserTab {
         $Global:Data = @{};
     }
 
-    # init
+    # init
     if ($Edge -eq $true) {
 
         $port = Get-EdgeRemoteDebuggingPort
@@ -1181,7 +1258,7 @@ function Select-WebbrowserTab {
         }
     }
 
-    # get paths
+    # get paths
     $Global:WorkspaceFolder = ([IO.Path]::GetFullPath($PSScriptRoot + "\.."));
 
     Push-Location
@@ -1323,7 +1400,7 @@ PS C:\> Invoke-WebbrowserEvaluation "document.title = 'hello world'"
 
 PS C:\>
 
-    # Synchronizing data
+    # Synchronizing data
     Select-WebbrowserTab;
     $Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
     [int] $number = Invoke-WebbrowserEvaluation "document.body.innerHTML = JSON.stringify(data.files); data.title = document.title; 123;";
@@ -1362,17 +1439,17 @@ function Invoke-WebbrowserEvaluation {
 
     Begin {
 
-        # setup switches for info messages
+        # setup switches for info messages
         $Switches = "";
         $SwitchesShort = "";
 
-        # initialize data hashtable
+        # initialize data hashtable
         if ($Global:Data -isnot [HashTable]) {
 
             $Global:Data = @{};
         }
 
-        # no session yet?
+        # no session yet?
         if ($Global:chromeSession -isnot [GenXdev.Webbrowser.RemoteSessionsResponse]) {
 
             throw "Select session first with cmdlet: Select-WebbrowserTab $switches -> st $switchesShort"
@@ -1382,13 +1459,13 @@ function Invoke-WebbrowserEvaluation {
             Write-Verbose "Found existing session: $($Global.chromeSession | ConvertTo-Json -Depth 100)"
         }
 
-        # get available tabs
+        # get available tabs
         $s = $Global:chrome.GetAvailableSessions();
 
-        # reference selected session
+        # reference selected session
         $wsb = $Global:chromeSession.webSocketDebuggerUrl;
 
-        # find it in the most recent list
+        # find it in the most recent list
         $found = $false;
         $s | ForEach-Object -Process {
 
@@ -1398,7 +1475,7 @@ function Invoke-WebbrowserEvaluation {
             }
         }
 
-        # not found?
+        # not found?
         if ($found -eq $false) {
 
             throw "Session expired, select new session with cmdlet: Select-WebbrowserTab $switches -> st $switchesShort"
@@ -1416,7 +1493,7 @@ function Invoke-WebbrowserEvaluation {
         # enumerate provided scripts
         foreach ($js in $scripts) {
 
-            # is it a file reference?
+            # is it a file reference?
             if (($js -is [IO.FileInfo]) -or (($js -is [System.String]) -and [IO.File]::Exists($js))) {
 
                 # comming from Get-ChildItem command?

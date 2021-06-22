@@ -173,6 +173,34 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome]
     Default value                False
     Accept pipeline input?       false
     Accept wildcard characters?  false
+-Width <Int32>
+    The initial width of the webbrowser window
+    Required?                    false
+    Position?                    named
+    Default value                0
+    Accept pipeline input?       false
+    Accept wildcard characters?  false
+-Height <Int32>
+    The initial height of the webbrowser window
+    Required?                    false
+    Position?                    named
+    Default value                0
+    Accept pipeline input?       false
+    Accept wildcard characters?  false
+-X <Int32>
+    The initial X position of the webbrowser window
+    Required?                    false
+    Position?                    named
+    Default value                0
+    Accept pipeline input?       false
+    Accept wildcard characters?  false
+-Y <Int32>
+    The initial Y position of the webbrowser window
+    Required?                    false
+    Position?                    named
+    Default value                0
+    Accept pipeline input?       false
+    Accept wildcard characters?  false
 -Left [<SwitchParameter>]
     Place browser window on the left side of the screen
     Required?                    false
@@ -246,8 +274,7 @@ Requires the Windows 10+ Operating System
     It is best not to touch the keyboard or mouse, while it is doing that,
     for the best experience.
     setting: -Monitor -1
-    AND    : not using any of these switches: -Left -Right -Top -Bottom -RestoreFocus
-    -Bottom -RestoreFocus
+    AND    : not using any of these switches: -X, -Y, -Left, -Right, -Top, -Bottom or -RestoreFocus
     For browsers that are not installed on the system, no actions may be
     performed or errors occur - at all.
 -------------------------- EXAMPLE 1 --------------------------
