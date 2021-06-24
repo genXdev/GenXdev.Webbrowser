@@ -38,7 +38,7 @@
 ````Powershell
     Invoke-WebbrowserEvaluation -> Eval, et
 
-        [[-scripts] <Object[]>] [-inspect] [-Edge] [-Chrome] [<CommonParameters>]
+        [[-Scripts] <Object[]>] [-Inspect] [-Edge] [-Chrome] [<CommonParameters>]
 ````
 ````Powershell
     Get-GoogleSearchResultUrls -Query <String> [[-Max] <int>] [<CommonParameters>]
@@ -107,7 +107,7 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome]
 ### DESCRIPTION
     Opens one or more webbrowsers in a configurable manner, using commandline
     switches
-### PARAMETERS\r
+### PARAMETERS
 ````
 -Url <String[]>
     The url to open
@@ -271,10 +271,12 @@ Requires the Windows 10+ Operating System
     This cmdlet was mend to be used, interactively.
     It performs some strange tricks to position windows, including
     invoking alt-tab keystrokes.
-    It is best not to touch the keyboard or mouse, while it is doing that,
-    for the best experience.
-    setting: -Monitor -1
-    AND    : not using any of these switches: -X, -Y, -Left, -Right, -Top, -Bottom or -RestoreFocus
+    It is best not to touch the keyboard or mouse, while it is doing that.
+
+    For fast launches of multple urls:
+    SET    : -Monitor -1
+    AND    : DO NOT use any of these switches: -X, -Y, -Left, -Right, -Top, -Bottom or -RestoreFocus
+
     For browsers that are not installed on the system, no actions may be
     performed or errors occur - at all.
 -------------------------- EXAMPLE 1 --------------------------
@@ -339,13 +341,15 @@ function Open-GoogleQuery {
     Selects a webbrowser tab
 ### SYNTAX
 ````PowerShell
-Select-WebbrowserTab [[-id] <Int32>] [-Edge] [-Chrome] [<CommonParameters>]
+Select-WebbrowserTab [-id <Int32>] [-Edge] [-Chrome] [<CommonParameters>]
+
+Select-WebbrowserTab [-ByReference] <Hashtable> [<CommonParameters>]
 ````
 ### DESCRIPTION
     Selects a webbrowser tab for use by the cmdlets
     'Invoke-WebbrowserEvaluation -> et, eval', 'Close-WebbrowserTab -> ct' and
     others
-### PARAMETERS\r
+### PARAMETERS
 ````
 -id <Int32>
     When '-Id' is not supplied, a list of available webbrowser tabs is
@@ -369,6 +373,14 @@ Select-WebbrowserTab [[-id] <Int32>] [-Edge] [-Chrome] [<CommonParameters>]
     Default value                False
     Accept pipeline input?       false
     Accept wildcard characters?  false
+-ByReference <Hashtable>
+    Select tab using reference obtained with Get-ChromiumSessionReference
+    Required?                    true
+    Position?                    1
+    Default value
+    Accept pipeline input?       false
+    Accept wildcard characters?  false
+
 <CommonParameters>
     This cmdlet supports the common parameters: Verbose, Debug,
     ErrorAction, ErrorVariable, WarningAction, WarningVariable,
@@ -393,25 +405,23 @@ PS C:\> st -ch 14
     Runs one or more scripts inside a selected webbrowser tab.
 ### SYNTAX
 ````PowerShell
-Invoke-WebbrowserEvaluation [[-scripts] <Object[]>] [-inspect] [<CommonParameters>]
+Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [<CommonParameters>]
 ````
 ### DESCRIPTION
     Runs one or more scripts inside a selected webbrowser tab.
     You can access 'data' object from within javascript, to synchronize data
     between Powershell and the Webbrowser.
-### PARAMETERS\r
+### PARAMETERS
 ````
--scripts <Object[]>
-    A string containing the javascript, or a file reference to a
-    javascript file
+-Scripts <Object[]>
+    A string containing javascript, a url or a file reference to a javascript file
     Required?                    false
     Position?                    1
     Default value
     Accept pipeline input?       true (ByValue, ByPropertyName)
     Accept wildcard characters?  false
--inspect [<SwitchParameter>]
-    Will cause the developer tools of the webbrowser to break, before
-    executing the scripts, allowing you to debug it.
+-Inspect [<SwitchParameter>]
+    Will cause the developer tools of the webbrowser to break, before executing the scripts, allowing you to debug it.
     Required?                    false
     Position?                    named
     Default value                False
@@ -430,6 +440,8 @@ Requires the Windows 10+ Operating System
 
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> Invoke-WebbrowserEvaluation "document.title = 'hello world'"
+
+-------------------------- EXAMPLE 2 --------------------------
 PS C:\>
     # Synchronizing data
     Select-WebbrowserTab;
@@ -444,8 +456,108 @@ PS C:\>
         return value   : $Number
     ";
 
+-------------------------- EXAMPLE 3 --------------------------
+PS C:\>
+    # Support for promises
+    Select-WebbrowserTab;
+    Invoke-WebbrowserEvaluation "
+        let myList = [];
+        return new Promise((resolve) => {
+            let i = 0;
+            let a = setInterval(() => {
+                myList.push(++i);
+                if (i == 10) {
+                    clearInterval(a);
+                    resolve(myList);
+                }
+            }, 1000);
+        });
+    "
+-------------------------- EXAMPLE 4 --------------------------
+PS C:\>
+
+# Support for promises and more
+
+# this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
+# beware, not all websites use indexedDb, it could return an empty set
+
+Select-WebbrowserTab;
+Set-WebbrowserTabLocation "https://www.youtube.com/"
+Start-Sleep 3
+$AllIndexedDbData = Invoke-WebbrowserEvaluation "
+    // enumerate all indexedDB databases
+    for (let db of await indexedDB.databases()) {
+
+        // request to open database
+        let openRequest = await indexedDB.open(db.name);
+
+        // wait for eventhandlers to be called
+        await new Promise((resolve,reject) => {
+            openRequest.onsuccess = resolve;
+            openRequest.onerror = reject
+        });
+
+        // obtain reference
+        let openedDb = openRequest.result;
+
+        // initialize result
+        let result = { DatabaseName: db.name, Version: db.version, Stores: [] }
+
+        // itterate object store names
+        for (let i = 0; i < openedDb.objectStoreNames.length; i++) {
+
+            // reference
+            let storeName = openedDb.objectStoreNames[i];
+
+            // start readonly transaction
+            let tr = openedDb.transaction(storeName);
+
+            // get objectstore handle
+            let store = tr.objectStore(storeName);
+
+            // request all data
+            let getRequest = store.getAll();
+
+            // await result
+            await new Promise((resolve,reject) => {
+                getRequest.onsuccess = resolve;
+                getRequest.onerror = reject;
+            });
+
+            // add result
+            result.Stores.push({ StoreName: storeName, Data: getRequest.result});
+        }
+
+        // stream this database contents to the PowerShell pipeline, and continue
+        yield result;
+    }
+";
+
+$AllIndexedDbData | Out-Host
+
+-------------------------- EXAMPLE 5 --------------------------
+
+PS C:\>
+    # Support for yielded pipeline results
+    Select-WebbrowserTab;
+    Invoke-WebbrowserEvaluation "
+
+        for (let i = 0; i < 10; i++) {
+
+            await (new Promise((resolve) => setTimeout(resolve, 1000)));
+
+            yield i;
+        }
+    ";
+
+-------------------------- EXAMPLE 6 --------------------------
+
 PS C:\> Get-ChildItem *.js | Invoke-WebbrowserEvaluation -Edge
+
+-------------------------- EXAMPLE 7 --------------------------
+
 PS C:\> ls *.js | et -e
+
 ````
 <br/><hr/><hr/><hr/><hr/><br/>
 ### NAME
@@ -460,13 +572,20 @@ DownloadPDFs [-Query] <String> [<CommonParameters>]
 ### DESCRIPTION
     Performs a google query in the previously selected webbrowser tab, and
     download all found pdf's into current directory
-### PARAMETERS\r
+### PARAMETERS
 ````
 -Query <String>
     Parameter description
     Required?                    true
     Position?                    1
     Default value
+    Accept pipeline input?       false
+    Accept wildcard characters?  false
+ -Max <Int32>
+    The maximum number of results to obtain, defaults to 200
+    Required?                    false
+    Position?                    named
+    Default value                200
     Accept pipeline input?       false
     Accept wildcard characters?  false
 <CommonParameters>
@@ -498,7 +617,7 @@ Get-GoogleSearchResultUrls [-Query] <String> [<CommonParameters>]
 ### DESCRIPTION
     Performs a  google search in previously selected webbrowser tab and
     returns the links
-### PARAMETERS\r
+### PARAMETERS
 ````
 -Query <String>
     The google query to perform
@@ -529,7 +648,7 @@ PS C:\> Select-WebbrowserTab; $Urls = Get-GoogleSearchResultUrls "site:github.co
 ````PowerShell
 Get-ChromeRemoteDebuggingPort
 ````
-### PARAMETERS\r
+### PARAMETERS
 ````
 None
 ````
@@ -540,9 +659,51 @@ None
 ````PowerShell
 Get-ChromiumRemoteDebuggingPort
 ````
-### PARAMETERS\r
+### PARAMETERS
 ````
 None
+````
+<br/><hr/><hr/><hr/><hr/><br/>
+
+NAME
+    Set-WebbrowserTabLocation
+
+SYNOPSIS
+    Navigates current selected tab to specified url
+
+SYNTAX
+````PowerShell
+Set-WebbrowserTabLocation [-Url] <String> [<CommonParameters>]
+````
+DESCRIPTION
+    Navigates current selected tab to specified url
+
+PARAMETERS
+````
+-Url <String>
+    The Url the browsertab should navigate too
+
+    Required?                    true
+    Position?                    1
+    Default value
+    Accept pipeline input?       false
+    Accept wildcard characters?  false
+
+<CommonParameters>
+    This cmdlet supports the common parameters: Verbose, Debug,
+    ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+    OutBuffer, PipelineVariable, and OutVariable. For more information, see
+    about_CommonParameters
+    (https://go.microsoft.com/fwlink/?LinkID=113216).
+````
+
+NOTES
+````PowerShell
+    Requires the Windows 10+ Operating System
+
+    -------------------------- EXAMPLE 1 --------------------------
+
+    PS C:\> Set-WebbrowserTabLocation "https://github.com/microsoft"
 ````
 <br/><hr/><hr/><hr/><hr/><br/>
 ### NAME
@@ -555,7 +716,7 @@ Close-WebbrowserTab [<CommonParameters>]
 ````
 ### DESCRIPTION
     Closes the currently selected webbrowser tab
-### PARAMETERS\r
+### PARAMETERS
 ````
 <CommonParameters>
     This cmdlet supports the common parameters: Verbose, Debug,
@@ -580,7 +741,7 @@ PS C:\> st; ct;
 ````PowerShell
 Get-EdgeRemoteDebuggingPort
 ````
-### PARAMETERS\r
+### PARAMETERS
 ````
 None
 ````
@@ -598,13 +759,20 @@ Open-AllGoogleLinks [-Query] <String> [<CommonParameters>]
     Performs a google search in previously selected webbrowser tab.
     Opens 10 tabs each times, pauses until initial tab is revisited
     Press ctrl-c to stop, or close the initial tab
-### PARAMETERS\r
+### PARAMETERS
 ````
 -Query <String>
     The google query to perform
     Required?                    true
     Position?                    1
     Default value
+    Accept pipeline input?       false
+    Accept wildcard characters?  false
+-Max <Int32>
+    The maximum number of results to obtain, defaults to 200
+    Required?                    false
+    Position?                    named
+    Default value                200
     Accept pipeline input?       false
     Accept wildcard characters?  false
 <CommonParameters>
@@ -632,7 +800,7 @@ Close-WebbrowserTab [<CommonParameters>]
 ````
 ### DESCRIPTION
     Closes the currently selected webbrowser tab
-### PARAMETERS\r
+### PARAMETERS
 ````
 <CommonParameters>
     This cmdlet supports the common parameters: Verbose, Debug,
@@ -663,7 +831,7 @@ Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All]
 ### DESCRIPTION
     Closes one or more webbrowser instances in a selective manner, using
     commandline switches
-### PARAMETERS\r
+### PARAMETERS
 ````
 -Edge [<SwitchParameter>]
     Closes Microsoft Edge --> -e
@@ -739,7 +907,7 @@ Get-DefaultWebbrowser [<CommonParameters>]
 ### DESCRIPTION
     Returns an object describing the configured current webbrowser for the
     current-user.
-### PARAMETERS\r
+### PARAMETERS
 ````
 <CommonParameters>
     This cmdlet supports the common parameters: Verbose, Debug,
@@ -769,7 +937,7 @@ Get-Webbrowser [<CommonParameters>]
 ### DESCRIPTION
     Returns an collection of objects each describing a installed modern
     webbrowser
-### PARAMETERS\r
+### PARAMETERS
 ````
 <CommonParameters>
     This cmdlet supports the common parameters: Verbose, Debug,
@@ -800,7 +968,7 @@ Set-RemoteDebuggerPortInBrowserShortcuts [<CommonParameters>]
 ### DESCRIPTION
     Updates all browser shortcuts for current user, to enable the remote
     debugging port by default
-### PARAMETERS\r
+### PARAMETERS
 ````
 <CommonParameters>
     This cmdlet supports the common parameters: Verbose, Debug,
@@ -826,7 +994,7 @@ Show-WebsiteInAllBrowsers [-Url] <String> [<CommonParameters>]
 ````
 ### DESCRIPTION
     Will open an url into three different browsers + a incognito window, with a window mosaic layout
-### PARAMETERS\r
+### PARAMETERS
 ````
 -Url <String>
     Url to open
@@ -865,7 +1033,7 @@ Approve-FirefoxDebugging [<CommonParameters>]
 ### DESCRIPTION
     Changes firefox settings to enable remotedebugging and app-mode startups
     of firefox
-### PARAMETERS\r
+### PARAMETERS
 ````
 <CommonParameters>
     This cmdlet supports the common parameters: Verbose, Debug,

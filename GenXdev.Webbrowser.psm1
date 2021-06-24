@@ -188,11 +188,11 @@ Requires the Windows 10+ Operating System
 
 This cmdlet was mend to be used, interactively.
 It performs some strange tricks to position windows, including invoking alt-tab keystrokes.
-It's best not to touch the keyboard or mouse, while it is doing that, for the best experience.
+It's best not to touch the keyboard or mouse, while it is doing that.
 
-To disable any wait times due to this, you can disable it by;
-    setting: -Monitor -1
-    AND    : not using any of these switches: -X, -Y, -Left, -Right, -Top, -Bottom or -RestoreFocus
+For fast launches of multple urls:
+SET    : -Monitor -1
+AND    : DO NOT use any of these switches: -X, -Y, -Left, -Right, -Top, -Bottom or -RestoreFocus
 
 For browsers that are not installed on the system, no actions may be performed or errors occur - at all.
 #>
@@ -1182,6 +1182,9 @@ Force to use 'Microsoft Edge' webbrowser for selection
 .PARAMETER Chrome
 Force to use 'Google Chrome' webbrowser for selection
 
+.PARAMETER ByReference
+Select tab using reference obtained with Get-ChromiumSessionReference
+
 .EXAMPLE
 PS C:\> Select-WebbrowserTab
 PS C:\> Select-WebbrowserTab 3
@@ -1192,17 +1195,18 @@ PS C:\> st -ch 14
 Requires the Windows 10+ Operating System
 #>
 function Select-WebbrowserTab {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = "normal")]
     [Alias("st", "Select-BrowserTab")]
 
     param (
         ####################################################################################################
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false, ParameterSetName = "normal")]
         [ValidateRange(0, [int]::MaxValue)]
         [int] $id = -1,
         ####################################################################################################
         [Alias("e")]
         [parameter(
+            ParameterSetName = "normal",
             Mandatory = $false,
             HelpMessage = "Select in Microsoft Edge"
         )]
@@ -1210,50 +1214,72 @@ function Select-WebbrowserTab {
         ####################################################################################################
         [Alias("ch")]
         [parameter(
+            ParameterSetName = "normal",
             Mandatory = $false,
             HelpMessage = "Select in Google Chrome"
         )]
-        [switch] $Chrome
+        [switch] $Chrome,
+        ####################################################################################################
+        [Alias("r")]
+        [parameter(
+            ParameterSetName = "byreference",
+            Mandatory = $true,
+            Position = 0,
+            HelpMessage = "Select tab using reference obtained with Get-ChromiumSessionReference"
+        )]
+        [HashTable] $ByReference = $null
     )
 
-    if ($Global:Data -isnot [HashTable]) {
+    if ($null -ne $ByReference) {
 
-        $Global:Data = @{};
-    }
-
-    # init
-    if ($Edge -eq $true) {
-
-        $port = Get-EdgeRemoteDebuggingPort
-
-        if (!(Test-Connection -TcpPort $port 127.0.0.1 -TimeoutSeconds 1)) {
-
-            Open-Webbrowser -Edge -FullScreen
-
-            Start-Sleep 2
-        }
+        $Port = $ByReference.Port;
     }
     else {
-        if ($Chrome -eq $true) {
 
-            $port = Get-ChromeRemoteDebuggingPort
+        if ($Global:Data -isnot [HashTable]) {
+
+            $globalData = @{}
+            Set-Variable -Name "Data" -Value $globalData -Scope Global
+        }
+        else {
+
+            $globalData = $Global:Data;
+        }
+
+        # init
+        if ($Edge -eq $true) {
+
+            $port = Get-EdgeRemoteDebuggingPort
 
             if (!(Test-Connection -TcpPort $port 127.0.0.1 -TimeoutSeconds 1)) {
 
-                Open-Webbrowser -Chrome -FullScreen
+                Open-Webbrowser -Edge -FullScreen
 
                 Start-Sleep 2
             }
         }
         else {
+            if ($Chrome -eq $true) {
 
-            $port = Get-ChromiumRemoteDebuggingPort
+                $port = Get-ChromeRemoteDebuggingPort
 
-            if (!(Test-Connection -TcpPort $port 127.0.0.1 -TimeoutSeconds 1)) {
+                if (!(Test-Connection -TcpPort $port 127.0.0.1 -TimeoutSeconds 1)) {
 
-                Open-Webbrowser -Chromium -FullScreen
+                    Open-Webbrowser -Chrome -FullScreen
 
-                Start-Sleep 2
+                    Start-Sleep 2
+                }
+            }
+            else {
+
+                $port = Get-ChromiumRemoteDebuggingPort
+
+                if (!(Test-Connection -TcpPort $port 127.0.0.1 -TimeoutSeconds 1)) {
+
+                    Open-Webbrowser -Chromium -FullScreen
+
+                    Start-Sleep 2
+                }
             }
         }
     }
@@ -1299,8 +1325,7 @@ function Select-WebbrowserTab {
         }
 
         Set-Variable -Name CurrentChromiumDebugPort -Value $Port -Scope Global
-
-        if ($id -lt 0) {
+        if ($null -eq $ByReference -and $id -lt 0) {
 
             Write-Verbose "No ID parameter specified"
             try {
@@ -1334,51 +1359,152 @@ function Select-WebbrowserTab {
             Write-Verbose "Session set: $($Global:chromeSession)"
         }
         else {
-            "$($id)" | Write-Verbose
 
-            $s = $Global:chromeSessions;
+            if ($null -eq $ByReference) {
 
-            if ($id -ge $s.count) {
-                $s = $Global:chrome.GetAvailableSessions();
+                $s = $Global:chromeSessions;
+
+                "$($id)" | Write-Verbose
+
+                if ($id -ge $s.count) {
+
+                    $s = $Global:chrome.GetAvailableSessions();
+                    Set-Variable -Name chromeSessions -Value $s -Scope Global
+                    Write-Verbose "Sessions set, length= $($Global:chromeSessions.count)"
+
+                    showList
+
+                    throw "Session expired, select new session with cmdlet: Select-WebbrowserTab --> st"
+                }
+
+                $Global:chrome.SetActiveSession($s[$id].webSocketDebuggerUrl);
+                Set-Variable -Name chromeSession -Value $s[$id] -Scope Global
+
+                try {
+                    $s = $Global:chrome.GetAvailableSessions();
+                }
+                catch {
+                    throw "Session expired, select new session with cmdlet: Select-WebbrowserTab --> st"
+                }
                 Set-Variable -Name chromeSessions -Value $s -Scope Global
                 Write-Verbose "Sessions set, length= $($Global:chromeSessions.count)"
 
-                showList
+                $debugUri = $Global:chromeSession.webSocketDebuggerUrl;
+            }
+            else {
 
-                throw "Session expired, select new session with cmdlet: Select-WebbrowserTab --> st"
+                try {
+                    $s = $Global:chrome.GetAvailableSessions();
+                }
+                catch {
+                    throw "Session expired, select new session with cmdlet: Select-WebbrowserTab --> st"
+                }
+
+                $debugUri = $ByReference.debugUri;
             }
 
-            $Global:chrome.SetActiveSession($s[$id].webSocketDebuggerUrl);
-            Set-Variable -Name chromeSession -Value $s[$id] -Scope Global
-
-            $s = $Global:chrome.GetAvailableSessions();
-            Set-Variable -Name chromeSessions -Value $s -Scope Global
-            Write-Verbose "Sessions set, length= $($Global:chromeSessions.count)"
-
-            $wsb = $Global:chromeSession.webSocketDebuggerUrl;
             $found = $false;
 
             $s | ForEach-Object -Process {
-                if ($_.webSocketDebuggerUrl -eq $wsb) {
+                if ($_.webSocketDebuggerUrl -eq $debugUri) {
                     $found = $true;
+
+                    $Global:chrome.SetActiveSession($_.webSocketDebuggerUrl);
                     Set-Variable -Name chromeSession -Value $_ -Scope Global
                 }
             }
 
             if ($found -eq $false) {
-                showList
+
+                if ($null -eq $ByReference) {
+
+                    showList
+                }
 
                 throw "Session expired, select new session with cmdlet: Select-WebbrowserTab --> st"
             }
         }
 
-        showList
+        if ($null -eq $ByReference) {
+
+            showList
+        }
     }
     Finally {
 
         Pop-Location
     }
 }
+
+######################################################################################################################################################
+######################################################################################################################################################
+<#
+.SYNOPSIS
+Returns a reference that can be used with Select-WebbrowserTab -ByReference
+
+.DESCRIPTION
+Returns a reference that can be used with Select-WebbrowserTab -ByReference
+This can be usefull when you want to evaluate the webbrowser inside a Job.
+With this serializable reference, you can pass the webbrowser tab session reference on to the Job commandblock.
+#>
+function Get-ChromiumSessionReference {
+
+    param()
+
+    # initialize data hashtable
+    if ($Global:Data -isnot [HashTable]) {
+
+        $globalData = @{};
+        Set-Variable -Name "Data" -Value $globalData -Scope Global
+    }
+    else {
+
+        $globalData = $Global:Data;
+    }
+
+    # no session yet?
+    if ($Global:chromeSession -isnot [GenXdev.Webbrowser.RemoteSessionsResponse]) {
+
+        throw "Select session first with cmdlet: Select-WebbrowserTab -> st"
+    }
+    else {
+
+        Write-Verbose "Found existing session: $($Global.chromeSession | ConvertTo-Json -Depth 100)"
+    }
+
+    # get available tabs
+    $s = $Global:chrome.GetAvailableSessions();
+
+    # reference selected session
+    $debugUri = $Global:chromeSession.webSocketDebuggerUrl;
+
+    # find it in the most recent list
+    $found = $false;
+    $s | ForEach-Object -Process {
+
+        if ($_.webSocketDebuggerUrl -eq $debugUri) {
+
+            $found = $true;
+        }
+    }
+
+    # not found?
+    if ($found -eq $false) {
+
+        throw "Session expired, select new session with cmdlet: Select-WebbrowserTab -> st"
+    }
+    else {
+
+        Write-Verbose "Session still active"
+    }
+
+    @{
+        debugUri = $debugUri;
+        port     = $Global:chrome.Port;
+        data     = $globalData
+    }
+}
+
 ######################################################################################################################################################
 ######################################################################################################################################################
 <#
@@ -1387,31 +1513,135 @@ Runs one or more scripts inside a selected webbrowser tab.
 
 .DESCRIPTION
 Runs one or more scripts inside a selected webbrowser tab.
-You can access 'data' object from within javascript, to synchronize data between Powershell and the Webbrowser.
+You can access 'data' object from within javascript, to synchronize data between Powershell and the Webbrowser
 
-.PARAMETER scripts
-A string containing the javascript, or a file reference to a javascript file
+.Parameter Scripts
+A string containing javascript, a url or a file reference to a javascript file
 
-.PARAMETER inspect
-Will cause the developer tools of the webbrowser to break, before executing the scripts, allowing you to debug it.
+.Parameter Inspect
+Will cause the developer tools of the webbrowser to break, before executing the scripts, allowing you to debug it
+
+.Parameter AsJob
+Will execute the evaluation as a new background job.
 
 .EXAMPLE
-PS C:\> Invoke-WebbrowserEvaluation "document.title = 'hello world'"
-
 PS C:\>
 
-    # Synchronizing data
-    Select-WebbrowserTab;
-    $Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
-    [int] $number = Invoke-WebbrowserEvaluation "document.body.innerHTML = JSON.stringify(data.files); data.title = document.title; 123;";
-    Write-Host "
-        Document title : $($Global:Data.title)
-        return value   : $Number
+Invoke-WebbrowserEvaluation "document.title = 'hello world'"
+.EXAMPLE
+PS C:\>
+
+# Synchronizing data
+Select-WebbrowserTab;
+$Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
+[int] $number = Invoke-WebbrowserEvaluation "
+    document.body.innerHTML =
+        JSON.stringify(data.files); data.title = document.title; 123;
     ";
 
-PS C:\> Get-ChildItem *.js | Invoke-WebbrowserEvaluation -Edge
-PS C:\> ls *.js | et -e
+Write-Host "
+    Document title : $($Global:Data.title)
+    return value   : $Number
+";
+.EXAMPLE
+PS C:\>
 
+# Support for promises
+Select-WebbrowserTab;
+Invoke-WebbrowserEvaluation "
+    let myList = [];
+    return new Promise((resolve) => {
+        let i = 0;
+        let a = setInterval(() => {
+            myList.push(++i);
+            if (i == 10) {
+                clearInterval(a);
+                resolve(myList);
+            }
+        }, 1000);
+    });
+"
+.EXAMPLE
+PS C:\>
+
+# Support for promises and more
+
+# this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
+# beware, not all websites use indexedDb, it could return an empty set
+
+Select-WebbrowserTab;
+Set-WebbrowserTabLocation "https://www.youtube.com/"
+Start-Sleep 3
+$AllIndexedDbData = Invoke-WebbrowserEvaluation "
+
+    // enumerate all indexedDB databases
+    for (let db of await indexedDB.databases()) {
+
+        // request to open database
+        let openRequest = await indexedDB.open(db.name);
+
+        // wait for eventhandlers to be called
+        await new Promise((resolve,reject) => {
+            openRequest.onsuccess = resolve;
+            openRequest.onerror = reject
+        });
+
+        // obtain reference
+        let openedDb = openRequest.result;
+
+        // initialize result
+        let result = { DatabaseName: db.name, Version: db.version, Stores: [] }
+
+        // itterate object store names
+        for (let i = 0; i < openedDb.objectStoreNames.length; i++) {
+
+            // reference
+            let storeName = openedDb.objectStoreNames[i];
+
+            // start readonly transaction
+            let tr = openedDb.transaction(storeName);
+
+            // get objectstore handle
+            let store = tr.objectStore(storeName);
+
+            // request all data
+            let getRequest = store.getAll();
+
+            // await result
+            await new Promise((resolve,reject) => {
+                getRequest.onsuccess = resolve;
+                getRequest.onerror = reject;
+            });
+
+            // add result
+            result.Stores.push({ StoreName: storeName, Data: getRequest.result});
+        }
+
+        // stream this database contents to the PowerShell pipeline, and continue
+        yield result;
+    }
+";
+
+$AllIndexedDbData | Out-Host
+
+.EXAMPLE
+PS C:\>
+
+# Support for yielded pipeline results
+Select-WebbrowserTab;
+Invoke-WebbrowserEvaluation "
+
+    for (let i = 0; i < 10; i++) {
+
+        await (new Promise((resolve) => setTimeout(resolve, 1000)));
+
+        yield i;
+    }
+";
+.EXAMPLE
+PS C:\> Get-ChildItem *.js | Invoke-WebbrowserEvaluation -Edge
+.EXAMPLE
+PS C:\> ls *.js | et -e
 .NOTES
 Requires the Windows 10+ Operating System
 #>
@@ -1424,66 +1654,30 @@ function Invoke-WebbrowserEvaluation {
         [Parameter(
             Position = 0,
             Mandatory = $false,
+            HelpMessage = "A string containing javascript, a url or a file reference to a javascript file",
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true)
         ]
         [Alias('FullName')]
-        [object[]] $scripts,
+        [object[]] $Scripts,
         ####################################################################################################
         [Parameter(
             Mandatory = $false,
+            HelpMessage = "Will cause the developer tools of the webbrowser to break, before executing the scripts, allowing you to debug it",
             ValueFromPipeline = $false)
         ]
-        [switch] $inspect
+        [switch] $Inspect,
+        ####################################################################################################
+        [Parameter(
+            Mandatory = $false,
+            ValueFromPipeline = $false
+        )]
+        [switch] $AsJob
     )
 
     Begin {
 
-        # setup switches for info messages
-        $Switches = "";
-        $SwitchesShort = "";
-
-        # initialize data hashtable
-        if ($Global:Data -isnot [HashTable]) {
-
-            $Global:Data = @{};
-        }
-
-        # no session yet?
-        if ($Global:chromeSession -isnot [GenXdev.Webbrowser.RemoteSessionsResponse]) {
-
-            throw "Select session first with cmdlet: Select-WebbrowserTab $switches -> st $switchesShort"
-        }
-        else {
-
-            Write-Verbose "Found existing session: $($Global.chromeSession | ConvertTo-Json -Depth 100)"
-        }
-
-        # get available tabs
-        $s = $Global:chrome.GetAvailableSessions();
-
-        # reference selected session
-        $wsb = $Global:chromeSession.webSocketDebuggerUrl;
-
-        # find it in the most recent list
-        $found = $false;
-        $s | ForEach-Object -Process {
-
-            if ($_.webSocketDebuggerUrl -eq $wsb) {
-
-                $found = $true;
-            }
-        }
-
-        # not found?
-        if ($found -eq $false) {
-
-            throw "Session expired, select new session with cmdlet: Select-WebbrowserTab $switches -> st $switchesShort"
-        }
-        else {
-
-            Write-Verbose "Session still active"
-        }
+        $reference = Get-ChromiumSessionReference
     }
 
     Process {
@@ -1491,132 +1685,325 @@ function Invoke-WebbrowserEvaluation {
         Write-Verbose "Processing.."
 
         # enumerate provided scripts
-        foreach ($js in $scripts) {
+        foreach ($js in $Scripts) {
 
-            # is it a file reference?
-            if (($js -is [IO.FileInfo]) -or (($js -is [System.String]) -and [IO.File]::Exists($js))) {
+            $scriptBlock = {
 
-                # comming from Get-ChildItem command?
-                if ($js -is [IO.FileInfo]) {
+                param($js, $reference, $AsJob, $Inspect)
 
-                    # make it a string
-                    $js = $js.FullName;
-                }
+                try {
+                    Set-Variable -Name "Data" -Value $reference.data -Scope Global
 
-                # it's a string with a path, load the content
-                $js = [IO.File]::ReadAllText($js, [System.Text.Encoding]::UTF8)
-            }
-            else {
+                    Select-WebbrowserTab -ByReference $reference
 
-                # make it a string, if it isn't yet
-                if ($js -isnot [System.String]) {
+                    # is it a file reference?
+                    if (($js -is [IO.FileInfo]) -or (($js -is [System.String]) -and [IO.File]::Exists($js))) {
 
-                    $js = "$js";
-                }
-            }
+                        # comming from Get-ChildItem command?
+                        if ($js -is [IO.FileInfo]) {
 
-            # '-Inspect' parameter provided?
-            if ($inspect -eq $true) {
+                            # make it a string
+                            $js = $js.FullName;
+                        }
 
-                # invoke a debug break-point
-                $js = "debugger;`r`n$js"
-            }
+                        # it's a string with a path, load the content
+                        $js = [IO.File]::ReadAllText($js, [System.Text.Encoding]::UTF8)
+                    }
+                    else {
 
-            Write-Verbose "Processing: $($js | ConvertTo-Json -Compress -Depth 100)"
+                        # make it a string, if it isn't yet
+                        if ($js -isnot [System.String] -or [string]::IsNullOrWhiteSpace($js)) {
 
-            # convert data object to json, and then again to make it a json string
-            $json = ($Global:Data | ConvertTo-Json -Compress -Depth 100 | ConvertTo-Json -Compress -Depth 100);
+                            $js = "$js";
+                        }
 
-            # init result
-            $result = $null;
+                        if ([string]::IsNullOrWhiteSpace($js) -eq $false) {
 
-            Try {
+                            [Uri] $uri = $null;
+                            $isUri = (
 
-                $js = "
+                                [Uri]::TryCreate("$js", "absolute", [ref] $uri) -or (
+                                    $js.ToLowerInvariant().StartsWith("www.") -and
+                                    [Uri]::TryCreate("http://$js", "absolute", [ref] $uri)
+                                )
+                            ) -and $uri.IsWellFormedOriginalString() -and $uri.Scheme -like "http*";
+
+
+                            if ($IsUri) {
+
+                                $httpResult = Invoke-WebRequest -Uri $Js
+
+                                if ($httpResult.StatusCode -eq 200) {
+
+                                    $type = "text/javascript";
+
+                                    if ($httpResult.Content -Match "[`r`n\s`t;,]import ") {
+
+                                        $type = "module";
+                                    }
+                                    $ScriptHash = [GenXdev.Helpers.Hash]::FormatBytesAsHexString(
+                                        [GenXdev.Helpers.Hash]::GetSha256BytesOfString($httpResult.Content));
+                                    $js = "
+                                    let scripts = document.getElementsByTagName('script');
+                                    for (let i = 0; i < scripts.length; i++) {
+
+                                        let script = scripts[i];
+                                        if (!!script && typeof script.getAttribute === 'function' && script.getAttribute('data-hash') === '$scriptHash') {
+                                            return;
+                                        }
+                                    }
+                                    let scriptTag = document.createElement('script');
+                                    let scriptLoaded = false;
+                                    let loaded = () => {  };
+
+                                    scriptTag.innerHTML = $(($httpResult.Content | ConvertTo-Json));
+                                    scriptTag.setAttribute('type', '$type');
+                                    scriptTag.setAttribute('data-hash', '$ScriptHash');
+                                    let head = document.getElementsByTagName('head')[0];
+                                    if (!head) {
+                                        head = document.createElement('head');
+                                        document.appendChild(head);
+                                    }
+                                    head.appendChild(scriptTag);
+                                ";
+                                }
+                                else {
+
+                                    throw "Downloading script '$js' resulted in http statuscode $($HttpResult.StatusCode) - $($HttpResult.StatusDescription)"
+                                }
+                            }
+                        }
+                    }
+
+                    # '-Inspect' parameter provided?
+                    if ($Inspect -eq $true) {
+
+                        # invoke a debug break-point
+                        $js = "debugger;`r`n$js"
+                    }
+
+                    Write-Verbose "Processing: `r`n$($js.Trim())"
+
+                    # convert data object to json, and then again to make it a json string
+                    $json = ($reference.data | ConvertTo-Json -Compress -Depth 100 | ConvertTo-Json -Compress -Depth 100);
+
+                    # init result
+                    $result = $null;
+                    $ScriptHash = [GenXdev.Helpers.Hash]::FormatBytesAsHexString(
+                        [GenXdev.Helpers.Hash]::GetSha256BytesOfString($js));
+
+                    $js = "
             (function(data) {
 
-            var returnValue;
-            var success = true;
+                let resultData = window['iwae$ScriptHash'] || {
 
-            try {
-                returnValue = eval($($js | ConvertTo-Json -Compress -Depth 100));
-            }
-            catch(e) {
-                success = false;
-                returnValue = e+'';
-            }
-            var result = {
-                data: data,
-                success: success,
-                returnValue: returnValue
-            };
+                    started: false,
+                    done: false,
+                    success: true,
+                    data: data,
+                    returnValues: []
+                }
 
-            return result;
+                window['iwae$ScriptHash'] = resultData;
+
+                function catcher(e) {
+
+                    let resultData = window['iwae$ScriptHash'];
+                    resultData.success = false;
+                    resultData.done = true;
+                    try {
+                        resultData.returnValue = JSON.parse(JSON.stringify(e));
+                    }
+                    catch (e2) {
+
+                        resultData.returnValue = e+`"`";
+                    }
+                }
+
+                if (!resultData.started) {
+
+                    resultData.started = true;
+
+                    try {
+
+                        eval($("
+
+                        (async () => {
+                            let result;
+                            try {
+
+                                result = (async function*() { $js })();
+
+                                let resultCount = 0;
+                                let resultValue;
+                                do {
+                                    resultValue = await result.next();
+
+                                    if (resultValue.value instanceof Promise) {
+
+                                        resultValue.value = await resultValue.value;
+                                    }
+
+                                    let resultData = window['iwae$ScriptHash']
+
+                                    if (resultCount++ === 0 && resultValue.done) {
+
+                                        resultData.returnValue = resultValue.value;
+                                    }
+                                    else {
+                                        if (!resultValue.done) {
+
+                                            resultData.returnValues.push(resultValue.value);
+                                        }
+                                    }
+                                } while (!resultValue.done)
+
+                                let resultData = window['iwae$ScriptHash']
+                                resultData.done = true;
+                                resultData.success = true;
+                            }
+                            catch (e) {
+
+                                catcher(e);
+                            }
+                        })()
+
+                        " | ConvertTo-Json -Compress -Depth 100));
+                    }
+                    catch(e) {
+
+                        catcher(e);
+                    }
+                }
+
+                if (resultData.done) {
+
+                    delete window['iwae$ScriptHash'];
+                }
+
+                if (!$($AsJob.ToString().ToLowerInvariant())) {
+
+                    let clone = JSON.parse(JSON.stringify(resultData));
+                    resultData.returnValues = [];
+
+                    return clone;
+                }
+                return resultData;
 
             })(JSON.parse($json));
         ";
+                    try {
 
-                Write-Verbose "Starting eval"
 
-                # de-serialize outputed result object
-                $result = ($Global:chrome.eval($js) | ConvertFrom-Json).result;
+                        [int] $pollCount = 0;
+                        do {
+                            # de-serialize outputed result object
+                            $result = ($Global:chrome.eval($js) | ConvertFrom-Json).result;
+                            Write-Verbose "Got results: $($result | ConvertTo-Json -Compress -Depth 100)"
 
-                Write-Verbose "Got results: $($result | ConvertTo-Json -Compress -Depth 100)"
+                            # all good?
+                            if ($result -is [Object]) {
 
-                # all good?
-                if ($result -is [Object]) {
+                                # get actual returned value
+                                $result = $result.result;
 
-                    # get actual returned value
-                    $result = $result.result.value;
+                                # present?
+                                if ($result -is [Object]) {
 
-                    # present?
-                    if ($result -is [Object]) {
+                                    # there was an exception thrown?
+                                    if ($result.subtype -eq "error") {
 
-                        Write-Verbose "`$result -is [Object]"
+                                        # re-throw
+                                        throw $result;
+                                    }
 
-                        # there was an exception thrown?
-                        if ($result.exceptionDetails) {
+                                    $result = $result.value;
 
-                            # re-throw
-                            throw $result.exceptionDetails;
-                        }
+                                    # got a data object?
+                                    if ($result.data -is [PSObject]) {
 
-                        # got a data object?
-                        if ($result.data -is [PSObject]) {
+                                        # initialize
+                                        $reference.data = @{}
 
-                            # initialize
-                            $Global:Data = @{}
+                                        # enumerate properties
+                                        $result.data |
+                                        Get-Member -ErrorAction SilentlyContinue |
+                                        Where-Object -Property MemberType -Like *Property* |
+                                        ForEach-Object -ErrorAction SilentlyContinue {
 
-                            # enumerate properties
-                            $result.data |
-                            Get-Member -ErrorAction SilentlyContinue |
-                            Where-Object -Property MemberType -Like *Property* |
-                            ForEach-Object -ErrorAction SilentlyContinue {
+                                            # set in a case-sensitive manner
+                                            $reference.data."$($PSItem.Name)" = $result.data."$($PSItem.Name)"
+                                        }
 
-                                # set in a case-sensitive manner
-                                $Global:Data."$($PSItem.Name)" = $result.data."$($PSItem.Name)"
+                                        Set-Variable -Name "Data" -Value $reference.data -Scope Global
+                                    }
+                                }
+                            }
+
+                            if ($pollCount -gt 0) {
+
+                                Start-Sleep 1
+                            }
+
+                            $pollCount++;
+
+                            if ($AsJob -ne $true) {
+
+                                $result.returnValues | Write-Output
+                                $result.returnValues = @();
+                            }
+
+                        } while (!$result.done);
+
+                        if ($AsJob -ne $true) {
+
+                            # result indicate an exception thrown?
+                            if ($result.success -eq $false) {
+
+                                if ($result.returnValue -is [string]) {
+
+                                    # re-throw
+                                    throw $result.returnValue;
+                                }
+
+                                throw "An unknown script parsing error occured";
                             }
                         }
-
-                        # result indicate an exception thrown?
-                        if ($result.success -eq $false) {
-
-                            # re-throw
-                            throw $result.returnValue;
-                        }
-
-                        # return value
-                        $result = $result.returnValue;
                     }
+                    Catch {
+                        Write-Error $_
+
+                        $result = $null
+                    }
+
+                    if ($AsJob -eq $true) {
+
+                        Write-Output $result;
+                    }
+                    else {
+
+                        Write-Output $result.returnValue;
+                    }
+
                 }
-            }
-            Catch {
-                Write-Error $_
+                Catch {
 
-                $result = $null
+                    throw "
+                        $($_.Exception) $($_.InvocationInfo.PositionMessage)
+                        $($_.InvocationInfo.Line)
+                    "
+                }
+
             }
 
-            Write-Output $result;
+            if ($AsJob -eq $true) {
+
+                Start-Job -InitializationScript { Import-Module GenXdev.Webbrowser } -ScriptBlock $scriptBlock -ArgumentList @($js, $reference, $true, ($Inspect -eq $true))
+            }
+            else {
+
+                Invoke-Command -ScriptBlock $scriptBlock -ArgumentList @($js, $reference, $false, ($Inspect -eq $true));
+            }
         }
     }
 
@@ -1650,6 +2037,45 @@ function Close-WebbrowserTab {
     )
 
     Invoke-WebbrowserEvaluation "window.close()"
+}##############################################################################################################
+##############################################################################################################
+<#
+.SYNOPSIS
+Navigates current selected tab to specified url
+
+.DESCRIPTION
+Navigates current selected tab to specified url
+
+.PARAMETER Url
+The Url the browsertab should navigate too
+
+.EXAMPLE
+PS C:\> Set-WebbrowserTabLocation "https://github.com/microsoft"
+
+.NOTES
+Requires the Windows 10+ Operating System
+#>
+function Set-WebbrowserTabLocation {
+    [CmdletBinding()]
+    [Alias("lt", "Nav")]
+
+    param (
+        [parameter(
+            Mandatory = $true,
+            Position = 0,
+            HelpMessage = "The Url the browsertab should navigate too"
+        )]
+        [string] $Url
+    )
+
+    try {
+        $Url = [Uri]::new($Url).ToString();
+    }
+    catch {
+        throw "Url '$Url' is not in a proper format"
+    }
+
+    Invoke-WebbrowserEvaluation "let old = document.location;document.location = '$Url'; 'Navigating from '+old+' --> \'$Url\''"
 }
 
 ##############################################################################################################
@@ -1665,6 +2091,9 @@ Performs a google search in previously selected webbrowser tab and returns the l
 .PARAMETER Query
 The google query to perform
 
+.PARAMETER Max
+The maximum number of results to obtain, defaults to 200
+
 .EXAMPLE
 PS C:\> Select-WebbrowserTab; $Urls = Get-GoogleSearchResultUrls "site:github.com Powershell module"; $Urls
 
@@ -1674,7 +2103,7 @@ Requires the Windows 10+ Operating System
 function Get-GoogleSearchResultUrls {
 
     [CmdletBinding()]
-    [Alias("qlinks")]
+    [Alias("qlinksget")]
 
     param(
         [parameter(
@@ -1685,12 +2114,13 @@ function Get-GoogleSearchResultUrls {
         [string] $Query,
         ###################################################################
         [parameter(
-            Mandatory = $false
+            Mandatory = $false,
+            HelpMessage = "The maximum number of results to obtain, defaults to 200"
         )]
         [int] $Max = 200
     )
 
-    $Global:data = @{
+    $Global:Data = @{
 
         urls  = @();
         query = $Query
@@ -1704,7 +2134,7 @@ function Get-GoogleSearchResultUrls {
     do {
         Start-Sleep 5 | Out-Null
 
-        Invoke-WebbrowserEvaluation -scripts @("$PSScriptRoot\Get-GoogleSearchResultUrls.js") | Out-Null
+        Invoke-WebbrowserEvaluation -Scripts @("$PSScriptRoot\Get-GoogleSearchResultUrls.js") | Out-Null
 
         $Global:data.urls | ForEach-Object -ErrorAction SilentlyContinue {
 
@@ -1753,23 +2183,31 @@ function Open-AllGoogleLinks {
         [string] $Query
     )
 
-    $Global:data = @{
+    Start-ThreadJob -InitializationScript { Import-Module GenXdev.Webbrowser; } -ScriptBlock {
 
-        urls  = @();
-        query = $Query
-    }
+        param ($Scripts, $Query, $Reference)
 
-    $Query = "$([Uri]::EscapeUriString($Query))"
-    $Url = "https://www.google.com/search?q=$Query"
+        $Global:data = @{
 
-    Invoke-WebbrowserEvaluation "document.location.href='$Url'" | Out-Null
+            urls  = @();
+            query = $Query
+        }
 
-    do {
-        Start-Sleep 5 | Out-Null
+        $Query = "$([Uri]::EscapeUriString($Query))"
+        $Url = "https://www.google.com/search?q=$Query"
 
-        Invoke-WebbrowserEvaluation -scripts @("$PSScriptRoot\OpenAllGoogleLinks.js") | Out-Null
-    }
-    while ($Global:data.more)
+        Select-WebbrowserTab -ByReference $Reference
+
+        Invoke-WebbrowserEvaluation "document.location.href='$Url'" | Out-Null
+
+        do {
+            Start-Sleep 1 | Out-Null
+
+            Invoke-WebbrowserEvaluation -Scripts $Scripts | Out-Null
+        }
+        while ($Global:data.more)
+
+    } -ArgumentList(@("$PSScriptRoot\OpenAllGoogleLinks.js"), $Query, (Get-ChromiumSessionReference))
 }
 
 ##############################################################################################################
@@ -1783,6 +2221,9 @@ Performs a google query in the previously selected webbrowser tab, and download 
 
 .PARAMETER Query
 Parameter description
+
+.PARAMETER Max
+The maximum number of results to obtain, defaults to 200
 
 .EXAMPLE
 PS D:\Downloads> mkdir pdfs; cd pdfs; Select-WebbrowserTab; DownloadPDFS "scientific paper co2"
@@ -1803,7 +2244,8 @@ function DownloadPDFs {
         [string] $Query,
         ###################################################################
         [parameter(
-            Mandatory = $false
+            Mandatory = $false,
+            HelpMessage = "The maximum number of results to obtain, defaults to 200"
         )]
         [int] $Max = 200
     )
