@@ -1200,7 +1200,7 @@ function Select-WebbrowserTab {
 
     param (
         ####################################################################################################
-        [parameter(Mandatory = $false, ParameterSetName = "normal")]
+        [parameter(Mandatory = $false, ParameterSetName = "normal", Position = 0)]
         [ValidateRange(0, [int]::MaxValue)]
         [int] $id = -1,
         ####################################################################################################
@@ -1224,7 +1224,6 @@ function Select-WebbrowserTab {
         [parameter(
             ParameterSetName = "byreference",
             Mandatory = $true,
-            Position = 0,
             HelpMessage = "Select tab using reference obtained with Get-ChromiumSessionReference"
         )]
         [HashTable] $ByReference = $null
@@ -1292,8 +1291,6 @@ function Select-WebbrowserTab {
 
     try {
         function showList() {
-            "+ Use 'Select-WebbrowserTab -> st, Invoke-WebbrowserEvaluation -> et' cmdLet to inspect webbrowser tab session, 'Select-WebbrowserTab -> st' cmdLet to select a new session`r`n`r`n`$Global:Data synchronizes with javascript 'data' object`r`n" | Out-Host
-
             $i = 0;
             $Global:chromeSessions | ForEach-Object -Process {
 
@@ -1898,6 +1895,7 @@ function Invoke-WebbrowserEvaluation {
                         [int] $pollCount = 0;
                         do {
                             # de-serialize outputed result object
+                            $reference = Get-ChromiumSessionReference
                             $result = ($Global:chrome.eval($js) | ConvertFrom-Json).result;
                             Write-Verbose "Got results: $($result | ConvertTo-Json -Compress -Depth 100)"
 
@@ -1942,7 +1940,7 @@ function Invoke-WebbrowserEvaluation {
 
                             if ($pollCount -gt 0) {
 
-                                Start-Sleep 1
+                                Start-Sleep 1 -Verbose
                             }
 
                             $pollCount++;
@@ -2035,8 +2033,20 @@ function Close-WebbrowserTab {
 
     param (
     )
+    try {
+        Get-ChromiumSessionReference | Out-Null
+    }
+    catch {
+        Select-WebbrowserTab | Out-Null
+    }
 
-    Invoke-WebbrowserEvaluation "window.close()"
+    "Closing '$($Global:chromeSession.title)' - $($Global:chromeSession.url)"
+
+    Invoke-WebbrowserEvaluation "window.close()" -ErrorAction SilentlyContinue | Out-Null
+
+    "`r`nAuto selecting next tab:"
+
+    Select-WebbrowserTab
 }##############################################################################################################
 ##############################################################################################################
 <#
