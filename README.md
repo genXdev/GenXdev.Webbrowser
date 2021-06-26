@@ -16,7 +16,7 @@
 ### FEATURES
 
     * ✅ evaluating javascript-string, javascript-files in opened webbrowser-tab
-    * ✅ adding script tags, for normal javascript or modules by urls to opened webbrowser-tabs
+    * ✅ adding html script tags, by urll, to opened webbrowser-tabs, for normal javascript files or modules
     * ✅ evaluating scripts, with support for async patterns, like promises
     * ✅ evaluating asynchronous scripts, with support for yielded PowerShell pipeline returns
 
@@ -37,7 +37,8 @@ PS C:\>
     $Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
     [int] $number = Invoke-WebbrowserEvaluation "
         document.body.innerHTML =
-            JSON.stringify(data.files); data.title = document.title; 123;
+            JSON.stringify(data.files); data.title = document.title;
+            return 123;
         ";
 
     Write-Host "
@@ -605,7 +606,8 @@ PS C:\>
     $Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
     [int] $number = Invoke-WebbrowserEvaluation "
         document.body.innerHTML =
-            JSON.stringify(data.files); data.title = document.title; 123;
+            JSON.stringify(data.files); data.title = document.title;
+            return 123;
         ";
 
     Write-Host "

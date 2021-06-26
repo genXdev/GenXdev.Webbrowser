@@ -1471,7 +1471,7 @@ function Get-ChromiumSessionReference {
 
     param()
 
-    # initialize data hashtable
+    # initialize data hashtable
     if ($Global:Data -isnot [HashTable]) {
 
         $globalData = @{};
@@ -1482,7 +1482,7 @@ function Get-ChromiumSessionReference {
         $globalData = $Global:Data;
     }
 
-    # no session yet?
+    # no session yet?
     if ($Global:chromeSession -isnot [GenXdev.Webbrowser.RemoteSessionsResponse]) {
 
         throw "Select session first with cmdlet: Select-WebbrowserTab -> st"
@@ -1492,13 +1492,13 @@ function Get-ChromiumSessionReference {
         Write-Verbose "Found existing session: $($Global.chromeSession | ConvertTo-Json -Depth 100)"
     }
 
-    # get available tabs
+    # get available tabs
     $s = $Global:chrome.GetAvailableSessions();
 
-    # reference selected session
+    # reference selected session
     $debugUri = $Global:chromeSession.webSocketDebuggerUrl;
 
-    # find it in the most recent list
+    # find it in the most recent list
     $found = $false;
     $s | ForEach-Object -Process {
 
@@ -1508,7 +1508,7 @@ function Get-ChromiumSessionReference {
         }
     }
 
-    # not found?
+    # not found?
     if ($found -eq $false) {
 
         throw "Session expired, select new session with cmdlet: Select-WebbrowserTab -> st"
@@ -1551,12 +1551,13 @@ Invoke-WebbrowserEvaluation "document.title = 'hello world'"
 .EXAMPLE
 PS C:\>
 
-# Synchronizing data
+# Synchronizing data
 Select-WebbrowserTab;
 $Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
 [int] $number = Invoke-WebbrowserEvaluation "
     document.body.innerHTML =
-        JSON.stringify(data.files); data.title = document.title; 123;
+        JSON.stringify(data.files); data.title = document.title;
+        return 123;
     ";
 
 Write-Host "
@@ -1566,7 +1567,7 @@ Write-Host "
 .EXAMPLE
 PS C:\>
 
-# Support for promises
+# Support for promises
 Select-WebbrowserTab;
 Invoke-WebbrowserEvaluation "
     let myList = [];
@@ -1584,9 +1585,9 @@ Invoke-WebbrowserEvaluation "
 .EXAMPLE
 PS C:\>
 
-# Support for promises and more
+# Support for promises and more
 
-# this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
+# this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
 # beware, not all websites use indexedDb, it could return an empty set
 
 Select-WebbrowserTab;
