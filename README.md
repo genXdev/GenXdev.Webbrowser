@@ -1,25 +1,179 @@
 ﻿<hr/>
 
-![](powershell.jpg)
+<img src="powershell.jpg" alt="drawing" width="50%"/>
 
 <hr/>
 
-## NAME
+### NAME
 
     GenXdev.Webbrowser
 
-## SYNOPSIS
+### SYNOPSIS
+    A Windows PowerShell module that allows you to run scripts against your casual desktop webbrowser-tab
 
-    Cmdlets for interacting with chromium webbrowsers (chrome, edge) using their debugging-ports.
+[![GenXdev.Webbrowser](https://img.shields.io/powershellgallery/v/GenXdev.Webbrowser.svg?style=flat-square&label=GenXdev.Webbrowser)](https://www.powershellgallery.com/packages/GenXdev.Webbrowser/) [![License](https://img.shields.io/github/license/renevaessen/GenXdev.Webbrowser?style=flat-square)](./LICENSE)
 
-    Also offers cmdlets for starting, stopping and positioning webbrowser windows
-    over different monitors.
+### FEATURES
 
-## TYPE
-    PowerShell Module
+    * ✅ evaluating javascript-string, javascript-files in opened webbrowser-tab
+    * ✅ adding script tags, for normal javascript or modules by urls to opened webbrowser-tabs
+    * ✅ evaluating scripts, with support for async patterns, like promises
+    * ✅ evaluating asynchronous scripts, with support for yielded PowerShell pipeline returns
 
-## CmdLets and aliases
-````Powershell
+    * ✅ launching of default browser, Microsoft Edge, Google Chrome or Firefox
+    * ✅ launching of webbrowser with full control of window positioning
+    * ✅ launching of webbrowser in ApplicationMode, Incognito/In-Private
+    * ✅ repositioning of already opened webbrowser
+
+### EXAMPLE
+````PowerShell
+-------------------------- EXAMPLE 1 --------------------------
+PS C:\> Invoke-WebbrowserEvaluation "document.title = 'hello world'"
+
+-------------------------- EXAMPLE 2 --------------------------
+PS C:\>
+    # Synchronizing data
+    Select-WebbrowserTab;
+    $Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
+    [int] $number = Invoke-WebbrowserEvaluation "
+        document.body.innerHTML =
+            JSON.stringify(data.files); data.title = document.title; 123;
+        ";
+
+    Write-Host "
+        Document title : $($Global:Data.title)
+        return value   : $Number
+    ";
+
+-------------------------- EXAMPLE 3 --------------------------
+PS C:\>
+    # Support for promises
+    Select-WebbrowserTab;
+    Invoke-WebbrowserEvaluation "
+        let myList = [];
+        return new Promise((resolve) => {
+            let i = 0;
+            let a = setInterval(() => {
+                myList.push(++i);
+                if (i == 10) {
+                    clearInterval(a);
+                    resolve(myList);
+                }
+            }, 1000);
+        });
+    "
+-------------------------- EXAMPLE 4 --------------------------
+PS C:\>
+
+# Support for promises and more
+
+# this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
+# beware, not all websites use indexedDb, it could return an empty set
+
+Select-WebbrowserTab;
+Set-WebbrowserTabLocation "https://www.youtube.com/"
+Start-Sleep 3
+$AllIndexedDbData = Invoke-WebbrowserEvaluation "
+    // enumerate all indexedDB databases
+    for (let db of await indexedDB.databases()) {
+
+        // request to open database
+        let openRequest = await indexedDB.open(db.name);
+
+        // wait for eventhandlers to be called
+        await new Promise((resolve,reject) => {
+            openRequest.onsuccess = resolve;
+            openRequest.onerror = reject
+        });
+
+        // obtain reference
+        let openedDb = openRequest.result;
+
+        // initialize result
+        let result = { DatabaseName: db.name, Version: db.version, Stores: [] }
+
+        // itterate object store names
+        for (let i = 0; i < openedDb.objectStoreNames.length; i++) {
+
+            // reference
+            let storeName = openedDb.objectStoreNames[i];
+
+            // start readonly transaction
+            let tr = openedDb.transaction(storeName);
+
+            // get objectstore handle
+            let store = tr.objectStore(storeName);
+
+            // request all data
+            let getRequest = store.getAll();
+
+            // await result
+            await new Promise((resolve,reject) => {
+                getRequest.onsuccess = resolve;
+                getRequest.onerror = reject;
+            });
+
+            // add result
+            result.Stores.push({ StoreName: storeName, Data: getRequest.result});
+        }
+
+        // stream this database contents to the PowerShell pipeline, and continue
+        yield result;
+    }
+";
+
+$AllIndexedDbData | Out-Host
+
+-------------------------- EXAMPLE 5 --------------------------
+
+PS C:\>
+    # Support for yielded pipeline results
+    Select-WebbrowserTab;
+    Invoke-WebbrowserEvaluation "
+
+        for (let i = 0; i < 10; i++) {
+
+            await (new Promise((resolve) => setTimeout(resolve, 1000)));
+
+            yield i;
+        }
+    ";
+
+-------------------------- EXAMPLE 6 --------------------------
+
+PS C:\> Get-ChildItem *.js | Invoke-WebbrowserEvaluation -Edge
+
+-------------------------- EXAMPLE 7 --------------------------
+
+PS C:\> ls *.js | et -e
+# Support for yielded pipeline results
+    Select-WebbrowserTab;
+    Invoke-WebbrowserEvaluation "
+
+        for (let i = 0; i < 10; i++) {
+
+            await (new Promise((resolve) => setTimeout(resolve, 1000)));
+
+            yield i;
+        }
+    ";
+````
+### DEPENDENCIES
+[![WinOS - Windows-10](https://img.shields.io/badge/WinOS-Windows--10--10.0.19041--SP0-brightgreen)](https://www.microsoft.com/en-us/windows/get-windows-10)
+[![GenXdev.Helpers](https://img.shields.io/powershellgallery/v/GenXdev.Helpers.svg?style=flat-square&label=GenXdev.Helpers)](https://www.powershellgallery.com/packages/GenXdev.Helpers/) [![GenXdev.Windows](https://img.shields.io/powershellgallery/v/GenXdev.Windows.svg?style=flat-square&label=GenXdev.Windows)](https://www.powershellgallery.com/packages/GenXdev.Windows/)
+
+### INSTALLATION
+````PowerShell
+Install-Module "GenXdev.Webbrowser" -Force
+Import-Module "GenXdev.Webbrowser"
+````
+### UPDATE
+````PowerShell
+Update-Module
+````
+<br/><hr/><hr/><hr/><hr/><br/>
+## SYNTAX
+````PowerShell
     Open-Webbrowser -> wb
 
         [[-Url] <String[]>]
@@ -27,70 +181,59 @@
         ( [-ApplicationMode] | [-Private] | [-NewWindow] )
         [-NoBrowserExtensions] [-RestoreFocus]
         [-Monitor <Int32>] [-FullScreen]
-        [-Left] [-Top] [-Right] [-Bottom]
-        [<CommonParameters>]
+        [-Left] [-Top] [-Right] [-Bottom] [-Centered]
+        [-ReturnProcess] [<CommonParameters>]
 ````
-````Powershell
+````PowerShell
     Select-WebbrowserTab -> st
 
         [[-id] <Int32>] [-Edge] [-Chrome] [<CommonParameters>]
 ````
-````Powershell
+````PowerShell
     Invoke-WebbrowserEvaluation -> Eval, et
 
         [[-Scripts] <Object[]>] [-Inspect] [-Edge] [-Chrome] [<CommonParameters>]
 ````
-````Powershell
+````PowerShell
     Get-GoogleSearchResultUrls -Query <String> [[-Max] <int>] [<CommonParameters>]
 ````
-````Powershell
+````PowerShell
     Open-AllGoogleLinks -> qlinks
         [-Query] <String> [<CommonParameters>]
 ````
-````Powershell
+````PowerShell
     DownloadPDFs [[-Max] <int>] [<CommonParameters>]
 ````
-````Powershell
+````PowerShell
     Close-WebbrowserTab -> CloseTab, ct
         [-Edge] [-Chrome] [<CommonParameters>]
 ````
-````Powershell
+````PowerShell
     Close-Webbrowser -> wbc
         [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-IncludeBackgroundProcesses]
         [<CommonParameters>]
 ````
-````Powershell
+````PowerShell
     Get-Webbrowser
 ````
-````Powershell
+````PowerShell
     Get-DefaultWebbrowser
 ````
-````Powershell
+````PowerShell
     Show-WebsiteInAllBrowsers [-Url] <String> [<CommonParameters>]
 ````
-````Powershell
+````PowerShell
     Get-ChromeRemoteDebuggingPort
 ````
-````Powershell
+````PowerShell
     Get-ChromiumRemoteDebuggingPort
 ````
-````Powershell
+````PowerShell
     Get-EdgeRemoteDebuggingPort
 ````
-````Powershell
+````PowerShell
     Set-RemoteDebuggerPortInBrowserShortcuts
 ````
-## DEPENDENCIES
-    GenXdev.Helpers, GenXdev.Windows
-
-## INSTALLATION
-````Powershell
-
-    Install-Module "GenXdev.Webbrowser" -Force
-    Import-Module "GenXdev.Webbrowser"
-
-````
-
 <br/><hr/><hr/><hr/><hr/><br/>
 # Cmdlets
 ### NAME
@@ -100,9 +243,9 @@
 ### SYNTAX
 ````PowerShell
 Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome]
-                [-Chromium] [-Firefox] [-All] [-Monitor <Int32>] [-FullScreen] [-Left]
-                [-Right] [-Top] [-Bottom] [-ApplicationMode] [-NoBrowserExtensions]
-                [-RestoreFocus] [-NewWindow] [<CommonParameters>]
+                [-Chromium] [-Firefox] [-All] [-Monitor <Int32>] [-FullScreen]
+                [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions]
+                [-RestoreFocus] [-NewWindow [-ReturnProcess] [<CommonParameters>]
 ````
 ### DESCRIPTION
     Opens one or more webbrowsers in a configurable manner, using commandline
@@ -229,6 +372,13 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome]
     Default value                False
     Accept pipeline input?       false
     Accept wildcard characters?  false
+-Centered [<SwitchParameter>]
+    Place browser window in the center of the screen
+    Required?                    false
+    Position?                    named
+    Default value                False
+    Accept pipeline input?       false
+    Accept wildcard characters?  false
 -ApplicationMode [<SwitchParameter>]
     Hide the browser controls --> -a, -app, -appmode
     Required?                    false
@@ -244,7 +394,7 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome]
     Accept pipeline input?       false
     Accept wildcard characters?  false
 -RestoreFocus [<SwitchParameter>]
-    Restore Powershell window focus --> -bg
+    Restore PowerShell window focus --> -bg
     Required?                    false
     Position?                    named
     Default value                False
@@ -257,6 +407,13 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome]
     Default value                False
     Accept pipeline input?       false
     Accept wildcard characters?  false
+-ReturnProcess [<SwitchParameter>]
+    Required?                    false
+    Position?                    named
+    Default value                False
+    Accept pipeline input?       false
+    Accept wildcard characters?  false
+
 <CommonParameters>
     This cmdlet supports the common parameters: Verbose, Debug,
     ErrorAction, ErrorVariable, WarningAction, WarningVariable,
@@ -410,7 +567,7 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [<Common
 ### DESCRIPTION
     Runs one or more scripts inside a selected webbrowser tab.
     You can access 'data' object from within javascript, to synchronize data
-    between Powershell and the Webbrowser.
+    between PowerShell and the Webbrowser.
 ### PARAMETERS
 ````
 -Scripts <Object[]>
@@ -639,7 +796,7 @@ Requires the Windows 10+ Operating System
 
 
 -------------------------- EXAMPLE 1 --------------------------
-PS C:\> Select-WebbrowserTab; $Urls = Get-GoogleSearchResultUrls "site:github.com Powershell module"; $Urls
+PS C:\> Select-WebbrowserTab; $Urls = Get-GoogleSearchResultUrls "site:github.com PowerShell module"; $Urls
 ````
 <br/><hr/><hr/><hr/><hr/><br/>
 ### NAME
@@ -787,7 +944,7 @@ Open-AllGoogleLinks [-Query] <String> [<CommonParameters>]
 Requires the Windows 10+ Operating System
 
 -------------------------- EXAMPLE 1 --------------------------
-PS C:\> Select-WebbrowserTab; Open-AllGoogleLinks "site:github.com Powershell module"
+PS C:\> Select-WebbrowserTab; Open-AllGoogleLinks "site:github.com PowerShell module"
 ````
 <br/><hr/><hr/><hr/><hr/><br/>
 ### NAME

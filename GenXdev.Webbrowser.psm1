@@ -153,6 +153,9 @@ Place browser window on the top side of the screen
 .PARAMETER Bottom
 Place browser window on the bottom side of the screen
 
+.PARAMETER Centered
+Place browser window in the center of the screen
+
 .PARAMETER ApplicationMode
 Hide the browser controls --> -a, -app, -appmode
 
@@ -160,10 +163,13 @@ Hide the browser controls --> -a, -app, -appmode
 Prevent loading of browser extensions --> -de, -ne
 
 .PARAMETER RestoreFocus
-Restore Powershell window focus --> -bg
+Restore PowerShell window focus --> -bg
 
 .PARAMETER NewWindow
 Don't re-use existing browser window, instead, create a new one -> nw
+
+.PARAMETER ReturnProcess
+Returns a [System.Diagnostics.Process] object of the browserprocess
 
 .EXAMPLE
 
@@ -316,6 +322,12 @@ function Open-Webbrowser {
         )]
         [switch] $Bottom,
         ####################################################################################################
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Place browser window in the center of the screen"
+        )]
+        [switch] $Centered,
+        ####################################################################################################
         [Alias("a", "app", "appmode")]
         [parameter(
             Mandatory = $false,
@@ -333,7 +345,7 @@ function Open-Webbrowser {
         [Alias("bg")]
         [parameter(
             Mandatory = $false,
-            HelpMessage = "Restore Powershell window focus"
+            HelpMessage = "Restore PowerShell window focus"
         )]
         [switch] $RestoreFocus,
         ####################################################################################################
@@ -342,7 +354,13 @@ function Open-Webbrowser {
             Mandatory = $false,
             HelpMessage = "Don't re-use existing browser window, instead, create a new one"
         )]
-        [switch] $NewWindow
+        [switch] $NewWindow,
+        ####################################################################################################
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Returns a [System.Diagnostics.Process] object of the browserprocess"
+        )]
+        [switch] $ReturnProcess
     )
 
     Begin {
@@ -367,13 +385,13 @@ function Open-Webbrowser {
         $Screen = [System.Windows.Forms.Screen]::PrimaryScreen;
 
         # reference the requested monitor
-        if (($Monitor -ge 1) -and ($Monitor -lt [System.Windows.Forms.Screen]::AllScreens.Length)) {
+        if (($Monitor -ge 0) -and ($Monitor -lt [System.Windows.Forms.Screen]::AllScreens.Length)) {
 
             $Screen = [System.Windows.Forms.Screen]::AllScreens[$Monitor]
         }
 
         # remember
-        [bool] $HavePositioning = ($Monitor -ge 0) -or ($Left -or $Right -or $Top -or $Bottom -or (($X -is [int]) -and ($X -gt 0)) -or (($Y -is [int]) -and ($Y -gt 0)));
+        [bool] $HavePositioning = ($Monitor -ge 0) -or ($Left -or $Right -or $Top -or $Bottom -or $Centered -or (($X -is [int]) -and ($X -gt 0)) -or (($Y -is [int]) -and ($Y -gt 0)));
 
         # init window position
         # '-X' parameter not supplied?
@@ -441,6 +459,12 @@ function Open-Webbrowser {
                     $Height = [Math]::Min($Screen.WorkingArea.Height / 2, $Height);
                     $Y = $Screen.WorkingArea.Y + $Screen.WorkingArea.Height - $Height;
                 }
+            }
+
+            if ($Centered -eq $true) {
+
+                $X = $Screen.WorkingArea.X +[Math]::Round(($screen.WorkingArea.Width - $Width) / 2, 0);
+                $Y = $Screen.WorkingArea.Y +[Math]::Round(($screen.WorkingArea.Height - $Height) / 2, 0);
             }
         }
     }
@@ -716,7 +740,7 @@ function Open-Webbrowser {
 
                 ########################################################################
                 # nothing to do anymore? then don't waste time on positioning the window
-                if ($HavePositioning -eq $false) {
+                if (($HavePositioning -eq $false) -and ($ReturnProcess -eq $false)) {
 
                     Write-Verbose "No positioning required, done.."
                     return;
@@ -762,6 +786,17 @@ function Open-Webbrowser {
                         $window = [GenXdev.Helpers.WindowObj]::GetMainWindow($process, 1, 80);
                     }
                 } while (($i++ -lt 50) -and ($window.length -le 0));
+
+                if (($ReturnProcess -eq $true) -and ($null -ne $process)) {
+
+                    Write-Output $process
+                }
+
+                if ($HavePositioning -eq $false) {
+
+                    Write-Verbose "No positioning required, done.."
+                    return;
+                }
 
                 ########################################################################
                 # have a handle to the mainwindow of the browser?
@@ -829,7 +864,7 @@ function Open-Webbrowser {
             }
             finally {
 
-                # if needed, restore the focus to the Powershell terminal
+                # if needed, restore the focus to the PowerShell terminal
                 refocusTab $browser $CurrentUrl
             }
         }
@@ -1282,155 +1317,143 @@ function Select-WebbrowserTab {
             }
         }
     }
+    function showList() {
+        $i = 0;
+        $Global:chromeSessions | ForEach-Object -Process {
 
-    # get paths
-    $Global:WorkspaceFolder = ([IO.Path]::GetFullPath($PSScriptRoot + "\.."));
+            if ([String]::IsNullOrWhiteSpace($_.url) -eq $false) {
+                $b = " ";
+                if ($_.webSocketDebuggerUrl -eq $Global:chromeSession.webSocketDebuggerUrl) {
 
-    Push-Location
-    Set-Location $Global:WorkspaceFolder
-
-    try {
-        function showList() {
-            $i = 0;
-            $Global:chromeSessions | ForEach-Object -Process {
-
-                if ([String]::IsNullOrWhiteSpace($_.url) -eq $false) {
-                    $b = " ";
-                    if ($_.webSocketDebuggerUrl -eq $Global:chromeSession.webSocketDebuggerUrl) {
-
-                        $b = "*";
-                    }
-
-                    $Url = $_.url;
-
-                    if ($_.url.startsWith("chrome-extension:") -or $_.url.contains("/offline/")) {
-
-                        $Url = "chrome-extension: ($($_.title))";
-                    }
-
-                    "{`"id`":$i,`"A`":`"$b`",`"url`":$([GenXdev.Helpers.Serialization]::ToJson($Url))}" | ConvertFrom-Json
-                    $i = $i + 1;
+                    $b = "*";
                 }
+
+                $Url = $_.url;
+
+                if ($_.url.startsWith("chrome-extension:") -or $_.url.contains("/offline/")) {
+
+                    $Url = "chrome-extension: ($($_.title))";
+                }
+
+                "{`"id`":$i,`"A`":`"$b`",`"url`":$([GenXdev.Helpers.Serialization]::ToJson($Url))}" | ConvertFrom-Json
+                $i = $i + 1;
             }
         }
+    }
 
-        if ($Global:chrome -isnot [GenXdev.Webbrowser.Chrome] -or $Global:chrome.Port -ne $port) {
+    if ($Global:chrome -isnot [GenXdev.Webbrowser.Chrome] -or $Global:chrome.Port -ne $port) {
 
-            Write-Verbose "Creating new chromium automation object"
-            $c = New-Object "GenXdev.Webbrowser.Chrome" @("http://localhost:$port")
-            Set-Variable -Name chrome -Value $c -Scope Global
+        Write-Verbose "Creating new chromium automation object"
+        $c = New-Object "GenXdev.Webbrowser.Chrome" @("http://localhost:$port")
+        Set-Variable -Name chrome -Value $c -Scope Global
+    }
+
+    Set-Variable -Name CurrentChromiumDebugPort -Value $Port -Scope Global
+    if ($null -eq $ByReference -and $id -lt 0) {
+
+        Write-Verbose "No ID parameter specified"
+        try {
+            $s = $Global:chrome.GetAvailableSessions();
+        }
+        Catch {
+            if ($Global:Host.Name.Contains("Visual Studio")) {
+
+                "Webbrowser has not been opened yet, press F5 to start debugging first.." | Out-Host
+            }
+            else {
+                "Webbrowser has not been opened yet, use Open-Webbrowser --> wb to start a browser with debugging enabled.." | Out-Host
+            }
+            return;
         }
 
-        Set-Variable -Name CurrentChromiumDebugPort -Value $Port -Scope Global
-        if ($null -eq $ByReference -and $id -lt 0) {
+        Set-Variable -Name chromeSessions -Value $s -Scope Global
+        Write-Verbose "Sessions set, length= $($Global:chromeSessions.count)"
 
-            Write-Verbose "No ID parameter specified"
-            try {
+        $id = 0;
+        while (
+            ($s[$id].url.startsWith("chrome-extension:") -or $s[$id].url.contains("/offline/") -or $s[$id].url.contains("edge:")) -and ($id -lt ($s.count - 1))) {
+
+            Write-Verbose "skipping $($s[$id].url)"
+
+            $id = $id + 1;
+        }
+
+        $Global:chrome.SetActiveSession($s[$id].webSocketDebuggerUrl);
+        Set-Variable -Name chromeSession -Value $s[$id] -Scope Global
+        Write-Verbose "Session set: $($Global:chromeSession)"
+    }
+    else {
+
+        if ($null -eq $ByReference) {
+
+            $s = $Global:chromeSessions;
+
+            "$($id)" | Write-Verbose
+
+            if ($id -ge $s.count) {
+
                 $s = $Global:chrome.GetAvailableSessions();
-            }
-            Catch {
-                if ($Global:Host.Name.Contains("Visual Studio")) {
+                Set-Variable -Name chromeSessions -Value $s -Scope Global
+                Write-Verbose "Sessions set, length= $($Global:chromeSessions.count)"
 
-                    "Webbrowser has not been opened yet, press F5 to start debugging first.." | Out-Host
-                }
-                else {
-                    "Webbrowser has not been opened yet, use Open-Webbrowser --> wb to start a browser with debugging enabled.." | Out-Host
-                }
-                return;
-            }
+                showList
 
-            Set-Variable -Name chromeSessions -Value $s -Scope Global
-            Write-Verbose "Sessions set, length= $($Global:chromeSessions.count)"
-
-            $id = 0;
-            while (
-                ($s[$id].url.startsWith("chrome-extension:") -or $s[$id].url.contains("/offline/") -or $s[$id].url.contains("edge:")) -and ($id -lt ($s.count - 1))) {
-
-                Write-Verbose "skipping $($s[$id].url)"
-
-                $id = $id + 1;
+                throw "Session expired, select new session with cmdlet: Select-WebbrowserTab --> st"
             }
 
             $Global:chrome.SetActiveSession($s[$id].webSocketDebuggerUrl);
             Set-Variable -Name chromeSession -Value $s[$id] -Scope Global
-            Write-Verbose "Session set: $($Global:chromeSession)"
+
+            try {
+                $s = $Global:chrome.GetAvailableSessions();
+            }
+            catch {
+                throw "Session expired, select new session with cmdlet: Select-WebbrowserTab --> st"
+            }
+            Set-Variable -Name chromeSessions -Value $s -Scope Global
+            Write-Verbose "Sessions set, length= $($Global:chromeSessions.count)"
+
+            $debugUri = $Global:chromeSession.webSocketDebuggerUrl;
         }
         else {
 
-            if ($null -eq $ByReference) {
-
-                $s = $Global:chromeSessions;
-
-                "$($id)" | Write-Verbose
-
-                if ($id -ge $s.count) {
-
-                    $s = $Global:chrome.GetAvailableSessions();
-                    Set-Variable -Name chromeSessions -Value $s -Scope Global
-                    Write-Verbose "Sessions set, length= $($Global:chromeSessions.count)"
-
-                    showList
-
-                    throw "Session expired, select new session with cmdlet: Select-WebbrowserTab --> st"
-                }
-
-                $Global:chrome.SetActiveSession($s[$id].webSocketDebuggerUrl);
-                Set-Variable -Name chromeSession -Value $s[$id] -Scope Global
-
-                try {
-                    $s = $Global:chrome.GetAvailableSessions();
-                }
-                catch {
-                    throw "Session expired, select new session with cmdlet: Select-WebbrowserTab --> st"
-                }
-                Set-Variable -Name chromeSessions -Value $s -Scope Global
-                Write-Verbose "Sessions set, length= $($Global:chromeSessions.count)"
-
-                $debugUri = $Global:chromeSession.webSocketDebuggerUrl;
+            try {
+                $s = $Global:chrome.GetAvailableSessions();
             }
-            else {
-
-                try {
-                    $s = $Global:chrome.GetAvailableSessions();
-                }
-                catch {
-                    throw "Session expired, select new session with cmdlet: Select-WebbrowserTab --> st"
-                }
-
-                $debugUri = $ByReference.debugUri;
-            }
-
-            $found = $false;
-
-            $s | ForEach-Object -Process {
-                if ($_.webSocketDebuggerUrl -eq $debugUri) {
-                    $found = $true;
-
-                    $Global:chrome.SetActiveSession($_.webSocketDebuggerUrl);
-                    Set-Variable -Name chromeSession -Value $_ -Scope Global
-                }
-            }
-
-            if ($found -eq $false) {
-
-                if ($null -eq $ByReference) {
-
-                    showList
-                }
-
+            catch {
                 throw "Session expired, select new session with cmdlet: Select-WebbrowserTab --> st"
             }
+
+            $debugUri = $ByReference.debugUri;
         }
 
-        if ($null -eq $ByReference) {
+        $found = $false;
 
-            showList
+        $s | ForEach-Object -Process {
+            if ($_.webSocketDebuggerUrl -eq $debugUri) {
+                $found = $true;
+
+                $Global:chrome.SetActiveSession($_.webSocketDebuggerUrl);
+                Set-Variable -Name chromeSession -Value $_ -Scope Global
+            }
+        }
+
+        if ($found -eq $false) {
+
+            if ($null -eq $ByReference) {
+
+                showList
+            }
+
+            throw "Session expired, select new session with cmdlet: Select-WebbrowserTab --> st"
         }
     }
-    Finally {
 
-        Pop-Location
+    if ($null -eq $ByReference) {
+
+        showList
     }
+
 }
 
 ######################################################################################################################################################
@@ -1510,7 +1533,7 @@ Runs one or more scripts inside a selected webbrowser tab.
 
 .DESCRIPTION
 Runs one or more scripts inside a selected webbrowser tab.
-You can access 'data' object from within javascript, to synchronize data between Powershell and the Webbrowser
+You can access 'data' object from within javascript, to synchronize data between PowerShell and the Webbrowser
 
 .Parameter Scripts
 A string containing javascript, a url or a file reference to a javascript file
@@ -2105,7 +2128,7 @@ The google query to perform
 The maximum number of results to obtain, defaults to 200
 
 .EXAMPLE
-PS C:\> Select-WebbrowserTab; $Urls = Get-GoogleSearchResultUrls "site:github.com Powershell module"; $Urls
+PS C:\> Select-WebbrowserTab; $Urls = Get-GoogleSearchResultUrls "site:github.com PowerShell module"; $Urls
 
 .NOTES
 Requires the Windows 10+ Operating System
@@ -2174,7 +2197,7 @@ Press ctrl-c to stop, or close the initial tab
 The google query to perform
 
 .EXAMPLE
-PS C:\> Select-WebbrowserTab; Open-AllGoogleLinks "site:github.com Powershell module"
+PS C:\> Select-WebbrowserTab; Open-AllGoogleLinks "site:github.com PowerShell module"
 
 .NOTES
 Requires the Windows 10+ Operating System

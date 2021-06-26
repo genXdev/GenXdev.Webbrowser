@@ -6,7 +6,7 @@
     RootModule = 'GenXdev.Webbrowser.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '1.4.0'
+    ModuleVersion     = '1.5.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -24,7 +24,7 @@
     Copyright         = 'Copyright (c) 2021 René Vaessen'
 
     # Description of the functionality provided by this module
-    Description       = 'Provides a collection of cmdlets that can run scripts in your chromium webbrowser tab'
+    Description       = 'A Windows PowerShell module that allows you to run scripts against your casual desktop webbrowser-tab'
 
     # Minimum version of the PowerShell engine required by this module
     PowerShellVersion = '5.1.19041.906'
@@ -45,7 +45,7 @@
     # ProcessorArchitecture = ''
 
     # Modules that must be imported into the global environment prior to importing this module
-    RequiredModules = @(@{ModuleName = 'GenXdev.Helpers'; ModuleVersion = '1.4.0'}, @{ModuleName = 'GenXdev.Windows'; ModuleVersion = '1.4.0'});
+    RequiredModules = @(@{ModuleName = 'GenXdev.Helpers'; ModuleVersion = '1.5.0'}, @{ModuleName = 'GenXdev.Windows'; ModuleVersion = '1.5.0'});
 
     # Assemblies that must be loaded prior to importing this module
     RequiredAssemblies = @("System.Windows.Forms", "Newtonsoft.Json.dll", "WebSocket4Net.dll", "SuperSocket.ClientEngine.dll", "GenXdev.Webbrowser.dll")
