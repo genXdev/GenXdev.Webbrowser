@@ -35,11 +35,13 @@ PS C:\>
     # Synchronizing data
     Select-WebbrowserTab;
     $Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
+
     [int] $number = Invoke-WebbrowserEvaluation "
-        document.body.innerHTML =
-            JSON.stringify(data.files); data.title = document.title;
-            return 123;
-        ";
+
+        document.body.innerHTML = JSON.stringify(data.files);
+        data.title = document.title;
+        return 123;
+    ";
 
     Write-Host "
         Document title : $($Global:Data.title)
@@ -194,16 +196,6 @@ Update-Module
     Invoke-WebbrowserEvaluation -> Eval, et
 
         [[-Scripts] <Object[]>] [-Inspect] [-Edge] [-Chrome] [<CommonParameters>]
-````
-````PowerShell
-    Get-GoogleSearchResultUrls -Query <String> [[-Max] <int>] [<CommonParameters>]
-````
-````PowerShell
-    Open-AllGoogleLinks -> qlinks
-        [-Query] <String> [<CommonParameters>]
-````
-````PowerShell
-    DownloadPDFs [[-Max] <int>] [<CommonParameters>]
 ````
 ````PowerShell
     Close-WebbrowserTab -> CloseTab, ct
@@ -604,11 +596,13 @@ PS C:\>
     # Synchronizing data
     Select-WebbrowserTab;
     $Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
+
     [int] $number = Invoke-WebbrowserEvaluation "
-        document.body.innerHTML =
-            JSON.stringify(data.files); data.title = document.title;
-            return 123;
-        ";
+
+        document.body.innerHTML = JSON.stringify(data.files);
+        data.title = document.title;
+        return 123;
+    ";
 
     Write-Host "
         Document title : $($Global:Data.title)
@@ -719,88 +713,7 @@ PS C:\> ls *.js | et -e
 
 ````
 <br/><hr/><hr/><hr/><hr/><br/>
-### NAME
-    DownloadPDFs
-### SYNOPSIS
-    Performs a google query in the previously selected webbrowser tab, and
-    download all found pdf's into current directory
-### SYNTAX
-````PowerShell
-DownloadPDFs [-Query] <String> [<CommonParameters>]
-````
-### DESCRIPTION
-    Performs a google query in the previously selected webbrowser tab, and
-    download all found pdf's into current directory
-### PARAMETERS
-````
--Query <String>
-    Parameter description
-    Required?                    true
-    Position?                    1
-    Default value
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
- -Max <Int32>
-    The maximum number of results to obtain, defaults to 200
-    Required?                    false
-    Position?                    named
-    Default value                200
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
-<CommonParameters>
-    This cmdlet supports the common parameters: Verbose, Debug,
-    ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-    OutBuffer, PipelineVariable, and OutVariable. For more information, see
-    about_CommonParameters
-    (https://go.microsoft.com/fwlink/?LinkID=113216).
-````
-### NOTES
-````PowerShell
-Requires the Windows 10+ Operating System
 
-
--------------------------- EXAMPLE 1 --------------------------
-PS D:\Downloads>mkdir pdfs; cd pdfs; Select-WebbrowserTab; DownloadPDFS
-"scientific paper co2"
-````
-<br/><hr/><hr/><hr/><hr/><br/>
-### NAME
-    Get-GoogleSearchResultUrls
-### SYNOPSIS
-    Performs a  google search in previously selected webbrowser tab and
-    returns the links
-### SYNTAX
-````PowerShell
-Get-GoogleSearchResultUrls [-Query] <String> [<CommonParameters>]
-````
-### DESCRIPTION
-    Performs a  google search in previously selected webbrowser tab and
-    returns the links
-### PARAMETERS
-````
--Query <String>
-    The google query to perform
-    Required?                    true
-    Position?                    1
-    Default value
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
-<CommonParameters>
-    This cmdlet supports the common parameters: Verbose, Debug,
-    ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-    OutBuffer, PipelineVariable, and OutVariable. For more information, see
-    about_CommonParameters
-    (https://go.microsoft.com/fwlink/?LinkID=113216).
-````
-### NOTES
-````PowerShell
-Requires the Windows 10+ Operating System
-
-
--------------------------- EXAMPLE 1 --------------------------
-PS C:\> Select-WebbrowserTab; $Urls = Get-GoogleSearchResultUrls "site:github.com PowerShell module"; $Urls
-````
-<br/><hr/><hr/><hr/><hr/><br/>
 ### NAME
     Get-ChromeRemoteDebuggingPort
 ### SYNTAX
@@ -905,73 +818,6 @@ Get-EdgeRemoteDebuggingPort
 None
 ````
 <br/><hr/><hr/><hr/><hr/><br/>
-### NAME
-    Open-AllGoogleLinks
-### SYNOPSIS
-    Performs an infinite auto opening google search in previously selected
-    webbrowser tab.
-### SYNTAX
-````PowerShell
-Open-AllGoogleLinks [-Query] <String> [<CommonParameters>]
-````
-### DESCRIPTION
-    Performs a google search in previously selected webbrowser tab.
-    Opens 10 tabs each times, pauses until initial tab is revisited
-    Press ctrl-c to stop, or close the initial tab
-### PARAMETERS
-````
--Query <String>
-    The google query to perform
-    Required?                    true
-    Position?                    1
-    Default value
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--Max <Int32>
-    The maximum number of results to obtain, defaults to 200
-    Required?                    false
-    Position?                    named
-    Default value                200
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
-<CommonParameters>
-    This cmdlet supports the common parameters: Verbose, Debug,
-    ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-    OutBuffer, PipelineVariable, and OutVariable. For more information, see
-    about_CommonParameters
-    (https://go.microsoft.com/fwlink/?LinkID=113216).
-````
-### NOTES
-````PowerShell
-Requires the Windows 10+ Operating System
-
--------------------------- EXAMPLE 1 --------------------------
-PS C:\> Select-WebbrowserTab; Open-AllGoogleLinks "site:github.com PowerShell module"
-````
-<br/><hr/><hr/><hr/><hr/><br/>
-### NAME
-    Close-WebbrowserTab
-### SYNOPSIS
-    Closes the currently selected webbrowser tab
-### SYNTAX
-````PowerShell
-Close-WebbrowserTab [<CommonParameters>]
-````
-### DESCRIPTION
-    Closes the currently selected webbrowser tab
-### PARAMETERS
-````
-<CommonParameters>
-    This cmdlet supports the common parameters: Verbose, Debug,
-    ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-    OutBuffer, PipelineVariable, and OutVariable. For more information, see
-    about_CommonParameters
-    (https://go.microsoft.com/fwlink/?LinkID=113216).
-````
-### NOTES
-````PowerShell
-Requires the Windows 10+ Operating System
-
 
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> Close-WebbrowserTab
