@@ -1,4 +1,12 @@
-﻿<hr/>
+## Features
+
+## Ideas
+
+## Issues
+
+## Todoos
+
+<hr/>
 
 <img src="powershell.jpg" alt="drawing" width="50%"/>
 
@@ -15,8 +23,8 @@
 
 ### FEATURES
 
-    * ✅ evaluating javascript-string, javascript-files in opened webbrowser-tab
-    * ✅ adding html script tags, by urll, to opened webbrowser-tabs, for normal javascript files or modules
+    * ✅ evaluating javascript-strings, javascript-files in opened webbrowser-tab
+    * ✅ adding html script tags, by url, to opened webbrowser-tabs, for normal javascript files or modules
     * ✅ evaluating scripts, with support for async patterns, like promises
     * ✅ evaluating asynchronous scripts, with support for yielded PowerShell pipeline returns
 
@@ -149,17 +157,6 @@ PS C:\> Get-ChildItem *.js | Invoke-WebbrowserEvaluation -Edge
 -------------------------- EXAMPLE 7 --------------------------
 
 PS C:\> ls *.js | et -e
-# Support for yielded pipeline results
-    Select-WebbrowserTab;
-    Invoke-WebbrowserEvaluation "
-
-        for (let i = 0; i < 10; i++) {
-
-            await (new Promise((resolve) => setTimeout(resolve, 1000)));
-
-            yield i;
-        }
-    ";
 ````
 ### DEPENDENCIES
 [![WinOS - Windows-10](https://img.shields.io/badge/WinOS-Windows--10--10.0.19041--SP0-brightgreen)](https://www.microsoft.com/en-us/windows/get-windows-10)
@@ -491,9 +488,11 @@ function Open-GoogleQuery {
     Selects a webbrowser tab
 ### SYNTAX
 ````PowerShell
-Select-WebbrowserTab [-id <Int32>] [-Edge] [-Chrome] [<CommonParameters>]
+Select-WebbrowserTab [[-id] <Int32>] [-Edge] [-Chrome] [<CommonParameters>]
 
-Select-WebbrowserTab [-ByReference] <Hashtable> [<CommonParameters>]
+Select-WebbrowserTab [-Name] <String> [<CommonParameters>]
+
+Select-WebbrowserTab -ByReference <Hashtable> [<CommonParameters>]
 ````
 ### DESCRIPTION
     Selects a webbrowser tab for use by the cmdlets
@@ -507,6 +506,13 @@ Select-WebbrowserTab [-ByReference] <Hashtable> [<CommonParameters>]
     Required?                    false
     Position?                    1
     Default value                -1
+    Accept pipeline input?       false
+    Accept wildcard characters?  false
+-Name <String>
+
+    Required?                    true
+    Position?                    1
+    Default value
     Accept pipeline input?       false
     Accept wildcard characters?  false
 -Edge [<SwitchParameter>]

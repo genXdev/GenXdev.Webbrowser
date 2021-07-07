@@ -463,8 +463,8 @@ function Open-Webbrowser {
 
             if ($Centered -eq $true) {
 
-                $X = $Screen.WorkingArea.X +[Math]::Round(($screen.WorkingArea.Width - $Width) / 2, 0);
-                $Y = $Screen.WorkingArea.Y +[Math]::Round(($screen.WorkingArea.Height - $Height) / 2, 0);
+                $X = $Screen.WorkingArea.X + [Math]::Round(($screen.WorkingArea.Width - $Width) / 2, 0);
+                $Y = $Screen.WorkingArea.Y + [Math]::Round(($screen.WorkingArea.Height - $Height) / 2, 0);
             }
         }
     }
@@ -1211,6 +1211,9 @@ Selects a webbrowser tab for use by the cmdlets 'Invoke-WebbrowserEvaluation -> 
 .PARAMETER id
 When '-Id' is not supplied, a list of available webbrowser tabs is shown, where the right value can be found
 
+.PARAMETER Name
+Selects the first entry that contains given name in its url
+
 .PARAMETER Edge
 Force to use 'Microsoft Edge' webbrowser for selection
 
@@ -1235,9 +1238,15 @@ function Select-WebbrowserTab {
 
     param (
         ####################################################################################################
-        [parameter(Mandatory = $false, ParameterSetName = "normal", Position = 0)]
+        [parameter(Mandatory = $false, ParameterSetName = "normal", Position = 0,
+        HelpMessage="When '-Id' is not supplied, a list of available webbrowser tabs is shown, where the right value can be found")]
+
         [ValidateRange(0, [int]::MaxValue)]
         [int] $id = -1,
+        ####################################################################################################
+        [parameter(Mandatory = $true, ParameterSetName = "byName", Position = 0,
+        HelpMessage = 'Selects the first entry that contains given name in its url')]
+        [string] $Name = $null,
         ####################################################################################################
         [Alias("e")]
         [parameter(
@@ -1349,9 +1358,12 @@ function Select-WebbrowserTab {
     }
 
     Set-Variable -Name CurrentChromiumDebugPort -Value $Port -Scope Global
-    if ($null -eq $ByReference -and $id -lt 0) {
+    if (($null -eq $ByReference -and $id -lt 0) -or ![string]::IsNullOrWhiteSpace($name)) {
 
-        Write-Verbose "No ID parameter specified"
+        if ([string]::IsNullOrWhiteSpace($name)) {
+
+            Write-Verbose "No ID parameter specified"
+        }
         try {
             $s = $Global:chrome.GetAvailableSessions();
         }
@@ -1369,18 +1381,27 @@ function Select-WebbrowserTab {
         Set-Variable -Name chromeSessions -Value $s -Scope Global
         Write-Verbose "Sessions set, length= $($Global:chromeSessions.count)"
 
-        $id = 0;
+        [int] $id = 0;
         while (
-            ($s[$id].url.startsWith("chrome-extension:") -or $s[$id].url.contains("/offline/") -or $s[$id].url.contains("edge:")) -and ($id -lt ($s.count - 1))) {
+            ((
+                (![string]::IsNullOrWhiteSpace($name) -and ($s[$id].url -notlike "*$name*")) -or
+                $s[$id].url.startsWith("chrome-extension:") -or
+                $s[$id].url.startsWith("devtools") -or
+                $s[$id].url.contains("/offline/") -or
+                $s[$id].url.contains("edge:")) -and ($id -lt ($s.Count - 1)))) {
 
             Write-Verbose "skipping $($s[$id].url)"
 
             $id = $id + 1;
         }
 
-        $Global:chrome.SetActiveSession($s[$id].webSocketDebuggerUrl);
-        Set-Variable -Name chromeSession -Value $s[$id] -Scope Global
-        Write-Verbose "Session set: $($Global:chromeSession)"
+        $id = [Math]::Min($id, $s.Count - 1);
+        if ($id -lt $s.Count) {
+
+            $Global:chrome.SetActiveSession($s[$id].webSocketDebuggerUrl);
+            Set-Variable -Name chromeSession -Value $s[$id] -Scope Global
+            Write-Verbose "Session set: $($Global:chromeSession)"
+        }
     }
     else {
 
@@ -1390,7 +1411,7 @@ function Select-WebbrowserTab {
 
             "$($id)" | Write-Verbose
 
-            if ($id -ge $s.count) {
+            if ($id -ge $s.Count) {
 
                 $s = $Global:chrome.GetAvailableSessions();
                 Set-Variable -Name chromeSessions -Value $s -Scope Global
@@ -1695,12 +1716,30 @@ function Invoke-WebbrowserEvaluation {
             Mandatory = $false,
             ValueFromPipeline = $false
         )]
-        [switch] $AsJob
+        [switch] $AsJob,
+        ####################################################################################################
+        [Parameter(
+            Mandatory = $false,
+            ValueFromPipeline = $false
+        )]
+        [switch] $NoAutoSelectTab
     )
 
     Begin {
 
-        $reference = Get-ChromiumSessionReference
+
+        try {
+            $reference = Get-ChromiumSessionReference
+        }
+        catch {
+            if ($NoAutoSelectTab -eq $true) {
+
+                throw $PSItem.Exception
+            }
+
+            Select-WebbrowserTab | Out-Null
+            $reference = Get-ChromiumSessionReference
+        }
     }
 
     Process {
@@ -2403,5 +2442,14 @@ function Approve-FirefoxDebugging {
 }
 
 ##############################################################################################################
+
+function Set-BrowserVideoFullscreen {
+
+    [Alias("fsvideo")]
+    param()
+
+    Invoke-WebbrowserEvaluation "window.video = document.getElementsByTagName('video')[0]; video.setAttribute('style','position:fixed;left:0;top:0;bottom:0;right:0;z-index:10000;width:100vw;height:100vh'); document.body.appendChild(video);document.body.setAttribute('style', 'overflow:hidden');"
+}
+
 ##############################################################################################################
 ##############################################################################################################
