@@ -93,6 +93,7 @@ function Get-Webbrowser {
         }
     }
 }
+
 ######################################################################################################################################################
 ######################################################################################################################################################
 <#
@@ -124,7 +125,7 @@ Open in Firefox --> -ff
 Open in all registered modern browsers
 
 .PARAMETER Monitor
-The monitor to use, 0 = default, 1 = secondary, -1 is discard --> -m, -mon
+The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to `Global:DefaultSecondaryMonitor or 1 if not found --> -m, -mon
 
 .PARAMETER FullScreen
 Open in fullscreen mode --> -fs
@@ -168,7 +169,7 @@ Restore PowerShell window focus --> -bg
 .PARAMETER NewWindow
 Don't re-use existing browser window, instead, create a new one -> nw
 
-.PARAMETER ReturnProcess
+.PARAMETER PassThrough
 Returns a [System.Diagnostics.Process] object of the browserprocess
 
 .EXAMPLE
@@ -209,12 +210,13 @@ function Open-Webbrowser {
 
     param(
         ####################################################################################################
-        [Alias("Value", "Name", "Text")]
+        [Alias("Value", "Website", "Uri", "FullName")]
         [parameter(
             Mandatory = $false,
             Position = 0,
             HelpMessage = "The url to open",
             ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true,
             ValueFromRemainingArguments = $false
         )]
         [string[]] $Url,
@@ -263,9 +265,9 @@ function Open-Webbrowser {
         [Alias("m", "mon")]
         [parameter(
             Mandatory = $false,
-            HelpMessage = "The monitor to use, 0 = default, -1 is discard"
+            HelpMessage = "The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to `Global:DefaultSecondaryMonitor or 1 if not found"
         )]
-        [int] $Monitor = 1,
+        [int] $Monitor = -2,
         ####################################################################################################
         [Alias("fs", "f")]
         [parameter(
@@ -278,25 +280,25 @@ function Open-Webbrowser {
             Mandatory = $false,
             HelpMessage = "The initial width of the webbrowser window"
         )]
-        [int] $Width = 0,
+        [int] $Width = -1,
         ####################################################################################################
         [parameter(
             Mandatory = $false,
             HelpMessage = "The initial height of the webbrowser window"
         )]
-        [int] $Height = 0,
+        [int] $Height = -1,
         ####################################################################################################
         [parameter(
             Mandatory = $false,
             HelpMessage = "The initial X position of the webbrowser window"
         )]
-        [int] $X = 0,
+        [int] $X = -1,
         ####################################################################################################
         [parameter(
             Mandatory = $false,
             HelpMessage = "The initial Y position of the webbrowser window"
         )]
-        [int] $Y = 0,
+        [int] $Y = -1,
         ####################################################################################################
         [parameter(
             Mandatory = $false,
@@ -360,10 +362,12 @@ function Open-Webbrowser {
             Mandatory = $false,
             HelpMessage = "Returns a [System.Diagnostics.Process] object of the browserprocess"
         )]
-        [switch] $ReturnProcess
+        [switch] $PassThrough
     )
 
     Begin {
+
+        Write-Verbose "Open-Webbrowser monitor = $Monitor"
 
         # what if no url is specified?
         if (($null -eq $Url) -or ($Url.Length -lt 1)) {
@@ -371,9 +375,19 @@ function Open-Webbrowser {
             # show the help page from github
             $Url = @("https://github.com/renevaessen/GenXdev.Webbrowser/blob/master/README.md#syntax")
         }
+        else {
 
-        # remember current foreground window
-        $PreviousActiveWindow = [GenXdev.Helpers.WindowObj]::GetFocusedWindow();
+            $Url = $Url.Trim(" `"'".ToCharArray());
+            $filePath = (Expand-Path $Url);
+
+            if ([IO.File]::Exists($filePath)) {
+
+                $Url = "file://$([Uri]::EscapeUriString($filePath.Replace("\", "/")))"
+            }
+        }
+
+        # reference powershell main window
+        $PowerShellWindow = Get-PowershellMainWindow
 
         # get a list of all available/installed modern webbrowsers
         $Browsers = Get-Webbrowser
@@ -384,6 +398,18 @@ function Open-Webbrowser {
         # reference the main monitor
         $Screen = [System.Windows.Forms.Screen]::PrimaryScreen;
 
+        if ($Monitor -lt -1) {
+
+            if ($Global:DefaultSecondaryMonitor -is [int]) {
+
+                $Monitor = $Global:DefaultSecondaryMonitor % [System.Windows.Forms.Screen]::AllScreens.Length;
+            }
+            else {
+
+                $Monitor = 1 % [System.Windows.Forms.Screen]::AllScreens.Length;
+            }
+        }
+
         # reference the requested monitor
         if (($Monitor -ge 0) -and ($Monitor -lt [System.Windows.Forms.Screen]::AllScreens.Length)) {
 
@@ -391,7 +417,7 @@ function Open-Webbrowser {
         }
 
         # remember
-        [bool] $HavePositioning = ($Monitor -ge 0) -or ($Left -or $Right -or $Top -or $Bottom -or $Centered -or (($X -is [int]) -and ($X -gt 0)) -or (($Y -is [int]) -and ($Y -gt 0)));
+        [bool] $HavePositioning = ($Monitor -ge 0) -or ($Left -or $Right -or $Top -or $Bottom -or $Centered -or (($X -is [int]) -and ($X -ge 0)) -or (($Y -is [int]) -and ($Y -ge 0)));
 
         # init window position
         # '-X' parameter not supplied?
@@ -497,17 +523,18 @@ function Open-Webbrowser {
                 $CurrentActiveWindow = [GenXdev.Helpers.WindowObj]::GetFocusedWindow();
 
                 # Is it different then the one at the start of this command?
-                if ($PreviousActiveWindow.Handle -ne $CurrentActiveWindow.Handle) {
+                if (($null -ne $PowerShellWindow) -and ($PowerShellWindow.Handle -ne $CurrentActiveWindow.Handle)) {
 
                     # restore it
-                    $PreviousActiveWindow.SetForeground();
+                    $PowerShellWindow.SetForeground();
 
                     # wait
                     [System.Threading.Thread]::Sleep(250);
 
                     # did it not work?
                     $CurrentActiveWindow = [GenXdev.Helpers.WindowObj]::GetFocusedWindow();
-                    if ($PreviousActiveWindow.Handle -ne $CurrentActiveWindow.Handle) {
+
+                    if ($PowerShellWindow.Handle -ne $CurrentActiveWindow.Handle) {
 
                         try {
                             # Sending Alt-Tab
@@ -550,7 +577,12 @@ function Open-Webbrowser {
             if ($browser.Name -like "*Firefox*") {
 
                 # set default commandline parameters
-                $ArgumentList = $ArgumentList + @("-width", $Width, "-height", $Height)
+                $ArgumentList = @();
+
+                if (($Width -is [int]) -and ($Width -gt 0) -and ($Height -is [int]) -and ($Height -gt 0)) {
+
+                    $ArgumentList = $ArgumentList + @("-width", $Width, "-height", $Height)
+                }
 
                 # '-RestoreFocus' parameter supplied'?
                 if ($RestoreFocus -ne $true) {
@@ -614,13 +646,16 @@ function Open-Webbrowser {
 
                     # set default commandline parameters
                     $ArgumentList = $ArgumentList + @(
-                        "--window-size=$Width,$Height",
                         "--disable-infobars",
                         "--disable-session-crashed-bubble",
                         "--no-default-browser-check",
-                        "--remote-debugging-port=$port",
-                        "--window-size=$Width,$Height"
+                        "--remote-debugging-port=$port"
                     )
+
+                    if (($Width -is [int]) -and ($Width -gt 0) -and ($Height -is [int]) -and ($Height -gt 0)) {
+
+                        $ArgumentList = $ArgumentList + @("--window-size=$Width,$Height");
+                    }
 
                     # '-NoBrowserExtensions' parameter supplied?
                     if ($NoBrowserExtensions -eq $true) {
@@ -740,7 +775,7 @@ function Open-Webbrowser {
 
                 ########################################################################
                 # nothing to do anymore? then don't waste time on positioning the window
-                if (($HavePositioning -eq $false) -and ($ReturnProcess -eq $false)) {
+                if (($HavePositioning -eq $false) -and ($PassThrough -ne $true)) {
 
                     Write-Verbose "No positioning required, done.."
                     return;
@@ -787,7 +822,7 @@ function Open-Webbrowser {
                     }
                 } while (($i++ -lt 50) -and ($window.length -le 0));
 
-                if (($ReturnProcess -eq $true) -and ($null -ne $process)) {
+                if (($PassThrough -eq $true) -and ($null -ne $process)) {
 
                     Write-Output $process
                 }
@@ -1239,13 +1274,13 @@ function Select-WebbrowserTab {
     param (
         ####################################################################################################
         [parameter(Mandatory = $false, ParameterSetName = "normal", Position = 0,
-        HelpMessage="When '-Id' is not supplied, a list of available webbrowser tabs is shown, where the right value can be found")]
+            HelpMessage = "When '-Id' is not supplied, a list of available webbrowser tabs is shown, where the right value can be found")]
 
         [ValidateRange(0, [int]::MaxValue)]
         [int] $id = -1,
         ####################################################################################################
         [parameter(Mandatory = $true, ParameterSetName = "byName", Position = 0,
-        HelpMessage = 'Selects the first entry that contains given name in its url')]
+            HelpMessage = 'Selects the first entry that contains given name in its url')]
         [string] $Name = $null,
         ####################################################################################################
         [Alias("e")]
@@ -1294,35 +1329,35 @@ function Select-WebbrowserTab {
 
             $port = Get-EdgeRemoteDebuggingPort
 
-            if (!(Test-Connection -TcpPort $port 127.0.0.1 -TimeoutSeconds 1)) {
+            # if (!(Test-Connection -TcpPort $port 127.0.0.1 -TimeoutSeconds 1)) {
 
-                Open-Webbrowser -Edge -FullScreen
+            #     Open-Webbrowser -Edge -FullScreen
 
-                Start-Sleep 2
-            }
+            #     Start-Sleep 2
+            # }
         }
         else {
             if ($Chrome -eq $true) {
 
                 $port = Get-ChromeRemoteDebuggingPort
 
-                if (!(Test-Connection -TcpPort $port 127.0.0.1 -TimeoutSeconds 1)) {
+                # if (!(Test-Connection -TcpPort $port 127.0.0.1 -TimeoutSeconds 1)) {
 
-                    Open-Webbrowser -Chrome -FullScreen
+                #     Open-Webbrowser -Chrome -FullScreen
 
-                    Start-Sleep 2
-                }
+                #     Start-Sleep 2
+                # }
             }
             else {
 
                 $port = Get-ChromiumRemoteDebuggingPort
 
-                if (!(Test-Connection -TcpPort $port 127.0.0.1 -TimeoutSeconds 1)) {
+                # if (!(Test-Connection -TcpPort $port 127.0.0.1 -TimeoutSeconds 1)) {
 
-                    Open-Webbrowser -Chromium -FullScreen
+                #     Open-Webbrowser -Chromium -FullScreen
 
-                    Start-Sleep 2
-                }
+                #     Start-Sleep 2
+                # }
             }
         }
     }
@@ -1384,11 +1419,11 @@ function Select-WebbrowserTab {
         [int] $id = 0;
         while (
             ((
-                (![string]::IsNullOrWhiteSpace($name) -and ($s[$id].url -notlike "*$name*")) -or
-                $s[$id].url.startsWith("chrome-extension:") -or
-                $s[$id].url.startsWith("devtools") -or
-                $s[$id].url.contains("/offline/") -or
-                $s[$id].url.contains("edge:")) -and ($id -lt ($s.Count - 1)))) {
+                    (![string]::IsNullOrWhiteSpace($name) -and ($s[$id].url -notlike "*$name*")) -or
+                    $s[$id].url.startsWith("chrome-extension:") -or
+                    $s[$id].url.startsWith("devtools") -or
+                    $s[$id].url.contains("/offline/") -or
+                    $s[$id].url.contains("edge:")) -and ($id -lt ($s.Count - 1)))) {
 
             Write-Verbose "skipping $($s[$id].url)"
 
@@ -1492,7 +1527,7 @@ function Get-ChromiumSessionReference {
 
     param()
 
-    # initialize data hashtable
+    # initialize data hashtable
     if ($Global:Data -isnot [HashTable]) {
 
         $globalData = @{};
@@ -1503,7 +1538,7 @@ function Get-ChromiumSessionReference {
         $globalData = $Global:Data;
     }
 
-    # no session yet?
+    # no session yet?
     if ($Global:chromeSession -isnot [GenXdev.Webbrowser.RemoteSessionsResponse]) {
 
         throw "Select session first with cmdlet: Select-WebbrowserTab -> st"
@@ -1513,13 +1548,13 @@ function Get-ChromiumSessionReference {
         Write-Verbose "Found existing session: $($Global.chromeSession | ConvertTo-Json -Depth 100)"
     }
 
-    # get available tabs
+    # get available tabs
     $s = $Global:chrome.GetAvailableSessions();
 
-    # reference selected session
+    # reference selected session
     $debugUri = $Global:chromeSession.webSocketDebuggerUrl;
 
-    # find it in the most recent list
+    # find it in the most recent list
     $found = $false;
     $s | ForEach-Object -Process {
 
@@ -1572,7 +1607,7 @@ Invoke-WebbrowserEvaluation "document.title = 'hello world'"
 .EXAMPLE
 PS C:\>
 
-# Synchronizing data
+# Synchronizing data
 Select-WebbrowserTab;
 $Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
 
@@ -1590,7 +1625,7 @@ Write-Host "
 .EXAMPLE
 PS C:\>
 
-# Support for promises
+# Support for promises
 Select-WebbrowserTab;
 Invoke-WebbrowserEvaluation "
     let myList = [];
@@ -1608,10 +1643,10 @@ Invoke-WebbrowserEvaluation "
 .EXAMPLE
 PS C:\>
 
-# Support for promises and more
+# Support for promises and more
 
-# this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
-# beware, not all websites use indexedDb, it could return an empty set
+# this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
+# beware, not all websites use indexedDb, it could return an empty set
 
 Select-WebbrowserTab;
 Set-WebbrowserTabLocation "https://www.youtube.com/"
@@ -1671,7 +1706,7 @@ $AllIndexedDbData | Out-Host
 .EXAMPLE
 PS C:\>
 
-# Support for yielded pipeline results
+# Support for yielded pipeline results
 Select-WebbrowserTab;
 Invoke-WebbrowserEvaluation "
 
@@ -1746,7 +1781,7 @@ function Invoke-WebbrowserEvaluation {
 
         Write-Verbose "Processing.."
 
-        # enumerate provided scripts
+        # enumerate provided scripts
         foreach ($js in $Scripts) {
 
             $scriptBlock = {
@@ -1758,22 +1793,22 @@ function Invoke-WebbrowserEvaluation {
 
                     Select-WebbrowserTab -ByReference $reference
 
-                    # is it a file reference?
+                    # is it a file reference?
                     if (($js -is [IO.FileInfo]) -or (($js -is [System.String]) -and [IO.File]::Exists($js))) {
 
-                        # comming from Get-ChildItem command?
+                        # comming from Get-ChildItem command?
                         if ($js -is [IO.FileInfo]) {
 
-                            # make it a string
+                            # make it a string
                             $js = $js.FullName;
                         }
 
-                        # it's a string with a path, load the content
+                        # it's a string with a path, load the content
                         $js = [IO.File]::ReadAllText($js, [System.Text.Encoding]::UTF8)
                     }
                     else {
 
-                        # make it a string, if it isn't yet
+                        # make it a string, if it isn't yet
                         if ($js -isnot [System.String] -or [string]::IsNullOrWhiteSpace($js)) {
 
                             $js = "$js";
@@ -1837,19 +1872,19 @@ function Invoke-WebbrowserEvaluation {
                         }
                     }
 
-                    # '-Inspect' parameter provided?
+                    # '-Inspect' parameter provided?
                     if ($Inspect -eq $true) {
 
-                        # invoke a debug break-point
+                        # invoke a debug break-point
                         $js = "debugger;`r`n$js"
                     }
 
                     Write-Verbose "Processing: `r`n$($js.Trim())"
 
-                    # convert data object to json, and then again to make it a json string
+                    # convert data object to json, and then again to make it a json string
                     $json = ($reference.data | ConvertTo-Json -Compress -Depth 100 | ConvertTo-Json -Compress -Depth 100);
 
-                    # init result
+                    # init result
                     $result = $null;
                     $ScriptHash = [GenXdev.Helpers.Hash]::FormatBytesAsHexString(
                         [GenXdev.Helpers.Hash]::GetSha256BytesOfString($js));
@@ -1959,21 +1994,21 @@ function Invoke-WebbrowserEvaluation {
 
                         [int] $pollCount = 0;
                         do {
-                            # de-serialize outputed result object
+                            # de-serialize outputed result object
                             $reference = Get-ChromiumSessionReference
                             $result = ($Global:chrome.eval($js) | ConvertFrom-Json).result;
                             Write-Verbose "Got results: $($result | ConvertTo-Json -Compress -Depth 100)"
 
-                            # all good?
+                            # all good?
                             if ($result -is [Object]) {
 
-                                # get actual returned value
+                                # get actual returned value
                                 $result = $result.result;
 
-                                # present?
+                                # present?
                                 if ($result -is [Object]) {
 
-                                    # there was an exception thrown?
+                                    # there was an exception thrown?
                                     if ($result.subtype -eq "error") {
 
                                         # re-throw
@@ -1982,19 +2017,19 @@ function Invoke-WebbrowserEvaluation {
 
                                     $result = $result.value;
 
-                                    # got a data object?
+                                    # got a data object?
                                     if ($result.data -is [PSObject]) {
 
                                         # initialize
                                         $reference.data = @{}
 
-                                        # enumerate properties
+                                        # enumerate properties
                                         $result.data |
                                         Get-Member -ErrorAction SilentlyContinue |
                                         Where-Object -Property MemberType -Like *Property* |
                                         ForEach-Object -ErrorAction SilentlyContinue {
 
-                                            # set in a case-sensitive manner
+                                            # set in a case-sensitive manner
                                             $reference.data."$($PSItem.Name)" = $result.data."$($PSItem.Name)"
                                         }
 
@@ -2020,12 +2055,12 @@ function Invoke-WebbrowserEvaluation {
 
                         if ($AsJob -ne $true) {
 
-                            # result indicate an exception thrown?
+                            # result indicate an exception thrown?
                             if ($result.success -eq $false) {
 
                                 if ($result.returnValue -is [string]) {
 
-                                    # re-throw
+                                    # re-throw
                                     throw $result.returnValue;
                                 }
 
@@ -2152,7 +2187,6 @@ function Set-WebbrowserTabLocation {
 
     Invoke-WebbrowserEvaluation "let old = document.location;document.location = '$Url'; 'Navigating from '+old+' --> \'$Url\''"
 }
-
 
 ##############################################################################################################
 ##############################################################################################################
@@ -2359,47 +2393,10 @@ function Copy-OpenWebbrowserParameters {
     [System.Diagnostics.DebuggerStepThrough()]
 
     param(
-        [string[]] $ParametersToSkip
+        [string[]] $ParametersToSkip = @()
     )
-    try {
 
-        # the name of the command being proxied.
-        [System.String] $CommandName = "Open-Webbrowser";
-
-        # the type of the command being proxied. Valid values include 'Cmdlet' or 'Function'.
-        [System.Management.Automation.CommandTypes] $CommandType = [System.Management.Automation.CommandTypes]::Function;
-
-        # look up the command being proxied.
-        $wrappedCmd = $ExecutionContext.InvokeCommand.GetCommand($CommandName, $CommandType)
-
-        # if the command was not found, throw an appropriate command not found exception.
-        if (-not $wrappedCmd) {
-
-            $PSCmdlet.ThrowCommandNotFoundError($CommandName, $PSCmdlet.MyInvocation.MyCommand.Name)
-        }
-
-        # lookup the command metadata.
-        $metadata = New-Object -TypeName System.Management.Automation.CommandMetadata -ArgumentList $wrappedCmd
-
-        # create dynamic parameters, one for each parameter on the command being proxied.
-        $dynamicDictionary = New-Object -TypeName System.Management.Automation.RuntimeDefinedParameterDictionary
-        foreach ($key in $metadata.Parameters.Keys) {
-
-            if ($ParametersToSkip -contains $key) { continue; }
-
-            $parameter = $metadata.Parameters[$key]
-            $dynamicParameter = New-Object -TypeName System.Management.Automation.RuntimeDefinedParameter -ArgumentList @(
-                $parameter.Name
-                $parameter.ParameterType
-                , $parameter.Attributes
-            )
-            $dynamicDictionary.Add($parameter.Name, $dynamicParameter)
-        }
-        $dynamicDictionary
-    }
-    catch {
-        $PSCmdlet.ThrowTerminatingError($_)
-    }
+    Copy-CommandParameters -CommandName "Open-Webbrowser" -ParametersToSkip $ParametersToSkip
 }
 
 ##############################################################################################################

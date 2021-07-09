@@ -1,11 +1,3 @@
-## Features
-
-## Ideas
-
-## Issues
-
-## Todoos
-
 <hr/>
 
 <img src="powershell.jpg" alt="drawing" width="50%"/>
@@ -160,7 +152,7 @@ PS C:\> ls *.js | et -e
 ````
 ### DEPENDENCIES
 [![WinOS - Windows-10](https://img.shields.io/badge/WinOS-Windows--10--10.0.19041--SP0-brightgreen)](https://www.microsoft.com/en-us/windows/get-windows-10)
-[![GenXdev.Helpers](https://img.shields.io/powershellgallery/v/GenXdev.Helpers.svg?style=flat-square&label=GenXdev.Helpers)](https://www.powershellgallery.com/packages/GenXdev.Helpers/) [![GenXdev.Windows](https://img.shields.io/powershellgallery/v/GenXdev.Windows.svg?style=flat-square&label=GenXdev.Windows)](https://www.powershellgallery.com/packages/GenXdev.Windows/)
+[![GenXdev.Helpers](https://img.shields.io/powershellgallery/v/GenXdev.Helpers.svg?style=flat-square&label=GenXdev.Helpers)](https://www.powershellgallery.com/packages/GenXdev.Helpers/) [![GenXdev.FileSystem](https://img.shields.io/powershellgallery/v/GenXdev.Filesystem.svg?style=flat-square&label=GenXdev.FileSystem)](https://www.powershellgallery.com/packages/GenXdev.FileSystem/) [![GenXdev.Windows](https://img.shields.io/powershellgallery/v/GenXdev.Windows.svg?style=flat-square&label=GenXdev.Windows)](https://www.powershellgallery.com/packages/GenXdev.Windows/)
 
 ### INSTALLATION
 ````PowerShell
@@ -174,7 +166,7 @@ Update-Module
 <br/><hr/><hr/><hr/><hr/><br/>
 ## SYNTAX
 ````PowerShell
-    Open-Webbrowser -> wb
+Open-Webbrowser -> wb
 
         [[-Url] <String[]>]
         [ ([-Edge] [-Chrome] [-Chromium] [-Firefox]) | [-All]]
@@ -182,47 +174,47 @@ Update-Module
         [-NoBrowserExtensions] [-RestoreFocus]
         [-Monitor <Int32>] [-FullScreen]
         [-Left] [-Top] [-Right] [-Bottom] [-Centered]
-        [-ReturnProcess] [<CommonParameters>]
+        [-PassThrough] [<CommonParameters>]
 ````
 ````PowerShell
-    Select-WebbrowserTab -> st
+Select-WebbrowserTab -> st
 
         [[-id] <Int32>] [-Edge] [-Chrome] [<CommonParameters>]
 ````
 ````PowerShell
-    Invoke-WebbrowserEvaluation -> Eval, et
+Invoke-WebbrowserEvaluation -> Eval, et
 
         [[-Scripts] <Object[]>] [-Inspect] [-Edge] [-Chrome] [<CommonParameters>]
 ````
 ````PowerShell
-    Close-WebbrowserTab -> CloseTab, ct
+Close-WebbrowserTab -> CloseTab, ct
         [-Edge] [-Chrome] [<CommonParameters>]
 ````
 ````PowerShell
-    Close-Webbrowser -> wbc
+Close-Webbrowser -> wbc
         [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-IncludeBackgroundProcesses]
         [<CommonParameters>]
 ````
 ````PowerShell
-    Get-Webbrowser
+Get-Webbrowser
 ````
 ````PowerShell
-    Get-DefaultWebbrowser
+Get-DefaultWebbrowser
 ````
 ````PowerShell
-    Show-WebsiteInAllBrowsers [-Url] <String> [<CommonParameters>]
+Show-WebsiteInAllBrowsers [-Url] <String> [<CommonParameters>]
 ````
 ````PowerShell
-    Get-ChromeRemoteDebuggingPort
+Get-ChromeRemoteDebuggingPort
 ````
 ````PowerShell
-    Get-ChromiumRemoteDebuggingPort
+Get-ChromiumRemoteDebuggingPort
 ````
 ````PowerShell
-    Get-EdgeRemoteDebuggingPort
+Get-EdgeRemoteDebuggingPort
 ````
 ````PowerShell
-    Set-RemoteDebuggerPortInBrowserShortcuts
+Set-RemoteDebuggerPortInBrowserShortcuts
 ````
 <br/><hr/><hr/><hr/><hr/><br/>
 # Cmdlets
@@ -235,7 +227,7 @@ Update-Module
 Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome]
                 [-Chromium] [-Firefox] [-All] [-Monitor <Int32>] [-FullScreen]
                 [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions]
-                [-RestoreFocus] [-NewWindow [-ReturnProcess] [<CommonParameters>]
+                [-RestoreFocus] [-NewWindow [-PassThrough] [<CommonParameters>]
 ````
 ### DESCRIPTION
     Opens one or more webbrowsers in a configurable manner, using commandline
@@ -293,7 +285,7 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome]
     Accept pipeline input?       false
     Accept wildcard characters?  false
 -Monitor <Int32>
-    The monitor to use, 0 = default, 1 = secondary, -1 is discard --> -m, -mon
+    The monitor to use, 0 = default, 1 = secondary, -1 is discard, -2 = Configured secondary monitor --> -m, -mon
     Required?                    false
     Position?                    named
     Default value                1
@@ -397,7 +389,7 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome]
     Default value                False
     Accept pipeline input?       false
     Accept wildcard characters?  false
--ReturnProcess [<SwitchParameter>]
+-PassThrough [<SwitchParameter>]
     Required?                    false
     Position?                    named
     Default value                False
@@ -455,7 +447,7 @@ function Open-GoogleQuery {
         [Alias("m", "mon")]
         [parameter(
             Mandatory = $false,
-            HelpMessage = "The monitor to use, 0 = default, -1 is discard"
+            HelpMessage = "The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor"
         )]
         [int] $Monitor = -1
     )
@@ -777,7 +769,7 @@ PARAMETERS
 
 NOTES
 ````PowerShell
-    Requires the Windows 10+ Operating System
+Requires the Windows 10+ Operating System
 
     -------------------------- EXAMPLE 1 --------------------------
 
