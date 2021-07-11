@@ -2338,6 +2338,16 @@ function Get-ChromeRemoteDebuggingPort {
     return $Port;
 }
 ##############################################################################################################
+<#
+.SYNOPSIS
+Returns the configured remote debugging port for Microsoft Edge
+
+.DESCRIPTION
+Returns the configured remote debugging port for Microsoft Edge
+
+.NOTES
+Use $Global:EdgeDebugPort to override default value of 9223
+#>
 function Get-EdgeRemoteDebuggingPort {
     [CmdletBinding()]
 
@@ -2353,6 +2363,16 @@ function Get-EdgeRemoteDebuggingPort {
     return $Port;
 }
 ##############################################################################################################
+<#
+.SYNOPSIS
+Returns the configured remote debugging port for Google Chrome
+
+.DESCRIPTION
+Returns the configured remote debugging port for Google Chrome
+
+.NOTES
+Use $Global:EdgeDebugPort to override default value of 9222
+#>
 function Get-ChromeRemoteDebuggingPort {
     [CmdletBinding()]
 
@@ -2367,6 +2387,13 @@ function Get-ChromeRemoteDebuggingPort {
     return $Port;
 }
 ##############################################################################################################
+<#
+.SYNOPSIS
+Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which ever is the default browser
+
+.DESCRIPTION
+Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which ever is the default browser
+#>
 function Get-ChromiumRemoteDebuggingPort {
     [CmdletBinding()]
 
@@ -2440,6 +2467,13 @@ function Approve-FirefoxDebugging {
 
 ##############################################################################################################
 
+<#
+.SYNOPSIS
+Invokes a script in the current selected webbrowser tab to maximize the video player
+
+.DESCRIPTION
+Invokes a script in the current selected webbrowser tab to maximize the video player
+#>
 function Set-BrowserVideoFullscreen {
 
     [Alias("fsvideo")]

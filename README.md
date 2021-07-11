@@ -1,6 +1,6 @@
 <hr/>
 
-<img src="powershell.jpg" alt="drawing" width="50%"/>
+<img src="powershell.jpg" alt="GenXdev" width="50%"/>
 
 <hr/>
 
@@ -163,621 +163,124 @@ Import-Module "GenXdev.Webbrowser"
 ````PowerShell
 Update-Module
 ````
-<br/><hr/><hr/><hr/><hr/><br/>
-## SYNTAX
-````PowerShell
-Open-Webbrowser -> wb
+<br/><hr/><hr/><br/>
 
-        [[-Url] <String[]>]
-        [ ([-Edge] [-Chrome] [-Chromium] [-Firefox]) | [-All]]
-        ( [-ApplicationMode] | [-Private] | [-NewWindow] )
-        [-NoBrowserExtensions] [-RestoreFocus]
-        [-Monitor <Int32>] [-FullScreen]
-        [-Left] [-Top] [-Right] [-Bottom] [-Centered]
-        [-PassThrough] [<CommonParameters>]
-````
-````PowerShell
-Select-WebbrowserTab -> st
+# Cmdlet Index
+| Command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | aliases&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Description |
+| --- | --- | --- |
+| [Approve-FirefoxDebugging](#Approve-FirefoxDebugging) |  | Changes firefox settings to enable remotedebugging and app-mode startups of firefox |
+| [Close-Webbrowser](#Close-Webbrowser) | wbc | Closes one or more webbrowser instances in a selective manner, using commandline switches |
+| [Close-WebbrowserTab](#Close-WebbrowserTab) | CloseTab, ct | Closes the currently selected webbrowser tab |
+| [Copy-OpenWebbrowserParameters](#Copy-OpenWebbrowserParameters) |  | The dynamic parameter block of a proxy function. This block can be used to copy a proxy function target's parameters, regardless of changes from version to version. |
+| [Get-ChromeRemoteDebuggingPort](#Get-ChromeRemoteDebuggingPort) |  | Returns the configured remote debugging port for Google Chrome |
+| [Get-ChromiumRemoteDebuggingPort](#Get-ChromiumRemoteDebuggingPort) |  | Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which ever is the default browser |
+| [Get-ChromiumSessionReference](#Get-ChromiumSessionReference) |  | Returns a reference that can be used with Select-WebbrowserTab -ByReferenceThis can be usefull when you want to evaluate the webbrowser inside a Job.With this serializable reference, you can pass the webbrowser tab session reference on to the Job commandblock. |
+| [Get-DefaultWebbrowser](#Get-DefaultWebbrowser) |  | Returns an object describing the configured current webbrowser for the current-user. |
+| [Get-EdgeRemoteDebuggingPort](#Get-EdgeRemoteDebuggingPort) |  | Returns the configured remote debugging port for Microsoft Edge |
+| [Get-Webbrowser](#Get-Webbrowser) |  | Returns an collection of objects each describing a installed modern webbrowser |
+| [Invoke-WebbrowserEvaluation](#Invoke-WebbrowserEvaluation) | et, Eval | Runs one or more scripts inside a selected webbrowser tab.You can access 'data' object from within javascript, to synchronize data between PowerShell and the Webbrowser |
+| [Open-Webbrowser](#Open-Webbrowser) | wb | Opens one or more webbrowsers in a configurable manner, using commandline switches |
+| [Select-WebbrowserTab](#Select-WebbrowserTab) | Select-BrowserTab, st | Selects a webbrowser tab for use by the cmdlets 'Invoke-WebbrowserEvaluation -> et, eval', 'Close-WebbrowserTab -> ct' and others |
+| [Set-BrowserVideoFullscreen](#Set-BrowserVideoFullscreen) | fsvideo | Invokes a script in the current selected webbrowser tab to maximize the video player |
+| [Set-RemoteDebuggerPortInBrowserShortcuts](#Set-RemoteDebuggerPortInBrowserShortcuts) |  | Updates all browser shortcuts for current user, to enable the remote debugging port by default |
+| [Set-WebbrowserTabLocation](#Set-WebbrowserTabLocation) | lt, Nav | Navigates current selected tab to specified url |
+| [Show-WebsiteInAllBrowsers](#Show-WebsiteInAllBrowsers) | Show-UrlInAllBrowsers | Will open an url into three different browsers + a incognito window, with a window mosaic layout |
 
-        [[-id] <Int32>] [-Edge] [-Chrome] [<CommonParameters>]
-````
-````PowerShell
-Invoke-WebbrowserEvaluation -> Eval, et
-
-        [[-Scripts] <Object[]>] [-Inspect] [-Edge] [-Chrome] [<CommonParameters>]
-````
-````PowerShell
-Close-WebbrowserTab -> CloseTab, ct
-        [-Edge] [-Chrome] [<CommonParameters>]
-````
-````PowerShell
-Close-Webbrowser -> wbc
-        [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-IncludeBackgroundProcesses]
-        [<CommonParameters>]
-````
-````PowerShell
-Get-Webbrowser
-````
-````PowerShell
-Get-DefaultWebbrowser
-````
-````PowerShell
-Show-WebsiteInAllBrowsers [-Url] <String> [<CommonParameters>]
-````
-````PowerShell
-Get-ChromeRemoteDebuggingPort
-````
-````PowerShell
-Get-ChromiumRemoteDebuggingPort
-````
-````PowerShell
-Get-EdgeRemoteDebuggingPort
-````
-````PowerShell
-Set-RemoteDebuggerPortInBrowserShortcuts
-````
-<br/><hr/><hr/><hr/><hr/><br/>
+<br/><hr/><hr/><br/>
 # Cmdlets
-### NAME
-    Open-Webbrowser
+## Approve-FirefoxDebugging
+````PowerShell
+Approve-FirefoxDebugging
+````
 ### SYNOPSIS
-    Opens one or more webbrowser instances
+    Changes firefox settings to enable remotedebugging and app-mode startups of firefox
 ### SYNTAX
 ````PowerShell
-Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome]
-                [-Chromium] [-Firefox] [-All] [-Monitor <Int32>] [-FullScreen]
-                [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions]
-                [-RestoreFocus] [-NewWindow [-PassThrough] [<CommonParameters>]
+Approve-FirefoxDebugging [<CommonParameters>]
 ````
 ### DESCRIPTION
-    Opens one or more webbrowsers in a configurable manner, using commandline
-    switches
+    Changes firefox settings to enable remotedebugging and app-mode startups of firefox
 ### PARAMETERS
-````
--Url <String[]>
-    The url to open
-    Required?                    false
-    Position?                    1
-    Default value
-    Accept pipeline input?       true (ByValue)
-    Accept wildcard characters?  false
--Private [<SwitchParameter>]
-    Opens in incognito-/in-private browsing- mode
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--Edge [<SwitchParameter>]
-    Open in Microsoft Edge --> -e
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--Chrome [<SwitchParameter>]
-    Open in Google Chrome --> -ch
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--Chromium [<SwitchParameter>]
-    Open in Microsoft Edge or Google Chrome, depending on what the default
-    browser is --> -c
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--Firefox [<SwitchParameter>]
-    Open in Firefox --> -ff
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--All [<SwitchParameter>]
-    Open in all registered modern browsers
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--Monitor <Int32>
-    The monitor to use, 0 = default, 1 = secondary, -1 is discard, -2 = Configured secondary monitor --> -m, -mon
-    Required?                    false
-    Position?                    named
-    Default value                1
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--FullScreen [<SwitchParameter>]
-    Open in fullscreen mode --> -fs
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--Width <Int32>
-    The initial width of the webbrowser window
-    Required?                    false
-    Position?                    named
-    Default value                0
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--Height <Int32>
-    The initial height of the webbrowser window
-    Required?                    false
-    Position?                    named
-    Default value                0
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--X <Int32>
-    The initial X position of the webbrowser window
-    Required?                    false
-    Position?                    named
-    Default value                0
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--Y <Int32>
-    The initial Y position of the webbrowser window
-    Required?                    false
-    Position?                    named
-    Default value                0
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--Left [<SwitchParameter>]
-    Place browser window on the left side of the screen
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--Right [<SwitchParameter>]
-    Place browser window on the right side of the screen
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--Top [<SwitchParameter>]
-    Place browser window on the top side of the screen
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--Bottom [<SwitchParameter>]
-    Place browser window on the bottom side of the screen
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--Centered [<SwitchParameter>]
-    Place browser window in the center of the screen
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--ApplicationMode [<SwitchParameter>]
-    Hide the browser controls --> -a, -app, -appmode
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--NoBrowserExtensions [<SwitchParameter>]
-    Prevent loading of browser extensions --> -de, -ne
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--RestoreFocus [<SwitchParameter>]
-    Restore PowerShell window focus --> -bg
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--NewWindow [<SwitchParameter>]
-    Do not re-use existing browser window, instead, create a new one -> nw
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--PassThrough [<SwitchParameter>]
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
-
-<CommonParameters>
-    This cmdlet supports the common parameters: Verbose, Debug,
-    ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-    OutBuffer, PipelineVariable, and OutVariable. For more information, see
-    about_CommonParameters
-    (https://go.microsoft.com/fwlink/?LinkID=113216).
-````
-### NOTES
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+<br/><hr/><hr/><br/>
+## Close-Webbrowser
 ````PowerShell
-Requires the Windows 10+ Operating System
-
-    This cmdlet was mend to be used, interactively.
-    It performs some strange tricks to position windows, including
-    invoking alt-tab keystrokes.
-    It is best not to touch the keyboard or mouse, while it is doing that.
-
-    For fast launches of multple urls:
-    SET    : -Monitor -1
-    AND    : DO NOT use any of these switches: -X, -Y, -Left, -Right, -Top, -Bottom or -RestoreFocus
-
-    For browsers that are not installed on the system, no actions may be
-    performed or errors occur - at all.
--------------------------- EXAMPLE 1 --------------------------
-PS C:\> Open-Webbrowser -Chrome -Left -Top -Url "https://genxdev.net/"
-PS C:\> @("https://genxdev.net/", "https://github.com/renevaessen/") | Open-Webbrowser
-
--------------------------- EXAMPLE 2 --------------------------
-
-You can use the Open-Webbrowser cmdlet as a template, like so:
-
-function Open-GoogleQuery {
-
-    [CmdletBinding()]
-    [Alias("q")]
-
-    Param(
-        [Alias("q", "Value", "Name", "Text")]
-        [parameter(
-            Mandatory = $true,
-            Position = 0,
-            ValueFromRemainingArguments = $true,
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true
-        )]
-        [string[]] $Queries,
-        ############################################################################
-        # change default from default secondary monitor 1, to no specific monitor -1
-        # this will speed up launching multiple webbrowsers at once
-        [Alias("m", "mon")]
-        [parameter(
-            Mandatory = $false,
-            HelpMessage = "The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor"
-        )]
-        [int] $Monitor = -1
-    )
-
-    DynamicParam {
-
-        Copy-OpenWebbrowserParameters -ParametersToSkip "Url", "Monitor"
-    }
-
-    Process {
-
-        $PSBoundParameters.Remove("Queries") | Out-Null;
-        $PSBoundParameters.Add("Url", "Url") | Out-Null;
-
-        foreach ($Query in $Queries) {
-
-            $PSBoundParameters["Url"] = (
-              "https://www.google.com/search?q=$([Uri]::EscapeUriString($Query))"
-            );
-
-            Open-Webbrowser @PSBoundParameters
-        }
-    }
-}
+Close-Webbrowser                     --> wbc
 ````
-<br/><hr/><hr/><hr/><hr/><br/>
-### NAME
-    Select-WebbrowserTab
 ### SYNOPSIS
-    Selects a webbrowser tab
+    Closes one or more webbrowser instances
 ### SYNTAX
 ````PowerShell
-Select-WebbrowserTab [[-id] <Int32>] [-Edge] [-Chrome] [<CommonParameters>]
-
-Select-WebbrowserTab [-Name] <String> [<CommonParameters>]
-
-Select-WebbrowserTab -ByReference <Hashtable> [<CommonParameters>]
+Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-IncludeBackgroundProcesses] [<CommonParameters>]
 ````
 ### DESCRIPTION
-    Selects a webbrowser tab for use by the cmdlets
-    'Invoke-WebbrowserEvaluation -> et, eval', 'Close-WebbrowserTab -> ct' and
-    others
+    Closes one or more webbrowser instances in a selective manner, using commandline switches
 ### PARAMETERS
-````
--id <Int32>
-    When '-Id' is not supplied, a list of available webbrowser tabs is
-    shown, where the right value can be found
-    Required?                    false
-    Position?                    1
-    Default value                -1
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--Name <String>
-
-    Required?                    true
-    Position?                    1
-    Default value
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--Edge [<SwitchParameter>]
-    Force to use 'Microsoft Edge' webbrowser for selection
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--Chrome [<SwitchParameter>]
-    Force to use 'Google Chrome' webbrowser for selection
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--ByReference <Hashtable>
-    Select tab using reference obtained with Get-ChromiumSessionReference
-    Required?                    true
-    Position?                    1
-    Default value
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
-
-<CommonParameters>
-    This cmdlet supports the common parameters: Verbose, Debug,
-    ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-    OutBuffer, PipelineVariable, and OutVariable. For more information, see
-    about_CommonParameters
-    (https://go.microsoft.com/fwlink/?LinkID=113216).
-````
+    -Edge [<SwitchParameter>]
+        Closes Microsoft Edge --> -e
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -Chrome [<SwitchParameter>]
+        Closes Google Chrome --> -ch
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -Chromium [<SwitchParameter>]
+        Closes Microsoft Edge or Google Chrome, depending on what the default browser is --> -c
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -Firefox [<SwitchParameter>]
+        Closes Firefox --> -ff
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -All [<SwitchParameter>]
+        Closes all registered modern browsers -> -a
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -IncludeBackgroundProcesses [<SwitchParameter>]
+        Closes all instances of the webbrowser, including background tasks and services
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 ### NOTES
 ````PowerShell
-Requires the Windows 10+ Operating System
-
+    Requires the Windows 10+ Operating System
 -------------------------- EXAMPLE 1 --------------------------
-PS C:\> Select-WebbrowserTab
-PS C:\> Select-WebbrowserTab 3
-PS C:\> Select-WebbrowserTab -Chrome 14
-PS C:\> st -ch 14
+PS C:\> Close-Webbrowser -Chrome
+PS C:\> Close-Webbrowser -Chrome -FireFox
+PS C:\> Close-Webbrowser -All
+PS C:\> wbc -a
 ````
-<br/><hr/><hr/><hr/><hr/><br/>
-### NAME
-    Invoke-WebbrowserEvaluation
-### SYNOPSIS
-    Runs one or more scripts inside a selected webbrowser tab.
-### SYNTAX
+<br/><hr/><hr/><br/>
+## Close-WebbrowserTab
 ````PowerShell
-Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [<CommonParameters>]
+Close-WebbrowserTab                  --> CloseTab, ct
 ````
-### DESCRIPTION
-    Runs one or more scripts inside a selected webbrowser tab.
-    You can access 'data' object from within javascript, to synchronize data
-    between PowerShell and the Webbrowser.
-### PARAMETERS
-````
--Scripts <Object[]>
-    A string containing javascript, a url or a file reference to a javascript file
-    Required?                    false
-    Position?                    1
-    Default value
-    Accept pipeline input?       true (ByValue, ByPropertyName)
-    Accept wildcard characters?  false
--Inspect [<SwitchParameter>]
-    Will cause the developer tools of the webbrowser to break, before executing the scripts, allowing you to debug it.
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
-<CommonParameters>
-    This cmdlet supports the common parameters: Verbose, Debug,
-    ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-    OutBuffer, PipelineVariable, and OutVariable. For more information, see
-    about_CommonParameters
-    (https://go.microsoft.com/fwlink/?LinkID=113216).
-````
-### NOTES
-````PowerShell
-Requires the Windows 10+ Operating System
-
--------------------------- EXAMPLE 1 --------------------------
-PS C:\> Invoke-WebbrowserEvaluation "document.title = 'hello world'"
-
--------------------------- EXAMPLE 2 --------------------------
-PS C:\>
-    # Synchronizing data
-    Select-WebbrowserTab;
-    $Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
-
-    [int] $number = Invoke-WebbrowserEvaluation "
-
-        document.body.innerHTML = JSON.stringify(data.files);
-        data.title = document.title;
-        return 123;
-    ";
-
-    Write-Host "
-        Document title : $($Global:Data.title)
-        return value   : $Number
-    ";
-
--------------------------- EXAMPLE 3 --------------------------
-PS C:\>
-    # Support for promises
-    Select-WebbrowserTab;
-    Invoke-WebbrowserEvaluation "
-        let myList = [];
-        return new Promise((resolve) => {
-            let i = 0;
-            let a = setInterval(() => {
-                myList.push(++i);
-                if (i == 10) {
-                    clearInterval(a);
-                    resolve(myList);
-                }
-            }, 1000);
-        });
-    "
--------------------------- EXAMPLE 4 --------------------------
-PS C:\>
-
-# Support for promises and more
-
-# this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
-# beware, not all websites use indexedDb, it could return an empty set
-
-Select-WebbrowserTab;
-Set-WebbrowserTabLocation "https://www.youtube.com/"
-Start-Sleep 3
-$AllIndexedDbData = Invoke-WebbrowserEvaluation "
-    // enumerate all indexedDB databases
-    for (let db of await indexedDB.databases()) {
-
-        // request to open database
-        let openRequest = await indexedDB.open(db.name);
-
-        // wait for eventhandlers to be called
-        await new Promise((resolve,reject) => {
-            openRequest.onsuccess = resolve;
-            openRequest.onerror = reject
-        });
-
-        // obtain reference
-        let openedDb = openRequest.result;
-
-        // initialize result
-        let result = { DatabaseName: db.name, Version: db.version, Stores: [] }
-
-        // itterate object store names
-        for (let i = 0; i < openedDb.objectStoreNames.length; i++) {
-
-            // reference
-            let storeName = openedDb.objectStoreNames[i];
-
-            // start readonly transaction
-            let tr = openedDb.transaction(storeName);
-
-            // get objectstore handle
-            let store = tr.objectStore(storeName);
-
-            // request all data
-            let getRequest = store.getAll();
-
-            // await result
-            await new Promise((resolve,reject) => {
-                getRequest.onsuccess = resolve;
-                getRequest.onerror = reject;
-            });
-
-            // add result
-            result.Stores.push({ StoreName: storeName, Data: getRequest.result});
-        }
-
-        // stream this database contents to the PowerShell pipeline, and continue
-        yield result;
-    }
-";
-
-$AllIndexedDbData | Out-Host
-
--------------------------- EXAMPLE 5 --------------------------
-
-PS C:\>
-    # Support for yielded pipeline results
-    Select-WebbrowserTab;
-    Invoke-WebbrowserEvaluation "
-
-        for (let i = 0; i < 10; i++) {
-
-            await (new Promise((resolve) => setTimeout(resolve, 1000)));
-
-            yield i;
-        }
-    ";
-
--------------------------- EXAMPLE 6 --------------------------
-
-PS C:\> Get-ChildItem *.js | Invoke-WebbrowserEvaluation -Edge
-
--------------------------- EXAMPLE 7 --------------------------
-
-PS C:\> ls *.js | et -e
-
-````
-<br/><hr/><hr/><hr/><hr/><br/>
-
-### NAME
-    Get-ChromeRemoteDebuggingPort
-### SYNTAX
-````PowerShell
-Get-ChromeRemoteDebuggingPort
-````
-### PARAMETERS
-````
-None
-````
-<br/><hr/><hr/><hr/><hr/><br/>
-### NAME
-    Get-ChromiumRemoteDebuggingPort
-### SYNTAX
-````PowerShell
-Get-ChromiumRemoteDebuggingPort
-````
-### PARAMETERS
-````
-None
-````
-<br/><hr/><hr/><hr/><hr/><br/>
-
-NAME
-    Set-WebbrowserTabLocation
-
-SYNOPSIS
-    Navigates current selected tab to specified url
-
-SYNTAX
-````PowerShell
-Set-WebbrowserTabLocation [-Url] <String> [<CommonParameters>]
-````
-DESCRIPTION
-    Navigates current selected tab to specified url
-
-PARAMETERS
-````
--Url <String>
-    The Url the browsertab should navigate too
-
-    Required?                    true
-    Position?                    1
-    Default value
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
-
-<CommonParameters>
-    This cmdlet supports the common parameters: Verbose, Debug,
-    ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-    OutBuffer, PipelineVariable, and OutVariable. For more information, see
-    about_CommonParameters
-    (https://go.microsoft.com/fwlink/?LinkID=113216).
-````
-
-NOTES
-````PowerShell
-Requires the Windows 10+ Operating System
-
-    -------------------------- EXAMPLE 1 --------------------------
-
-    PS C:\> Set-WebbrowserTabLocation "https://github.com/microsoft"
-````
-<br/><hr/><hr/><hr/><hr/><br/>
-### NAME
-    Close-WebbrowserTab
 ### SYNOPSIS
     Closes the currently selected webbrowser tab
 ### SYNTAX
@@ -787,120 +290,111 @@ Close-WebbrowserTab [<CommonParameters>]
 ### DESCRIPTION
     Closes the currently selected webbrowser tab
 ### PARAMETERS
-````
-<CommonParameters>
-    This cmdlet supports the common parameters: Verbose, Debug,
-    ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-    OutBuffer, PipelineVariable, and OutVariable. For more information, see
-    about_CommonParameters
-    (https://go.microsoft.com/fwlink/?LinkID=113216).
-````
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 ### NOTES
 ````PowerShell
-Requires the Windows 10+ Operating System
-
-
+    Requires the Windows 10+ Operating System
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> Close-WebbrowserTab
 PS C:\> st; ct;
 ````
-<br/><hr/><hr/><hr/><hr/><br/>
-### NAME
-    Get-EdgeRemoteDebuggingPort
-### SYNTAX
+<br/><hr/><hr/><br/>
+## Copy-OpenWebbrowserParameters
 ````PowerShell
-Get-EdgeRemoteDebuggingPort
+Copy-OpenWebbrowserParameters
 ````
-### PARAMETERS
-````
-None
-````
-<br/><hr/><hr/><hr/><hr/><br/>
-
--------------------------- EXAMPLE 1 --------------------------
-PS C:\> Close-WebbrowserTab
-PS C:\> st; ct;
-````
-<br/><hr/><hr/><hr/><hr/><br/>
-### NAME
-    Close-Webbrowser
 ### SYNOPSIS
-    Closes one or more webbrowser instances
+    Proxy function dynamic parameter block for the Open-Webbrowser cmdlet
 ### SYNTAX
 ````PowerShell
-Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All]
-[-IncludeBackgroundProcesses] [<CommonParameters>]
+Copy-OpenWebbrowserParameters [[-ParametersToSkip] <String[]>] [<CommonParameters>]
 ````
 ### DESCRIPTION
-    Closes one or more webbrowser instances in a selective manner, using
-    commandline switches
+    The dynamic parameter block of a proxy function. This block can be used to copy a proxy function target's parameters, regardless of changes from version to version.
 ### PARAMETERS
+    -ParametersToSkip <String[]>
+        Required?                    false
+        Position?                    1
+        Default value                @()
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+<br/><hr/><hr/><br/>
+## Get-ChromeRemoteDebuggingPort
+````PowerShell
+Get-ChromeRemoteDebuggingPort
 ````
--Edge [<SwitchParameter>]
-    Closes Microsoft Edge --> -e
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--Chrome [<SwitchParameter>]
-    Closes Google Chrome --> -ch
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--Chromium [<SwitchParameter>]
-    Closes Microsoft Edge or Google Chrome, depending on what the default
-    browser is --> -c
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--Firefox [<SwitchParameter>]
-    Closes Firefox --> -ff
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--All [<SwitchParameter>]
-    Closes all registered modern browsers -> -a
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
--IncludeBackgroundProcesses [<SwitchParameter>]
-    Closes all instances of the webbrowser, including background tasks and
-    services
-    Required?                    false
-    Position?                    named
-    Default value                False
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
-<CommonParameters>
-    This cmdlet supports the common parameters: Verbose, Debug,
-    ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-    OutBuffer, PipelineVariable, and OutVariable. For more information, see
-    about_CommonParameters
-    (https://go.microsoft.com/fwlink/?LinkID=113216).
+### SYNOPSIS
+    Returns the configured remote debugging port for Google Chrome
+### SYNTAX
+````PowerShell
+Get-ChromeRemoteDebuggingPort [<CommonParameters>]
 ````
+### DESCRIPTION
+    Returns the configured remote debugging port for Google Chrome
+### PARAMETERS
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 ### NOTES
 ````PowerShell
-Requires the Windows 10+ Operating System
-
-
--------------------------- EXAMPLE 1 --------------------------
-PS C:\> Close-Webbrowser -Chrome
-PS C:\> Close-Webbrowser -Chrome -FireFox
-PS C:\> Close-Webbrowser -All
-PS C:\> wbc -a
+Use $Global:EdgeDebugPort to override default value of 9222
 ````
-<br/><hr/><hr/><hr/><hr/><br/>
-### NAME
-    Get-DefaultWebbrowser
+<br/><hr/><hr/><br/>
+## Get-ChromiumRemoteDebuggingPort
+````PowerShell
+Get-ChromiumRemoteDebuggingPort
+````
+### SYNOPSIS
+    Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which ever is the default browser
+### SYNTAX
+````PowerShell
+Get-ChromiumRemoteDebuggingPort [<CommonParameters>]
+````
+### DESCRIPTION
+    Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which ever is the default browser
+### PARAMETERS
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+<br/><hr/><hr/><br/>
+## Get-ChromiumSessionReference
+````PowerShell
+Get-ChromiumSessionReference
+````
+### SYNOPSIS
+    Returns a reference that can be used with Select-WebbrowserTab -ByReference
+### SYNTAX
+````PowerShell
+Get-ChromiumSessionReference [<CommonParameters>]
+````
+### DESCRIPTION
+    Returns a reference that can be used with Select-WebbrowserTab -ByReference
+    This can be usefull when you want to evaluate the webbrowser inside a Job.
+    With this serializable reference, you can pass the webbrowser tab session reference on to the Job commandblock.
+### PARAMETERS
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+<br/><hr/><hr/><br/>
+## Get-DefaultWebbrowser
+````PowerShell
+Get-DefaultWebbrowser
+````
 ### SYNOPSIS
     Returns the configured current webbrowser
 ### SYNTAX
@@ -908,29 +402,48 @@ PS C:\> wbc -a
 Get-DefaultWebbrowser [<CommonParameters>]
 ````
 ### DESCRIPTION
-    Returns an object describing the configured current webbrowser for the
-    current-user.
+    Returns an object describing the configured current webbrowser for the current-user.
 ### PARAMETERS
-````
-<CommonParameters>
-    This cmdlet supports the common parameters: Verbose, Debug,
-    ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-    OutBuffer, PipelineVariable, and OutVariable. For more information, see
-    about_CommonParameters
-    (https://go.microsoft.com/fwlink/?LinkID=113216).
-````
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 ### NOTES
 ````PowerShell
-Requires the Windows 10+ Operating System
-
-
+    Requires the Windows 10+ Operating System
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> & (Get-DefaultWebbrowser).Path https://www.github.com/
 PS C:\> Get-DefaultWebbrowser | Format-List
 ````
-<br/><hr/><hr/><hr/><hr/><br/>
-### NAME
-    Get-Webbrowser
+<br/><hr/><hr/><br/>
+## Get-EdgeRemoteDebuggingPort
+````PowerShell
+Get-EdgeRemoteDebuggingPort
+````
+### SYNOPSIS
+    Returns the configured remote debugging port for Microsoft Edge
+### SYNTAX
+````PowerShell
+Get-EdgeRemoteDebuggingPort [<CommonParameters>]
+````
+### DESCRIPTION
+    Returns the configured remote debugging port for Microsoft Edge
+### PARAMETERS
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+### NOTES
+````PowerShell
+Use $Global:EdgeDebugPort to override default value of 9223
+````
+<br/><hr/><hr/><br/>
+## Get-Webbrowser
+````PowerShell
+Get-Webbrowser
+````
 ### SYNOPSIS
     Returns a collection of installed modern webbrowsers
 ### SYNTAX
@@ -938,59 +451,516 @@ PS C:\> Get-DefaultWebbrowser | Format-List
 Get-Webbrowser [<CommonParameters>]
 ````
 ### DESCRIPTION
-    Returns an collection of objects each describing a installed modern
-    webbrowser
+    Returns an collection of objects each describing a installed modern webbrowser
 ### PARAMETERS
-````
-<CommonParameters>
-    This cmdlet supports the common parameters: Verbose, Debug,
-    ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-    OutBuffer, PipelineVariable, and OutVariable. For more information, see
-    about_CommonParameters
-    (https://go.microsoft.com/fwlink/?LinkID=113216).
-````
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 ### NOTES
 ````PowerShell
-Requires the Windows 10+ Operating System
-
+    Requires the Windows 10+ Operating System
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> Get-Webbrowser | Foreach-Object { & $PSItem.Path https://www.github.com/ }
 PS C:\> Get-Webbrowser | select Name, Description | Format-Table
 PS C:\> Get-Webbrowser | select Name, Path | Format-Table
 ````
-<br/><hr/><hr/><hr/><hr/><br/>
-### NAME
-    Set-RemoteDebuggerPortInBrowserShortcuts
+<br/><hr/><hr/><br/>
+## Invoke-WebbrowserEvaluation
+````PowerShell
+Invoke-WebbrowserEvaluation          --> et, Eval
+````
 ### SYNOPSIS
-    Updates all browser shortcuts for current user, to enable the remote
-    debugging port by default
+    Runs one or more scripts inside a selected webbrowser tab.
+### SYNTAX
+````PowerShell
+Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [-NoAutoSelectTab] [<CommonParameters>]
+````
+### DESCRIPTION
+    Runs one or more scripts inside a selected webbrowser tab.
+    You can access 'data' object from within javascript, to synchronize data between PowerShell and the Webbrowser
+### PARAMETERS
+    -Scripts <Object[]>
+        A string containing javascript, a url or a file reference to a javascript file
+        Required?                    false
+        Position?                    1
+        Default value                
+        Accept pipeline input?       true (ByValue, ByPropertyName)
+        Accept wildcard characters?  false
+    -Inspect [<SwitchParameter>]
+        Will cause the developer tools of the webbrowser to break, before executing the scripts, allowing you to debug it
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -AsJob [<SwitchParameter>]
+        Will execute the evaluation as a new background job.
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -NoAutoSelectTab [<SwitchParameter>]
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+### NOTES
+````PowerShell
+    Requires the Windows 10+ Operating System
+-------------------------- EXAMPLE 1 --------------------------
+PS C:\> 
+Invoke-WebbrowserEvaluation "document.title = 'hello world'"
+-------------------------- EXAMPLE 2 --------------------------
+PS C:\> 
+# Synchronizing data
+Select-WebbrowserTab;
+$Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
+[int] $number = Invoke-WebbrowserEvaluation "
+    document.body.innerHTML = JSON.stringify(data.files);
+    data.title = document.title;
+    return 123;
+";
+Write-Host "
+    Document title : $($Global:Data.title)
+    return value   : $Number
+";
+-------------------------- EXAMPLE 3 --------------------------
+PS C:\> 
+# Support for promises
+Select-WebbrowserTab;
+Invoke-WebbrowserEvaluation "
+    let myList = [];
+    return new Promise((resolve) => {
+        let i = 0;
+        let a = setInterval(() => {
+            myList.push(++i);
+            if (i == 10) {
+                clearInterval(a);
+                resolve(myList);
+            }
+        }, 1000);
+    });
+"
+-------------------------- EXAMPLE 4 --------------------------
+PS C:\> 
+# Support for promises and more
+# this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
+# beware, not all websites use indexedDb, it could return an empty set
+Select-WebbrowserTab;
+Set-WebbrowserTabLocation "https://www.youtube.com/"
+Start-Sleep 3
+$AllIndexedDbData = Invoke-WebbrowserEvaluation "
+    // enumerate all indexedDB databases
+    for (let db of await indexedDB.databases()) {
+        // request to open database
+        let openRequest = await indexedDB.open(db.name);
+        // wait for eventhandlers to be called
+        await new Promise((resolve,reject) => {
+            openRequest.onsuccess = resolve;
+            openRequest.onerror = reject
+        });
+        // obtain reference
+        let openedDb = openRequest.result;
+        // initialize result
+        let result = { DatabaseName: db.name, Version: db.version, Stores: [] }
+        // itterate object store names
+        for (let i = 0; i < openedDb.objectStoreNames.length; i++) {
+            // reference
+            let storeName = openedDb.objectStoreNames[i];
+            // start readonly transaction
+            let tr = openedDb.transaction(storeName);
+            // get objectstore handle
+            let store = tr.objectStore(storeName);
+            // request all data
+            let getRequest = store.getAll();
+            // await result
+            await new Promise((resolve,reject) => {
+                getRequest.onsuccess = resolve;
+                getRequest.onerror = reject;
+            });
+            // add result
+            result.Stores.push({ StoreName: storeName, Data: getRequest.result});
+        }
+        // stream this database contents to the PowerShell pipeline, and continue
+        yield result;
+    }
+";
+$AllIndexedDbData | Out-Host
+-------------------------- EXAMPLE 5 --------------------------
+PS C:\> 
+# Support for yielded pipeline results
+Select-WebbrowserTab;
+Invoke-WebbrowserEvaluation "
+    for (let i = 0; i < 10; i++) {
+        await (new Promise((resolve) => setTimeout(resolve, 1000)));
+        yield i;
+    }
+";
+-------------------------- EXAMPLE 6 --------------------------
+PS C:\> Get-ChildItem *.js | Invoke-WebbrowserEvaluation -Edge
+-------------------------- EXAMPLE 7 --------------------------
+PS C:\> ls *.js | et -e
+````
+<br/><hr/><hr/><br/>
+## Open-Webbrowser
+````PowerShell
+Open-Webbrowser                      --> wb
+````
+### SYNOPSIS
+    Opens one or more webbrowser instances
+### SYNTAX
+````PowerShell
+Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Monitor <Int32>] [-FullScreen] [-Width <Int32>] [-Height <Int32>] 
+[-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-RestoreFocus] [-NewWindow] [-PassThrough] 
+[<CommonParameters>]
+````
+### DESCRIPTION
+    Opens one or more webbrowsers in a configurable manner, using commandline switches
+### PARAMETERS
+    -Url <String[]>
+        The url to open
+        Required?                    false
+        Position?                    1
+        Default value                
+        Accept pipeline input?       true (ByValue, ByPropertyName)
+        Accept wildcard characters?  false
+    -Private [<SwitchParameter>]
+        Opens in incognito-/in-private browsing- mode
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -Edge [<SwitchParameter>]
+        Open in Microsoft Edge --> -e
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -Chrome [<SwitchParameter>]
+        Open in Google Chrome --> -ch
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -Chromium [<SwitchParameter>]
+        Open in Microsoft Edge or Google Chrome, depending on what the default browser is --> -c
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -Firefox [<SwitchParameter>]
+        Open in Firefox --> -ff
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -All [<SwitchParameter>]
+        Open in all registered modern browsers
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -Monitor <Int32>
+        The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to `Global:DefaultSecondaryMonitor or 1 if not found --> -m, -mon
+        Required?                    false
+        Position?                    named
+        Default value                -2
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -FullScreen [<SwitchParameter>]
+        Open in fullscreen mode --> -fs
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -Width <Int32>
+        The initial width of the webbrowser window
+        Required?                    false
+        Position?                    named
+        Default value                -1
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -Height <Int32>
+        The initial height of the webbrowser window
+        Required?                    false
+        Position?                    named
+        Default value                -1
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -X <Int32>
+        The initial X position of the webbrowser window
+        Required?                    false
+        Position?                    named
+        Default value                -1
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -Y <Int32>
+        The initial Y position of the webbrowser window
+        Required?                    false
+        Position?                    named
+        Default value                -1
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -Left [<SwitchParameter>]
+        Place browser window on the left side of the screen
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -Right [<SwitchParameter>]
+        Place browser window on the right side of the screen
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -Top [<SwitchParameter>]
+        Place browser window on the top side of the screen
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -Bottom [<SwitchParameter>]
+        Place browser window on the bottom side of the screen
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -Centered [<SwitchParameter>]
+        Place browser window in the center of the screen
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -ApplicationMode [<SwitchParameter>]
+        Hide the browser controls --> -a, -app, -appmode
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -NoBrowserExtensions [<SwitchParameter>]
+        Prevent loading of browser extensions --> -de, -ne
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -RestoreFocus [<SwitchParameter>]
+        Restore PowerShell window focus --> -bg
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -NewWindow [<SwitchParameter>]
+        Do not re-use existing browser window, instead, create a new one -> nw
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -PassThrough [<SwitchParameter>]
+        Returns a [System.Diagnostics.Process] object of the browserprocess
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+### NOTES
+````PowerShell
+    Requires the Windows 10+ Operating System
+    This cmdlet was mend to be used, interactively.
+    It performs some strange tricks to position windows, including invoking alt-tab keystrokes.
+    It is best not to touch the keyboard or mouse, while it is doing that.
+    For fast launches of multple urls:
+    SET    : -Monitor -1
+    AND    : DO NOT use any of these switches: -X, -Y, -Left, -Right, -Top, -Bottom or -RestoreFocus
+    For browsers that are not installed on the system, no actions may be performed or errors occur - at all.
+-------------------------- EXAMPLE 1 --------------------------
+PS C:\> url from parameter
+PS C:\> Open-Webbrowser -Chrome -Left -Top -Url "https://genxdev.net/"
+urls from pipeline
+PS C:\> @("https://genxdev.net/", "https://github.com/renevaessen/") | Open-Webbrowser
+re-position already open window to primary monitor on right side
+PS C:\> Open-Webbrowser -Monitor 0 -right
+re-position already open window to secondary monitor, full screen
+PS C:\> Open-Webbrowser -Monitor 0
+re-position already open window to secondary monitor, left top
+PS C:\> Open-Webbrowser -Monitor 0 -Left -Top
+PS C:\> wb -m 0 -left -top
+````
+<br/><hr/><hr/><br/>
+## Select-WebbrowserTab
+````PowerShell
+Select-WebbrowserTab                 --> Select-BrowserTab, st
+````
+### SYNOPSIS
+    Selects a webbrowser tab
+### SYNTAX
+````PowerShell
+Select-WebbrowserTab [[-id] <Int32>] [-Edge] [-Chrome] [<CommonParameters>]
+Select-WebbrowserTab [-Name] <String> [<CommonParameters>]
+Select-WebbrowserTab -ByReference <Hashtable> [<CommonParameters>]
+````
+### DESCRIPTION
+    Selects a webbrowser tab for use by the cmdlets 'Invoke-WebbrowserEvaluation -> et, eval', 'Close-WebbrowserTab -> ct' and others
+### PARAMETERS
+    -id <Int32>
+        When '-Id' is not supplied, a list of available webbrowser tabs is shown, where the right value can be found
+        Required?                    false
+        Position?                    1
+        Default value                -1
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -Name <String>
+        Selects the first entry that contains given name in its url
+        Required?                    true
+        Position?                    1
+        Default value                
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -Edge [<SwitchParameter>]
+        Force to use 'Microsoft Edge' webbrowser for selection
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -Chrome [<SwitchParameter>]
+        Force to use 'Google Chrome' webbrowser for selection
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -ByReference <Hashtable>
+        Select tab using reference obtained with Get-ChromiumSessionReference
+        Required?                    true
+        Position?                    named
+        Default value                
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+### NOTES
+````PowerShell
+    Requires the Windows 10+ Operating System
+-------------------------- EXAMPLE 1 --------------------------
+PS C:\> Select-WebbrowserTab
+PS C:\> Select-WebbrowserTab 3
+PS C:\> Select-WebbrowserTab -Chrome 14
+PS C:\> st -ch 14
+````
+<br/><hr/><hr/><br/>
+## Set-BrowserVideoFullscreen
+````PowerShell
+Set-BrowserVideoFullscreen           --> fsvideo
+````
+### SYNOPSIS
+    Invokes a script in the current selected webbrowser tab to maximize the video player
+### SYNTAX
+````PowerShell
+Set-BrowserVideoFullscreen [<CommonParameters>]
+````
+### DESCRIPTION
+    Invokes a script in the current selected webbrowser tab to maximize the video player
+### PARAMETERS
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+<br/><hr/><hr/><br/>
+## Set-RemoteDebuggerPortInBrowserShortcuts
+````PowerShell
+Set-RemoteDebuggerPortInBrowserShortcuts
+````
+### SYNOPSIS
+    Updates all browser shortcuts for current user, to enable the remote debugging port by default
 ### SYNTAX
 ````PowerShell
 Set-RemoteDebuggerPortInBrowserShortcuts [<CommonParameters>]
 ````
 ### DESCRIPTION
-    Updates all browser shortcuts for current user, to enable the remote
-    debugging port by default
+    Updates all browser shortcuts for current user, to enable the remote debugging port by default
 ### PARAMETERS
-````
-<CommonParameters>
-    This cmdlet supports the common parameters: Verbose, Debug,
-    ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-    OutBuffer, PipelineVariable, and OutVariable. For more information, see
-    about_CommonParameters
-    (https://go.microsoft.com/fwlink/?LinkID=113216).
-````
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 ### NOTES
 ````PowerShell
 Requires the Windows 10+ Operating System
-
 ````
-<br/><hr/><hr/><hr/><hr/><br/>
-### NAME
-    Show-WebsiteInAllBrowsers
+<br/><hr/><hr/><br/>
+## Set-WebbrowserTabLocation
+````PowerShell
+Set-WebbrowserTabLocation            --> lt, Nav
+````
 ### SYNOPSIS
-    Will open an url into three different browsers + a incognito window, with
-    a window mosaic layout
+    Navigates current selected tab to specified url
+### SYNTAX
+````PowerShell
+Set-WebbrowserTabLocation [-Url] <String> [<CommonParameters>]
+````
+### DESCRIPTION
+    Navigates current selected tab to specified url
+### PARAMETERS
+    -Url <String>
+        The Url the browsertab should navigate too
+        Required?                    true
+        Position?                    1
+        Default value                
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+### NOTES
+````PowerShell
+    Requires the Windows 10+ Operating System
+-------------------------- EXAMPLE 1 --------------------------
+PS C:\> Set-WebbrowserTabLocation "https://github.com/microsoft"
+````
+<br/><hr/><hr/><br/>
+## Show-WebsiteInAllBrowsers
+````PowerShell
+Show-WebsiteInAllBrowsers            --> Show-UrlInAllBrowsers
+````
+### SYNOPSIS
+    Will open an url into three different browsers + a incognito window, with a window mosaic layout
 ### SYNTAX
 ````PowerShell
 Show-WebsiteInAllBrowsers [-Url] <String> [<CommonParameters>]
@@ -998,51 +968,23 @@ Show-WebsiteInAllBrowsers [-Url] <String> [<CommonParameters>]
 ### DESCRIPTION
     Will open an url into three different browsers + a incognito window, with a window mosaic layout
 ### PARAMETERS
-````
--Url <String>
-    Url to open
-    Required?                    true
-    Position?                    1
-    Default value
-    Accept pipeline input?       false
-    Accept wildcard characters?  false
-<CommonParameters>
-    This cmdlet supports the common parameters: Verbose, Debug,
-    ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-    OutBuffer, PipelineVariable, and OutVariable. For more information, see
-    about_CommonParameters
-    (https://go.microsoft.com/fwlink/?LinkID=113216).
-````
+    -Url <String>
+        Url to open
+        Required?                    true
+        Position?                    1
+        Default value                
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 ### NOTES
 ````PowerShell
-Requires the Windows 10+ Operating System
-
-
+    Requires the Windows 10+ Operating System
     To actually see four windows, you need Google Chrome, Firefox and Microsoft Edge installed
-
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> Show-WebsiteInallBrowsers "https://www.google.com/"
 ````
-<br/><hr/><hr/><hr/><hr/><br/>
-### NAME
-    Approve-FirefoxDebugging
-### SYNOPSIS
-    Changes firefox settings to enable remotedebugging and app-mode startups
-    of firefox
-### SYNTAX
-````PowerShell
-Approve-FirefoxDebugging [<CommonParameters>]
-````
-### DESCRIPTION
-    Changes firefox settings to enable remotedebugging and app-mode startups
-    of firefox
-### PARAMETERS
-````
-<CommonParameters>
-    This cmdlet supports the common parameters: Verbose, Debug,
-    ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-    OutBuffer, PipelineVariable, and OutVariable. For more information, see
-    about_CommonParameters
-    (https://go.microsoft.com/fwlink/?LinkID=113216).
-````
-<br/><hr/><hr/><hr/><hr/><br/>
+<br/><hr/><hr/><br/>
