@@ -1,5 +1,5 @@
-﻿######################################################################################################################################################
-######################################################################################################################################################
+﻿###############################################################################
+
 <#
 .SYNOPSIS
 Returns the configured current webbrowser
@@ -16,6 +16,10 @@ PS C:\> Get-DefaultWebbrowser | Format-List
 Requires the Windows 10+ Operating System
 #>
 function Get-DefaultWebbrowser {
+
+    [CmdletBinding()]
+
+    param()
 
     if (!(Test-Path HKCU:\)) {
 
@@ -45,14 +49,14 @@ function Get-DefaultWebbrowser {
         }
     }
 }
-######################################################################################################################################################
-######################################################################################################################################################
+###############################################################################
+
 <#
 .SYNOPSIS
 Returns a collection of installed modern webbrowsers
 
 .DESCRIPTION
-Returns an collection of objects each describing a installed modern webbrowser
+Returns a collection of objects each describing a installed modern webbrowser
 
 .EXAMPLE
 PS C:\> Get-Webbrowser | Foreach-Object { & $PSItem.Path https://www.github.com/ }
@@ -65,6 +69,10 @@ PS C:\> Get-Webbrowser | select Name, Path | Format-Table
 Requires the Windows 10+ Operating System
 #>
 function Get-Webbrowser {
+
+    [CmdletBinding()]
+
+    param()
 
     if (!(Test-Path HKCU:\)) {
 
@@ -94,8 +102,8 @@ function Get-Webbrowser {
     }
 }
 
-######################################################################################################################################################
-######################################################################################################################################################
+###############################################################################
+
 <#
 .SYNOPSIS
 Opens one or more webbrowser instances
@@ -209,7 +217,8 @@ function Open-Webbrowser {
     [Alias("wb")]
 
     param(
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("Value", "Website", "Uri", "FullName")]
         [parameter(
             Mandatory = $false,
@@ -220,144 +229,166 @@ function Open-Webbrowser {
             ValueFromRemainingArguments = $false
         )]
         [string[]] $Url,
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("incognito", "inprivate")]
         [parameter(
             Mandatory = $false,
             HelpMessage = "Opens in incognito-/in-private browsing- mode"
         )]
         [switch] $Private,
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("e")]
         [parameter(
             Mandatory = $false,
             HelpMessage = "Opens in Microsoft Edge"
         )]
         [switch] $Edge,
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("ch")]
         [parameter(
             Mandatory = $false,
             HelpMessage = "Opens in Google Chrome"
         )]
         [switch] $Chrome,
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("c")]
         [parameter(
             Mandatory = $false,
             HelpMessage = "Opens in Microsoft Edge or Google Chrome, depending on what the default browser is"
         )]
         [switch] $Chromium,
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("ff")]
         [parameter(
             Mandatory = $false,
             HelpMessage = "Opens in Firefox"
         )]
         [switch] $Firefox,
-        ####################################################################################################
+        ###############################################################################
+
         [parameter(
             Mandatory = $false,
             HelpMessage = "Opens in all registered modern browsers"
         )]
         [switch] $All,
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("m", "mon")]
         [parameter(
             Mandatory = $false,
             HelpMessage = "The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to `Global:DefaultSecondaryMonitor or 1 if not found"
         )]
         [int] $Monitor = -2,
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("fs", "f")]
         [parameter(
             Mandatory = $false,
             HelpMessage = "Opens in fullscreen mode"
         )]
         [switch] $FullScreen,
-        ####################################################################################################
+        ###############################################################################
+
         [parameter(
             Mandatory = $false,
             HelpMessage = "The initial width of the webbrowser window"
         )]
         [int] $Width = -1,
-        ####################################################################################################
+        ###############################################################################
+
         [parameter(
             Mandatory = $false,
             HelpMessage = "The initial height of the webbrowser window"
         )]
         [int] $Height = -1,
-        ####################################################################################################
+        ###############################################################################
+
         [parameter(
             Mandatory = $false,
             HelpMessage = "The initial X position of the webbrowser window"
         )]
         [int] $X = -1,
-        ####################################################################################################
+        ###############################################################################
+
         [parameter(
             Mandatory = $false,
             HelpMessage = "The initial Y position of the webbrowser window"
         )]
         [int] $Y = -1,
-        ####################################################################################################
+        ###############################################################################
+
         [parameter(
             Mandatory = $false,
             HelpMessage = "Place browser window on the left side of the screen"
         )]
         [switch] $Left,
-        ####################################################################################################
+        ###############################################################################
+
         [parameter(
             Mandatory = $false,
             HelpMessage = "Place browser window on the right side of the screen"
         )]
         [switch] $Right,
-        ####################################################################################################
+        ###############################################################################
+
         [parameter(
             Mandatory = $false,
             HelpMessage = "Place browser window on the top side of the screen"
         )]
         [switch] $Top,
-        ####################################################################################################
+        ###############################################################################
+
         [parameter(
             Mandatory = $false,
             HelpMessage = "Place browser window on the bottom side of the screen"
         )]
         [switch] $Bottom,
-        ####################################################################################################
+        ###############################################################################
+
         [parameter(
             Mandatory = $false,
             HelpMessage = "Place browser window in the center of the screen"
         )]
         [switch] $Centered,
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("a", "app", "appmode")]
         [parameter(
             Mandatory = $false,
             HelpMessage = "Hide the browser controls"
         )]
         [switch] $ApplicationMode,
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("de", "ne", "NoExtensions")]
         [parameter(
             Mandatory = $false,
             HelpMessage = "Prevent loading of browser extensions"
         )]
         [switch] $NoBrowserExtensions,
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("bg")]
         [parameter(
             Mandatory = $false,
             HelpMessage = "Restore PowerShell window focus"
         )]
         [switch] $RestoreFocus,
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("nw", "new")]
         [parameter(
             Mandatory = $false,
             HelpMessage = "Don't re-use existing browser window, instead, create a new one"
         )]
         [switch] $NewWindow,
-        ####################################################################################################
+        ###############################################################################
+
         [parameter(
             Mandatory = $false,
             HelpMessage = "Returns a [System.Diagnostics.Process] object of the browserprocess"
@@ -378,7 +409,13 @@ function Open-Webbrowser {
         else {
 
             $Url = $Url.Trim(" `"'".ToCharArray());
-            $filePath = (Expand-Path $Url);
+            $filePath = $Url
+            try {
+                $filePath = (Expand-Path $Url);
+            }
+            catch {
+
+            }
 
             if ([IO.File]::Exists($filePath)) {
 
@@ -573,7 +610,8 @@ function Open-Webbrowser {
             # initialize an empty argument list for the webbrowser commandline
             $ArgumentList = @();
 
-            ########################################################################
+            ###############################################################################
+
             if ($browser.Name -like "*Firefox*") {
 
                 # set default commandline parameters
@@ -632,7 +670,8 @@ function Open-Webbrowser {
                 }
             }
             else {
-                ########################################################################
+                ###############################################################################
+
                 if ($browser.Name -like "*Edge*" -or $browser.Name -like "*Chrome*") {
 
                     # get the right debugging tcp port for this browser
@@ -704,7 +743,8 @@ function Open-Webbrowser {
                     }
                 }
                 else {
-                    ########################################################################
+                    ###############################################################################
+
                     # Default browser
                     if ($Private -eq $true) {
 
@@ -722,7 +762,7 @@ function Open-Webbrowser {
         function open($browser, $CurrentUrl) {
             try {
                 enforceMinimumDelays $browser
-                ########################################################################
+                ###############################################################################
 
                 $StartBrowser = $true;
                 $hadVisibleBrowser = $false;
@@ -730,7 +770,7 @@ function Open-Webbrowser {
                 $hadNoUrl = $CurrentUrl -eq "https://github.com/renevaessen/GenXdev.Webbrowser/blob/master/README.md#syntax";
 
                 # find any existing  process
-                $prcBefore = @(Get-Process |
+                $prcBefore = @(Get-Process -ErrorAction SilentlyContinue |
                     Where-Object -Property Path -EQ $browser.Path |
                     Where-Object -Property MainWindowHandle -NE 0 |
                     Sort-Object { $PSItem.StartTime } -Descending |
@@ -773,7 +813,8 @@ function Open-Webbrowser {
                     $process = [System.Diagnostics.Process]::Start($si)
                 }
 
-                ########################################################################
+                ###############################################################################
+
                 # nothing to do anymore? then don't waste time on positioning the window
                 if (($HavePositioning -eq $false) -and ($PassThrough -ne $true)) {
 
@@ -781,7 +822,8 @@ function Open-Webbrowser {
                     return;
                 }
 
-                ########################################################################
+                ###############################################################################
+
                 # allow the browser to start-up, and update process handle if needed
                 enforceMinimumDelays $browser
                 [int] $i = 0;
@@ -794,7 +836,7 @@ function Open-Webbrowser {
                     if ($process.HasExited) {
 
                         # find the process
-                        $processesNew = @(Get-Process |
+                        $processesNew = @(Get-Process -ErrorAction SilentlyContinue |
                             Where-Object -Property Path -EQ $browser.Path |
                             Where-Object -Property MainWindowHandle -NE 0 |
                             Sort-Object { $PSItem.StartTime } -Descending |
@@ -833,7 +875,8 @@ function Open-Webbrowser {
                     return;
                 }
 
-                ########################################################################
+                ###############################################################################
+
                 # have a handle to the mainwindow of the browser?
                 if ($window.Length -eq 1) {
 
@@ -904,7 +947,8 @@ function Open-Webbrowser {
             }
         }
 
-        ###############################################################################################
+        ###############################################################################
+
         # start processing the Urls that we need to open
         $Url | ForEach-Object {
 
@@ -1000,8 +1044,7 @@ function Open-Webbrowser {
     }
 }
 
-######################################################################################################################################################
-######################################################################################################################################################
+###############################################################################
 
 <#
 .SYNOPSIS
@@ -1046,42 +1089,48 @@ function Close-Webbrowser {
     [Alias("wbc")]
 
     param(
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("e")]
         [parameter(
             Mandatory = $false,
             HelpMessage = "Closes Microsoft Edge"
         )]
         [switch] $Edge,
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("ch")]
         [parameter(
             Mandatory = $false,
             HelpMessage = "Closes Google Chrome"
         )]
         [switch] $Chrome,
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("c")]
         [parameter(
             Mandatory = $false,
             HelpMessage = "Closes Microsoft Edge or Google Chrome, depending on what the default browser is"
         )]
         [switch] $Chromium,
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("ff")]
         [parameter(
             Mandatory = $false,
             HelpMessage = "Closes Firefox"
         )]
         [switch] $Firefox,
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("a")]
         [parameter(
             Mandatory = $false,
             HelpMessage = "Closes all registered modern browsers"
         )]
         [switch] $All,
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("bg", "Force")]
         [parameter(
             Mandatory = $false,
@@ -1099,7 +1148,7 @@ function Close-Webbrowser {
     function close($browser) {
 
         # find all running processes of this browser
-        Get-Process -Name ([IO.Path]::GetFileNameWithoutExtension($browser.Path)) -ErrorAction SilentlyContinue | ForEach-Object {
+        Get-Process -Name ([IO.Path]::GetFileNameWithoutExtension($browser.Path)) -ErrorAction SilentlyContinue | ForEach-Object -ErrorAction SilentlyContinue {
 
             # reference next process
             $P = $PSItem;
@@ -1234,8 +1283,8 @@ function Close-Webbrowser {
         close($DefaultBrowser);
     }
 }
-##############################################################################################################
-##############################################################################################################
+###############################################################################
+
 <#
 .SYNOPSIS
 Selects a webbrowser tab
@@ -1268,21 +1317,28 @@ PS C:\> st -ch 14
 Requires the Windows 10+ Operating System
 #>
 function Select-WebbrowserTab {
-    [CmdletBinding(DefaultParameterSetName = "normal")]
+
+    [CmdletBinding(
+        DefaultParameterSetName = "normal"
+    )]
+
     [Alias("st", "Select-BrowserTab")]
 
     param (
-        ####################################################################################################
+        ###############################################################################
+
         [parameter(Mandatory = $false, ParameterSetName = "normal", Position = 0,
             HelpMessage = "When '-Id' is not supplied, a list of available webbrowser tabs is shown, where the right value can be found")]
 
         [ValidateRange(0, [int]::MaxValue)]
         [int] $id = -1,
-        ####################################################################################################
+        ###############################################################################
+
         [parameter(Mandatory = $true, ParameterSetName = "byName", Position = 0,
             HelpMessage = 'Selects the first entry that contains given name in its url')]
         [string] $Name = $null,
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("e")]
         [parameter(
             ParameterSetName = "normal",
@@ -1290,7 +1346,8 @@ function Select-WebbrowserTab {
             HelpMessage = "Select in Microsoft Edge"
         )]
         [switch] $Edge,
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("ch")]
         [parameter(
             ParameterSetName = "normal",
@@ -1298,7 +1355,8 @@ function Select-WebbrowserTab {
             HelpMessage = "Select in Google Chrome"
         )]
         [switch] $Chrome,
-        ####################################################################################################
+        ###############################################################################
+
         [Alias("r")]
         [parameter(
             ParameterSetName = "byreference",
@@ -1512,8 +1570,8 @@ function Select-WebbrowserTab {
 
 }
 
-######################################################################################################################################################
-######################################################################################################################################################
+###############################################################################
+
 <#
 .SYNOPSIS
 Returns a reference that can be used with Select-WebbrowserTab -ByReference
@@ -1524,6 +1582,8 @@ This can be usefull when you want to evaluate the webbrowser inside a Job.
 With this serializable reference, you can pass the webbrowser tab session reference on to the Job commandblock.
 #>
 function Get-ChromiumSessionReference {
+
+    [CmdletBinding()]
 
     param()
 
@@ -1581,8 +1641,8 @@ function Get-ChromiumSessionReference {
     }
 }
 
-######################################################################################################################################################
-######################################################################################################################################################
+###############################################################################
+
 <#
 .SYNOPSIS
 Runs one or more scripts inside a selected webbrowser tab.
@@ -1725,11 +1785,12 @@ PS C:\> ls *.js | et -e
 Requires the Windows 10+ Operating System
 #>
 function Invoke-WebbrowserEvaluation {
-    [CmdletBinding()]
+
     [Alias("Eval", "et")]
 
     param(
-        ####################################################################################################
+        ###############################################################################
+
         [Parameter(
             Position = 0,
             Mandatory = $false,
@@ -1739,20 +1800,23 @@ function Invoke-WebbrowserEvaluation {
         ]
         [Alias('FullName')]
         [object[]] $Scripts,
-        ####################################################################################################
+        ###############################################################################
+
         [Parameter(
             Mandatory = $false,
             HelpMessage = "Will cause the developer tools of the webbrowser to break, before executing the scripts, allowing you to debug it",
             ValueFromPipeline = $false)
         ]
         [switch] $Inspect,
-        ####################################################################################################
+        ###############################################################################
+
         [Parameter(
             Mandatory = $false,
             ValueFromPipeline = $false
         )]
         [switch] $AsJob,
-        ####################################################################################################
+        ###############################################################################
+
         [Parameter(
             Mandatory = $false,
             ValueFromPipeline = $false
@@ -1761,7 +1825,6 @@ function Invoke-WebbrowserEvaluation {
     )
 
     Begin {
-
 
         try {
             $reference = Get-ChromiumSessionReference
@@ -1824,7 +1887,6 @@ function Invoke-WebbrowserEvaluation {
                                     [Uri]::TryCreate("http://$js", "absolute", [ref] $uri)
                                 )
                             ) -and $uri.IsWellFormedOriginalString() -and $uri.Scheme -like "http*";
-
 
                             if ($IsUri) {
 
@@ -1991,7 +2053,6 @@ function Invoke-WebbrowserEvaluation {
         ";
                     try {
 
-
                         [int] $pollCount = 0;
                         do {
                             # de-serialize outputed result object
@@ -2110,8 +2171,8 @@ function Invoke-WebbrowserEvaluation {
     }
 }
 
-##############################################################################################################
-##############################################################################################################
+###############################################################################
+
 <#
 .SYNOPSIS
 Closes the currently selected webbrowser tab
@@ -2128,11 +2189,12 @@ PS C:\> st; ct;
 Requires the Windows 10+ Operating System
 #>
 function Close-WebbrowserTab {
-    [CmdletBinding()]
+
     [Alias("ct", "CloseTab")]
 
     param (
     )
+
     try {
         Get-ChromiumSessionReference | Out-Null
     }
@@ -2144,11 +2206,8 @@ function Close-WebbrowserTab {
 
     Invoke-WebbrowserEvaluation "window.close()" -ErrorAction SilentlyContinue | Out-Null
 
-    "`r`nAuto selecting next tab:"
+}###############################################################################
 
-    Select-WebbrowserTab
-}##############################################################################################################
-##############################################################################################################
 <#
 .SYNOPSIS
 Navigates current selected tab to specified url
@@ -2166,7 +2225,7 @@ PS C:\> Set-WebbrowserTabLocation "https://github.com/microsoft"
 Requires the Windows 10+ Operating System
 #>
 function Set-WebbrowserTabLocation {
-    [CmdletBinding()]
+
     [Alias("lt", "Nav")]
 
     param (
@@ -2188,8 +2247,8 @@ function Set-WebbrowserTabLocation {
     Invoke-WebbrowserEvaluation "let old = document.location;document.location = '$Url'; 'Navigating from '+old+' --> \'$Url\''"
 }
 
-##############################################################################################################
-##############################################################################################################
+###############################################################################
+
 <#
 .SYNOPSIS
 Will open an url into three different browsers + a incognito window, with a window mosaic layout
@@ -2210,7 +2269,9 @@ To actually see four windows, you need Google Chrome, Firefox and Microsoft Edge
 #>
 function Show-WebsiteInAllBrowsers {
 
+    [CmdletBinding()]
     [Alias("Show-UrlInAllBrowsers")]
+
     param(
 
         [parameter(
@@ -2228,8 +2289,8 @@ function Show-WebsiteInAllBrowsers {
     Open-Webbrowser -Private -Right -Bottom -Url $Url;
 }
 
-##############################################################################################################
-##############################################################################################################
+###############################################################################
+
 <#
 .SYNOPSIS
 Updates all browser shortcuts for current user, to enable the remote debugging port by default
@@ -2241,6 +2302,10 @@ Updates all browser shortcuts for current user, to enable the remote debugging p
 Requires the Windows 10+ Operating System
 #>
 function Set-RemoteDebuggerPortInBrowserShortcuts {
+
+    [CmdletBinding()]
+
+    param()
 
     function removePreviousParam([string] $params) {
 
@@ -2322,9 +2387,13 @@ function Set-RemoteDebuggerPortInBrowserShortcuts {
         }
     }
 }
-##############################################################################################################
+###############################################################################
+
 function Get-ChromeRemoteDebuggingPort {
+
     [CmdletBinding()]
+
+    param()
 
     [int] $Port = 0;
 
@@ -2337,7 +2406,8 @@ function Get-ChromeRemoteDebuggingPort {
 
     return $Port;
 }
-##############################################################################################################
+###############################################################################
+
 <#
 .SYNOPSIS
 Returns the configured remote debugging port for Microsoft Edge
@@ -2349,7 +2419,10 @@ Returns the configured remote debugging port for Microsoft Edge
 Use $Global:EdgeDebugPort to override default value of 9223
 #>
 function Get-EdgeRemoteDebuggingPort {
+
     [CmdletBinding()]
+
+    param()
 
     [int] $Port = 0;
 
@@ -2362,7 +2435,8 @@ function Get-EdgeRemoteDebuggingPort {
 
     return $Port;
 }
-##############################################################################################################
+###############################################################################
+
 <#
 .SYNOPSIS
 Returns the configured remote debugging port for Google Chrome
@@ -2374,7 +2448,10 @@ Returns the configured remote debugging port for Google Chrome
 Use $Global:EdgeDebugPort to override default value of 9222
 #>
 function Get-ChromeRemoteDebuggingPort {
+
     [CmdletBinding()]
+
+    param()
 
     [int] $Port = 0;
 
@@ -2386,7 +2463,8 @@ function Get-ChromeRemoteDebuggingPort {
     Set-Variable -Name ChromeDebugPort -Value $Port -Scope Global
     return $Port;
 }
-##############################################################################################################
+###############################################################################
+
 <#
 .SYNOPSIS
 Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which ever is the default browser
@@ -2395,7 +2473,10 @@ Returns the configured remote debugging port for Microsoft Edge or Google Chrome
 Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which ever is the default browser
 #>
 function Get-ChromiumRemoteDebuggingPort {
+
     [CmdletBinding()]
+
+    param()
 
     $DefaultBrowser = Get-DefaultWebbrowser;
 
@@ -2408,12 +2489,13 @@ function Get-ChromiumRemoteDebuggingPort {
     Get-ChromeRemoteDebuggingPort;
 }
 
-##############################################################################################################
+###############################################################################
+
 <#
 .SYNOPSIS
     Proxy function dynamic parameter block for the Open-Webbrowser cmdlet
 .DESCRIPTION
-    The dynamic parameter block of a proxy function. This block can be used to copy a proxy function target's parameters, regardless of changes from version to version.
+    The dynamic parameter block of a proxy function. This block can be used to copy a proxy function target's parameters .
 #>
 function Copy-OpenWebbrowserParameters {
 
@@ -2426,7 +2508,7 @@ function Copy-OpenWebbrowserParameters {
     Copy-CommandParameters -CommandName "Open-Webbrowser" -ParametersToSkip $ParametersToSkip
 }
 
-##############################################################################################################
+###############################################################################
 
 <#
 .SYNOPSIS
@@ -2436,6 +2518,10 @@ Changes firefox settings to enable remotedebugging and app-mode startups of fire
 Changes firefox settings to enable remotedebugging and app-mode startups of firefox
 #>
 function Approve-FirefoxDebugging {
+
+    [CmdletBinding()]
+
+    param()
 
     try {
         Get-ChildItem "$Env:Appdata\Mozilla\Firefox\Profiles\prefs.js" -File -rec -ErrorAction SilentlyContinue | ForEach-Object -ErrorAction SilentlyContinue {
@@ -2465,7 +2551,7 @@ function Approve-FirefoxDebugging {
     }
 }
 
-##############################################################################################################
+###############################################################################
 
 <#
 .SYNOPSIS
@@ -2476,11 +2562,12 @@ Invokes a script in the current selected webbrowser tab to maximize the video pl
 #>
 function Set-BrowserVideoFullscreen {
 
+    [CmdletBinding()]
     [Alias("fsvideo")]
+
     param()
 
     Invoke-WebbrowserEvaluation "window.video = document.getElementsByTagName('video')[0]; video.setAttribute('style','position:fixed;left:0;top:0;bottom:0;right:0;z-index:10000;width:100vw;height:100vh'); document.body.appendChild(video);document.body.setAttribute('style', 'overflow:hidden');"
 }
 
-##############################################################################################################
-##############################################################################################################
+###############################################################################
