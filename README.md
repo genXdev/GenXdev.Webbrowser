@@ -191,7 +191,7 @@ Update-Module
 
 # Cmdlets
 
-## Approve-FirefoxDebugging
+##	Approve-FirefoxDebugging
 ````PowerShell
 Approve-FirefoxDebugging
 ````
@@ -219,7 +219,7 @@ Approve-FirefoxDebugging [<CommonParameters>]
 
 <br/><hr/><hr/><br/>
 
-## Close-Webbrowser
+##	Close-Webbrowser
 ````PowerShell
 Close-Webbrowser                     --> wbc
 ````
@@ -301,7 +301,7 @@ PS C:\> wbc -a
 
 <br/><hr/><hr/><br/>
 
-## Close-WebbrowserTab
+##	Close-WebbrowserTab
 ````PowerShell
 Close-WebbrowserTab                  --> CloseTab, ct
 ````
@@ -335,7 +335,7 @@ PS C:\> st; ct;
 
 <br/><hr/><hr/><br/>
 
-## Copy-OpenWebbrowserParameters
+##	Copy-OpenWebbrowserParameters
 ````PowerShell
 Copy-OpenWebbrowserParameters
 ````
@@ -369,7 +369,7 @@ Copy-OpenWebbrowserParameters [[-ParametersToSkip] <String[]>]
 
 <br/><hr/><hr/><br/>
 
-## Get-ChromeRemoteDebuggingPort
+##	Get-ChromeRemoteDebuggingPort
 ````PowerShell
 Get-ChromeRemoteDebuggingPort
 ````
@@ -400,7 +400,7 @@ Use $Global:EdgeDebugPort to override default value of 9222
 
 <br/><hr/><hr/><br/>
 
-## Get-ChromiumRemoteDebuggingPort
+##	Get-ChromiumRemoteDebuggingPort
 ````PowerShell
 Get-ChromiumRemoteDebuggingPort
 ````
@@ -428,7 +428,7 @@ Get-ChromiumRemoteDebuggingPort [<CommonParameters>]
 
 <br/><hr/><hr/><br/>
 
-## Get-ChromiumSessionReference
+##	Get-ChromiumSessionReference
 ````PowerShell
 Get-ChromiumSessionReference
 ````
@@ -457,7 +457,7 @@ Get-ChromiumSessionReference [<CommonParameters>]
 
 <br/><hr/><hr/><br/>
 
-## Get-DefaultWebbrowser
+##	Get-DefaultWebbrowser
 ````PowerShell
 Get-DefaultWebbrowser
 ````
@@ -492,7 +492,7 @@ PS C:\> Get-DefaultWebbrowser | Format-List
 
 <br/><hr/><hr/><br/>
 
-## Get-EdgeRemoteDebuggingPort
+##	Get-EdgeRemoteDebuggingPort
 ````PowerShell
 Get-EdgeRemoteDebuggingPort
 ````
@@ -523,7 +523,7 @@ Use $Global:EdgeDebugPort to override default value of 9223
 
 <br/><hr/><hr/><br/>
 
-## Get-Webbrowser
+##	Get-Webbrowser
 ````PowerShell
 Get-Webbrowser
 ````
@@ -560,7 +560,7 @@ PS C:\> Get-Webbrowser | select Name, Path | Format-Table
 
 <br/><hr/><hr/><br/>
 
-## Invoke-WebbrowserEvaluation
+##	Invoke-WebbrowserEvaluation
 ````PowerShell
 Invoke-WebbrowserEvaluation          --> et, Eval
 ````
@@ -720,7 +720,7 @@ PS C:\> ls *.js | et -e
 
 <br/><hr/><hr/><br/>
 
-## Open-Webbrowser
+##	Open-Webbrowser
 ````PowerShell
 Open-Webbrowser                      --> wb
 ````
@@ -943,7 +943,7 @@ PS C:\> wb -m 0 -left -top
 
 <br/><hr/><hr/><br/>
 
-## Select-WebbrowserTab
+##	Select-WebbrowserTab
 ````PowerShell
 Select-WebbrowserTab                 --> Select-BrowserTab, st
 ````
@@ -1019,7 +1019,7 @@ PS C:\> st -ch 14
 
 <br/><hr/><hr/><br/>
 
-## Set-BrowserVideoFullscreen
+##	Set-BrowserVideoFullscreen
 ````PowerShell
 Set-BrowserVideoFullscreen           --> fsvideo
 ````
@@ -1047,7 +1047,7 @@ Set-BrowserVideoFullscreen [<CommonParameters>]
 
 <br/><hr/><hr/><br/>
 
-## Set-RemoteDebuggerPortInBrowserShortcuts
+##	Set-RemoteDebuggerPortInBrowserShortcuts
 ````PowerShell
 Set-RemoteDebuggerPortInBrowserShortcuts
 ````
@@ -1080,7 +1080,7 @@ Requires the Windows 10+ Operating System
 
 <br/><hr/><hr/><br/>
 
-## Set-WebbrowserTabLocation
+##	Set-WebbrowserTabLocation
 ````PowerShell
 Set-WebbrowserTabLocation            --> lt, Nav
 ````
@@ -1120,7 +1120,7 @@ PS C:\> Set-WebbrowserTabLocation "https://github.com/microsoft"
 
 <br/><hr/><hr/><br/>
 
-## Show-WebsiteInAllBrowsers
+##	Show-WebsiteInAllBrowsers
 ````PowerShell
 Show-WebsiteInAllBrowsers            --> Show-UrlInAllBrowsers
 ````
