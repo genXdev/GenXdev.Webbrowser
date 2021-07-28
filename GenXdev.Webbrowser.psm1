@@ -1443,10 +1443,10 @@ function Select-WebbrowserTab {
         }
     }
 
-    if ($Global:chrome -isnot [GenXdev.Webbrowser.Chrome] -or $Global:chrome.Port -ne $port) {
+    if ($Global:chrome -isnot [GenXdev.Helpers.Chrome] -or $Global:chrome.Port -ne $port) {
 
         Write-Verbose "Creating new chromium automation object"
-        $c = New-Object "GenXdev.Webbrowser.Chrome" @("http://localhost:$port")
+        $c = New-Object "GenXdev.Helpers.Chrome" @("http://localhost:$port")
         Set-Variable -Name chrome -Value $c -Scope Global
     }
 
@@ -2528,7 +2528,7 @@ function Get-ChromiumSessionReference {
     }
 
     # no session yet?
-    if ($Global:chromeSession -isnot [GenXdev.Webbrowser.RemoteSessionsResponse]) {
+    if ($Global:chromeSession -isnot [GenXdev.Helpers.RemoteSessionsResponse]) {
 
         throw "Select session first with cmdlet: Select-WebbrowserTab -> st"
     }
