@@ -28,7 +28,9 @@
 
 ### NOTES
 
-    In your PowerShell profile script, you can set a global variable named DefaultSecondaryMonitor to setup your prefered webbrowser launch monitor
+    In your PowerShell profile script,
+    you can set a global variable named DefaultSecondaryMonitor.
+    This allows you to setup your prefered webbrowser launch monitor.
 
     e.g.
 
