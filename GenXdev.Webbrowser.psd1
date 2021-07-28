@@ -6,7 +6,7 @@
     RootModule             = 'GenXdev.Webbrowser.psm1'
 
     # Version number of this module.
-    ModuleVersion          = '1.14.0'
+    ModuleVersion          = '1.20.0'
     # Supported PSEditions
     # CompatiblePSEditions = @()
 
@@ -44,7 +44,7 @@
     # ProcessorArchitecture = ''
 
     # Modules that must be imported into the global environment prior to importing this module
-    RequiredModules        = @(@{ModuleName = 'GenXdev.Helpers'; ModuleVersion  = '1.13.0'}, @{ModuleName = 'GenXdev.Windows'; ModuleVersion  = '1.13.0'}, @{ModuleName = 'GenXdev.FileSystem'; ModuleVersion  = '1.13.0'});
+    RequiredModules        = @(@{ModuleName = 'GenXdev.Helpers'; ModuleVersion  = '1.20.0'}, @{ModuleName = 'GenXdev.Windows'; ModuleVersion  = '1.20.0'}, @{ModuleName = 'GenXdev.FileSystem'; ModuleVersion  = '1.20.0'});
 
     # Assemblies that must be loaded prior to importing this module
     RequiredAssemblies     = @("System.Windows.Forms", "Newtonsoft.Json.dll", "WebSocket4Net.dll", "SuperSocket.ClientEngine.dll", "GenXdev.Webbrowser.dll")
@@ -64,7 +64,7 @@
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport      = '*' # @("*")
 
-    # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
+    # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no Cmdlets to export.
     CmdletsToExport        = '*' # = @("*")
 
     # Variables to export from this module
@@ -80,7 +80,7 @@
     ModuleList             = @("GenXdev.Webbrowser")
 
     # List of all files packaged with this module
-    FileList               = @("GenXdev.Webbrowser.psd1", "GenXdev.Webbrowser.psm1", "LICENSE", "license.txt", "powershell.jpg", "README.md", "Newtonsoft.Json.dll", "WebSocket4Net.dll", "SuperSocket.ClientEngine.dll", "GenXdev.Webbrowser.dll")
+    FileList               = @("GenXdev.Webbrowser.dll", "GenXdev.Webbrowser.psd1", "GenXdev.Webbrowser.psm1", "LICENSE", "license.txt", "Newtonsoft.Json.dll", "powershell.jpg", "README.md", "SocketIOClient.dll", "SuperSocket.ClientEngine.dll", "WebSocket4Net.dll")
 
     # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
     PrivateData            = @{
@@ -116,7 +116,7 @@
     } # End of PrivateData hashtable
 
     # HelpInfo URI of this module
-    HelpInfoURI            = 'https://github.com/renevaessen/GenXdev.Webbrowser/blob/master/README.md#syntax'
+    HelpInfoURI            = 'https://github.com/renevaessen/GenXdev.Webbrowser/blob/master/README.md#cmdlet-index'
 
     # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
     # DefaultCommandPrefix = ''

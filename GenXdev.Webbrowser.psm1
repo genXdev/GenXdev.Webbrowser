@@ -404,7 +404,7 @@ function Open-Webbrowser {
         if (($null -eq $Url) -or ($Url.Length -lt 1)) {
 
             # show the help page from github
-            $Url = @("https://github.com/renevaessen/GenXdev.Webbrowser/blob/master/README.md#syntax")
+            $Url = @("https://github.com/renevaessen/GenXdev.Webbrowser/blob/master/README.md#Open-Webbrowser")
         }
         else {
 
@@ -767,7 +767,7 @@ function Open-Webbrowser {
                 $StartBrowser = $true;
                 $hadVisibleBrowser = $false;
                 $process = $null;
-                $hadNoUrl = $CurrentUrl -eq "https://github.com/renevaessen/GenXdev.Webbrowser/blob/master/README.md#syntax";
+                $hadNoUrl = $CurrentUrl -eq "https://github.com/renevaessen/GenXdev.Webbrowser/blob/master/README.md#cmdlet-index";
 
                 # find any existing  process
                 $prcBefore = @(Get-Process -ErrorAction SilentlyContinue |
@@ -1290,7 +1290,7 @@ function Close-Webbrowser {
 Selects a webbrowser tab
 
 .DESCRIPTION
-Selects a webbrowser tab for use by the cmdlets 'Invoke-WebbrowserEvaluation -> et, eval', 'Close-WebbrowserTab -> ct' and others
+Selects a webbrowser tab for use by the Cmdlets 'Invoke-WebbrowserEvaluation -> et, eval', 'Close-WebbrowserTab -> ct' and others
 
 .PARAMETER id
 When '-Id' is not supplied, a list of available webbrowser tabs is shown, where the right value can be found
@@ -1569,78 +1569,6 @@ function Select-WebbrowserTab {
     }
 
 }
-
-###############################################################################
-
-<#
-.SYNOPSIS
-Returns a reference that can be used with Select-WebbrowserTab -ByReference
-
-.DESCRIPTION
-Returns a reference that can be used with Select-WebbrowserTab -ByReference
-This can be usefull when you want to evaluate the webbrowser inside a Job.
-With this serializable reference, you can pass the webbrowser tab session reference on to the Job commandblock.
-#>
-function Get-ChromiumSessionReference {
-
-    [CmdletBinding()]
-
-    param()
-
-    # initialize data hashtable
-    if ($Global:Data -isnot [HashTable]) {
-
-        $globalData = @{};
-        Set-Variable -Name "Data" -Value $globalData -Scope Global
-    }
-    else {
-
-        $globalData = $Global:Data;
-    }
-
-    # no session yet?
-    if ($Global:chromeSession -isnot [GenXdev.Webbrowser.RemoteSessionsResponse]) {
-
-        throw "Select session first with cmdlet: Select-WebbrowserTab -> st"
-    }
-    else {
-
-        Write-Verbose "Found existing session: $($Global.chromeSession | ConvertTo-Json -Depth 100)"
-    }
-
-    # get available tabs
-    $s = $Global:chrome.GetAvailableSessions();
-
-    # reference selected session
-    $debugUri = $Global:chromeSession.webSocketDebuggerUrl;
-
-    # find it in the most recent list
-    $found = $false;
-    $s | ForEach-Object -Process {
-
-        if ($_.webSocketDebuggerUrl -eq $debugUri) {
-
-            $found = $true;
-        }
-    }
-
-    # not found?
-    if ($found -eq $false) {
-
-        throw "Session expired, select new session with cmdlet: Select-WebbrowserTab -> st"
-    }
-    else {
-
-        Write-Verbose "Session still active"
-    }
-
-    @{
-        debugUri = $debugUri;
-        port     = $Global:chrome.Port;
-        data     = $globalData
-    }
-}
-
 ###############################################################################
 
 <#
@@ -1667,7 +1595,7 @@ Invoke-WebbrowserEvaluation "document.title = 'hello world'"
 .EXAMPLE
 PS C:\>
 
-# Synchronizing data
+# Synchronizing data
 Select-WebbrowserTab;
 $Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
 
@@ -1685,7 +1613,7 @@ Write-Host "
 .EXAMPLE
 PS C:\>
 
-# Support for promises
+# Support for promises
 Select-WebbrowserTab;
 Invoke-WebbrowserEvaluation "
     let myList = [];
@@ -1703,10 +1631,10 @@ Invoke-WebbrowserEvaluation "
 .EXAMPLE
 PS C:\>
 
-# Support for promises and more
+# Support for promises and more
 
-# this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
-# beware, not all websites use indexedDb, it could return an empty set
+# this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
+# beware, not all websites use indexedDb, it could return an empty set
 
 Select-WebbrowserTab;
 Set-WebbrowserTabLocation "https://www.youtube.com/"
@@ -1766,7 +1694,7 @@ $AllIndexedDbData | Out-Host
 .EXAMPLE
 PS C:\>
 
-# Support for yielded pipeline results
+# Support for yielded pipeline results
 Select-WebbrowserTab;
 Invoke-WebbrowserEvaluation "
 
@@ -1844,7 +1772,7 @@ function Invoke-WebbrowserEvaluation {
 
         Write-Verbose "Processing.."
 
-        # enumerate provided scripts
+        # enumerate provided scripts
         foreach ($js in $Scripts) {
 
             $scriptBlock = {
@@ -1856,22 +1784,22 @@ function Invoke-WebbrowserEvaluation {
 
                     Select-WebbrowserTab -ByReference $reference
 
-                    # is it a file reference?
+                    # is it a file reference?
                     if (($js -is [IO.FileInfo]) -or (($js -is [System.String]) -and [IO.File]::Exists($js))) {
 
-                        # comming from Get-ChildItem command?
+                        # comming from Get-ChildItem command?
                         if ($js -is [IO.FileInfo]) {
 
-                            # make it a string
+                            # make it a string
                             $js = $js.FullName;
                         }
 
-                        # it's a string with a path, load the content
+                        # it's a string with a path, load the content
                         $js = [IO.File]::ReadAllText($js, [System.Text.Encoding]::UTF8)
                     }
                     else {
 
-                        # make it a string, if it isn't yet
+                        # make it a string, if it isn't yet
                         if ($js -isnot [System.String] -or [string]::IsNullOrWhiteSpace($js)) {
 
                             $js = "$js";
@@ -1934,19 +1862,19 @@ function Invoke-WebbrowserEvaluation {
                         }
                     }
 
-                    # '-Inspect' parameter provided?
+                    # '-Inspect' parameter provided?
                     if ($Inspect -eq $true) {
 
-                        # invoke a debug break-point
+                        # invoke a debug break-point
                         $js = "debugger;`r`n$js"
                     }
 
                     Write-Verbose "Processing: `r`n$($js.Trim())"
 
-                    # convert data object to json, and then again to make it a json string
+                    # convert data object to json, and then again to make it a json string
                     $json = ($reference.data | ConvertTo-Json -Compress -Depth 100 | ConvertTo-Json -Compress -Depth 100);
 
-                    # init result
+                    # init result
                     $result = $null;
                     $ScriptHash = [GenXdev.Helpers.Hash]::FormatBytesAsHexString(
                         [GenXdev.Helpers.Hash]::GetSha256BytesOfString($js));
@@ -2055,33 +1983,33 @@ function Invoke-WebbrowserEvaluation {
 
                         [int] $pollCount = 0;
                         do {
-                            # de-serialize outputed result object
+                            # de-serialize outputed result object
                             $reference = Get-ChromiumSessionReference
                             $result = ($Global:chrome.eval($js) | ConvertFrom-Json).result;
                             Write-Verbose "Got results: $($result | ConvertTo-Json -Compress -Depth 100)"
 
-                            # all good?
+                            # all good?
                             if ($result -is [Object]) {
 
-                                # get actual returned value
+                                # get actual returned value
                                 $result = $result.result;
 
                                 # present?
                                 if ($result -is [Object]) {
 
-                                    # there was an exception thrown?
+                                    # there was an exception thrown?
                                     if ($result.subtype -eq "error") {
 
-                                        # re-throw
+                                        # re-throw
                                         throw $result;
                                     }
 
                                     $result = $result.value;
 
-                                    # got a data object?
+                                    # got a data object?
                                     if ($result.data -is [PSObject]) {
 
-                                        # initialize
+                                        # initialize
                                         $reference.data = @{}
 
                                         # enumerate properties
@@ -2170,43 +2098,7 @@ function Invoke-WebbrowserEvaluation {
 
     }
 }
-
 ###############################################################################
-
-<#
-.SYNOPSIS
-Closes the currently selected webbrowser tab
-
-.DESCRIPTION
-Closes the currently selected webbrowser tab
-
-.EXAMPLE
-PS C:\> Close-WebbrowserTab
-
-PS C:\> st; ct;
-
-.NOTES
-Requires the Windows 10+ Operating System
-#>
-function Close-WebbrowserTab {
-
-    [Alias("ct", "CloseTab")]
-
-    param (
-    )
-
-    try {
-        Get-ChromiumSessionReference | Out-Null
-    }
-    catch {
-        Select-WebbrowserTab | Out-Null
-    }
-
-    "Closing '$($Global:chromeSession.title)' - $($Global:chromeSession.url)"
-
-    Invoke-WebbrowserEvaluation "window.close()" -ErrorAction SilentlyContinue | Out-Null
-
-}###############################################################################
 
 <#
 .SYNOPSIS
@@ -2245,6 +2137,62 @@ function Set-WebbrowserTabLocation {
     }
 
     Invoke-WebbrowserEvaluation "let old = document.location;document.location = '$Url'; 'Navigating from '+old+' --> \'$Url\''"
+}
+
+###############################################################################
+
+<#
+.SYNOPSIS
+Invokes a script in the current selected webbrowser tab to maximize the video player
+
+.DESCRIPTION
+Invokes a script in the current selected webbrowser tab to maximize the video player
+#>
+function Set-BrowserVideoFullscreen {
+
+    [CmdletBinding()]
+    [Alias("fsvideo")]
+
+    param()
+
+    Invoke-WebbrowserEvaluation "window.video = document.getElementsByTagName('video')[0]; video.setAttribute('style','position:fixed;left:0;top:0;bottom:0;right:0;z-index:10000;width:100vw;height:100vh'); document.body.appendChild(video);document.body.setAttribute('style', 'overflow:hidden');"
+}
+
+###############################################################################
+
+<#
+.SYNOPSIS
+Closes the currently selected webbrowser tab
+
+.DESCRIPTION
+Closes the currently selected webbrowser tab
+
+.EXAMPLE
+PS C:\> Close-WebbrowserTab
+
+PS C:\> st; ct;
+
+.NOTES
+Requires the Windows 10+ Operating System
+#>
+function Close-WebbrowserTab {
+
+    [Alias("ct", "CloseTab")]
+
+    param (
+    )
+
+    try {
+        Get-ChromiumSessionReference | Out-Null
+    }
+    catch {
+        Select-WebbrowserTab | Out-Null
+    }
+
+    "Closing '$($Global:chromeSession.title)' - $($Global:chromeSession.url)"
+
+    Invoke-WebbrowserEvaluation "window.close()" -ErrorAction SilentlyContinue | Out-Null
+
 }
 
 ###############################################################################
@@ -2555,19 +2503,69 @@ function Approve-FirefoxDebugging {
 
 <#
 .SYNOPSIS
-Invokes a script in the current selected webbrowser tab to maximize the video player
+Returns a reference that can be used with Select-WebbrowserTab -ByReference
 
 .DESCRIPTION
-Invokes a script in the current selected webbrowser tab to maximize the video player
+Returns a reference that can be used with Select-WebbrowserTab -ByReference
+This can be usefull when you want to evaluate the webbrowser inside a Job.
+With this serializable reference, you can pass the webbrowser tab session reference on to the Job commandblock.
 #>
-function Set-BrowserVideoFullscreen {
+function Get-ChromiumSessionReference {
 
     [CmdletBinding()]
-    [Alias("fsvideo")]
 
     param()
 
-    Invoke-WebbrowserEvaluation "window.video = document.getElementsByTagName('video')[0]; video.setAttribute('style','position:fixed;left:0;top:0;bottom:0;right:0;z-index:10000;width:100vw;height:100vh'); document.body.appendChild(video);document.body.setAttribute('style', 'overflow:hidden');"
-}
+    # initialize data hashtable
+    if ($Global:Data -isnot [HashTable]) {
 
-###############################################################################
+        $globalData = @{};
+        Set-Variable -Name "Data" -Value $globalData -Scope Global
+    }
+    else {
+
+        $globalData = $Global:Data;
+    }
+
+    # no session yet?
+    if ($Global:chromeSession -isnot [GenXdev.Webbrowser.RemoteSessionsResponse]) {
+
+        throw "Select session first with cmdlet: Select-WebbrowserTab -> st"
+    }
+    else {
+
+        Write-Verbose "Found existing session: $($Global.chromeSession | ConvertTo-Json -Depth 100)"
+    }
+
+    # get available tabs
+    $s = $Global:chrome.GetAvailableSessions();
+
+    # reference selected session
+    $debugUri = $Global:chromeSession.webSocketDebuggerUrl;
+
+    # find it in the most recent list
+    $found = $false;
+    $s | ForEach-Object -Process {
+
+        if ($_.webSocketDebuggerUrl -eq $debugUri) {
+
+            $found = $true;
+        }
+    }
+
+    # not found?
+    if ($found -eq $false) {
+
+        throw "Session expired, select new session with cmdlet: Select-WebbrowserTab -> st"
+    }
+    else {
+
+        Write-Verbose "Session still active"
+    }
+
+    @{
+        debugUri = $debugUri;
+        port     = $Global:chrome.Port;
+        data     = $globalData
+    }
+}
