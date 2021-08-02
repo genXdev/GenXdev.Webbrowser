@@ -485,28 +485,39 @@ function Open-Webbrowser {
 
         if ($HavePositioning) {
 
-            # '-Width' parameter not supplied?
-            if (($Width -le 0) -or ($Width -isnot [int])) {
+            $WidthProvided = ($Width -ge 0) -and ($Width -is [int]);
+            $heightProvided = ($Height -ge 0) -and ($Height -is [int]);
+
+            # '-Width' parameter not supplied?
+            if ($WidthProvided -eq $false) {
 
                 $Width = $Screen.WorkingArea.Width;
             }
 
-            # '-Height' parameter not supplied?
-            if (($Height -le 0) -or ($Height -isnot [int])) {
+            # '-Height' parameter not supplied?
+            if ($heightProvided -eq $false) {
 
                 $Height = $Screen.WorkingArea.Height;
             }
 
-            # setup exact window position and size
+            # setup exact window position and size
             if ($Left -eq $true) {
 
                 $X = $Screen.WorkingArea.X;
-                $Width = [Math]::Min($Screen.WorkingArea.Width / 2, $Width);
+
+                if ($WidthProvided -eq $false) {
+
+                    $Width = [Math]::Min($Screen.WorkingArea.Width / 2, $Width);
+                }
             }
             else {
                 if ($Right -eq $true) {
 
-                    $Width = [Math]::Min($Screen.WorkingArea.Width / 2, $Width);
+                    if ($WidthProvided -eq $false) {
+
+                        $Width = [Math]::Min($Screen.WorkingArea.Width / 2, $Width);
+                    }
+
                     $X = $Screen.WorkingArea.X + $Screen.WorkingArea.Width - $Width;
                 }
             }
@@ -514,17 +525,34 @@ function Open-Webbrowser {
             if ($Top -eq $true) {
 
                 $Y = $Screen.WorkingArea.Y;
-                $Height = [Math]::Min($Screen.WorkingArea.Height / 2, $Height);
+
+                if ($HeightProvided -eq $false) {
+
+                    $Height = [Math]::Min($Screen.WorkingArea.Height / 2, $Height);
+                }
             }
             else {
                 if ($Bottom -eq $true) {
 
-                    $Height = [Math]::Min($Screen.WorkingArea.Height / 2, $Height);
+                    if ($HeightProvided -eq $false) {
+
+                        $Height = [Math]::Min($Screen.WorkingArea.Height / 2, $Height);
+                    }
                     $Y = $Screen.WorkingArea.Y + $Screen.WorkingArea.Height - $Height;
                 }
             }
 
             if ($Centered -eq $true) {
+
+                if ($HeightProvided -eq $false) {
+
+                    $Height = [Math]::Round([Math]::Min($Screen.WorkingArea.Height * 0.8, $Height), 0);
+                }
+
+                if ($WidthProvided -eq $false) {
+
+                    $Width = [Math]::Round([Math]::Min($Screen.WorkingArea.Width * 0.8, $Width), 0);
+                }
 
                 $X = $Screen.WorkingArea.X + [Math]::Round(($screen.WorkingArea.Width - $Width) / 2, 0);
                 $Y = $Screen.WorkingArea.Y + [Math]::Round(($screen.WorkingArea.Height - $Height) / 2, 0);
@@ -532,7 +560,7 @@ function Open-Webbrowser {
         }
     }
 
-    Process {
+    process {
 
         function enforceMinimumDelays($browser) {
 
