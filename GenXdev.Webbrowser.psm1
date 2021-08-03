@@ -488,19 +488,19 @@ function Open-Webbrowser {
             $WidthProvided = ($Width -ge 0) -and ($Width -is [int]);
             $heightProvided = ($Height -ge 0) -and ($Height -is [int]);
 
-            # '-Width' parameter not supplied?
+            # '-Width' parameter not supplied?
             if ($WidthProvided -eq $false) {
 
                 $Width = $Screen.WorkingArea.Width;
             }
 
-            # '-Height' parameter not supplied?
+            # '-Height' parameter not supplied?
             if ($heightProvided -eq $false) {
 
                 $Height = $Screen.WorkingArea.Height;
             }
 
-            # setup exact window position and size
+            # setup exact window position and size
             if ($Left -eq $true) {
 
                 $X = $Screen.WorkingArea.X;
