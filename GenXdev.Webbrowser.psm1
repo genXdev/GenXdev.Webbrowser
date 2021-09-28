@@ -400,8 +400,12 @@ function Open-Webbrowser {
 
         Write-Verbose "Open-Webbrowser monitor = $Monitor"
 
+        [bool] $UrlSpecified = $false;
+
         # what if no url is specified?
         if (($null -eq $Url) -or ($Url.Length -lt 1)) {
+
+            $UrlSpecified = $false;
 
             # show the help page from github
             $Url = @("https://github.com/renevaessen/GenXdev.Webbrowser/blob/master/README.md#Open-Webbrowser")
@@ -437,9 +441,11 @@ function Open-Webbrowser {
 
         if ($Monitor -lt -1) {
 
-            if ($Global:DefaultSecondaryMonitor -is [int]) {
+            [int] $defaultMonitor = 1;
 
-                $Monitor = $Global:DefaultSecondaryMonitor % [System.Windows.Forms.Screen]::AllScreens.Length;
+            if ([int]::TryParse($Global:DefaultSecondaryMonitor, [ref] $defaultMonitor)) {
+
+                $Monitor = $defaultMonitor % [System.Windows.Forms.Screen]::AllScreens.Length;
             }
             else {
 
@@ -795,8 +801,7 @@ function Open-Webbrowser {
                 $StartBrowser = $true;
                 $hadVisibleBrowser = $false;
                 $process = $null;
-                $hadNoUrl = $CurrentUrl -eq "https://github.com/renevaessen/GenXdev.Webbrowser/blob/master/README.md#cmdlet-index";
-
+                
                 # find any existing  process
                 $prcBefore = @(Get-Process -ErrorAction SilentlyContinue |
                     Where-Object -Property Path -EQ $browser.Path |
@@ -811,7 +816,7 @@ function Open-Webbrowser {
                 }
 
                 # no url specified?
-                if (($NewWindow -ne $true) -and ($HavePositioning -eq $true) -and ($hadNoUrl)) {
+                if (($NewWindow -ne $true) -and ($HavePositioning -eq $true) -and ($UrlSpecified -eq $false)) {
 
                     if ($hadVisibleBrowser) {
 

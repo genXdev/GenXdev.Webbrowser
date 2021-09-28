@@ -34,10 +34,10 @@
     e.g.
 
         # Disable default placement of browser window
-        $Global:DefaultSecondaryMonitor = -1
+        Set-Variable -Name DefaultSecondaryMonitor -Value -1 -Scope Global
 
         # Place browser windows by default on 3th monitor (0 = Primary monitor, 1 = second, etc)
-        $Global:DefaultSecondaryMonitor = 2
+        Set-Variable -Name DefaultSecondaryMonitor -Value 2 -Scope Global
 
 ### EXAMPLE
 ````PowerShell
@@ -286,9 +286,8 @@ Open-Webbrowser                      --> wb
 
 ### SYNTAX
 ````PowerShell
-Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Monitor <Int32>] 
-[-FullScreen] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] 
-[-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-RestoreFocus] [-NewWindow] [-PassThrough] 
+Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Monitor <Int32>] [-FullScreen] [-Width <Int32>] [-Height <Int32>] 
+[-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-RestoreFocus] [-NewWindow] [-PassThrough] 
 [<CommonParameters>]
 ````
 
@@ -346,8 +345,7 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome] [-Chromium] [-F
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Monitor <Int32>
-        The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to 
-        `Global:DefaultSecondaryMonitor or 1 if not found --> -m, -mon
+        The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to `Global:DefaultSecondaryMonitor or 1 if not found --> -m, -mon
         Required?                    false
         Position?                    named
         Default value                -2
@@ -583,8 +581,7 @@ Select-WebbrowserTab -ByReference <Hashtable> [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    Selects a webbrowser tab for use by the Cmdlets 'Invoke-WebbrowserEvaluation -> et, eval', 'Close-WebbrowserTab -> 
-    ct' and others
+    Selects a webbrowser tab for use by the Cmdlets 'Invoke-WebbrowserEvaluation -> et, eval', 'Close-WebbrowserTab -> ct' and others
 
 ### PARAMETERS
     -id <Int32>
@@ -666,8 +663,7 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [-NoAuto
         Accept pipeline input?       true (ByValue, ByPropertyName)
         Accept wildcard characters?  false
     -Inspect [<SwitchParameter>]
-        Will cause the developer tools of the webbrowser to break, before executing the scripts, allowing you to debug 
-        it
+        Will cause the developer tools of the webbrowser to break, before executing the scripts, allowing you to debug it
         Required?                    false
         Position?                    named
         Default value                False
@@ -1058,8 +1054,7 @@ Copy-OpenWebbrowserParameters [[-ParametersToSkip] <String[]>] [<CommonParameter
 ````
 
 ### DESCRIPTION
-    The dynamic parameter block of a proxy function. This block can be used to copy a proxy function target's 
-    parameters .
+    The dynamic parameter block of a proxy function. This block can be used to copy a proxy function target's parameters .
 
 ### PARAMETERS
     -ParametersToSkip <String[]>
