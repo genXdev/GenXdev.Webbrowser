@@ -801,7 +801,7 @@ function Open-Webbrowser {
                 $StartBrowser = $true;
                 $hadVisibleBrowser = $false;
                 $process = $null;
-                
+
                 # find any existing  process
                 $prcBefore = @(Get-Process -ErrorAction SilentlyContinue |
                     Where-Object -Property Path -EQ $browser.Path |
@@ -1514,6 +1514,7 @@ function Select-WebbrowserTab {
                     $s[$id].url.startsWith("chrome-extension:") -or
                     $s[$id].url.startsWith("devtools") -or
                     $s[$id].url.contains("/offline/") -or
+                    $s[$id].url.startsWith("https://cdn.") -or
                     $s[$id].url.contains("edge:")) -and ($id -lt ($s.Count - 1)))) {
 
             Write-Verbose "skipping $($s[$id].url)"
