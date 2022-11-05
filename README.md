@@ -286,8 +286,9 @@ Open-Webbrowser                      --> wb
 
 ### SYNTAX
 ````PowerShell
-Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Monitor <Int32>] [-FullScreen] [-Width <Int32>] [-Height <Int32>] 
-[-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-RestoreFocus] [-NewWindow] [-PassThrough] 
+Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Monitor 
+<Int32>] [-FullScreen] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] 
+[-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-RestoreFocus] [-NewWindow] [-PassThrough] 
 [<CommonParameters>]
 ````
 
@@ -345,7 +346,8 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome] [-Chromium] [-F
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Monitor <Int32>
-        The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to `Global:DefaultSecondaryMonitor or 1 if not found --> -m, -mon
+        The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to 
+        `Global:DefaultSecondaryMonitor or 2 if not found --> -m, -mon
         Required?                    false
         Position?                    named
         Default value                -2
@@ -376,14 +378,14 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome] [-Chromium] [-F
         The initial X position of the webbrowser window
         Required?                    false
         Position?                    named
-        Default value                -1
+        Default value                -999999
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Y <Int32>
         The initial Y position of the webbrowser window
         Required?                    false
         Position?                    named
-        Default value                -1
+        Default value                -999999
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Left [<SwitchParameter>]
@@ -498,7 +500,8 @@ Close-Webbrowser                     --> wbc
 
 ### SYNTAX
 ````PowerShell
-Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-IncludeBackgroundProcesses] [<CommonParameters>]
+Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-IncludeBackgroundProcesses] 
+[<CommonParameters>]
 ````
 
 ### DESCRIPTION
@@ -581,11 +584,13 @@ Select-WebbrowserTab -ByReference <Hashtable> [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    Selects a webbrowser tab for use by the Cmdlets 'Invoke-WebbrowserEvaluation -> et, eval', 'Close-WebbrowserTab -> ct' and others
+    Selects a webbrowser tab for use by the Cmdlets 'Invoke-WebbrowserEvaluation -> et, eval', 
+    'Close-WebbrowserTab -> ct' and others
 
 ### PARAMETERS
     -id <Int32>
-        When '-Id' is not supplied, a list of available webbrowser tabs is shown, where the right value can be found
+        When '-Id' is not supplied, a list of available webbrowser tabs is shown, where the right value can be 
+        found
         Required?                    false
         Position?                    1
         Default value                -1
@@ -647,12 +652,14 @@ Invoke-WebbrowserEvaluation          --> et, Eval
 
 ### SYNTAX
 ````PowerShell
-Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [-NoAutoSelectTab] [<CommonParameters>]
+Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [-NoAutoSelectTab] 
+[<CommonParameters>]
 ````
 
 ### DESCRIPTION
     Runs one or more scripts inside a selected webbrowser tab.
-    You can access 'data' object from within javascript, to synchronize data between PowerShell and the Webbrowser
+    You can access 'data' object from within javascript, to synchronize data between PowerShell and the 
+    Webbrowser
 
 ### PARAMETERS
     -Scripts <Object[]>
@@ -663,7 +670,8 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [-NoAuto
         Accept pipeline input?       true (ByValue, ByPropertyName)
         Accept wildcard characters?  false
     -Inspect [<SwitchParameter>]
-        Will cause the developer tools of the webbrowser to break, before executing the scripts, allowing you to debug it
+        Will cause the developer tools of the webbrowser to break, before executing the scripts, allowing you to 
+        debug it
         Required?                    false
         Position?                    named
         Default value                False
@@ -696,7 +704,7 @@ PS C:\>
 Invoke-WebbrowserEvaluation "document.title = 'hello world'"
 -------------------------- EXAMPLE 2 --------------------------
 PS C:\> 
-# Synchronizing data
+# Synchronizing data
 Select-WebbrowserTab;
 $Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
 [int] $number = Invoke-WebbrowserEvaluation "
@@ -710,7 +718,7 @@ Write-Host "
 ";
 -------------------------- EXAMPLE 3 --------------------------
 PS C:\> 
-# Support for promises
+# Support for promises
 Select-WebbrowserTab;
 Invoke-WebbrowserEvaluation "
     let myList = [];
@@ -727,9 +735,9 @@ Invoke-WebbrowserEvaluation "
 "
 -------------------------- EXAMPLE 4 --------------------------
 PS C:\> 
-# Support for promises and more
-# this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
-# beware, not all websites use indexedDb, it could return an empty set
+# Support for promises and more
+# this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
+# beware, not all websites use indexedDb, it could return an empty set
 Select-WebbrowserTab;
 Set-WebbrowserTabLocation "https://www.youtube.com/"
 Start-Sleep 3
@@ -772,7 +780,7 @@ $AllIndexedDbData = Invoke-WebbrowserEvaluation "
 $AllIndexedDbData | Out-Host
 -------------------------- EXAMPLE 5 --------------------------
 PS C:\> 
-# Support for yielded pipeline results
+# Support for yielded pipeline results
 Select-WebbrowserTab;
 Invoke-WebbrowserEvaluation "
     for (let i = 0; i < 10; i++) {
@@ -1021,7 +1029,8 @@ Get-ChromiumRemoteDebuggingPort
 ````
 
 ### SYNOPSIS
-    Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which ever is the default browser
+    Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which ever is the default 
+    browser
 
 ### SYNTAX
 ````PowerShell
@@ -1029,7 +1038,8 @@ Get-ChromiumRemoteDebuggingPort [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which ever is the default browser
+    Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which ever is the default 
+    browser
 
 ### PARAMETERS
     <CommonParameters>
@@ -1054,7 +1064,8 @@ Copy-OpenWebbrowserParameters [[-ParametersToSkip] <String[]>] [<CommonParameter
 ````
 
 ### DESCRIPTION
-    The dynamic parameter block of a proxy function. This block can be used to copy a proxy function target's parameters .
+    The dynamic parameter block of a proxy function. This block can be used to copy a proxy function target's 
+    parameters .
 
 ### PARAMETERS
     -ParametersToSkip <String[]>
@@ -1112,7 +1123,8 @@ Get-ChromiumSessionReference [<CommonParameters>]
 ### DESCRIPTION
     Returns a reference that can be used with Select-WebbrowserTab -ByReference
     This can be usefull when you want to evaluate the webbrowser inside a Job.
-    With this serializable reference, you can pass the webbrowser tab session reference on to the Job commandblock.
+    With this serializable reference, you can pass the webbrowser tab session reference on to the Job 
+    commandblock.
 
 ### PARAMETERS
     <CommonParameters>
