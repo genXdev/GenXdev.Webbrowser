@@ -186,7 +186,7 @@ url from parameter
 PS C:\> Open-Webbrowser -Chrome -Left -Top -Url "https://genxdev.net/"
 
 urls from pipeline
-PS C:\> @("https://genxdev.net/", "https://github.com/renevaessen/") | Open-Webbrowser
+PS C:\> @("https://genxdev.net/", "https://github.com/genXdev/") | Open-Webbrowser
 
 re-position already open window to primary monitor on right side
 PS C:\> Open-Webbrowser -Monitor 0 -right
@@ -408,7 +408,7 @@ function Open-Webbrowser {
             $UrlSpecified = $false;
 
             # show the help page from github
-            $Url = @("https://github.com/renevaessen/GenXdev.Webbrowser/blob/master/README.md#Open-Webbrowser")
+            $Url = @("https://github.com/genXdev/GenXdev.Webbrowser/blob/master/README.md#Open-Webbrowser")
         }
         else {
 

@@ -91,10 +91,10 @@
             Tags                     = 'Console', 'Shell', 'GenXdev'
 
             # A URL to the license for this module.
-            LicenseUri               = 'https://raw.githubusercontent.com/renevaessen/GenXdev.Webbrowser/main/LICENSE'
+            LicenseUri               = 'https://raw.githubusercontent.com/genXdev/GenXdev.Webbrowser/main/LICENSE'
 
             # A URL to the main website for this project.
-            ProjectUri               = 'https://github.com/renevaessen/GenXdev.Webbrowser'
+            ProjectUri               = 'https://github.com/genXdev/GenXdev.Webbrowser'
 
             # A URL to an icon representing this module.
             IconUri                  = 'https://genxdev.net/favicon.ico'
@@ -116,7 +116,7 @@
     } # End of PrivateData hashtable
 
     # HelpInfo URI of this module
-    HelpInfoURI            = 'https://github.com/renevaessen/GenXdev.Webbrowser/blob/master/README.md#cmdlet-index'
+    HelpInfoURI            = 'https://github.com/genXdev/GenXdev.Webbrowser/blob/master/README.md#cmdlet-index'
 
     # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
     # DefaultCommandPrefix = ''

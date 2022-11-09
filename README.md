@@ -11,7 +11,7 @@
 ### SYNOPSIS
     A Windows PowerShell module that allows you to run scripts against your casual desktop webbrowser-tab
 
-[![GenXdev.Webbrowser](https://img.shields.io/powershellgallery/v/GenXdev.Webbrowser.svg?style=flat-square&label=GenXdev.Webbrowser)](https://www.powershellgallery.com/packages/GenXdev.Webbrowser/) [![License](https://img.shields.io/github/license/renevaessen/GenXdev.Webbrowser?style=flat-square)](./LICENSE)
+[![GenXdev.Webbrowser](https://img.shields.io/powershellgallery/v/GenXdev.Webbrowser.svg?style=flat-square&label=GenXdev.Webbrowser)](https://www.powershellgallery.com/packages/GenXdev.Webbrowser/) [![License](https://img.shields.io/github/license/genXdev/GenXdev.Webbrowser?style=flat-square)](./LICENSE)
 
 ### FEATURES
 
@@ -478,7 +478,7 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome] [-Chromium] [-F
 PS C:\> url from parameter
 PS C:\> Open-Webbrowser -Chrome -Left -Top -Url "https://genxdev.net/"
 urls from pipeline
-PS C:\> @("https://genxdev.net/", "https://github.com/renevaessen/") | Open-Webbrowser
+PS C:\> @("https://genxdev.net/", "https://github.com/genXdev/") | Open-Webbrowser
 re-position already open window to primary monitor on right side
 PS C:\> Open-Webbrowser -Monitor 0 -right
 re-position already open window to secondary monitor, full screen
