@@ -230,7 +230,7 @@ Get-DefaultWebbrowser [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -263,7 +263,7 @@ Get-Webbrowser [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -286,9 +286,9 @@ Open-Webbrowser                      --> wb
 
 ### SYNTAX
 ````PowerShell
-Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Monitor
-<Int32>] [-FullScreen] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top]
-[-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-RestoreFocus] [-NewWindow] [-PassThrough]
+Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Monitor <Int32>] 
+[-FullScreen] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] 
+[-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-RestoreFocus] [-NewWindow] [-PassThrough] 
 [<CommonParameters>]
 ````
 
@@ -300,7 +300,7 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome] [-Chromium] [-F
         The url to open
         Required?                    false
         Position?                    1
-        Default value
+        Default value                
         Accept pipeline input?       true (ByValue, ByPropertyName)
         Accept wildcard characters?  false
     -Private [<SwitchParameter>]
@@ -346,7 +346,7 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome] [-Chromium] [-F
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Monitor <Int32>
-        The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to
+        The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to 
         `Global:DefaultSecondaryMonitor or 2 if not found --> -m, -mon
         Required?                    false
         Position?                    named
@@ -462,7 +462,7 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Edge] [-Chrome] [-Chromium] [-F
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -500,8 +500,7 @@ Close-Webbrowser                     --> wbc
 
 ### SYNTAX
 ````PowerShell
-Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-IncludeBackgroundProcesses]
-[<CommonParameters>]
+Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-IncludeBackgroundProcesses] [<CommonParameters>]
 ````
 
 ### DESCRIPTION
@@ -554,7 +553,7 @@ Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-IncludeBackgr
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -584,13 +583,12 @@ Select-WebbrowserTab -ByReference <Hashtable> [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    Selects a webbrowser tab for use by the Cmdlets 'Invoke-WebbrowserEvaluation -> et, eval',
-    'Close-WebbrowserTab -> ct' and others
+    Selects a webbrowser tab for use by the Cmdlets 'Invoke-WebbrowserEvaluation -> et, eval', 'Close-WebbrowserTab -> 
+    ct' and others
 
 ### PARAMETERS
     -id <Int32>
-        When '-Id' is not supplied, a list of available webbrowser tabs is shown, where the right value can be
-        found
+        When '-Id' is not supplied, a list of available webbrowser tabs is shown, where the right value can be found
         Required?                    false
         Position?                    1
         Default value                -1
@@ -600,7 +598,7 @@ Select-WebbrowserTab -ByReference <Hashtable> [<CommonParameters>]
         Selects the first entry that contains given name in its url
         Required?                    true
         Position?                    1
-        Default value
+        Default value                
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Edge [<SwitchParameter>]
@@ -621,14 +619,14 @@ Select-WebbrowserTab -ByReference <Hashtable> [<CommonParameters>]
         Select tab using reference obtained with Get-ChromiumSessionReference
         Required?                    true
         Position?                    named
-        Default value
+        Default value                
         Accept pipeline input?       false
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -652,26 +650,23 @@ Invoke-WebbrowserEvaluation          --> et, Eval
 
 ### SYNTAX
 ````PowerShell
-Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [-NoAutoSelectTab]
-[<CommonParameters>]
+Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [-NoAutoSelectTab] [<CommonParameters>]
 ````
 
 ### DESCRIPTION
     Runs one or more scripts inside a selected webbrowser tab.
-    You can access 'data' object from within javascript, to synchronize data between PowerShell and the
-    Webbrowser
+    You can access 'data' object from within javascript, to synchronize data between PowerShell and the Webbrowser
 
 ### PARAMETERS
     -Scripts <Object[]>
         A string containing javascript, a url or a file reference to a javascript file
         Required?                    false
         Position?                    1
-        Default value
+        Default value                
         Accept pipeline input?       true (ByValue, ByPropertyName)
         Accept wildcard characters?  false
     -Inspect [<SwitchParameter>]
-        Will cause the developer tools of the webbrowser to break, before executing the scripts, allowing you to
-        debug it
+        Will cause the developer tools of the webbrowser to break, before executing the scripts, allowing you to debug it
         Required?                    false
         Position?                    named
         Default value                False
@@ -694,16 +689,16 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [-NoAuto
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
     Requires the Windows 10+ Operating System
 -------------------------- EXAMPLE 1 --------------------------
-PS C:\>
+PS C:\> 
 Invoke-WebbrowserEvaluation "document.title = 'hello world'"
 -------------------------- EXAMPLE 2 --------------------------
-PS C:\>
+PS C:\> 
 # Synchronizing data
 Select-WebbrowserTab;
 $Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
@@ -717,7 +712,7 @@ Write-Host "
     return value   : $Number
 ";
 -------------------------- EXAMPLE 3 --------------------------
-PS C:\>
+PS C:\> 
 # Support for promises
 Select-WebbrowserTab;
 Invoke-WebbrowserEvaluation "
@@ -734,7 +729,7 @@ Invoke-WebbrowserEvaluation "
     });
 "
 -------------------------- EXAMPLE 4 --------------------------
-PS C:\>
+PS C:\> 
 # Support for promises and more
 # this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
 # beware, not all websites use indexedDb, it could return an empty set
@@ -779,7 +774,7 @@ $AllIndexedDbData = Invoke-WebbrowserEvaluation "
 ";
 $AllIndexedDbData | Out-Host
 -------------------------- EXAMPLE 5 --------------------------
-PS C:\>
+PS C:\> 
 # Support for yielded pipeline results
 Select-WebbrowserTab;
 Invoke-WebbrowserEvaluation "
@@ -817,14 +812,14 @@ Set-WebbrowserTabLocation [-Url] <String> [<CommonParameters>]
         The Url the browsertab should navigate too
         Required?                    true
         Position?                    1
-        Default value
+        Default value                
         Accept pipeline input?       false
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -856,7 +851,7 @@ Set-BrowserVideoFullscreen [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 <br/><hr/><hr/><br/>
 
@@ -881,7 +876,7 @@ Close-WebbrowserTab [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -914,14 +909,14 @@ Show-WebsiteInAllBrowsers [-Url] <String> [<CommonParameters>]
         Url to open
         Required?                    true
         Position?                    1
-        Default value
+        Default value                
         Accept pipeline input?       false
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -954,7 +949,7 @@ Set-RemoteDebuggerPortInBrowserShortcuts [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -984,7 +979,7 @@ Get-ChromeRemoteDebuggingPort [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -1014,7 +1009,7 @@ Get-EdgeRemoteDebuggingPort [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -1029,8 +1024,7 @@ Get-ChromiumRemoteDebuggingPort
 ````
 
 ### SYNOPSIS
-    Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which ever is the default
-    browser
+    Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which ever is the default browser
 
 ### SYNTAX
 ````PowerShell
@@ -1038,15 +1032,14 @@ Get-ChromiumRemoteDebuggingPort [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which ever is the default
-    browser
+    Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which ever is the default browser
 
 ### PARAMETERS
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 <br/><hr/><hr/><br/>
 
@@ -1064,8 +1057,8 @@ Copy-OpenWebbrowserParameters [[-ParametersToSkip] <String[]>] [<CommonParameter
 ````
 
 ### DESCRIPTION
-    The dynamic parameter block of a proxy function. This block can be used to copy a proxy function target's
-    parameters .
+    The dynamic parameter block of a proxy function. This block can be used to copy a proxy function target's parameters 
+    .
 
 ### PARAMETERS
     -ParametersToSkip <String[]>
@@ -1078,7 +1071,7 @@ Copy-OpenWebbrowserParameters [[-ParametersToSkip] <String[]>] [<CommonParameter
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 <br/><hr/><hr/><br/>
 
@@ -1103,7 +1096,7 @@ Approve-FirefoxDebugging [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 <br/><hr/><hr/><br/>
 
@@ -1123,14 +1116,13 @@ Get-ChromiumSessionReference [<CommonParameters>]
 ### DESCRIPTION
     Returns a reference that can be used with Select-WebbrowserTab -ByReference
     This can be usefull when you want to evaluate the webbrowser inside a Job.
-    With this serializable reference, you can pass the webbrowser tab session reference on to the Job
-    commandblock.
+    With this serializable reference, you can pass the webbrowser tab session reference on to the Job commandblock.
 
 ### PARAMETERS
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 <br/><hr/><hr/><br/>

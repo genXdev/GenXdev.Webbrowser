@@ -408,7 +408,7 @@ function Open-Webbrowser {
             $UrlSpecified = $false;
 
             # show the help page from github
-            $Url = @("https://github.com/genXdev/GenXdev.Webbrowser/blob/master/README.md#Open-Webbrowser")
+            $Url = @("https://github.com/genXdev/GenXdev.Webbrowser/blob/main/README.md#Open-Webbrowser")
         }
         else {
 
@@ -464,7 +464,7 @@ function Open-Webbrowser {
         }
 
         # remember
-        [bool] $HavePositioning = ($Monitor -ge 0) -or ($Left -or $Right -or $Top -or $Bottom -or $Centered -or (($X -is [int]) -and ($X -ge 0)) -or (($Y -is [int]) -and ($Y -ge 0)));
+        [bool] $HavePositioning = ($Monitor -ge 0) -or ($Left -or $Right -or $Top -or $Bottom -or $Centered -or (($X -is [int]) -and ($X -gt -999999)) -or (($Y -is [int]) -and ($Y -gt -999999)));
 
         # init window position
         # '-X' parameter not supplied?
@@ -573,6 +573,11 @@ function Open-Webbrowser {
     process {
 
         function enforceMinimumDelays($browser) {
+
+            if ($HavePositioning -eq $false) {
+
+                return;
+            }
 
             $last = (Get-Variable -Scope Global -Name "_LastClose$($Browser.Name)" -ErrorAction SilentlyContinue);
 
