@@ -445,18 +445,18 @@ function Open-Webbrowser {
 
             if ([int]::TryParse($Global:DefaultSecondaryMonitor, [ref] $defaultMonitor)) {
 
-                $Monitor = $defaultMonitor % ([System.Windows.Forms.Screen]::AllScreens.Length+1);
+                $Monitor = $defaultMonitor % ([System.Windows.Forms.Screen]::AllScreens.Length + 1);
             }
             else {
 
-                $Monitor = 2 % ([System.Windows.Forms.Screen]::AllScreens.Length+1);
+                $Monitor = 2 % ([System.Windows.Forms.Screen]::AllScreens.Length + 1);
             }
         }
 
         # reference the requested monitor
         if (($Monitor -ge 1) -and ($Monitor -lt [System.Windows.Forms.Screen]::AllScreens.Length)) {
 
-            $Screen = [System.Windows.Forms.Screen]::AllScreens[$Monitor-1]
+            $Screen = [System.Windows.Forms.Screen]::AllScreens[$Monitor - 1]
         }
         if (($Monitor -eq 0)) {
 
@@ -731,6 +731,7 @@ function Open-Webbrowser {
                         "--disable-infobars",
                         "--disable-session-crashed-bubble",
                         "--no-default-browser-check",
+                        "--remote-allow-origins=*",
                         "--remote-debugging-port=$port"
                     )
 
@@ -1510,6 +1511,9 @@ function Select-WebbrowserTab {
             else {
                 "Webbrowser has not been opened yet, use Open-Webbrowser --> wb to start a browser with debugging enabled.." | Out-Host
             }
+            Set-Variable -Name chromeSessions -Value @() -Scope Global
+            Set-Variable -Name chrome -Value $null -Scope Global
+
             return;
         }
 
@@ -1520,11 +1524,11 @@ function Select-WebbrowserTab {
         while (
             ((
                     (![string]::IsNullOrWhiteSpace($name) -and ($s[$id].url -notlike "*$name*")) -or
-                    $s[$id].url.startsWith("chrome-extension:") -or
-                    $s[$id].url.startsWith("devtools") -or
-                    $s[$id].url.contains("/offline/") -or
-                    $s[$id].url.startsWith("https://cdn.") -or
-                    $s[$id].url.contains("edge:")) -and ($id -lt ($s.Count - 1)))) {
+                $s[$id].url.startsWith("chrome-extension:") -or
+                $s[$id].url.startsWith("devtools") -or
+                $s[$id].url.contains("/offline/") -or
+                $s[$id].url.startsWith("https://cdn.") -or
+                $s[$id].url.contains("edge:")) -and ($id -lt ($s.Count - 1)))) {
 
             Write-Verbose "skipping $($s[$id].url)"
 
@@ -2324,7 +2328,7 @@ function Set-RemoteDebuggerPortInBrowserShortcuts {
     }
 
     [int] $port = (Get-ChromeRemoteDebuggingPort)
-    $param = " --remote-debugging-port=$port";
+    $param = " --remote-allow-origins=* --remote-debugging-port=$port";
     $shell = New-Object -COM WScript.Shell
     @(
         "$Env:AppData\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\Google Chrome.lnk",
@@ -2351,7 +2355,7 @@ function Set-RemoteDebuggerPortInBrowserShortcuts {
     }
 
     $port = (Get-EdgeRemoteDebuggingPort)
-    $param = " --remote-debugging-port=$port";
+    $param = " --remote-allow-origins=* --remote-debugging-port=$port";
     $shell = New-Object -COM WScript.Shell
     @(
         "$Env:AppData\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\Microsoft Edge.lnk",
@@ -2377,7 +2381,10 @@ function Set-RemoteDebuggerPortInBrowserShortcuts {
             }
         }
     }
+
+    Set-ItemProperty -Path "HKlm:\Software\Classes\MSEdgeHTM\shell\open\command" -Name "(Default)" -Value "`"$env:ProgramFiles(x86)\Microsoft\Edge\Application\msedge.exe`" --single-argument --remote-allow-origins=* --single-argument --remote-debugging-port=$port --single-argument %1"
 }
+
 ###############################################################################
 
 function Get-ChromeRemoteDebuggingPort {
@@ -2471,7 +2478,7 @@ function Get-ChromiumRemoteDebuggingPort {
 
     $DefaultBrowser = Get-DefaultWebbrowser;
 
-    if (($null -eq $DefaultBrowser) -or ($DefaultBrowser.Name -like "*Edge*")) {
+    if (($null -eq $DefaultBrowser) -or ($DefaultBrowser.Name -like "* Edge*")) {
 
         Get-EdgeRemoteDebuggingPort;
         return;
@@ -2528,10 +2535,10 @@ function Approve-FirefoxDebugging {
             }
 
             $lines = $lines + @(
-                "user_pref(`"devtools.chrome.enabled`", true);",
-                "user_pref(`"devtools.debugger.remote-enabled`", true);",
-                "user_pref(`"devtools.debugger.prompt-connection`", false);"
-                "user_pref(`"browser.ssb.enabled`", true);"
+                "user_pref(`"devtools.chrome.enabled`",true); ",
+                "user_pref(`"devtools.debugger.remote-enabled`",true); ",
+                "user_pref(`"devtools.debugger.prompt-connection`",false); "
+                "user_pref(`"browser.ssb.enabled`",true); "
             )
 
             [IO.File]::WriteAllLines($PSItem.FullName, $lines);
