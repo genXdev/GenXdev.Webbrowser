@@ -6,7 +6,7 @@
     RootModule             = 'GenXdev.Webbrowser.psm1'
 
     # Version number of this module.
-    ModuleVersion          = '1.36.2024'
+    ModuleVersion          = '1.38.2024'
     # Supported PSEditions
     # CompatiblePSEditions = @()
 
@@ -14,37 +14,31 @@
     GUID                   = '2f62080f-0483-4421-8497-b3d433b65175'
 
     # Author of this module
-    Author                 = 'René Vaessen'
+    Author                 = 'GenXdev'
 
     # Company or vendor of this module
     CompanyName            = 'GenXdev'
 
     # Copyright statement for this module
-    Copyright              = 'Copyright (c) 2021 René Vaessen'
+    Copyright              = 'Copyright (c) 2021 GenXdev'
 
     # Description of the functionality provided by this module
     Description            = 'A Windows PowerShell module that allows you to run scripts against your casual desktop webbrowser-tab'
 
     # Minimum version of the PowerShell engine required by this module
-    PowerShellVersion      = '5.1.19041.906'
+    PowerShellVersion      = '7.5.0'
 
-    # Name of the PowerShell host required by this module
-    # PowerShellHostName = ''
+    # # Minimum version of Microsoft .NET Framework required by this module. This prerequisite is valid for the PowerShell Desktop edition only.
+    DotNetFrameworkVersion = '7.0.408'
 
-    # Minimum version of the PowerShell host required by this module
-    # PowerShellHostVersion = ''
-
-    # Minimum version of Microsoft .NET Framework required by this module. This prerequisite is valid for the PowerShell Desktop edition only.
-    DotNetFrameworkVersion = '4.6.1'
-
-    # Minimum version of the common language runtime (CLR) required by this module. This prerequisite is valid for the PowerShell Desktop edition only.
-    ClrVersion = '4.0.0'
+    # # Minimum version of the common language runtime (CLR) required by this module. This prerequisite is valid for the PowerShell Desktop edition only.
+    ClrVersion             = '9.0.0'
 
     # Processor architecture (None, X86, Amd64) required by this module
     # ProcessorArchitecture = ''
 
     # Modules that must be imported into the global environment prior to importing this module
-    RequiredModules        = @(@{ModuleName = 'GenXdev.Helpers'; ModuleVersion  = '1.36.2024'}, @{ModuleName = 'GenXdev.Windows'; ModuleVersion  = '1.36.2024'}, @{ModuleName = 'GenXdev.FileSystem'; ModuleVersion  = '1.36.2024'});
+    RequiredModules        = @(@{ModuleName = 'GenXdev.Helpers'; ModuleVersion  = '1.38.2024'}, @{ModuleName = 'GenXdev.Windows'; ModuleVersion  = '1.38.2024'}, @{ModuleName = 'GenXdev.FileSystem'; ModuleVersion  = '1.38.2024'});
 
     # Assemblies that must be loaded prior to importing this module
     RequiredAssemblies     = @("System.Windows.Forms")
