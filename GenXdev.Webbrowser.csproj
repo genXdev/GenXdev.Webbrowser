@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net9.0-windows</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <PackageLicenseFile>license.txt</PackageLicenseFile>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+        <NeutralLanguage>en</NeutralLanguage>
+        <AssemblyVersion>1.36.2024</AssemblyVersion>
+        <FileVersion>1.36.2024</FileVersion>
+        <Description>A Windows PowerShell module that allows you to run scripts against your casual desktop webbrowser-tab</Description>
+        <Copyright>Copyright (c) 2024 GenXdev</Copyright>
+        <PackageProjectUrl>https://github.com/genXdev/GenXdev.Webbrowser</PackageProjectUrl>
+        <PackageIcon>powershell.jpg</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>https://github.com/genXdev/GenXdev.Helpers</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>GenXdev, PowerShell, Windows</PackageTags>
+        <UseWindowsForms>true</UseWindowsForms>
+        <AssemblyName>GenXdev.Webbrowser</AssemblyName>
+        <RootNamespace>GenXdev.Webbrowser</RootNamespace>
+        <OutputPath>./bin/</OutputPath>
+        <IntermediateOutputPath>./obj/</IntermediateOutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="System.Management.Automation" Version="7.5.0-preview.2" />
+    </ItemGroup>
+    <!-- <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="cmd.exe /c copy &quot;$(TargetDir)$(TargetFileName)&quot; &quot;$(ProjectDir)&quot;" />
+        <Exec Command="cmd.exe /c rd /s /q &quot;$(TargetDir)&quot;" />
+        <Exec Command="cmd.exe /c rd /s /q &quot;$(ProjectDir)..\obj&quot;" />
+    </Target> -->
+</Project>
