@@ -286,8 +286,9 @@ Open-Webbrowser                      --> wb
 
 ### SYNTAX
 ````PowerShell
-Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Monitor <Int32>] [-FullScreen] [-Width <Int32>] [-Height 
-<Int32>] [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-RestoreFocus] [-NewWindow] [-PassThrough] 
+Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Monitor 
+<Int32>] [-FullScreen] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] 
+[-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-RestoreFocus] [-NewWindow] [-PassThrough] 
 [<CommonParameters>]
 ````
 
@@ -301,7 +302,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    1
         Default value                
         Accept pipeline input?       true (ByValue, ByPropertyName)
-        Aliases                      
         Accept wildcard characters?  false
     -Private [<SwitchParameter>]
         Opens in incognito-/in-private browsing- mode
@@ -309,7 +309,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -Force [<SwitchParameter>]
         Enforced that the debugging port is enabled, even if that means stopping all already opened browser processes
@@ -317,7 +316,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -Edge [<SwitchParameter>]
         Open in Microsoft Edge --> -e
@@ -325,7 +323,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -Chrome [<SwitchParameter>]
         Open in Google Chrome --> -ch
@@ -333,7 +330,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -Chromium [<SwitchParameter>]
         Open in Microsoft Edge or Google Chrome, depending on what the default browser is --> -c
@@ -341,7 +337,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -Firefox [<SwitchParameter>]
         Open in Firefox --> -ff
@@ -349,7 +344,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -All [<SwitchParameter>]
         Open in all registered modern browsers
@@ -357,15 +351,14 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -Monitor <Int32>
-        The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to `Global:DefaultSecondaryMonitor or 2 if not found --> -m, -mon
+        The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to 
+        `Global:DefaultSecondaryMonitor or 2 if not found --> -m, -mon
         Required?                    false
         Position?                    named
         Default value                -2
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -FullScreen [<SwitchParameter>]
         Open in fullscreen mode --> -fs
@@ -373,7 +366,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -Width <Int32>
         The initial width of the webbrowser window
@@ -381,7 +373,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                -1
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -Height <Int32>
         The initial height of the webbrowser window
@@ -389,7 +380,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                -1
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -X <Int32>
         The initial X position of the webbrowser window
@@ -397,7 +387,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                -999999
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -Y <Int32>
         The initial Y position of the webbrowser window
@@ -405,7 +394,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                -999999
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -Left [<SwitchParameter>]
         Place browser window on the left side of the screen
@@ -413,7 +401,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -Right [<SwitchParameter>]
         Place browser window on the right side of the screen
@@ -421,7 +408,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -Top [<SwitchParameter>]
         Place browser window on the top side of the screen
@@ -429,7 +415,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -Bottom [<SwitchParameter>]
         Place browser window on the bottom side of the screen
@@ -437,7 +422,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -Centered [<SwitchParameter>]
         Place browser window in the center of the screen
@@ -445,7 +429,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -ApplicationMode [<SwitchParameter>]
         Hide the browser controls --> -a, -app, -appmode
@@ -453,7 +436,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -NoBrowserExtensions [<SwitchParameter>]
         Prevent loading of browser extensions --> -de, -ne
@@ -461,7 +443,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -RestoreFocus [<SwitchParameter>]
         Restore PowerShell window focus --> -bg
@@ -469,7 +450,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -NewWindow [<SwitchParameter>]
         Do not re-use existing browser window, instead, create a new one -> nw
@@ -477,7 +457,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -PassThrough [<SwitchParameter>]
         Returns a [System.Diagnostics.Process] object of the browserprocess
@@ -485,7 +464,6 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
@@ -542,7 +520,6 @@ Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-IncludeBackgr
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -Chrome [<SwitchParameter>]
         Closes Google Chrome --> -ch
@@ -550,7 +527,6 @@ Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-IncludeBackgr
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -Chromium [<SwitchParameter>]
         Closes Microsoft Edge or Google Chrome, depending on what the default browser is --> -c
@@ -558,7 +534,6 @@ Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-IncludeBackgr
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -Firefox [<SwitchParameter>]
         Closes Firefox --> -ff
@@ -566,7 +541,6 @@ Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-IncludeBackgr
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -All [<SwitchParameter>]
         Closes all registered modern browsers -> -a
@@ -574,7 +548,6 @@ Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-IncludeBackgr
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -IncludeBackgroundProcesses [<SwitchParameter>]
         Closes all instances of the webbrowser, including background tasks and services
@@ -582,7 +555,6 @@ Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-IncludeBackgr
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
@@ -618,7 +590,8 @@ Select-WebbrowserTab -ByReference <Hashtable> [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    Selects a webbrowser tab for use by the Cmdlets 'Invoke-WebbrowserEvaluation -> et, eval', 'Close-WebbrowserTab -> ct' and others
+    Selects a webbrowser tab for use by the Cmdlets 'Invoke-WebbrowserEvaluation -> et, eval', 'Close-WebbrowserTab -> 
+    ct' and others
 
 ### PARAMETERS
     -id <Int32>
@@ -627,7 +600,6 @@ Select-WebbrowserTab -ByReference <Hashtable> [<CommonParameters>]
         Position?                    1
         Default value                -1
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -Name <String>
         Selects the first entry that contains given name in its url
@@ -635,7 +607,6 @@ Select-WebbrowserTab -ByReference <Hashtable> [<CommonParameters>]
         Position?                    1
         Default value                
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -Edge [<SwitchParameter>]
         Force to use 'Microsoft Edge' webbrowser for selection
@@ -643,7 +614,6 @@ Select-WebbrowserTab -ByReference <Hashtable> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -Chrome [<SwitchParameter>]
         Force to use 'Google Chrome' webbrowser for selection
@@ -651,7 +621,6 @@ Select-WebbrowserTab -ByReference <Hashtable> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -ByReference <Hashtable>
         Select tab using reference obtained with Get-ChromiumSessionReference
@@ -659,7 +628,6 @@ Select-WebbrowserTab -ByReference <Hashtable> [<CommonParameters>]
         Position?                    named
         Default value                
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
@@ -703,15 +671,14 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [-NoAuto
         Position?                    1
         Default value                
         Accept pipeline input?       true (ByValue, ByPropertyName)
-        Aliases                      
         Accept wildcard characters?  false
     -Inspect [<SwitchParameter>]
-        Will cause the developer tools of the webbrowser to break, before executing the scripts, allowing you to debug it
+        Will cause the developer tools of the webbrowser to break, before executing the scripts, allowing you to debug 
+        it
         Required?                    false
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -AsJob [<SwitchParameter>]
         Will execute the evaluation as a new background job.
@@ -719,14 +686,12 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [-NoAuto
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     -NoAutoSelectTab [<SwitchParameter>]
         Required?                    false
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
@@ -857,7 +822,6 @@ Set-WebbrowserTabLocation [-Url] <String> [<CommonParameters>]
         Position?                    1
         Default value                
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
@@ -955,7 +919,6 @@ Show-WebsiteInAllBrowsers [-Url] <String> [<CommonParameters>]
         Position?                    1
         Default value                
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
@@ -1102,7 +1065,8 @@ Copy-OpenWebbrowserParameters [[-ParametersToSkip] <String[]>] [<CommonParameter
 ````
 
 ### DESCRIPTION
-    The dynamic parameter block of a proxy function. This block can be used to copy a proxy function target's parameters .
+    The dynamic parameter block of a proxy function. This block can be used to copy a proxy function target's 
+    parameters .
 
 ### PARAMETERS
     -ParametersToSkip <String[]>
@@ -1110,7 +1074,6 @@ Copy-OpenWebbrowserParameters [[-ParametersToSkip] <String[]>] [<CommonParameter
         Position?                    1
         Default value                @()
         Accept pipeline input?       false
-        Aliases                      
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,

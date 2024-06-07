@@ -6,7 +6,7 @@
     RootModule           = 'GenXdev.Webbrowser.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '1.38.2024'
+    ModuleVersion        = '1.40.2024'
     # Supported PSEditions
     # CompatiblePSEditions = @()
 
@@ -26,19 +26,19 @@
     Description          = 'A Windows PowerShell module that allows you to run scripts against your casual desktop webbrowser-tab'
 
     # Minimum version of the PowerShell engine required by this module
-    PowerShellVersion    = '7.5.0'
+    PowerShellVersion    = '7.4.2'
 
     # # Intended for PowerShell Core
     CompatiblePSEditions = 'Core'
 
     # # Minimum version of the common language runtime (CLR) required by this module. This prerequisite is valid for the PowerShell Desktop edition only.
-    ClrVersion           = '9.0.0'
+    ClrVersion           = '8.0.4'
 
     # Processor architecture (None, X86, Amd64) required by this module
     # ProcessorArchitecture = ''
 
     # Modules that must be imported into the global environment prior to importing this module
-    RequiredModules      = @(@{ModuleName = 'GenXdev.Helpers'; ModuleVersion = '1.38.2024' }, @{ModuleName = 'GenXdev.Windows'; ModuleVersion = '1.38.2024' }, @{ModuleName = 'GenXdev.FileSystem'; ModuleVersion = '1.38.2024' });
+    RequiredModules      = @(@{ModuleName = 'GenXdev.Helpers'; ModuleVersion = '1.40.2024' }, @{ModuleName = 'GenXdev.Windows'; ModuleVersion = '1.40.2024' }, @{ModuleName = 'GenXdev.FileSystem'; ModuleVersion = '1.40.2024' });
 
     # Assemblies that must be loaded prior to importing this module
     RequiredAssemblies   = @("System.Windows.Forms", "GenXdev.Webbrowser.dll", "System.Management.Automation.dll")
@@ -144,8 +144,8 @@
 # SIG # Begin signature block
 # MIIbzgYJKoZIhvcNAQcCoIIbvzCCG7sCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCClpmZpux2W/wFX
-# tk2cVTsJq3ijntS2pyA4hdbBjXnwIKCCFhswggMOMIIB9qADAgECAhBwxOfTiuon
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCBJSlIOE2xvTvuX
+# FP3EnI82fere6TUGEkyuQCg95HSEoKCCFhswggMOMIIB9qADAgECAhBwxOfTiuon
 # hU3SZf3YwpWAMA0GCSqGSIb3DQEBCwUAMB8xHTAbBgNVBAMMFEdlblhkZXYgQXV0
 # aGVudGljb2RlMB4XDTI0MDUwNTIwMzEzOFoXDTM0MDUwNTE4NDEzOFowHzEdMBsG
 # A1UEAwwUR2VuWGRldiBBdXRoZW50aWNvZGUwggEiMA0GCSqGSIb3DQEBAQUAA4IB
@@ -267,28 +267,28 @@
 # ZW5YZGV2IEF1dGhlbnRpY29kZQIQcMTn04rqJ4VN0mX92MKVgDANBglghkgBZQME
 # AgEFAKCBhDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEM
 # BgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMC8GCSqG
-# SIb3DQEJBDEiBCC3OqLAL/VnBQ8nLdvnoL9e8jP2r67y0EdHDUEV8beihzANBgkq
-# hkiG9w0BAQEFAASCAQCd7QVIgETKbzg9yad4QQ3m93dkZEtESXAZezIkjCakqYfR
-# b6+65b9idQ68c1K2I/6F2F/KpSk9sF4UFpIdWOThA6Hum+VOUo1qot0JStfqKu0s
-# y8n58PLqRGc+Ha7Bs5if1Wpsm45oTgNv6ofRlgic979p6TTQEs6mOqLHHbV2yoOf
-# g9InsXJajm14xCtsaXlZnrM89Xtdp6eRMWF6ky2Ev1Y9cEc5HfmznuDbp+MWayLd
-# aiNNWNPVc8orqIzZTaUntzGzT2pWubpPOdfOCa9WT8/GYTHP7TkZpgLniiO4vKEJ
-# /VDuVPBVp024N6U5as/4iBawbeHw4ujjMSr3jKMmoYIDIDCCAxwGCSqGSIb3DQEJ
+# SIb3DQEJBDEiBCB5YYT/a7r8IW49mcxXLe0NhVfE1xaN/mYZaG37xP5eQTANBgkq
+# hkiG9w0BAQEFAASCAQAXsNS9DFYZRbgGAIilKpJEOsF4zei5qo/vSJRuTNOEd3qS
+# RQcwMFnCTT4oLjSNuH7KxrOuP4xaCuEb2pv6CNYpu3pvyqL0ghVDupC/rPSFFTUK
+# 6o+hx/TIhN7gDgqLDSfB1L8PGVZQ41V31RJLtLE93mFqYeLPduhRfXNn6M54gFGf
+# 4wKdI1yRuUiE/zONY51UH9X9goTFSkZBaZoRfrdHsEo0TmeqTpHNGZudKlOJbKc7
+# L7AA+j1y7E/M47Y66RcQfWI1l5lk1EEV26nykfD/wv9j6IhWUvZIdqB5Z+59uOeU
+# InaG6a71kZsIPXVNIFwa54ANdiTwJKwW9saP/mOQoYIDIDCCAxwGCSqGSIb3DQEJ
 # BjGCAw0wggMJAgEBMHcwYzELMAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0
 # LCBJbmMuMTswOQYDVQQDEzJEaWdpQ2VydCBUcnVzdGVkIEc0IFJTQTQwOTYgU0hB
 # MjU2IFRpbWVTdGFtcGluZyBDQQIQBUSv85SdCDmmv9s/X+VhFjANBglghkgBZQME
 # AgEFAKBpMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8X
-# DTI0MDUyNjE2NTEyNlowLwYJKoZIhvcNAQkEMSIEIFptUyuWbLqCTqrXL7YJoXzw
-# DkYHqXa+SrUp4BHFhajpMA0GCSqGSIb3DQEBAQUABIICACdjXW0PhAac3EeuIuUV
-# E2Edaup+abcfHlSkEZHDY/oIywBzFH7pjla9bTAVKFL021zMJjaObZa8hxPXe87J
-# /l0v5gpJvYc+f6U4QLL0+dLUHyOCSUTCNWjF3S2NFCS0J2koDCFyAGpc6qi41jWG
-# K/ke7/Tb5uqpsYTFSKNLgCETmmFlp1bvxQnh8ajkFsZShv8RCtNCDamUZKqiOVDn
-# mwCKRWRVBMGfF7QQ50zN+p/evQYsODP9hUHIDsQ23LZdvYeJ/IplGSS6mXFRsALa
-# 3fchxWHa5xTXqX0WGzTriYaDuk2xozC1pv3s0BsOLBc7jzZTE2QCS8mNOvTkvR1B
-# /UogL6ZJVisOz48xpdl6UWmSlAK4Rx/egjuzwRe9Z5ILjvtvs43QJzWnG7ZLPoHa
-# tcANKysu1rdbVkhaJD2bJCx8rdHFyQdPR9DW5XC6hxBm7jLjQm3/YxAQH5tA/gCK
-# j3uGCvFMkrEjhMFPn9C/oOSJwG3I6pTbR1dEhkMQTMyy10ac3gC2TUtvklcjF0A6
-# t4sY1Eg3pTWHxwlGfLyO9bFW+DGa0rzWfMvUPr0xbkDJu0F+njajulQWLDdfNt6s
-# tiB4WqepAZgWot5OpaEbp+9q8qm5W2oLVCWemYWxyuru/ilxFDUqn7szRG1yLC3Q
-# HSCCgPTvtR4r/zbba3QaUAlz
+# DTI0MDYwNzA5MTgzN1owLwYJKoZIhvcNAQkEMSIEINDl0ERhBHWxA2RLoMHDtlIK
+# oLPFCuswAwYcpWztHQSeMA0GCSqGSIb3DQEBAQUABIICADD3fWUNMUoLWIBvwoYv
+# YiAGe0q5VVzeR6lPaqvVTojcVz2tsJ4GveMoHPxe3+l93Oa9axicnmHCZ0TnPx9J
+# BKjvs0G8QgKSE53wmZeiSn3fG7qO04+j+r0VBi21PcPEj9FBxlpDnm9DFR6quwq8
+# pG2imhaZiETJclylvyl5Yx1xEzpk2VksRJtCyVEfn+KK3EbUWOzGknZLoatpymQf
+# ugT54J/bKNEnTxxyBkq+frqXb+1V6DrHAJsDwH5im1VQ8tYE9HQuRVtfF6RyElmb
+# Zjp135ZpPS0+iiWB8rUCGC8OXCTvCV8LuZnZcTYVSrKH8B6rnn6nmZdfXarPK3Kh
+# r7o4umE3NL/Z9Ax5etEBJJVW1sZm6XNCGgdAPyCILZjJx3XLeA5JbrTLNMeamJdJ
+# dY75YDrWpW683OacWIhQhQ1BhCuNNdOIaaoFAxY/GFdG6Yl1DHNpmgZvFWgVVZai
+# PoGs0KRljvyo+mcYywsnt1NEfpjwueLKtJ8BSmL1l0Y6UnaFJs8jh8yRMRW9Uk9C
+# VgY5ZMGMIsm76dlFHTaS4d3v0bWZBJ2IvVGjXDryzB4YgihP0smZzaKJKap7MOsp
+# ZUJpEbeRgZWmcVbhU8H2AjFm7PxIvwxh+nRQO/4rcSwNWWdCXL9zlHXYdya/z45O
+# fV/7rgiGc5w96I7QOEQh1Xla
 # SIG # End signature block
