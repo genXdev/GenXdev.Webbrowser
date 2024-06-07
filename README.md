@@ -286,10 +286,10 @@ Open-Webbrowser                      --> wb
 
 ### SYNTAX
 ````PowerShell
-Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Monitor 
-<Int32>] [-FullScreen] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] 
-[-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-RestoreFocus] [-NewWindow] [-PassThrough] 
-[<CommonParameters>]
+Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chromium] 
+[-Firefox] [-All] [-Monitor <Int32>] [-FullScreen] [-Width <Int32>] [-Height <Int32>] [-X 
+<Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] 
+[-NoBrowserExtensions] [-RestoreFocus] [-NewWindow] [-PassThrough] [<CommonParameters>]
 ````
 
 ### DESCRIPTION
@@ -311,7 +311,8 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Force [<SwitchParameter>]
-        Enforced that the debugging port is enabled, even if that means stopping all already opened browser processes
+        Enforced that the debugging port is enabled, even if that means stopping all already 
+        opened browser processes
         Required?                    false
         Position?                    named
         Default value                False
@@ -353,8 +354,8 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Monitor <Int32>
-        The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to 
-        `Global:DefaultSecondaryMonitor or 2 if not found --> -m, -mon
+        The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, 
+        defaults to `Global:DefaultSecondaryMonitor or 2 if not found --> -m, -mon
         Required?                    false
         Position?                    named
         Default value                -2
@@ -475,12 +476,15 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
 ````PowerShell
     Requires the Windows 10+ Operating System
     This cmdlet was mend to be used, interactively.
-    It performs some strange tricks to position windows, including invoking alt-tab keystrokes.
+    It performs some strange tricks to position windows, including invoking alt-tab 
+    keystrokes.
     It is best not to touch the keyboard or mouse, while it is doing that.
     For fast launches of multple urls:
     SET    : -Monitor -1
-    AND    : DO NOT use any of these switches: -X, -Y, -Left, -Right, -Top, -Bottom or -RestoreFocus
-    For browsers that are not installed on the system, no actions may be performed or errors occur - at all.
+    AND    : DO NOT use any of these switches: -X, -Y, -Left, -Right, -Top, -Bottom or 
+    -RestoreFocus
+    For browsers that are not installed on the system, no actions may be performed or 
+    errors occur - at all.
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> url from parameter
 PS C:\> Open-Webbrowser -Chrome -Left -Top -Url "https://genxdev.net/"
@@ -507,7 +511,8 @@ Close-Webbrowser                     --> wbc
 
 ### SYNTAX
 ````PowerShell
-Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-IncludeBackgroundProcesses] [<CommonParameters>]
+Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] 
+[-IncludeBackgroundProcesses] [<CommonParameters>]
 ````
 
 ### DESCRIPTION
@@ -590,12 +595,13 @@ Select-WebbrowserTab -ByReference <Hashtable> [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    Selects a webbrowser tab for use by the Cmdlets 'Invoke-WebbrowserEvaluation -> et, eval', 'Close-WebbrowserTab -> 
-    ct' and others
+    Selects a webbrowser tab for use by the Cmdlets 'Invoke-WebbrowserEvaluation -> et, eval', 
+    'Close-WebbrowserTab -> ct' and others
 
 ### PARAMETERS
     -id <Int32>
-        When '-Id' is not supplied, a list of available webbrowser tabs is shown, where the right value can be found
+        When '-Id' is not supplied, a list of available webbrowser tabs is shown, where the 
+        right value can be found
         Required?                    false
         Position?                    1
         Default value                -1
@@ -657,12 +663,14 @@ Invoke-WebbrowserEvaluation          --> et, Eval
 
 ### SYNTAX
 ````PowerShell
-Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [-NoAutoSelectTab] [<CommonParameters>]
+Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [-NoAutoSelectTab] 
+[<CommonParameters>]
 ````
 
 ### DESCRIPTION
     Runs one or more scripts inside a selected webbrowser tab.
-    You can access 'data' object from within javascript, to synchronize data between PowerShell and the Webbrowser
+    You can access 'data' object from within javascript, to synchronize data between PowerShell 
+    and the Webbrowser
 
 ### PARAMETERS
     -Scripts <Object[]>
@@ -673,8 +681,8 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [-NoAuto
         Accept pipeline input?       true (ByValue, ByPropertyName)
         Accept wildcard characters?  false
     -Inspect [<SwitchParameter>]
-        Will cause the developer tools of the webbrowser to break, before executing the scripts, allowing you to debug 
-        it
+        Will cause the developer tools of the webbrowser to break, before executing the 
+        scripts, allowing you to debug it
         Required?                    false
         Position?                    named
         Default value                False
@@ -739,7 +747,8 @@ Invoke-WebbrowserEvaluation "
 -------------------------- EXAMPLE 4 --------------------------
 PS C:\> 
 # Support for promises and more
-# this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
+# this function returns all rows of all tables/datastores of all databases of indexedDb in 
+the selected tab
 # beware, not all websites use indexedDb, it could return an empty set
 Select-WebbrowserTab;
 Set-WebbrowserTabLocation "https://www.youtube.com/"
@@ -902,7 +911,8 @@ Show-WebsiteInAllBrowsers            --> Show-UrlInAllBrowsers
 ````
 
 ### SYNOPSIS
-    Will open an url into three different browsers + a incognito window, with a window mosaic layout
+    Will open an url into three different browsers + a incognito window, with a window mosaic 
+    layout
 
 ### SYNTAX
 ````PowerShell
@@ -910,7 +920,8 @@ Show-WebsiteInAllBrowsers [-Url] <String> [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    Will open an url into three different browsers + a incognito window, with a window mosaic layout
+    Will open an url into three different browsers + a incognito window, with a window mosaic 
+    layout
 
 ### PARAMETERS
     -Url <String>
@@ -929,7 +940,8 @@ Show-WebsiteInAllBrowsers [-Url] <String> [<CommonParameters>]
 ### NOTES
 ````PowerShell
     Requires the Windows 10+ Operating System
-    To actually see four windows, you need Google Chrome, Firefox and Microsoft Edge installed
+    To actually see four windows, you need Google Chrome, Firefox and Microsoft Edge 
+    installed
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> Show-WebsiteInallBrowsers "https://www.google.com/"
 ````
@@ -942,7 +954,8 @@ Set-RemoteDebuggerPortInBrowserShortcuts
 ````
 
 ### SYNOPSIS
-    Updates all browser shortcuts for current user, to enable the remote debugging port by default
+    Updates all browser shortcuts for current user, to enable the remote debugging port by 
+    default
 
 ### SYNTAX
 ````PowerShell
@@ -950,7 +963,8 @@ Set-RemoteDebuggerPortInBrowserShortcuts [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    Updates all browser shortcuts for current user, to enable the remote debugging port by default
+    Updates all browser shortcuts for current user, to enable the remote debugging port by 
+    default
 
 ### PARAMETERS
     <CommonParameters>
@@ -1032,7 +1046,8 @@ Get-ChromiumRemoteDebuggingPort
 ````
 
 ### SYNOPSIS
-    Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which ever is the default browser
+    Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which 
+    ever is the default browser
 
 ### SYNTAX
 ````PowerShell
@@ -1040,7 +1055,8 @@ Get-ChromiumRemoteDebuggingPort [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which ever is the default browser
+    Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which 
+    ever is the default browser
 
 ### PARAMETERS
     <CommonParameters>
@@ -1065,8 +1081,8 @@ Copy-OpenWebbrowserParameters [[-ParametersToSkip] <String[]>] [<CommonParameter
 ````
 
 ### DESCRIPTION
-    The dynamic parameter block of a proxy function. This block can be used to copy a proxy function target's 
-    parameters .
+    The dynamic parameter block of a proxy function. This block can be used to copy a proxy 
+    function target's parameters .
 
 ### PARAMETERS
     -ParametersToSkip <String[]>
@@ -1124,7 +1140,8 @@ Get-ChromiumSessionReference [<CommonParameters>]
 ### DESCRIPTION
     Returns a reference that can be used with Select-WebbrowserTab -ByReference
     This can be usefull when you want to evaluate the webbrowser inside a Job.
-    With this serializable reference, you can pass the webbrowser tab session reference on to the Job commandblock.
+    With this serializable reference, you can pass the webbrowser tab session reference on to 
+    the Job commandblock.
 
 ### PARAMETERS
     <CommonParameters>
