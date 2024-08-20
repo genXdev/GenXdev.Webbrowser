@@ -1232,6 +1232,8 @@ function Close-Webbrowser {
 
     function close($browser) {
 
+        if ($null -eq $browser) { return; }
+
         # find all running processes of this browser
         Get-Process -Name ([IO.Path]::GetFileNameWithoutExtension($browser.Path)) -ErrorAction SilentlyContinue | ForEach-Object -ErrorAction SilentlyContinue {
 
@@ -1412,7 +1414,7 @@ function Select-WebbrowserTab {
     param (
         ###############################################################################
 
-        [parameter(Mandatory = $false, ParameterSetName = "normal", Position = 0,
+        [parameter(Mandatory = $false, Position = 0,
             HelpMessage = "When '-Id' is not supplied, a list of available webbrowser tabs is shown, where the right value can be found")]
 
         [ValidateRange(0, [int]::MaxValue)]
@@ -1426,7 +1428,6 @@ function Select-WebbrowserTab {
 
         [Alias("e")]
         [parameter(
-            ParameterSetName = "normal",
             Mandatory = $false,
             HelpMessage = "Select in Microsoft Edge"
         )]
@@ -1435,7 +1436,6 @@ function Select-WebbrowserTab {
 
         [Alias("ch")]
         [parameter(
-            ParameterSetName = "normal",
             Mandatory = $false,
             HelpMessage = "Select in Google Chrome"
         )]
@@ -1448,7 +1448,14 @@ function Select-WebbrowserTab {
             Mandatory = $true,
             HelpMessage = "Select tab using reference obtained with Get-ChromiumSessionReference"
         )]
-        [HashTable] $ByReference = $null
+        [HashTable] $ByReference = $null,
+        ###############################################################################
+
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Forces a restart of the webbrowser if needed"
+        )]
+        [switch] $Force
     )
 
     if ($null -ne $ByReference) {
@@ -1536,6 +1543,7 @@ function Select-WebbrowserTab {
     }
 
     Set-Variable -Name CurrentChromiumDebugPort -Value $Port -Scope Global
+
     if (($null -eq $ByReference -and $id -lt 0) -or ![string]::IsNullOrWhiteSpace($name)) {
 
         if ([string]::IsNullOrWhiteSpace($name)) {
@@ -1546,6 +1554,24 @@ function Select-WebbrowserTab {
             $s = $Global:chrome.GetAvailableSessions();
         }
         Catch {
+
+            if ($Force -and ($null -eq $ByReference)) {
+
+                Close-Webbrowser -Chrome:$Chrome -Edge:$Edge -Force
+
+                if ([string]::IsNullOrWhiteSpace($Name)) {
+
+                    Open-Webbrowser -Chrome:$Chrome -Edge:$Edge -Force
+                    $s = $Global:chrome.GetAvailableSessions();
+                }
+                else {
+
+                    Open-Webbrowser -Chrome:$Chrome -Edge:$Edge -Force
+                    $s = $Global:chrome.GetAvailableSessions();
+                }
+                return;
+            }
+
             if ($Global:Host.Name.Contains("Visual Studio")) {
 
                 "Webbrowser has not been opened yet, press F5 to start debugging first.."
@@ -1553,24 +1579,45 @@ function Select-WebbrowserTab {
             else {
                 "Webbrowser has not been opened yet, use Open-Webbrowser --> wb to start a browser with debugging enabled.."
             }
+
             Set-Variable -Name chromeSessions -Value @() -Scope Global
             Set-Variable -Name chrome -Value $null -Scope Global
 
             return;
         }
 
+        $list = New-Object 'System.Collections.Generic.List[GenXdev.Helpers.RemoteSessionsResponse]'
+        $s | ForEach-Object {
+
+            if (
+            (![string]::IsNullOrWhiteSpace($name) -and ($PSItem.url -notlike "*$name*")) -or
+            ([string]::IsNullOrWhiteSpace($name) -and (
+                    $PSItem.url.startsWith("chrome-extension:") -or
+                    $PSItem.url.startsWith("devtools") -or
+                    $PSItem.url.contains("/offline/") -or
+                    $PSItem.url.startsWith("https://cdn.") -or
+                    $PSItem.url.contains("edge:")))) {
+
+                return;
+            }
+
+            $list.Add($_)
+        };
+        $s = $list;
+
         Set-Variable -Name chromeSessions -Value $s -Scope Global
         Write-Verbose "Sessions set, length= $($Global:chromeSessions.count)"
 
         [int] $id = 0;
         while (
-            ((
-                    (![string]::IsNullOrWhiteSpace($name) -and ($s[$id].url -notlike "*$name*")) -or
-                $s[$id].url.startsWith("chrome-extension:") -or
-                $s[$id].url.startsWith("devtools") -or
-                $s[$id].url.contains("/offline/") -or
-                $s[$id].url.startsWith("https://cdn.") -or
-                $s[$id].url.contains("edge:")) -and ($id -lt ($s.Count - 1)))) {
+                ($id -lt ($s.Count - 1)) -and (
+                (![string]::IsNullOrWhiteSpace($name) -and ($s[$id].url -notlike "*$name*")) -or
+                ([string]::IsNullOrWhiteSpace($name) -and (
+                    $s[$id].url.startsWith("chrome-extension:") -or
+                    $s[$id].url.startsWith("devtools") -or
+                    $s[$id].url.contains("/offline/") -or
+                    $s[$id].url.startsWith("https://cdn.") -or
+                    $s[$id].url.contains("edge:"))))) {
 
             Write-Verbose "skipping $($s[$id].url)"
 
@@ -1656,7 +1703,6 @@ function Select-WebbrowserTab {
 
         showList
     }
-
 }
 ###############################################################################
 
