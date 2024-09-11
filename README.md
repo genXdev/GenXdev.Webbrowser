@@ -589,9 +589,11 @@ Select-WebbrowserTab                 --> Select-BrowserTab, st
 
 ### SYNTAX
 ````PowerShell
-Select-WebbrowserTab [[-id] <Int32>] [-Edge] [-Chrome] [<CommonParameters>]
-Select-WebbrowserTab [-Name] <String> [<CommonParameters>]
-Select-WebbrowserTab -ByReference <Hashtable> [<CommonParameters>]
+Select-WebbrowserTab [[-id] <Int32>] [-Edge] [-Chrome] [-Force] [<CommonParameters>]
+Select-WebbrowserTab [[-id] <Int32>] [-Name] <String> [-Edge] [-Chrome] [-Force] 
+[<CommonParameters>]
+Select-WebbrowserTab [[-id] <Int32>] [-Edge] [-Chrome] -ByReference <Hashtable> [-Force] 
+[<CommonParameters>]
 ````
 
 ### DESCRIPTION
@@ -633,6 +635,12 @@ Select-WebbrowserTab -ByReference <Hashtable> [<CommonParameters>]
         Required?                    true
         Position?                    named
         Default value                
+        Accept pipeline input?       false
+        Accept wildcard characters?  false
+    -Force [<SwitchParameter>]
+        Required?                    false
+        Position?                    named
+        Default value                False
         Accept pipeline input?       false
         Accept wildcard characters?  false
     <CommonParameters>

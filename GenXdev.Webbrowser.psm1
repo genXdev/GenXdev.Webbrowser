@@ -1569,21 +1569,22 @@ function Select-WebbrowserTab {
                     Open-Webbrowser -Chrome:$Chrome -Edge:$Edge -Force
                     $s = $Global:chrome.GetAvailableSessions();
                 }
-                return;
-            }
-
-            if ($Global:Host.Name.Contains("Visual Studio")) {
-
-                "Webbrowser has not been opened yet, press F5 to start debugging first.."
             }
             else {
-                "Webbrowser has not been opened yet, use Open-Webbrowser --> wb to start a browser with debugging enabled.."
+
+                if ($Global:Host.Name.Contains("Visual Studio")) {
+
+                    "Webbrowser has not been opened yet, press F5 to start debugging first.."
+                }
+                else {
+                    "Webbrowser has not been opened yet, use Open-Webbrowser --> wb to start a browser with debugging enabled.."
+                }
+
+                Set-Variable -Name chromeSessions -Value @() -Scope Global
+                Set-Variable -Name chrome -Value $null -Scope Global
+
+                return;
             }
-
-            Set-Variable -Name chromeSessions -Value @() -Scope Global
-            Set-Variable -Name chrome -Value $null -Scope Global
-
-            return;
         }
 
         $list = New-Object 'System.Collections.Generic.List[GenXdev.Helpers.RemoteSessionsResponse]'
