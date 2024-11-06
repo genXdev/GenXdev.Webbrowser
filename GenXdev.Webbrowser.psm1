@@ -1566,7 +1566,7 @@ function Select-WebbrowserTab {
                 }
                 else {
 
-                    Open-Webbrowser -Chrome:$Chrome -Edge:$Edge -Force
+                    Open-Webbrowser -Chrome:$Chrome -Edge:$Edge -Force -Url $Name
                     $s = $Global:chrome.GetAvailableSessions();
                 }
             }
@@ -1591,7 +1591,7 @@ function Select-WebbrowserTab {
         $s | ForEach-Object {
 
             if (
-            (![string]::IsNullOrWhiteSpace($name) -and ($PSItem.url -notlike "*$name*")) -or
+            (![string]::IsNullOrWhiteSpace($name) -and ($PSItem.url -notlike "$name")) -or
             ([string]::IsNullOrWhiteSpace($name) -and (
                     $PSItem.url.startsWith("chrome-extension:") -or
                     $PSItem.url.startsWith("devtools") -or
@@ -1612,7 +1612,7 @@ function Select-WebbrowserTab {
         [int] $id = 0;
         while (
                 ($id -lt ($s.Count - 1)) -and (
-                (![string]::IsNullOrWhiteSpace($name) -and ($s[$id].url -notlike "*$name*")) -or
+                (![string]::IsNullOrWhiteSpace($name) -and ($s[$id].url -notlike "$name")) -or
                 ([string]::IsNullOrWhiteSpace($name) -and (
                     $s[$id].url.startsWith("chrome-extension:") -or
                     $s[$id].url.startsWith("devtools") -or
