@@ -1562,12 +1562,12 @@ function Select-WebbrowserTab {
                 if ([string]::IsNullOrWhiteSpace($Name)) {
 
                     Open-Webbrowser -Chrome:$Chrome -Edge:$Edge -Force
-                    $s = $Global:chrome.GetAvailableSessions();
+                    return (Select-WebbrowserTab @PSBoundParameters)
                 }
                 else {
 
                     Open-Webbrowser -Chrome:$Chrome -Edge:$Edge -Force -Url $Name
-                    $s = $Global:chrome.GetAvailableSessions();
+                    return (Select-WebbrowserTab @PSBoundParameters)
                 }
             }
             else {
@@ -1594,7 +1594,9 @@ function Select-WebbrowserTab {
             (![string]::IsNullOrWhiteSpace($name) -and ($PSItem.url -notlike "$name")) -or
             ([string]::IsNullOrWhiteSpace($name) -and (
                     $PSItem.url.startsWith("chrome-extension:") -or
+                    $PSItem.url.startsWith("edge-extension:") -or
                     $PSItem.url.startsWith("devtools") -or
+                    $PSItem.url.contains("edgeservices.bing.com") -or
                     $PSItem.url.contains("/offline/") -or
                     $PSItem.url.startsWith("https://cdn.") -or
                     $PSItem.url.contains("edge:")))) {
@@ -1732,7 +1734,7 @@ Invoke-WebbrowserEvaluation "document.title = 'hello world'"
 PS C:\>
 
 # Synchronizing data
-Select-WebbrowserTab;
+Select-WebbrowserTab -Force;
 $Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
 
 [int] $number = Invoke-WebbrowserEvaluation "
@@ -1750,7 +1752,7 @@ Write-Host "
 PS C:\>
 
 # Support for promises
-Select-WebbrowserTab;
+Select-WebbrowserTab -Force;
 Invoke-WebbrowserEvaluation "
     let myList = [];
     return new Promise((resolve) => {
@@ -1772,7 +1774,7 @@ PS C:\>
 # this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
 # beware, not all websites use indexedDb, it could return an empty set
 
-Select-WebbrowserTab;
+Select-WebbrowserTab -Force;
 Set-WebbrowserTabLocation "https://www.youtube.com/"
 Start-Sleep 3
 $AllIndexedDbData = Invoke-WebbrowserEvaluation "
@@ -1831,7 +1833,7 @@ $AllIndexedDbData | Out-Host
 PS C:\>
 
 # Support for yielded pipeline results
-Select-WebbrowserTab;
+Select-WebbrowserTab -Force;
 Invoke-WebbrowserEvaluation "
 
     for (let i = 0; i < 10; i++) {
@@ -1953,7 +1955,7 @@ function Invoke-WebbrowserEvaluation {
                             ) -and $uri.IsWellFormedOriginalString() -and $uri.Scheme -like "http*";
 
                             if ($IsUri) {
-
+                                Write-Verbose "is Uri"
                                 $httpResult = Invoke-WebRequest -Uri $Js
 
                                 if ($httpResult.StatusCode -eq 200) {
@@ -2272,7 +2274,7 @@ function Set-WebbrowserTabLocation {
         throw "Url '$Url' is not in a proper format"
     }
 
-    Invoke-WebbrowserEvaluation "let old = document.location;document.location = '$Url'; 'Navigating from '+old+' --> \'$Url\''"
+    Invoke-WebbrowserEvaluation "setTimeout(function() { document.location = '$Url';}, 1000)"
 }
 
 ###############################################################################

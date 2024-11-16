@@ -333,8 +333,7 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Chromium [<SwitchParameter>]
-        Open in Microsoft Edge or Google Chrome, depending on what the default browser is --> 
-        -c
+        Open in Microsoft Edge or Google Chrome, depending on what the default browser is --> -c
         Required?                    false
         Position?                    named
         Default value                False
@@ -678,8 +677,8 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [-NoAuto
 
 ### DESCRIPTION
     Runs one or more scripts inside a selected webbrowser tab.
-    You can access 'data' object from within javascript, to synchronize data between 
-    PowerShell and the Webbrowser
+    You can access 'data' object from within javascript, to synchronize data between PowerShell 
+    and the Webbrowser
 
 ### PARAMETERS
     -Scripts <Object[]>
@@ -725,7 +724,7 @@ Invoke-WebbrowserEvaluation "document.title = 'hello world'"
 -------------------------- EXAMPLE 2 --------------------------
 PS C:\> 
 # Synchronizing data
-Select-WebbrowserTab;
+Select-WebbrowserTab -Force;
 $Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
 [int] $number = Invoke-WebbrowserEvaluation "
     document.body.innerHTML = JSON.stringify(data.files);
@@ -739,7 +738,7 @@ Write-Host "
 -------------------------- EXAMPLE 3 --------------------------
 PS C:\> 
 # Support for promises
-Select-WebbrowserTab;
+Select-WebbrowserTab -Force;
 Invoke-WebbrowserEvaluation "
     let myList = [];
     return new Promise((resolve) => {
@@ -759,7 +758,7 @@ PS C:\>
 # this function returns all rows of all tables/datastores of all databases of indexedDb in 
 the selected tab
 # beware, not all websites use indexedDb, it could return an empty set
-Select-WebbrowserTab;
+Select-WebbrowserTab -Force;
 Set-WebbrowserTabLocation "https://www.youtube.com/"
 Start-Sleep 3
 $AllIndexedDbData = Invoke-WebbrowserEvaluation "
@@ -802,7 +801,7 @@ $AllIndexedDbData | Out-Host
 -------------------------- EXAMPLE 5 --------------------------
 PS C:\> 
 # Support for yielded pipeline results
-Select-WebbrowserTab;
+Select-WebbrowserTab -Force;
 Invoke-WebbrowserEvaluation "
     for (let i = 0; i < 10; i++) {
         await (new Promise((resolve) => setTimeout(resolve, 1000)));
