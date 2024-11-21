@@ -1,13 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net8.0-windows</TargetFramework>
+        <OutputType>Library</OutputType>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <SelfContained>true</SelfContained>
+
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <PackageLicenseFile>license.txt</PackageLicenseFile>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <NeutralLanguage>en</NeutralLanguage>
-        <AssemblyVersion>1.36.2024</AssemblyVersion>
-        <FileVersion>1.36.2024</FileVersion>
+        <AssemblyVersion>1.56.2024</AssemblyVersion>
+        <FileVersion>1.56.2024</FileVersion>
         <Description>A Windows PowerShell module that allows you to run scripts against your casual desktop webbrowser-tab</Description>
         <Copyright>Copyright (c) 2024 GenXdev</Copyright>
         <PackageProjectUrl>https://github.com/genXdev/GenXdev.Webbrowser</PackageProjectUrl>
@@ -21,8 +25,11 @@
         <RootNamespace>GenXdev.Webbrowser</RootNamespace>
         <OutputPath>./bin/</OutputPath>
         <IntermediateOutputPath>./obj/</IntermediateOutputPath>
+        <BaseOutputPath>.\bin\</BaseOutputPath>
+        <PlatformTarget>AnyCPU</PlatformTarget>
     </PropertyGroup>
     <ItemGroup>
+        <PackageReference Include="System.Formats.Asn1" Version="8.0.1" />
         <PackageReference Include="System.Management.Automation" Version="7.4.2" />
     </ItemGroup>
     <!-- <Target Name="PostBuild" AfterTargets="PostBuildEvent">
