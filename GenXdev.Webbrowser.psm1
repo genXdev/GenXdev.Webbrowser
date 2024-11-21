@@ -407,6 +407,8 @@ function Open-Webbrowser {
 
     Begin {
 
+        $AllScreens = @([WpfScreenHelper.Screen]::AllScreens | % { $_ });
+
         Write-Verbose "Open-Webbrowser monitor = $Monitor"
 
         [bool] $UrlSpecified = $false;
@@ -444,9 +446,9 @@ function Open-Webbrowser {
 
         # get the configured default webbrowser
         $DefaultBrowser = Get-DefaultWebbrowser
-
         # reference the main monitor
-        $Screen = [System.Windows.Forms.Screen]::PrimaryScreen;
+        $Screen = [WpfScreenHelper.Screen]::PrimaryScreen;
+        $AllScreens = @([WpfScreenHelper.Screen]::AllScreens | % { $_ });
 
         if ($Monitor -lt -1) {
 
@@ -454,22 +456,22 @@ function Open-Webbrowser {
 
             if ([int]::TryParse($Global:DefaultSecondaryMonitor, [ref] $defaultMonitor)) {
 
-                $Monitor = $defaultMonitor % ([System.Windows.Forms.Screen]::AllScreens.Length + 1);
+                $Monitor = $defaultMonitor % ($AllScreens.Length + 1);
             }
             else {
 
-                $Monitor = 2 % ([System.Windows.Forms.Screen]::AllScreens.Length + 1);
+                $Monitor = 2 % ($AllScreens.Length + 1);
             }
         }
 
         # reference the requested monitor
-        if (($Monitor -ge 1) -and ($Monitor -lt [System.Windows.Forms.Screen]::AllScreens.Length)) {
+        if (($Monitor -ge 1) -and ($Monitor -lt $AllScreens.Length)) {
 
-            $Screen = [System.Windows.Forms.Screen]::AllScreens[$Monitor - 1]
+            $Screen = $AllScreens[$Monitor - 1]
         }
         if (($Monitor -eq 0)) {
 
-            $Screen = [System.Windows.Forms.Screen]::PrimaryScreen;
+            $Screen = [WpfScreenHelper.Screen]::PrimaryScreen;
         }
 
         # remember
