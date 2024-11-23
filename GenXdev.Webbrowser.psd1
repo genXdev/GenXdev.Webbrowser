@@ -6,7 +6,7 @@
   RootModule           = 'GenXdev.Webbrowser.psm1'
 
   # Version number of this module.
-  ModuleVersion        = '1.60.2024'
+  ModuleVersion        = '1.62.2024'
   # Supported PSEditions
   # CompatiblePSEditions = @()
 
@@ -38,7 +38,7 @@
   # ProcessorArchitecture = ''
 
   # Modules that must be imported into the global environment prior to importing this module
-  RequiredModules      = @(@{ModuleName = 'GenXdev.Helpers'; ModuleVersion = '1.60.2024' }, @{ModuleName = 'GenXdev.Windows'; ModuleVersion = '1.60.2024' }, @{ModuleName = 'GenXdev.FileSystem'; ModuleVersion = '1.60.2024' });
+  RequiredModules      = @(@{ModuleName = 'GenXdev.Helpers'; ModuleVersion = '1.62.2024' }, @{ModuleName = 'GenXdev.Windows'; ModuleVersion = '1.62.2024' }, @{ModuleName = 'GenXdev.FileSystem'; ModuleVersion = '1.62.2024' });
 
   # Assemblies that must be loaded prior to importing this module
   RequiredAssemblies   = @(

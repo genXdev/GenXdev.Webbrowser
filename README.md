@@ -331,8 +331,7 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Chromium [<SwitchParameter>]
-        Open in Microsoft Edge or Google Chrome, depending on what the default browser is --> 
-        -c
+        Open in Microsoft Edge or Google Chrome, depending on what the default browser is --> -c
         Required?                    false
         Position?                    named
         Default value                False
@@ -676,8 +675,8 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [-NoAuto
 
 ### DESCRIPTION
     Runs one or more scripts inside a selected webbrowser tab.
-    You can access 'data' object from within javascript, to synchronize data between 
-    PowerShell and the Webbrowser
+    You can access 'data' object from within javascript, to synchronize data between PowerShell 
+    and the Webbrowser
 
 ### PARAMETERS
     -Scripts <Object[]>
