@@ -284,10 +284,9 @@ Open-Webbrowser                      --> wb
 ### SYNTAX
 ````PowerShell
 Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chromium] 
-[-Firefox] [-All] [-Monitor <Int32>] [-FullScreen] [-Width <Int32>] [-Height <Int32>] 
-[-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] 
-[-ApplicationMode] [-NoBrowserExtensions] [-RestoreFocus] [-NewWindow] [-PassThrough] 
-[<CommonParameters>]
+[-Firefox] [-All] [-Monitor <Int32>] [-FullScreen] [-Width <Int32>] [-Height <Int32>] [-X 
+<Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] 
+[-NoBrowserExtensions] [-RestoreFocus] [-NewWindow] [-PassThrough] [<CommonParameters>]
 ````
 
 ### DESCRIPTION
@@ -331,8 +330,8 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Chromium [<SwitchParameter>]
-        Open in Microsoft Edge or Google Chrome, depending on what the default browser is 
-        --> -c
+        Open in Microsoft Edge or Google Chrome, depending on what the default browser is --> 
+        -c
         Required?                    false
         Position?                    named
         Default value                False
@@ -533,8 +532,7 @@ Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All]
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Chromium [<SwitchParameter>]
-        Closes Microsoft Edge or Google Chrome, depending on what the default browser is --> 
-        -c
+        Closes Microsoft Edge or Google Chrome, depending on what the default browser is --> -c
         Required?                    false
         Position?                    named
         Default value                False
@@ -597,8 +595,8 @@ Select-WebbrowserTab [[-id] <Int32>] [-Edge] [-Chrome] -ByReference <Hashtable> 
 ````
 
 ### DESCRIPTION
-    Selects a webbrowser tab for use by the Cmdlets 'Invoke-WebbrowserEvaluation -> et, 
-    eval', 'Close-WebbrowserTab -> ct' and others
+    Selects a webbrowser tab for use by the Cmdlets 'Invoke-WebbrowserEvaluation -> et, eval', 
+    'Close-WebbrowserTab -> ct' and others
 
 ### PARAMETERS
     -id <Int32>
@@ -671,8 +669,8 @@ Invoke-WebbrowserEvaluation          --> et, Eval
 
 ### SYNTAX
 ````PowerShell
-Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] 
-[-NoAutoSelectTab] [<CommonParameters>]
+Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [-NoAutoSelectTab] 
+[<CommonParameters>]
 ````
 
 ### DESCRIPTION
@@ -755,8 +753,8 @@ Invoke-WebbrowserEvaluation "
 -------------------------- EXAMPLE 4 --------------------------
 PS C:\> 
 # Support for promises and more
-# this function returns all rows of all tables/datastores of all databases of indexedDb 
-in the selected tab
+# this function returns all rows of all tables/datastores of all databases of indexedDb in 
+the selected tab
 # beware, not all websites use indexedDb, it could return an empty set
 Select-WebbrowserTab -Force;
 Set-WebbrowserTabLocation "https://www.youtube.com/"
@@ -919,8 +917,8 @@ Show-WebsiteInAllBrowsers            --> Show-UrlInAllBrowsers
 ````
 
 ### SYNOPSIS
-    Will open an url into three different browsers + a incognito window, with a window 
-    mosaic layout
+    Will open an url into three different browsers + a incognito window, with a window mosaic 
+    layout
 
 ### SYNTAX
 ````PowerShell
@@ -928,8 +926,8 @@ Show-WebsiteInAllBrowsers [-Url] <String> [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    Will open an url into three different browsers + a incognito window, with a window 
-    mosaic layout
+    Will open an url into three different browsers + a incognito window, with a window mosaic 
+    layout
 
 ### PARAMETERS
     -Url <String>
@@ -1116,8 +1114,8 @@ Get-ChromiumSessionReference [<CommonParameters>]
 ### DESCRIPTION
     Returns a reference that can be used with Select-WebbrowserTab -ByReference
     This can be usefull when you want to evaluate the webbrowser inside a Job.
-    With this serializable reference, you can pass the webbrowser tab session reference on 
-    to the Job commandblock.
+    With this serializable reference, you can pass the webbrowser tab session reference on to 
+    the Job commandblock.
 
 ### PARAMETERS
     <CommonParameters>
