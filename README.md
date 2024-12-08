@@ -195,7 +195,6 @@ Update-Module
 | [Get-ChromeRemoteDebuggingPort](#Get-ChromeRemoteDebuggingPort) |  | Returns the configured remote debugging port for Google Chrome |
 | [Get-EdgeRemoteDebuggingPort](#Get-EdgeRemoteDebuggingPort) |  | Returns the configured remote debugging port for Microsoft Edge |
 | [Get-ChromiumRemoteDebuggingPort](#Get-ChromiumRemoteDebuggingPort) |  | Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which ever is the default browser |
-| [Copy-OpenWebbrowserParameters](#Copy-OpenWebbrowserParameters) |  | The dynamic parameter block of a proxy function. This block can be used to copy a proxy function target's parameters . |
 | [Approve-FirefoxDebugging](#Approve-FirefoxDebugging) |  | Changes firefox settings to enable remotedebugging and app-mode startups of firefox |
 | [Get-ChromiumSessionReference](#Get-ChromiumSessionReference) |  | Returns a reference that can be used with Select-WebbrowserTab -ByReferenceThis can be usefull when you want to evaluate the webbrowser inside a Job.With this serializable reference, you can pass the webbrowser tab session reference on to the Job commandblock. |
 
@@ -285,9 +284,10 @@ Open-Webbrowser                      --> wb
 ### SYNTAX
 ````PowerShell
 Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chromium] 
-[-Firefox] [-All] [-Monitor <Int32>] [-FullScreen] [-Width <Int32>] [-Height <Int32>] [-X 
-<Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] 
-[-NoBrowserExtensions] [-RestoreFocus] [-NewWindow] [-PassThrough] [<CommonParameters>]
+[-Firefox] [-All] [-Monitor <Int32>] [-FullScreen] [-Width <Int32>] [-Height <Int32>] 
+[-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] 
+[-ApplicationMode] [-NoBrowserExtensions] [-RestoreFocus] [-NewWindow] [-PassThrough] 
+[<CommonParameters>]
 ````
 
 ### DESCRIPTION
@@ -331,7 +331,8 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Chromium [<SwitchParameter>]
-        Open in Microsoft Edge or Google Chrome, depending on what the default browser is --> -c
+        Open in Microsoft Edge or Google Chrome, depending on what the default browser is 
+        --> -c
         Required?                    false
         Position?                    named
         Default value                False
@@ -532,7 +533,8 @@ Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All]
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Chromium [<SwitchParameter>]
-        Closes Microsoft Edge or Google Chrome, depending on what the default browser is --> -c
+        Closes Microsoft Edge or Google Chrome, depending on what the default browser is --> 
+        -c
         Required?                    false
         Position?                    named
         Default value                False
@@ -595,8 +597,8 @@ Select-WebbrowserTab [[-id] <Int32>] [-Edge] [-Chrome] -ByReference <Hashtable> 
 ````
 
 ### DESCRIPTION
-    Selects a webbrowser tab for use by the Cmdlets 'Invoke-WebbrowserEvaluation -> et, eval', 
-    'Close-WebbrowserTab -> ct' and others
+    Selects a webbrowser tab for use by the Cmdlets 'Invoke-WebbrowserEvaluation -> et, 
+    eval', 'Close-WebbrowserTab -> ct' and others
 
 ### PARAMETERS
     -id <Int32>
@@ -669,14 +671,14 @@ Invoke-WebbrowserEvaluation          --> et, Eval
 
 ### SYNTAX
 ````PowerShell
-Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [-NoAutoSelectTab] 
-[<CommonParameters>]
+Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] 
+[-NoAutoSelectTab] [<CommonParameters>]
 ````
 
 ### DESCRIPTION
     Runs one or more scripts inside a selected webbrowser tab.
-    You can access 'data' object from within javascript, to synchronize data between PowerShell 
-    and the Webbrowser
+    You can access 'data' object from within javascript, to synchronize data between 
+    PowerShell and the Webbrowser
 
 ### PARAMETERS
     -Scripts <Object[]>
@@ -753,8 +755,8 @@ Invoke-WebbrowserEvaluation "
 -------------------------- EXAMPLE 4 --------------------------
 PS C:\> 
 # Support for promises and more
-# this function returns all rows of all tables/datastores of all databases of indexedDb in 
-the selected tab
+# this function returns all rows of all tables/datastores of all databases of indexedDb 
+in the selected tab
 # beware, not all websites use indexedDb, it could return an empty set
 Select-WebbrowserTab -Force;
 Set-WebbrowserTabLocation "https://www.youtube.com/"
@@ -917,8 +919,8 @@ Show-WebsiteInAllBrowsers            --> Show-UrlInAllBrowsers
 ````
 
 ### SYNOPSIS
-    Will open an url into three different browsers + a incognito window, with a window mosaic 
-    layout
+    Will open an url into three different browsers + a incognito window, with a window 
+    mosaic layout
 
 ### SYNTAX
 ````PowerShell
@@ -926,8 +928,8 @@ Show-WebsiteInAllBrowsers [-Url] <String> [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    Will open an url into three different browsers + a incognito window, with a window mosaic 
-    layout
+    Will open an url into three different browsers + a incognito window, with a window 
+    mosaic layout
 
 ### PARAMETERS
     -Url <String>
@@ -1073,38 +1075,6 @@ Get-ChromiumRemoteDebuggingPort [<CommonParameters>]
 
 <br/><hr/><hr/><br/>
 
-##	Copy-OpenWebbrowserParameters
-````PowerShell
-Copy-OpenWebbrowserParameters
-````
-
-### SYNOPSIS
-    Proxy function dynamic parameter block for the Open-Webbrowser cmdlet
-
-### SYNTAX
-````PowerShell
-Copy-OpenWebbrowserParameters [[-ParametersToSkip] <String[]>] [<CommonParameters>]
-````
-
-### DESCRIPTION
-    The dynamic parameter block of a proxy function. This block can be used to copy a proxy 
-    function target's parameters .
-
-### PARAMETERS
-    -ParametersToSkip <String[]>
-        Required?                    false
-        Position?                    1
-        Default value                @()
-        Accept pipeline input?       false
-        Accept wildcard characters?  false
-    <CommonParameters>
-        This cmdlet supports the common parameters: Verbose, Debug,
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
-
-<br/><hr/><hr/><br/>
-
 ##	Approve-FirefoxDebugging
 ````PowerShell
 Approve-FirefoxDebugging
@@ -1146,8 +1116,8 @@ Get-ChromiumSessionReference [<CommonParameters>]
 ### DESCRIPTION
     Returns a reference that can be used with Select-WebbrowserTab -ByReference
     This can be usefull when you want to evaluate the webbrowser inside a Job.
-    With this serializable reference, you can pass the webbrowser tab session reference on to 
-    the Job commandblock.
+    With this serializable reference, you can pass the webbrowser tab session reference on 
+    to the Job commandblock.
 
 ### PARAMETERS
     <CommonParameters>
