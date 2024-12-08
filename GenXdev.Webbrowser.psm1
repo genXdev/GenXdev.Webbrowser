@@ -407,7 +407,7 @@ function Open-Webbrowser {
 
     Begin {
 
-        $AllScreens = @([WpfScreenHelper.Screen]::AllScreens | % { $_ });
+        $AllScreens = @([WpfScreenHelper.Screen]::AllScreens | ForEach-Object { $_ });
 
         Write-Verbose "Open-Webbrowser monitor = $Monitor"
 
@@ -448,7 +448,7 @@ function Open-Webbrowser {
         $DefaultBrowser = Get-DefaultWebbrowser
         # reference the main monitor
         $Screen = [WpfScreenHelper.Screen]::PrimaryScreen;
-        $AllScreens = @([WpfScreenHelper.Screen]::AllScreens | % { $_ });
+        $AllScreens = @([WpfScreenHelper.Screen]::AllScreens | ForEach-Object { $_ });
 
         if ($Monitor -lt -1) {
 
@@ -620,9 +620,7 @@ function Open-Webbrowser {
 
                 if ($now - $last.Value -lt [System.TimeSpan]::FromSeconds(1)) {
 
-                    Write-Verbose "Due to recent close of $($Browser.Name) now sleeping for $(($last.Value.AddSeconds(1) - $now).TotalMilliseconds)ms"
-
-                    [System.Threading.Thread]::Sleep(($last.Value.AddSeconds(1) - $now).TotalMilliseconds)
+                    [System.Threading.Thread]::Sleep(200);
                 }
             }
         }
@@ -976,7 +974,7 @@ function Open-Webbrowser {
                     $window[0].Move($X, $Y, $Width, $Height)  | Out-Null
 
                     # wait
-                    [System.Threading.Thread]::Sleep(750);
+                    [System.Threading.Thread]::Sleep(250);
 
                     # do again
                     $window[0].Show()  | Out-Null
@@ -2576,25 +2574,6 @@ function Get-ChromiumRemoteDebuggingPort {
     }
 
     Get-ChromeRemoteDebuggingPort;
-}
-
-###############################################################################
-
-<#
-.SYNOPSIS
-    Proxy function dynamic parameter block for the Open-Webbrowser cmdlet
-.DESCRIPTION
-    The dynamic parameter block of a proxy function. This block can be used to copy a proxy function target's parameters .
-#>
-function Copy-OpenWebbrowserParameters {
-
-    [System.Diagnostics.DebuggerStepThrough()]
-
-    param(
-        [string[]] $ParametersToSkip = @()
-    )
-
-    Copy-CommandParameters -CommandName "Open-Webbrowser" -ParametersToSkip $ParametersToSkip
 }
 
 ###############################################################################

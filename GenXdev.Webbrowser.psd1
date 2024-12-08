@@ -6,7 +6,7 @@
   RootModule           = 'GenXdev.Webbrowser.psm1'
 
   # Version number of this module.
-  ModuleVersion        = '1.76.2024'
+  ModuleVersion        = '1.78.2024'
   # Supported PSEditions
   # CompatiblePSEditions = @()
 
@@ -38,13 +38,13 @@
   # ProcessorArchitecture = ''
 
   # Modules that must be imported into the global environment prior to importing this module
-  RequiredModules      = @(@{ModuleName = 'GenXdev.Helpers'; ModuleVersion = '1.76.2024' }, @{ModuleName = 'GenXdev.Windows'; ModuleVersion = '1.76.2024' }, @{ModuleName = 'GenXdev.FileSystem'; ModuleVersion = '1.76.2024' });
+  RequiredModules      = @(@{ModuleName = 'GenXdev.Helpers'; ModuleVersion = '1.78.2024' }, @{ModuleName = 'GenXdev.Windows'; ModuleVersion = '1.78.2024' }, @{ModuleName = 'GenXdev.FileSystem'; ModuleVersion = '1.78.2024' });
 
   # Assemblies that must be loaded prior to importing this module
   RequiredAssemblies   = @(
 
-  ".\\lib\\System.Management.Automation.dll",
-  ".\\lib\\GenXdev.Webbrowser.dll"
+    ".\\lib\\System.Management.Automation.dll",
+    ".\\lib\\GenXdev.Webbrowser.dll"
   )
 
   # Script files (.ps1) that are run in the caller's environment prior to importing this module.
@@ -604,7 +604,7 @@
   } # End of PrivateData hashtable
 
   # HelpInfo URI of this module
-  HelpInfoURI          = 'https://github.com/genXdev/GenXdev.Webbrowser/blob/main/README.md#cmdlet-index'
+  # HelpInfoUri          = 'https://github.com/genXdev/GenXdev.Webbrowser/blob/main/README.md#cmdlet-index'
 
   # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
   # DefaultCommandPrefix = ''
