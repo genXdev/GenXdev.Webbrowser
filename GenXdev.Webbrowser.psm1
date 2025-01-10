@@ -1,5 +1,4 @@
 ###############################################################################
-
 <#
 .SYNOPSIS
 Returns the configured current webbrowser
@@ -171,13 +170,16 @@ Hide the browser controls --> -a, -app, -appmode
 .PARAMETER NoBrowserExtensions
 Prevent loading of browser extensions --> -de, -ne
 
+.PARAMETER AcceptLang
+Set the browser accept-lang http header
+
 .PARAMETER RestoreFocus
 Restore PowerShell window focus --> -bg
 
 .PARAMETER NewWindow
 Don't re-use existing browser window, instead, create a new one -> nw
 
-.PARAMETER PassThrough
+.PARAMETER PassThru
 Returns a [System.Diagnostics.Process] object of the browserprocess
 
 .PARAMETER Force
@@ -222,13 +224,13 @@ function Open-Webbrowser {
     param(
         ###############################################################################
 
-        [Alias("Value", "Website", "Uri", "FullName")]
+        [Alias("Value", "Uri", "FullName", "Website", "WebsiteUrl")]
         [parameter(
             Mandatory = $false,
             Position = 0,
             HelpMessage = "The url to open",
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName = $false,
             ValueFromRemainingArguments = $false
         )]
         [string[]] $Url,
@@ -380,6 +382,14 @@ function Open-Webbrowser {
             HelpMessage = "Prevent loading of browser extensions"
         )]
         [switch] $NoBrowserExtensions,
+
+        ###############################################################################
+        [Alias("lang", "locale")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Set the browser accept-lang http header"
+        )]
+        [string] $AcceptLang = $null,
         ###############################################################################
 
         [Alias("bg")]
@@ -402,16 +412,17 @@ function Open-Webbrowser {
             Mandatory = $false,
             HelpMessage = "Returns a [System.Diagnostics.Process] object of the browserprocess"
         )]
-        [switch] $PassThrough
+        [switch] $PassThru
     )
 
     Begin {
 
-        $AllScreens = @([WpfScreenHelper.Screen]::AllScreens | ForEach-Object { $_ });
+        $window = @();
+        $AllScreens = @([WpfScreenHelper.Screen]::AllScreens | ForEach-Object { $PSItem });
 
-        Write-Verbose "Open-Webbrowser monitor = $Monitor"
+        Write-Verbose "Open-Webbrowser monitor = $Monitor, Urls=$($Url | ConvertTo-Json)"
 
-        [bool] $UrlSpecified = $false;
+        [bool] $UrlSpecified = $true;
 
         # what if no url is specified?
         if (($null -eq $Url) -or ($Url.Length -lt 1)) {
@@ -423,19 +434,25 @@ function Open-Webbrowser {
         }
         else {
 
-            $Url = $Url.Trim(" `"'".ToCharArray());
-            $filePath = $Url
-            try {
-                $filePath = (Expand-Path $Url);
-            }
-            catch {
+            $Url = $($Url | ForEach-Object {
 
-            }
+                    $NewUrl = $PSItem.Trim(" `"'".ToCharArray());
+                    $filePath = $NewUrl
+                    try {
+                        $filePath = (Expand-Path $NewUrl);
+                    }
+                    catch {
 
-            if ([IO.File]::Exists($filePath)) {
+                    }
 
-                $Url = "file://$([Uri]::EscapeUriString($filePath.Replace("\", "/")))"
-            }
+                    if ([IO.File]::Exists($filePath)) {
+
+                        $NewUrl = "file://$([Uri]::EscapeUriString($filePath.Replace("\", "/")))"
+                    }
+
+                    $NewUrl
+                }
+            );
         }
 
         # reference powershell main window
@@ -446,36 +463,40 @@ function Open-Webbrowser {
 
         # get the configured default webbrowser
         $DefaultBrowser = Get-DefaultWebbrowser
+
         # reference the main monitor
         $Screen = [WpfScreenHelper.Screen]::PrimaryScreen;
-        $AllScreens = @([WpfScreenHelper.Screen]::AllScreens | ForEach-Object { $_ });
+        $AllScreens = @([WpfScreenHelper.Screen]::AllScreens | ForEach-Object { $PSItem });
 
-        if ($Monitor -lt -1) {
+        # reference the requested monitor
+        if ($Monitor -eq 0) {
 
-            [int] $defaultMonitor = 1;
+            Write-Verbose "Choosing primary monitor, because default monitor requested using -Monitor 0"
+        }
+        else {
+            if ($Monitor -eq -2 -and $Global:DefaultSecondaryMonitor -is [int] -and $Global:DefaultSecondaryMonitor -ge 0) {
 
-            if ([int]::TryParse($Global:DefaultSecondaryMonitor, [ref] $defaultMonitor)) {
+                Write-Verbose "Picking monitor #$((($Global:DefaultSecondaryMonitor-1) % $AllScreens.Length)) as secondary (requested with -monitor -2) set by `$Global:DefaultSecondaryMonitor"
+                $Screen = $AllScreens[($Global:DefaultSecondaryMonitor - 1) % $AllScreens.Length];
+            }
+            elseif ($Monitor -eq -2 -and (-not ($Global:DefaultSecondaryMonitor -is [int] -and $Global:DefaultSecondaryMonitor -ge 0)) -and ((Get-MonitorCount) -gt 1)) {
 
-                $Monitor = $defaultMonitor % ($AllScreens.Length + 1);
+                Write-Verbose "Picking monitor #1 as default secondary (requested with -monitor -2), because `$Global:DefaultSecondaryMonitor not set"
+                $Screen = $AllScreens[1];
+            }
+            elseif ($Monitor -ge 1) {
+
+                Write-Verbose "Picking monitor #$(($Monitor - 1) % $AllScreens.Length) as requested by the -Monitor parameter"
+                $Screen = $AllScreens[($Monitor - 1) % $AllScreens.Length]
             }
             else {
 
-                $Monitor = 2 % ($AllScreens.Length + 1);
+                Write-Verbose "Picking monitor #1 (same as PowerShell), because no monitor specified"
+                $Screen = [WpfScreenHelper.Screen]::FromPoint(@{X = $PowerShellWindow[0].Position().X; Y = $PowerShellWindow[0].Position().Y });
             }
         }
-
-        # reference the requested monitor
-        if (($Monitor -ge 1) -and ($Monitor -lt $AllScreens.Length)) {
-
-            $Screen = $AllScreens[$Monitor - 1]
-        }
-        if (($Monitor -eq 0)) {
-
-            $Screen = [WpfScreenHelper.Screen]::PrimaryScreen;
-        }
-
         # remember
-        [bool] $HavePositioning = ($Monitor -ge 0) -or ($Left -or $Right -or $Top -or $Bottom -or $Centered -or (($X -is [int]) -and ($X -gt -999999)) -or (($Y -is [int]) -and ($Y -gt -999999)));
+        [bool] $HavePositioning = ($Monitor -ge 0 -or $Monitor -eq -2) -or ($Left -or $Right -or $Top -or $Bottom -or $Centered -or (($X -is [int]) -and ($X -gt -999999)) -or (($Y -is [int]) -and ($Y -gt -999999))) -and -not $FullScreen;
 
         # init window position
         # '-X' parameter not supplied?
@@ -504,7 +525,19 @@ function Open-Webbrowser {
             }
         }
 
-        if ($HavePositioning) {
+        $State = @{
+            existingWindow    = $false
+            hadVisibleBrowser = $false
+            Browser           = $null
+            IsDefaultBrowser  = ((-not $All) -and ((-not $Chromium) -or ($DefaultBrowser.Name -like "*chrome*") -or ($DefaultBrowser.Name -like "*edge*")) -and ((-not $Chrome) -or ($DefaultBrowser.Name -like "*chrome*")) -and ((-not $Edge) -or ($DefaultBrowser.Name -like "*edge*")) -and ((-not $Firefox) -or ($DefaultBrowser.Name -like "*firefox*")))
+            FirstProcess      = $null
+            PositioningDone   = $false
+            BrowserWindow     = $null
+        };
+
+        $UseStartProcess = (-not ($HavePositioning -or $FullScreen)) -and $State.IsDefaultBrowser
+
+        if ($HavePositioning -or $FullScreen) {
 
             $WidthProvided = ($Width -ge 0) -and ($Width -is [int]);
             $heightProvided = ($Height -ge 0) -and ($Height -is [int]);
@@ -620,66 +653,12 @@ function Open-Webbrowser {
 
                 if ($now - $last.Value -lt [System.TimeSpan]::FromSeconds(1)) {
 
-                    [System.Threading.Thread]::Sleep(200);
+                    [System.Threading.Thread]::Sleep(200) | Out-Null
                 }
             }
         }
 
-        function refocusTab($browser, $CurrentUrl) {
-
-            # '-RestoreFocus' parameter supplied'?
-            if ($RestoreFocus -eq $true) {
-
-                # Get handle to current foreground window
-                $CurrentActiveWindow = [GenXdev.Helpers.WindowObj]::GetFocusedWindow();
-
-                # Is it different then the one at the start of this command?
-                if (($null -ne $PowerShellWindow) -and ($PowerShellWindow.Handle -ne $CurrentActiveWindow.Handle)) {
-
-                    # restore it
-                    $PowerShellWindow.SetForeground();
-
-                    # wait
-                    [System.Threading.Thread]::Sleep(250);
-
-                    # did it not work?
-                    $CurrentActiveWindow = [GenXdev.Helpers.WindowObj]::GetFocusedWindow();
-
-                    if ($PowerShellWindow.Handle -ne $CurrentActiveWindow.Handle) {
-
-                        try {
-                            # Sending Alt-Tab
-                            $helper = New-Object -ComObject WScript.Shell;
-                            $helper.sendKeys("%{TAB}");
-                            Write-Verbose "Sending Alt-Tab"
-
-                            # wait
-                            [System.Threading.Thread]::Sleep(500);
-                        }
-                        catch {
-
-                        }
-                    }
-                }
-
-                #  positioning of windows did happen?
-                if ($HavePositioning -eq $true) {
-
-                    # wait a little
-                    [System.Threading.Thread]::Sleep(500);
-                }
-            }
-            else {
-                #  positioning of windows did happen?
-                if ($HavePositioning -eq $true) {
-
-                    # wait a little
-                    [System.Threading.Thread]::Sleep(500);
-                }
-            }
-        }
-
-        function constructArgumentList($browser, $CurrentUrl) {
+        function constructArgumentList($browser, $CurrentUrl, $State) {
 
             # initialize an empty argument list for the webbrowser commandline
             $ArgumentList = @();
@@ -709,6 +688,12 @@ function Open-Webbrowser {
                     $ArgumentList = $ArgumentList + @("-safe-mode");
                 }
 
+                # '-AcceptLang' parameter supplied?
+                if ($null -ne $AcceptLang) {
+
+                    $ArgumentList = $ArgumentList + @("--lang", $AcceptLang);
+                }
+
                 # '-Private' parameter supplied'?
                 if ($Private -eq $true) {
 
@@ -730,7 +715,7 @@ function Open-Webbrowser {
                     else {
 
                         # '-NewWindow' parameter supplied'?
-                        if ($NewWindow -eq $true) {
+                        if ((-not $State.PositioningDone) -and ($NewWindow -eq $true)) {
 
                             # set commandline argument
                             $ArgumentList = $ArgumentList + @("--new-window", $CurrentUrl)
@@ -758,10 +743,17 @@ function Open-Webbrowser {
                     }
 
                     # set default commandline parameters
+                    # https://peter.sh/experiments/chromium-command-line-switches/
+                    # https://stackoverflow.com/questions/51563287/how-to-make-chrome-always-launch-with-remote-debugging-port-flag
                     $ArgumentList = $ArgumentList + @(
                         "--disable-infobars",
+                        # "--enable-automation",
+                        "--hide-crash-restore-bubble",
+                        "--no-first-run",
                         "--disable-session-crashed-bubble",
+                        "--disable-crash-reporter",
                         "--no-default-browser-check",
+                        "--disable-restore-tabs",
                         "--remote-allow-origins=*",
                         "--remote-debugging-port=$port"
                     )
@@ -779,6 +771,12 @@ function Open-Webbrowser {
                         $ArgumentList = $ArgumentList + @("--disable-extensions");
                     }
 
+                    # '-AcceptLang' parameter supplied?
+                    if ($null -ne $AcceptLang) {
+
+                        $ArgumentList = $ArgumentList + @("--accept-lang=$AcceptLang");
+                    }
+
                     # '-Private' parameter supplied'?
                     if ($Private -eq $true) {
 
@@ -786,6 +784,7 @@ function Open-Webbrowser {
                         $NewWindow = $true;
 
                         if ($browser.Name -like "*Edge*") {
+
                             # set commandline argument
                             $ArgumentList = $ArgumentList + @("-InPrivate")
                         }
@@ -796,18 +795,23 @@ function Open-Webbrowser {
                     }
 
                     # '-NewWindow' parameter supplied'?
-                    if ($NewWindow -eq $true) {
+                    if ((-not $State.PositioningDone) -and ($NewWindow -eq $true)) {
 
                         # set commandline argument
-                        $ArgumentList = $ArgumentList + @("--new-window")
+                        $ArgumentList = $ArgumentList + @("--new-window") + @("--force-launch-browser");
                     }
 
                     # '-Fullscreen' parameter supplied'?
-                    if ($FullScreen -eq $true) {
+                    $ArgumentList = $ArgumentList + @("--start-maximized")
+                    #hier
+                    # if ($FullScreen -eq $true) {
 
-                        # set commandline argument
-                        $ArgumentList = $ArgumentList + @("--start-fullscreen")
-                    }
+                    #     # set commandline argument
+                    #     $ArgumentList = $ArgumentList + @("--start-fullscreen")
+                    # }
+                    # else {
+                    #     $ArgumentList = $ArgumentList + @("--start-maximized")
+                    # }
 
                     # '-ApplicationMode' parameter supplied?
                     if ($ApplicationMode -eq $true) {
@@ -835,246 +839,264 @@ function Open-Webbrowser {
 
             $ArgumentList
         }
+        function findProcess($browser, $process, $State) {
 
-        function open($browser, $CurrentUrl) {
-            try {
-                enforceMinimumDelays $browser
-                ###############################################################################
+            $State.existingWindow = $false;
+            $window = @()
+            do {
 
-                $StartBrowser = $true;
-                $hadVisibleBrowser = $false;
-                $process = $null;
-
-                # find any existing  process
-                $prcBefore = @(Get-Process -ErrorAction SilentlyContinue |
-                    Where-Object -Property Path -EQ $browser.Path |
-                    Where-Object -Property MainWindowHandle -NE 0 |
-                    Sort-Object { $PSItem.StartTime } -Descending |
-                    Select-Object -First 1)
-
-                #found?
-                if (($prcBefore.Length -ge 1) -and ($null -ne $prcBefore[0])) {
-
-                    $hadVisibleBrowser = $true;
-                }
-
-                # no url specified?
-                if (($NewWindow -ne $true) -and ($HavePositioning -eq $true) -and ($UrlSpecified -eq $false)) {
-
-                    if ($hadVisibleBrowser) {
-
-                        Write-Verbose "No url specified, found existing webbrowser window"
-                        $StartBrowser = $false;
-                        $process = $prcBefore[0];
-                    }
-                }
-
-                if ($StartBrowser) {
-
-                    if ($Force) {
-                        $a = Select-WebbrowserTab
-
-                        if ($a.length -eq 0) {
-
-                            Find-Process -Name (Get-ChildItem $Browser.Path).Name | Stop-Process -Force
-                        }
-                    }
-
-                    # get the browser dependend argument list
-                    $ArgumentList = constructArgumentList $browser $CurrentUrl
-
-                    # log
-                    Write-Verbose "$($browser.Name) --> $($ArgumentList | ConvertTo-Json)"
-
-                    # setup process start info
-                    $si = New-Object "System.Diagnostics.ProcessStartInfo"
-                    $si.FileName = $browser.Path
-                    $si.CreateNoWindow = $true;
-                    $si.UseShellExecute = $false;
-                    $si.WindowStyle = "Normal"
-                    foreach ($arg in $ArgumentList) { $si.ArgumentList.Add($arg); }
-
-                    # start process
-                    $process = [System.Diagnostics.Process]::Start($si)
-                }
-
-                ###############################################################################
-
-                # nothing to do anymore? then don't waste time on positioning the window
-                if (($HavePositioning -eq $false) -and ($PassThrough -ne $true)) {
-
-                    Write-Verbose "No positioning required, done.."
-                    return;
-                }
-
-                ###############################################################################
-
-                # allow the browser to start-up, and update process handle if needed
-                enforceMinimumDelays $browser
-                [int] $i = 0;
-                $window = @();
-                $existingWindow = $false;
-                do {
-
+                try {
                     # did it only signal an already existing webbrowser instance, to create a new tab,
                     # and did it then exit?
-                    if ($process.HasExited) {
+                    # if (($null -eq $process) -or ($process.HasExited)) {
 
-                        # find the process
-                        $processesNew = @(Get-Process -ErrorAction SilentlyContinue |
-                            Where-Object -Property Path -EQ $browser.Path |
-                            Where-Object -Property MainWindowHandle -NE 0 |
-                            Sort-Object { $PSItem.StartTime } -Descending |
-                            Select-Object -First 1)
+                    [System.Threading.Thread]::Sleep(100) | Out-Null;
 
-                        # not found?
-                        if (($processesNew.Length -eq 0) -or ($null -eq $processesNew[0])) {
+                    # find the process
+                    $processesNew = @(Get-Process ([IO.Path]::GetFileNameWithoutExtension($browser.Path)) -ErrorAction SilentlyContinue |
+                        Where-Object -Property Path -EQ $browser.Path |
+                        Where-Object -Property MainWindowHandle -NE 0 |
+                        Sort-Object { $PSItem.StartTime } -Descending |
+                        Select-Object -First 1)
 
-                            $window = @();
+                    # not found?
+                    if (($processesNew.Length -eq 0) -or ($null -eq $processesNew[0])) {
 
-                            [System.Threading.Thread]::Sleep(80);
-                        }
-                        else {
+                        Write-Verbose "No process found, retrying.."
+                        $window = @();
 
-                            # get window helper utility for the mainwindow of the process
-                            $existingWindow = $hadVisibleBrowser;
-                            $process = $processesNew[0];
-                            $window = [GenXdev.Helpers.WindowObj]::GetMainWindow($process, 1, 80);
-                        }
+                        [System.Threading.Thread]::Sleep(80) | Out-Null;
                     }
                     else {
 
+                        Write-Verbose "Found new process"
+
                         # get window helper utility for the mainwindow of the process
+                        $State.existingWindow = $State.hadVisibleBrowser;
+                        $process = $processesNew[0];
                         $window = [GenXdev.Helpers.WindowObj]::GetMainWindow($process, 1, 80);
+                        break;
                     }
-                } while (($i++ -lt 50) -and ($window.length -le 0));
+                    # }
+                    # else {
 
-                if (($PassThrough -eq $true) -and ($null -ne $process)) {
-
-                    Write-Output $process
+                    #     Write-Verbose "Process still running"
+                    #     # get window helper utility for the mainwindow of the process
+                    #     $window = [GenXdev.Helpers.WindowObj]::GetMainWindow($process, 1, 80);
+                    #     break;
+                    # }
                 }
-
-                if ($HavePositioning -eq $false) {
-
-                    Write-Verbose "No positioning required, done.."
-                    return;
+                catch {
+                    Write-Verbose "Error: $($_.Exception.Message)"
+                    $window = @()
+                    [System.Threading.Thread]::Sleep(100) | Out-Null
                 }
+            } while (($i++ -lt 50) -and ($window.length -le 0));
 
-                ###############################################################################
-
-                # have a handle to the mainwindow of the browser?
-                if ($window.Length -eq 1) {
-
-                    Write-Verbose "Restoring and positioning browser window"
-
-                    # if maximized, restore window style
-                    $window[0].Show() | Out-Null
-
-                    # move it to it's place
-                    $window[0].Move($X, $Y, $Width, $Height)  | Out-Null
-
-                    # wait
-                    [System.Threading.Thread]::Sleep(250);
-
-                    # do again
-                    $window[0].Show()  | Out-Null
-                    $window[0].Move($X, $Y, $Width, $Height) | Out-Null
-
-                    # needs to be set fullscreen manually?
-                    if (($existingWindow -eq $false) -and ($FullScreen -eq $true) -and
-                        ($Browser.Name -like "*Firefox*" -or ("--start-fullscreen" -notin $ArgumentList))) {
-
-                        Write-Verbose "Setting fullscreen"
-
-                        # do some magic to make it the foreground window
-                        $window[0].SetForeground() | Out-Null
-                        $window[0].Move($X, $Y, $Width, $Height) | Out-Null
-
-                        # did it not work?
-                        $test = [GenXdev.Helpers.WindowObj]::GetFocusedWindow();
-                        if ($test.Handle -ne $process.MainWindowHandle) {
-
-                            try {
-                                # send alt-tab
-                                $helper = New-Object -ComObject WScript.Shell;
-                                $helper.sendKeys("%{TAB}");
-                                Write-Verbose "Sending Alt-Tab"
-                            }
-                            catch {
-
-                            }
-
-                            # wait
-                            Start-Sleep 1
-                        }
-
-                        # is the browserwindow now focused?
-                        $test = [GenXdev.Helpers.WindowObj]::GetFocusedWindow();
-                        if ($test.Handle -eq $process.MainWindowHandle) {
-
-                            try {
-                                # send F11
-                                $helper = New-Object -ComObject WScript.Shell;
-                                $helper.sendKeys("{F11}");
-                                Write-Verbose "Sending F11"
-                            }
-                            catch {
-
-                            }
-                        }
-                    }
-                }
-            }
-            finally {
-
-                # if needed, restore the focus to the PowerShell terminal
-                refocusTab $browser $CurrentUrl
+            @{
+                Process = $process
+                Window  = $window
             }
         }
 
-        ###############################################################################
+        function open($browser, $CurrentUrl, $State) {
 
-        # start processing the Urls that we need to open
-        $Url | ForEach-Object {
+            Write-Verbose "open()"
 
-            # reference the next Url
-            $CurrentUrl = $PSItem;
+            $State.IsDefaultBrowser = $browser -eq $DefaultBrowser
 
-            # '-All' parameter was supplied?
-            if ($All -eq $true) {
+            enforceMinimumDelays $browser
+            ###############################################################################
 
-                # open for all browsers
-                $Browsers | ForEach-Object { open $PSItem $CurrentUrl }
+            $StartBrowser = $true;
+            $State.hadVisibleBrowser = $false;
+            $process = $null;
 
+            # find any existing  process
+            $prcBefore = @(Get-Process ([IO.Path]::GetFileNameWithoutExtension($browser.Path)) -ErrorAction SilentlyContinue) |
+            Where-Object -Property Path -EQ $browser.Path |
+            Where-Object -Property MainWindowHandle -NE 0 |
+            Sort-Object { $PSItem.StartTime } -Descending |
+            Select-Object -First 1
+
+            #found?
+            if ($State.PositioningDone -or (($prcBefore.Length -ge 1) -and ($null -ne $prcBefore[0]))) {
+
+                Write-Verbose "Found existing webbrowser window"
+                $State.hadVisibleBrowser = $true;
+            }
+
+            # no url specified?
+            if ((-not $NewWindow) -and (-not ($HavePositioning -or $FullScreen)) -and (-not $UrlSpecified)) {
+
+                if ($State.hadVisibleBrowser) {
+
+                    Write-Verbose "No url specified, found existing webbrowser window"
+                    $StartBrowser = $false;
+                    $process = if ($State.FirstProcess) { $State.FirstProcess } else { $prcBefore[0] }
+                }
+            }
+
+            if ($StartBrowser) {
+
+                if ($Force) {
+
+                    $a = Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge
+
+                    if ($a.length -eq 0 -or ($a -is [string])) {
+
+                        Write-Verbose "No browser with open debugger port found, closing all browser instances and starting a new one"
+                        Get-Process -Name ([IO.Path]::GetFileNameWithoutExtension($Browser.Path)) -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue | Out-Null
+                    }
+                }
+
+                $currentProcesses = @((Get-Process -Name ([IO.Path]::GetFileNameWithoutExtension($Browser.Path)) -ErrorAction SilentlyContinue))
+                if ($currentProcesses.Count -eq 0) {
+
+                    $NewWindow = $false;
+                }
+
+                # get the browser dependend argument list
+                $ArgumentList = constructArgumentList $browser $CurrentUrl $State
+
+                # log
+                Write-Verbose "$($browser.Name) --> $($ArgumentList | ConvertTo-Json)"
+
+                # start process
+                $process = Start-Process -FilePath ($browser.Path) -ArgumentList $argumentList -PassThru
+
+                # wait a little
+                $process.WaitForExit(200) | Out-Null;
+            }
+
+            ###############################################################################
+
+            if ($null -eq $process) {
+
+                Write-Warning "Could not start browser $($browser.Name)"
                 return;
             }
 
-            # '-Chromium' parameter was supplied
-            if ($Chromium -eq $true) {
+            ###############################################################################
 
-                # default browser already chrome or edge?
-                if (($DefaultBrowser.Name -like "*Chrome*") -or ($DefaultBrowser.Name -like "*Edge*")) {
+            # nothing to do anymore? then don't waste time on positioning the window
+            if ((-not $PassThru) -and ((-not ($HavePositioning -or ($FullScreen -and -not $state.PositioningDone))) -or $State.PositioningDone)) {
 
-                    # open default browser
-                    open $DefaultBrowser $CurrentUrl
+                Write-Verbose "No positioning required, done.."
+                return;
+            }
+
+            ###############################################################################
+
+            if ($PassThru) {
+
+                if (($State.PositioningDone -or ((-not $FullScreen) -and (-not $HavePositioning))) -and ($null -ne $State.FirstProcess) -and (-not $State.FirstProcess.HasExited) -and ($State.FirstProcess.MainWindowHandle -ne 0)) {
+
+                    Write-Verbose "Returning first process"
+                    Write-Output $State.FirstProcess
                     return;
                 }
 
-                # enumerate all browsers
-                $Browsers | Sort-Object { $PSItem.Name } -Descending | ForEach-Object {
+                if (($null -ne $process) -and (-not $process.HasExited) -and ($process.MainWindowHandle -ne 0)) {
 
-                    # found edge or chrome?
-                    if (($PSItem.Name -like "*Chrome*") -or ($PSItem.Name -like "*Edge*")) {
+                    Write-Verbose "Returning process"
+                    Write-Output $process
 
-                        # open it
-                        open $PSItem $CurrentUrl
+                    if (-not $HavePositioning) {
+
+                        return;
                     }
                 }
             }
-            else {
 
+            # allow the browser to start-up, and update process handle if needed
+            enforceMinimumDelays $browser
+            [int] $i = 0;
+            $browserFound = findProcess $browser $process $State
+            $process = $browserFound.Process
+            $window = $browserFound.Window
+
+            if (($PassThru -eq $true) -and ($null -ne $process)) {
+
+                Write-Verbose "Returning process after process lookup"
+                Write-Output $process
+            }
+
+            if ((-not ($HavePositioning -or ($FullScreen -and -not $state.PositioningDone))) -or $State.PositioningDone) {
+
+                Write-Verbose "No positioning required, done.."
+                return;
+            }
+
+            ###############################################################################
+            $State.PositioningDone = $true;
+            $State.FirstProcess = $process;
+            ###############################################################################
+
+            # have a handle to the mainwindow of the browser?
+            if ($window.Length -eq 1) {
+
+                ###############################################################################
+                $State.BrowserWindow = $window[0];
+                ###############################################################################
+
+                Write-Verbose "Restoring and positioning browser window"
+
+                # if maximized, restore window style
+                if (-not $FullScreen) {
+
+                    $window[0].Show() | Out-Null
+                    $window[0].Restore() | Out-Null;
+                }
+
+                # move it to it's place
+                $window[0].Move($X, $Y, $Width, $Height)  | Out-Null
+            }
+
+            Start-Sleep 2 | Out-Null
+        }
+
+        ###############################################################################
+        $index = -1;
+        try {
+            # start processing the Urls that we need to open
+            foreach ($CurrentUrl in $Url) {
+
+                $index++
+                Write-Verbose "Opening $CurrentUrl"
+
+                if ($UseStartProcess -or (($index -gt 0) -and ($State.IsDefaultBrowser))) {
+
+                    Write-Verbose "Start-Process"
+
+                    # open default browser
+                    $process = Start-Process $CurrentUrl -PassThru
+
+                    # need to return a process and this is the first non-positioning webbrowser launch?
+                    if ($PassThru -and $UseStartProcess -and ($index -eq 0)) {
+
+                        $browserFound = findProcess $DefaultBrowser $process $State
+
+                        $process = $browserFound.Process
+                        $window = $browserFound.Window
+
+                        Write-Verbose "Returning process after Start-Process"
+                        Write-Output $process
+                    }
+
+                    continue;
+                }
+
+                # '-All' parameter was supplied?
+                if ($All -eq $true) {
+
+                    # open for all browsers
+                    $Browsers | ForEach-Object { open $PSItem $CurrentUrl }
+
+                    continue;
+                }
                 # '-Chrome' parameter supplied?
-                if ($Chrome -eq $true) {
+                elseif ($Chrome -eq $true) {
 
                     # enumerate all browsers
                     $Browsers | ForEach-Object {
@@ -1083,13 +1105,12 @@ function Open-Webbrowser {
                         if ($PSItem.Name -like "*Chrome*") {
 
                             # open it
-                            open $PSItem $CurrentUrl
+                            open $PSItem $CurrentUrl $State
                         }
                     }
                 }
-
                 # '-Edge' parameter supplied?
-                if ($Edge -eq $true) {
+                elseif ($Edge -eq $true) {
 
                     # enumerate all browsers
                     $Browsers | ForEach-Object {
@@ -1098,32 +1119,130 @@ function Open-Webbrowser {
                         if ($PSItem.Name -like "*Edge*") {
 
                             # open it
-                            open $PSItem $CurrentUrl
+                            open $PSItem $CurrentUrl $State
+                        }
+                    }
+                }                # '-Chromium' parameter was supplied
+                elseif ($Chromium -eq $true) {
+
+                    # default browser already chrome or edge?
+                    if (($DefaultBrowser.Name -like "*Chrome*") -or ($DefaultBrowser.Name -like "*Edge*")) {
+
+                        # open default browser
+                        open $DefaultBrowser $CurrentUrl $State
+                        continue;
+                    }
+
+                    # enumerate all browsers
+                    $Browsers | Sort-Object { $PSItem.Name } -Descending | ForEach-Object {
+
+                        # found edge or chrome?
+                        if (($PSItem.Name -like "*Chrome*") -or ($PSItem.Name -like "*Edge*")) {
+
+                            # open it
+                            open $PSItem $CurrentUrl $State
                         }
                     }
                 }
+
+                # '-Firefox' parameter supplied?
+                if ($Firefox -eq $true) {
+
+                    # enumerate all browsers
+                    $Browsers | ForEach-Object {
+
+                        # found Firefox?
+                        if ($PSItem.Name -like "*Firefox*") {
+
+                            # open it
+                            open $PSItem $CurrentUrl $State
+                        }
+                    }
+                }
+
+                # no specific browser requested?
+                if (($Chromium -ne $true) -and ($Chrome -ne $true) -and ($Edge -ne $true) -and ($Firefox -ne $true)) {
+
+                    # open default browser
+                    open $DefaultBrowser $CurrentUrl $State
+                }
             }
+        }
+        finally {
 
-            # '-Firefox' parameter supplied?
-            if ($Firefox -eq $true) {
+            # needs to be set fullscreen?
+            if ($FullScreen -eq $true) {
 
-                # enumerate all browsers
-                $Browsers | ForEach-Object {
+                Write-Verbose "Setting fullscreen"
 
-                    # found Firefox?
-                    if ($PSItem.Name -like "*Firefox*") {
+                if ($null -ne $State.BrowserWindow) {
 
-                        # open it
-                        open $PSItem $CurrentUrl
+                    Write-Verbose "Changing focus to browser window"
+
+                    try { $State.BrowserWindow.Maximize() | Out-Null; $State.BrowserWindow.SetForeground() | Out-Null }
+                    catch { }
+                    $tt = 0;
+                    $focusedWindowProcess = Get-CurrentFocusedProcess
+                    while (($tt++ -lt 20) -and (
+                        ($null -eq $focusedWindowProcess) -or
+                        ($focusedWindowProcess.MainWindowHandle -ne $State.BrowserWindow.Handle))) {
+
+                        Write-Verbose "have browser window, sleeping 500ms"
+                        [System.Threading.Thread]::Sleep(500) | Out-Null
+
+                        try { $State.BrowserWindow.Maximize() | Out-Null; $State.BrowserWindow.SetForeground() | Out-Null }
+                        catch { }
+                        Set-ForegroundWindow ($State.BrowserWindow.Handle) | Out-Null
+
+                        $focusedWindowProcess = Get-CurrentFocusedProcess
+                    }
+                }
+                else {
+                    Write-Verbose "Setting fullscreen without having reference to browser window"
+                    $tt = 0;
+                    $focusedWindowProcess = Get-CurrentFocusedProcess
+                    $powershellWindow = Get-PowershellMainWindow
+                    while (($tt++ -lt 20) -and (
+                        ($null -eq $focusedWindowProcess) -or ($null -eq $PowerShellWindow) -or
+                        ($focusedWindowProcess.MainWindowHandle -ne $PowerShellWindow.Handle))) {
+                        Write-Verbose "no browser window, sleeping 500ms"
+                        [System.Threading.Thread]::Sleep(500) | Out-Null
+
+                        $focusedWindowProcess = Get-CurrentFocusedProcess
+                        $powershellWindow = Get-PowershellMainWindow
+                    }
+                }
+
+                if ((Get-CurrentFocusedProcess).MainWindowHandle -ne (Get-PowershellMainWindow).Handle) {
+                    try {
+
+                        # send F11
+                        $helper = New-Object -ComObject WScript.Shell;
+                        $helper.sendKeys("{F11}");
+                        Write-Verbose "Sending F11"
+                        [System.Threading.Thread]::Sleep(500) | Out-Null
+                    }
+                    catch {
+
                     }
                 }
             }
 
-            # no specific browser requested?
-            if (($Chromium -ne $true) -and ($Chrome -ne $true) -and ($Edge -ne $true) -and ($Firefox -ne $true)) {
+            if ($RestoreFocus) {
 
-                # open default browser
-                open $DefaultBrowser $CurrentUrl
+                # restore it
+                $PowerShellWindow = Get-PowershellMainWindow
+
+                if ($null -ne $PowerShellWindow) {
+
+                    # wait a little
+                    [System.Threading.Thread]::Sleep(500) | Out-Null
+
+                    $PowerShellWindow.Show() | Out-Null;
+                    $PowerShellWindow.SetForeground() | Out-Null;
+
+                    Set-ForegroundWindow ($PowerShellWindow.Handle) | Out-Null;
+                }
             }
         }
     }
@@ -1421,7 +1540,7 @@ function Select-WebbrowserTab {
         [int] $id = -1,
         ###############################################################################
 
-        [parameter(Mandatory = $true, ParameterSetName = "byName", Position = 0,
+        [parameter(Mandatory, ParameterSetName = "byName", Position = 0,
             HelpMessage = 'Selects the first entry that contains given name in its url')]
         [string] $Name = $null,
         ###############################################################################
@@ -1445,7 +1564,7 @@ function Select-WebbrowserTab {
         [Alias("r")]
         [parameter(
             ParameterSetName = "byreference",
-            Mandatory = $true,
+            Mandatory,
             HelpMessage = "Select tab using reference obtained with Get-ChromiumSessionReference"
         )]
         [HashTable] $ByReference = $null,
@@ -1515,18 +1634,18 @@ function Select-WebbrowserTab {
         $i = 0;
         $Global:chromeSessions | ForEach-Object -Process {
 
-            if ([String]::IsNullOrWhiteSpace($_.url) -eq $false) {
+            if ([String]::IsNullOrWhiteSpace($PSItem.url) -eq $false) {
                 $b = " ";
-                if ($_.webSocketDebuggerUrl -eq $Global:chromeSession.webSocketDebuggerUrl) {
+                if ($PSItem.webSocketDebuggerUrl -eq $Global:chromeSession.webSocketDebuggerUrl) {
 
                     $b = "*";
                 }
 
-                $Url = $_.url;
+                $Url = $PSItem.url;
 
-                if ($_.url.startsWith("chrome-extension:") -or $_.url.contains("/offline/")) {
+                if ($PSItem.url.startsWith("chrome-extension:") -or $PSItem.url.contains("/offline/")) {
 
-                    $Url = "chrome-extension: ($($_.title))";
+                    $Url = "chrome-extension: ($($PSItem.title))";
                 }
 
                 "{`"id`":$i,`"A`":`"$b`",`"url`":$([GenXdev.Helpers.Serialization]::ToJson($Url))}" | ConvertFrom-Json
@@ -1535,10 +1654,10 @@ function Select-WebbrowserTab {
         }
     }
 
-    if ($Global:chrome -isnot [GenXdev.Helpers.Chrome] -or $Global:chrome.Port -ne $port) {
+    if ($Global:chrome -isnot [GenXdev.Helpers.Chromium] -or $Global:chrome.Port -ne $port) {
 
         Write-Verbose "Creating new chromium automation object"
-        $c = New-Object "GenXdev.Helpers.Chrome" @("http://localhost:$port")
+        $c = New-Object "GenXdev.Helpers.Chromium" @("http://localhost:$port")
         Set-Variable -Name chrome -Value $c -Scope Global
     }
 
@@ -1557,16 +1676,16 @@ function Select-WebbrowserTab {
 
             if ($Force -and ($null -eq $ByReference)) {
 
-                Close-Webbrowser -Chrome:$Chrome -Edge:$Edge -Force
+                Close-Webbrowser -Chrome:$Chrome -Edge:$Edge -Force -Chromium
 
                 if ([string]::IsNullOrWhiteSpace($Name)) {
 
-                    Open-Webbrowser -Chrome:$Chrome -Edge:$Edge -Force
+                    Open-Webbrowser -Chrome:$Chrome -Edge:$Edge -Force -Chromium
                     return (Select-WebbrowserTab @PSBoundParameters)
                 }
                 else {
 
-                    Open-Webbrowser -Chrome:$Chrome -Edge:$Edge -Force -Url $Name
+                    Open-Webbrowser -Chrome:$Chrome -Edge:$Edge -Force -Url $Name -Chromium
                     return (Select-WebbrowserTab @PSBoundParameters)
                 }
             }
@@ -1594,9 +1713,7 @@ function Select-WebbrowserTab {
             (![string]::IsNullOrWhiteSpace($name) -and ($PSItem.url -notlike "$name")) -or
             ([string]::IsNullOrWhiteSpace($name) -and (
                     $PSItem.url.startsWith("chrome-extension:") -or
-                    $PSItem.url.startsWith("edge-extension:") -or
                     $PSItem.url.startsWith("devtools") -or
-                    $PSItem.url.contains("edgeservices.bing.com") -or
                     $PSItem.url.contains("/offline/") -or
                     $PSItem.url.startsWith("https://cdn.") -or
                     $PSItem.url.contains("edge:")))) {
@@ -1604,7 +1721,7 @@ function Select-WebbrowserTab {
                 return;
             }
 
-            $list.Add($_)
+            $list.Add($PSItem)
         };
         $s = $list;
 
@@ -1683,11 +1800,11 @@ function Select-WebbrowserTab {
         $found = $false;
 
         $s | ForEach-Object -Process {
-            if ($_.webSocketDebuggerUrl -eq $debugUri) {
+            if ($PSItem.webSocketDebuggerUrl -eq $debugUri) {
                 $found = $true;
 
-                $Global:chrome.SetActiveSession($_.webSocketDebuggerUrl);
-                Set-Variable -Name chromeSession -Value $_ -Scope Global
+                $Global:chrome.SetActiveSession($PSItem.webSocketDebuggerUrl);
+                Set-Variable -Name chromeSession -Value $PSItem -Scope Global
             }
         }
 
@@ -1861,13 +1978,12 @@ function Invoke-WebbrowserEvaluation {
             Position = 0,
             Mandatory = $false,
             HelpMessage = "A string containing javascript, a url or a file reference to a javascript file",
-            ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $true)
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName)
         ]
         [Alias('FullName')]
         [object[]] $Scripts,
         ###############################################################################
-
         [Parameter(
             Mandatory = $false,
             HelpMessage = "Will cause the developer tools of the webbrowser to break, before executing the scripts, allowing you to debug it",
@@ -1887,11 +2003,30 @@ function Invoke-WebbrowserEvaluation {
             Mandatory = $false,
             ValueFromPipeline = $false
         )]
-        [switch] $NoAutoSelectTab
+        [switch] $NoAutoSelectTab,
+        ###############################################################################
+
+        [Alias("e")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Select in Microsoft Edge"
+        )]
+        [switch] $Edge,
+        ###############################################################################
+
+        [Alias("ch")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Select in Google Chrome"
+        )]
+        [switch] $Chrome
+        ###############################################################################
+
     )
 
     Begin {
 
+        $reference = $null;
         try {
             $reference = Get-ChromiumSessionReference
         }
@@ -1901,8 +2036,9 @@ function Invoke-WebbrowserEvaluation {
                 throw $PSItem.Exception
             }
 
-            Select-WebbrowserTab | Out-Null
+            Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge | Out-Null
             $reference = Get-ChromiumSessionReference
+            $startTime = [DateTime]::UtcNow
         }
     }
 
@@ -1915,12 +2051,12 @@ function Invoke-WebbrowserEvaluation {
 
             $scriptBlock = {
 
-                param($js, $reference, $AsJob, $Inspect)
+                param($js, $reference, $AsJob, $Inspect, $Chrome, $Edge)
 
                 try {
                     Set-Variable -Name "Data" -Value $reference.data -Scope Global
 
-                    Select-WebbrowserTab -ByReference $reference
+                    Select-WebbrowserTab -ByReference $reference -Chrome:$Chrome -Edge:$Edge
 
                     # is it a file reference?
                     if (($js -is [IO.FileInfo]) -or (($js -is [System.String]) -and [IO.File]::Exists($js))) {
@@ -2037,11 +2173,11 @@ function Invoke-WebbrowserEvaluation {
                     resultData.success = false;
                     resultData.done = true;
                     try {
-                        resultData.returnValue = JSON.parse(JSON.stringify(e));
+                        resultData.returnValue = JSON.stringify(e);
                     }
                     catch (e2) {
 
-                        resultData.returnValue = e+`"`";
+                        resultData.returnValue = e+'';
                     }
                 }
 
@@ -2123,11 +2259,28 @@ function Invoke-WebbrowserEvaluation {
                         do {
                             # de-serialize outputed result object
                             $reference = Get-ChromiumSessionReference
-                            $result = ($Global:chrome.eval($js, 5) | ConvertFrom-Json).result;
+                            $json = $Global:chrome.eval($js, 0);
+                            if ([string]::IsNullOrWhiteSpace($json)) {
+
+                                if ([datetime]::UtcNow - $startTime -gt [System.TimeSpan]::FromSeconds(120)) {
+
+                                    throw "No response from browser"
+                                }
+
+                                Write-Verbose "Empty response from browser, retrying.."
+                                continue;
+                            }
+
+                            Write-Verbose "Got responses: $json"
+
+                            $result = ($json | ConvertFrom-Json).result;
+
                             Write-Verbose "Got results: $($result | ConvertTo-Json -Compress -Depth 100)"
 
                             # all good?
                             if ($result -is [Object]) {
+
+                                $startTime = [DateTime]::UtcNow
 
                                 # get actual returned value
                                 $result = $result.result;
@@ -2160,14 +2313,9 @@ function Invoke-WebbrowserEvaluation {
                                             $reference.data."$($PSItem.Name)" = $result.data."$($PSItem.Name)"
                                         }
 
-                                        Set-Variable -Name "Data" -Value $reference.data -Scope Global
+                                        Set-Variable -Name "Data" -Value ($reference.data) -Scope Global
                                     }
                                 }
-                            }
-
-                            if ($pollCount -gt 0) {
-
-                                Start-Sleep 1 -Verbose
                             }
 
                             $pollCount++;
@@ -2178,7 +2326,7 @@ function Invoke-WebbrowserEvaluation {
                                 $result.returnValues = @();
                             }
 
-                        } while (!$result.done);
+                        } while (!$result.done -and (-not [Console]::KeyAvailable));
 
                         if ($AsJob -ne $true) {
 
@@ -2196,7 +2344,7 @@ function Invoke-WebbrowserEvaluation {
                         }
                     }
                     Catch {
-                        Write-Error $_
+                        Write-Error $PSItem
 
                         $result = $null
                     }
@@ -2214,20 +2362,19 @@ function Invoke-WebbrowserEvaluation {
                 Catch {
 
                     throw "
-                        $($_.Exception) $($_.InvocationInfo.PositionMessage)
-                        $($_.InvocationInfo.Line)
+                        $($PSItem.Exception) $($PSItem.InvocationInfo.PositionMessage)
+                        $($PSItem.InvocationInfo.Line)
                     "
                 }
-
             }
 
             if ($AsJob -eq $true) {
 
-                Start-Job -InitializationScript { Import-Module GenXdev.Webbrowser } -ScriptBlock $scriptBlock -ArgumentList @($js, $reference, $true, ($Inspect -eq $true))
+                Start-Job -InitializationScript { Import-Module GenXdev.Webbrowser } -ScriptBlock $scriptBlock -ArgumentList @($js, $reference, $true, ($Inspect -eq $true), ($Chrome -eq $true), ($Edge -eq $true));
             }
             else {
 
-                Invoke-Command -ScriptBlock $scriptBlock -ArgumentList @($js, $reference, $false, ($Inspect -eq $true));
+                Invoke-Command -ScriptBlock $scriptBlock -ArgumentList @($js, $reference, $false, ($Inspect -eq $true), ($Chrome -eq $true), ($Edge -eq $true));
             }
         }
     }
@@ -2236,6 +2383,8 @@ function Invoke-WebbrowserEvaluation {
 
     }
 }
+
+###############################################################################
 ###############################################################################
 
 <#
@@ -2260,21 +2409,32 @@ function Set-WebbrowserTabLocation {
 
     param (
         [parameter(
-            Mandatory = $true,
+            Mandatory,
             Position = 0,
             HelpMessage = "The Url the browsertab should navigate too"
         )]
-        [string] $Url
+        [string] $Url,
+
+        ###############################################################################
+
+        [Alias("e")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Select in Microsoft Edge"
+        )]
+        [switch] $Edge,
+
+        ###############################################################################
+
+        [Alias("ch")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Select in Google Chrome"
+        )]
+        [switch] $Chrome
     )
 
-    try {
-        $Url = [Uri]::new($Url).ToString();
-    }
-    catch {
-        throw "Url '$Url' is not in a proper format"
-    }
-
-    Invoke-WebbrowserEvaluation "setTimeout(function() { document.location = '$Url';}, 1000)"
+        Invoke-WebbrowserEvaluation "setTimeout(function() { document.location = $($Url | ConvertTo-Json -Compress -Depth 1);}, 1000); return;" -Chrome:$Chrome -Edge:$Edge
 }
 
 ###############################################################################
@@ -2648,13 +2808,13 @@ function Get-ChromiumSessionReference {
     }
 
     # no session yet?
-    if ($Global:chromeSession -isnot [GenXdev.Helpers.RemoteSessionsResponse]) {
+    if (($null -eq $Global:chromeSession) -or ($Global:chromeSession -isnot [GenXdev.Helpers.RemoteSessionsResponse])) {
 
         throw "Select session first with cmdlet: Select-WebbrowserTab -> st"
     }
     else {
 
-        Write-Verbose "Found existing session: $($Global.chromeSession | ConvertTo-Json -Depth 100)"
+        Write-Verbose "Found existing session: $(($Global:chromeSession | ConvertTo-Json -Depth 100))"
     }
 
     # get available tabs
@@ -2667,7 +2827,7 @@ function Get-ChromiumSessionReference {
     $found = $false;
     $s | ForEach-Object -Process {
 
-        if ($_.webSocketDebuggerUrl -eq $debugUri) {
+        if ($PSItem.webSocketDebuggerUrl -eq $debugUri) {
 
             $found = $true;
         }
@@ -2691,5 +2851,1277 @@ function Get-ChromiumSessionReference {
 }
 
 ################################################################################
+
+<#
+.SYNOPSIS
+Returns the outer HTML of DOM nodes matching the specified query selector in the current web browser tab.
+
+.DESCRIPTION
+Uses Invoke-WebbrowserEvaluation to execute a JavaScript script that performs a document.querySelectorAll with the specified query selector and returns the outer HTML of each found node.
+
+.PARAMETER QuerySelector
+The query selector string to use for selecting DOM nodes.
+
+.EXAMPLE
+PS C:\> Get-WebbrowserTabDomNodes -QuerySelector "div.classname"
+
+.EXAMPLE
+PS C:\> wl "div.classname"
+
+.EXAMPLE
+PS C:\> Get-WebbrowserTabDomNodes -QuerySelector "video" -ModifyScript "e.play()"
+
+.EXAMPLE
+PS C:\> wl video "e.pause()"
+
+.EXAMPLE
+
+.NOTES
+Requires the Windows 10+ Operating System
+#>
+function Get-WebbrowserTabDomNodes {
+
+    [CmdletBinding()]
+    [Alias("wl")]
+
+    param(
+        [parameter(
+            Mandatory,
+            Position = 0,
+            HelpMessage = "The query selector string to use for selecting DOM nodes"
+        )]
+        [string] $QuerySelector,
+
+        [parameter(
+            Mandatory = $false,
+            Position = 1,
+            ValueFromRemainingArguments,
+            HelpMessage = "The script to modify the output of the query selector, executed in lamda function (e: HtmlNodeElement, i: index) "
+        )]
+        [string] $ModifyScript = ""
+    )
+
+    $script = @"
+    let modifyScript = JSON.parse($(($ModifyScript || "") | ConvertTo-Json -Compress -Depth 100 | ConvertTo-Json -Compress));
+    let querySelector = JSON.parse($(($QuerySelector || "") | ConvertTo-Json -Compress -Depth 100 | ConvertTo-Json -Compress));
+    let nodes = document.querySelectorAll(querySelector);
+
+    for (let i = 0; i < nodes.length; i++) {
+
+        let node = nodes[i];
+
+        if (!!modifyScript && modifyScript != "") {
+            try {
+
+                yield await (async function (e, i) {
+                    return eval(modifyScript);
+                })(node, i, nodes);
+            }
+            catch (e) {
+                console.error(e);
+            }
+        }
+        else {
+            yield node.outerHTML;
+        }
+    }
+"@
+
+    Write-Verbose "executing: $script"
+    Invoke-WebbrowserEvaluation -Scripts $script
+}
+
+################################################################################
+################################################################################
+<#
+.SYNOPSIS
+Returns all bookmarks from a browser
+
+.DESCRIPTION
+The `Export-BrowserBookmarks` cmdlet returns all bookmarks from  Microsoft Edge, Google Chrome, or Mozilla Firefox.
+
+.PARAMETER Edge
+Exports bookmarks from Microsoft Edge.
+
+.PARAMETER Chrome
+Exports bookmarks from Google Chrome.
+
+.PARAMETER Firefox
+Exports bookmarks from Mozilla Firefox.
+
+.EXAMPLE
+Export-BrowserBookmarks -OutputFile "C:\Bookmarks.csv" -Edge
+
+This command exports bookmarks from Edge to the specified CSV file.
+
+.NOTES
+Requires access to the browser's bookmarks file. For Firefox, the SQLite module is needed to read from `places.sqlite`.
+#>
+function Get-BrowserBookmarks {
+    [CmdletBinding(DefaultParameterSetName = 'Default')]
+    param (
+        [Parameter(Mandatory = $false, ParameterSetName = 'Chrome', HelpMessage = "Exports bookmarks from Google Chrome.")]
+        [switch]$Chrome,
+
+        [Parameter(Mandatory = $false, ParameterSetName = 'Edge', HelpMessage = "Exports bookmarks from Microsoft Edge.")]
+        [switch]$Edge,
+
+        [Parameter(Mandatory = $false, ParameterSetName = 'Firefox', HelpMessage = "Exports bookmarks from Mozilla Firefox.")]
+        [switch]$Firefox
+    )
+
+    function Get-Bookmarks {
+        param (
+            [string]$BookmarksFilePath,
+            [string]$RootFolderName,
+            [string]$BrowserName
+        )
+
+        if (-Not (Test-Path $BookmarksFilePath)) {
+            Write-Host "Bookmarks file not found at $BookmarksFilePath"
+            return @()
+        }
+
+        $bookmarksContent = Get-Content -Path $BookmarksFilePath -Raw | ConvertFrom-Json
+        $bookmarks = [System.Collections.Generic.List[object]]::new()
+
+        function TraverseBookmarks {
+            param (
+                [pscustomobject]$Folder,
+                [string]$ParentFolder = ""
+            )
+
+            foreach ($item in $Folder.children) {
+                if ($item.type -eq "folder") {
+                    TraverseBookmarks -Folder $item -ParentFolder ($ParentFolder + "\" + $item.name)
+                }
+                elseif ($item.type -eq "url") {
+                    $bookmarks.Add([pscustomobject]@{
+                            Name          = $item.name
+                            URL           = $item.url
+                            Folder        = $ParentFolder
+                            DateAdded     = [DateTime]::FromFileTimeUtc([int64]$item.date_added)
+                            DateModified  = if ($item.PSObject.Properties.Match('date_modified')) {
+                                [DateTime]::FromFileTimeUtc([int64]$item.date_modified)
+                            }
+                            else {
+                                $null
+                            }
+                            BrowserSource = $BrowserName
+                        })
+                }
+            }
+        }
+
+        TraverseBookmarks -Folder $bookmarksContent.roots.bookmark_bar -ParentFolder "$RootFolderName\Bookmarks Bar"
+        TraverseBookmarks -Folder $bookmarksContent.roots.other -ParentFolder "$RootFolderName\Other Bookmarks"
+        TraverseBookmarks -Folder $bookmarksContent.roots.synced -ParentFolder "$RootFolderName\Synced Bookmarks"
+
+        return $bookmarks
+    }
+
+    function Get-FirefoxBookmarks {
+        param (
+            [string]$PlacesFilePath,
+            [string]$BrowserName
+        )
+
+        if (-Not (Test-Path $PlacesFilePath)) {
+            Write-Host "Firefox places.sqlite file not found at $PlacesFilePath"
+            return @()
+        }
+
+        $connectionString = "Data Source=$PlacesFilePath;Version=3;"
+        $query = @"
+            SELECT
+                b.title,
+                p.url,
+                b.dateAdded,
+                b.lastModified,
+                f.title AS Folder
+            FROM moz_bookmarks b
+            JOIN moz_places p ON b.fk = p.id
+            LEFT JOIN moz_bookmarks f ON b.parent = f.id
+            WHERE b.type = 1
+"@
+
+        $bookmarks = @()
+
+        try {
+
+            $connection = New-Object System.Data.SQLite.SQLiteConnection($connectionString)
+            $connection.Open()
+            $command = $connection.CreateCommand()
+            $command.CommandText = $query
+            $reader = $command.ExecuteReader()
+
+            while ($reader.Read()) {
+                $bookmarks += [pscustomobject]@{
+                    Name          = $reader["title"]
+                    URL           = $reader["url"]
+                    Folder        = $reader["Folder"]
+                    DateAdded     = [DateTime]::FromFileTimeUtc($reader["dateAdded"])
+                    DateModified  = [DateTime]::FromFileTimeUtc($reader["lastModified"])
+                    BrowserSource = $BrowserName
+                }
+            }
+
+            $reader.Close()
+            $connection.Close()
+        }
+        catch {
+            Write-Host "Error reading Firefox bookmarks: $PSItem"
+        }
+
+        return $bookmarks
+    }
+
+    # Ensure Expand-Path is available
+    if (-not (Get-Command -Name Expand-Path -ErrorAction SilentlyContinue)) {
+        Import-Module GenXdev.FileSystem
+    }
+
+    # Use Get-Webbrowser to determine installed browsers
+    $installedBrowsers = Get-Webbrowser
+
+    # If no browser is specified, use the default browser
+    if (-not $Edge -and -not $Chrome -and -not $Firefox) {
+
+        $defaultBrowser = Get-DefaultWebbrowser
+        if ($defaultBrowser.Name -like '*Edge*') {
+            $Edge = $true
+        }
+        elseif ($defaultBrowser.Name -like '*Chrome*') {
+            $Chrome = $true
+        }
+        elseif ($defaultBrowser.Name -like '*Firefox*') {
+            $Firefox = $true
+        }
+        else {
+            Write-Host "Default browser is not Edge, Chrome, or Firefox."
+            return
+        }
+    }
+
+    if ($Edge) {
+
+        $browser = $installedBrowsers | Where-Object { $PSItem.Name -like '*Edge*' }
+        if (-not $browser) {
+            Write-Host "Microsoft Edge is not installed."
+            return
+        }
+        # Use the browser path to find the bookmarks file
+        $bookmarksFilePath = Join-Path -Path $env:LOCALAPPDATA -ChildPath 'Microsoft\Edge\User Data\Default\Bookmarks'
+        $rootFolderName = 'Edge'
+        $bookmarks = Get-Bookmarks -BookmarksFilePath $bookmarksFilePath -RootFolderName $rootFolderName -BrowserName ($browser.Name)
+    }
+    elseif ($Chrome) {
+        $browser = $installedBrowsers | Where-Object { $PSItem.Name -like '*Chrome*' }
+        if (-not $browser) {
+            Write-Host "Google Chrome is not installed."
+            return
+        }
+        $bookmarksFilePath = Join-Path -Path $env:LOCALAPPDATA -ChildPath 'Google\Chrome\User Data\Default\Bookmarks'
+        $rootFolderName = 'Chrome'
+        $bookmarks = Get-Bookmarks -BookmarksFilePath $bookmarksFilePath -RootFolderName $rootFolderName -BrowserName ($browser.Name)
+    }
+    elseif ($Firefox) {
+        $browser = $installedBrowsers | Where-Object { $PSItem.Name -like '*Firefox*' }
+        if (-not $browser) {
+            Write-Host "Mozilla Firefox is not installed."
+            return
+        }
+        $profileFolderPath = "$env:APPDATA\Mozilla\Firefox\Profiles"
+        $profileFolder = Get-ChildItem -Path $profileFolderPath -Directory | Where-Object { $PSItem.Name -match '\.default-release$' } | Select-Object -First 1
+        if ($null -eq $profileFolder) {
+            Write-Host 'Firefox profile folder not found.'
+            return
+        }
+        $placesFilePath = Join-Path -Path $profileFolder.FullName -ChildPath 'places.sqlite'
+        $bookmarks = Get-FirefoxBookmarks -PlacesFilePath $placesFilePath -BrowserName ($browser.Name)
+    }
+    else {
+        Write-Host 'Please specify either -Chrome, -Edge, or -Firefox switch.'
+        return
+    }
+
+    $bookmarks
+}
+################################################################################
+<#
+.SYNOPSIS
+Exports bookmarks from a browser to a json file.
+
+.DESCRIPTION
+The `Export-BrowserBookmarks` cmdlet exports bookmarks from Microsoft Edge, Google Chrome, or Mozilla Firefox into a json file.
+
+.PARAMETER OutputFile
+Specifies the path to the CSV file where the bookmarks will be saved.
+
+.PARAMETER Edge
+Exports bookmarks from Microsoft Edge.
+
+.PARAMETER Chrome
+Exports bookmarks from Google Chrome.
+
+.PARAMETER Firefox
+Exports bookmarks from Mozilla Firefox.
+
+.EXAMPLE
+Export-BrowserBookmarks -OutputFile "C:\Bookmarks.csv" -Edge
+
+This command exports bookmarks from Edge to the specified CSV file.
+
+.NOTES
+Requires access to the browser's bookmarks file. For Firefox, the SQLite module is needed to read from `places.sqlite`.
+#>
+function Export-BrowserBookmarks {
+    [CmdletBinding(DefaultParameterSetName = 'Default')]
+    param (
+        [Parameter(Mandatory, Position = 0, HelpMessage = "Specifies the path to the CSV file where the bookmarks will be saved.")]
+        [string]$OutputFile,
+
+        [Parameter(Mandatory = $false, ParameterSetName = 'Chrome', HelpMessage = "Exports bookmarks from Google Chrome.")]
+        [switch]$Chrome,
+
+        [Parameter(Mandatory = $false, ParameterSetName = 'Edge', HelpMessage = "Exports bookmarks from Microsoft Edge.")]
+        [switch]$Edge,
+
+        [Parameter(Mandatory = $false, ParameterSetName = 'Firefox', HelpMessage = "Exports bookmarks from Mozilla Firefox.")]
+        [switch]$Firefox
+    )
+
+    # Expand the output file path
+    $OutputFile = Expand-Path $OutputFile
+
+    # Get the bookmarks from the specified browser
+    $bookmarksArguments = @{}
+    if ($Chrome) { $bookmarksArguments["Chrome"] = $true }
+    if ($Edge) { $bookmarksArguments["Edge"] = $true }
+    if ($Firefox) { $bookmarksArguments["Firefox"] = $true }
+
+    Get-BrowserBookmarks @bookmarksArguments |
+    ConvertTo-Json -Depth 100 |
+    Set-Content -Path $OutputFile -Force
+}
+
+################################################################################
+<#
+.SYNOPSIS
+Find bookmarks from a browser
+
+.DESCRIPTION
+The `Export-BrowserBookmarks` cmdlet exports bookmarks from Microsoft Edge, Google Chrome, or Mozilla Firefox into a json file.
+
+.PARAMETER OutputFile
+Specifies the path to the CSV file where the bookmarks will be saved.
+
+.PARAMETER Edge
+Exports bookmarks from Microsoft Edge.
+
+.PARAMETER Chrome
+Exports bookmarks from Google Chrome.
+
+.PARAMETER Firefox
+Exports bookmarks from Mozilla Firefox.
+
+.EXAMPLE
+Export-BrowserBookmarks -OutputFile "C:\Bookmarks.csv" -Edge
+
+This command exports bookmarks from Edge to the specified CSV file.
+
+.NOTES
+Requires access to the browser's bookmarks file. For Firefox, the SQLite module is needed to read from `places.sqlite`.
+#>
+function Find-BrowserBookmarks {
+
+    [CmdletBinding(DefaultParameterSetName = 'Default')]
+    [Alias("bookmarks")]
+
+    param (
+        [Alias("q", "Value", "Name", "Text", "Query")]
+        [parameter(
+            Mandatory = $false,
+            Position = 0,
+            ValueFromRemainingArguments,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [string[]] $Queries,
+        ###############################################################################
+
+        [Alias("e")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Select in Microsoft Edge"
+        )]
+        [switch] $Edge,
+        ###############################################################################
+
+        [Alias("ch")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Select in Google Chrome"
+        )]
+        [switch] $Chrome,
+        ###############################################################################
+
+        [Alias("ff")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Select in Firefox"
+        )]
+        [switch] $Firefox,
+        ###############################################################################
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Maximum number of urls to open, default = 50"
+        )]
+        [int] $Count = 99999999,
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Returns the bookmarks as output"
+        )]
+        [switch] $PassThru
+    )
+
+    process {
+
+        $bookmarksArguments = @{}
+        if ($Chrome) { $bookmarksArguments["Chrome"] = $true };
+        if ($Edge) { $bookmarksArguments["Edge"] = $true };
+        if ($Firefox) { $bookmarksArguments["Firefox"] = $true };
+
+        $bookmarks = Get-BrowserBookmarks @bookmarksArguments
+
+        if (($null -eq $Queries) -or ($Queries.Length -eq 0)) {
+
+            $bookmarks | Select-Object -First $Count
+            return;
+        }
+
+        $Results = $Queries | ForEach-Object {
+
+            $Q = $PSItem
+            $bookmarks | Where-Object { (($PSItem.Folder -like "*$Q*") -or ($PSItem.Name -Like "*$Q*") -or ($PSItem.URL -Like "*$Q*")) } | ForEach-Object { $PSItem }
+        } | Select-Object -First $Count;
+
+        if ($PassThru) {
+
+            $Results
+        }
+        else {
+
+            $Results | ForEach-Object URL
+        }
+    }
+}
+
+################################################################################
+<#
+.SYNOPSIS
+Find bookmarks from a browser
+
+.DESCRIPTION
+The `Export-BrowserBookmarks` cmdlet exports bookmarks from Microsoft Edge, Google Chrome, or Mozilla Firefox into a json file.
+
+.PARAMETER OutputFile
+Specifies the path to the CSV file where the bookmarks will be saved.
+
+.PARAMETER Edge
+Exports bookmarks from Microsoft Edge.
+
+.PARAMETER Chrome
+Exports bookmarks from Google Chrome.
+
+.PARAMETER Firefox
+Exports bookmarks from Mozilla Firefox.
+
+.EXAMPLE
+Export-BrowserBookmarks -OutputFile "C:\Bookmarks.csv" -Edge
+
+This command exports bookmarks from Edge to the specified CSV file.
+
+.NOTES
+Requires access to the browser's bookmarks file. For Firefox, the SQLite module is needed to read from `places.sqlite`.
+#>
+function Open-BrowserBookmarks {
+
+    [Alias("sites")]
+    [CmdletBinding(DefaultParameterSetName = 'Default')]
+
+    param (
+        [Alias("q", "Value", "Name", "Text", "Query")]
+        [parameter(
+            Mandatory = $false,
+            Position = 0,
+            ValueFromRemainingArguments,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        [string[]] $Queries,
+        ###############################################################################
+
+        [Alias("e")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Select in Microsoft Edge"
+        )]
+        [switch] $Edge,
+        ###############################################################################
+
+        [Alias("ch")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Select in Google Chrome"
+        )]
+        [switch] $Chrome,
+        ###############################################################################
+
+        [Alias("ff")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Select in Firefox"
+        )]
+        [switch] $Firefox,
+        ###############################################################################
+        ###############################################################################
+        [Alias("oe")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Open urls in Microsoft Edge"
+        )]
+        [switch] $OpenInEdge,
+        ###############################################################################
+
+        [Alias("och")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Open urls in Google Chrome"
+        )]
+        [switch] $OpenInChrome,
+        ###############################################################################
+
+        [Alias("off")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Open urls in Firefox"
+        )]
+        [switch] $OpenInFirefox,
+
+        ###############################################################################
+
+        [Alias("m", "mon")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to `Global:DefaultSecondaryMonitor or 2 if not found"
+        )]
+        [int] $Monitor = -1,
+
+        ###############################################################################
+
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Maximum number of urls to open, default = 50"
+        )]
+        [int] $Count = 50
+
+        ###############################################################################
+    )
+
+    DynamicParam {
+
+        Copy-CommandParameters -CommandName "Open-Webbrowser" -ParametersToSkip "Queries", "Chrome", "Edge", "FireFox", "Url", "Monitor"
+    }
+
+    begin {
+        $PSBoundParameters["Monitor"] = $Monitor;
+        $PSBoundParameters.Remove("Queries") | Out-Null;
+        $PSBoundParameters.Remove("Chrome") | Out-Null;
+        $PSBoundParameters.Remove("Firefox") | Out-Null;
+        $PSBoundParameters.Remove("Edge") | Out-Null;
+        $PSBoundParameters.Remove("Count") | Out-Null;
+        $PSBoundParameters.Remove("OpenInEdge") | Out-Null;
+        $PSBoundParameters.Remove("OpenInChrome") | Out-Null;
+        $PSBoundParameters.Remove("OpenInFirefox") | Out-Null;
+
+        if ($OpenInEdge) { $PSBoundParameters["Edge"] = $true };
+        if ($OpenInChrome) { $PSBoundParameters["Chrome"] = $true };
+        if ($OpenInFirefox) { $PSBoundParameters["Firefox"] = $true };
+    }
+    process {
+
+        $FindParams = @{PassThru = $true }
+        $FindParams["Queries"] = $Queries;
+        if ($Chrome) { $FindParams["Chrome"] = $true };
+        if ($Edge) { $FindParams["Edge"] = $true };
+        if ($Firefox) { $FindParams["Firefox"] = $true };
+
+        $PSBoundParameters["Url"] = @((Find-BrowserBookmarks @FindParams | ForEach-Object Url | Select-Object -First $Count))
+
+        if ($PSBoundParameters["Url"].length -eq 0) {
+
+            Write-Host "Nothing found"
+            return;
+        }
+
+        Open-Webbrowser @PSBoundParameters
+    }
+}
+
+################################################################################
+
+<#
+.SYNOPSIS
+Imports bookmarks from a json file into a browser.
+
+.DESCRIPTION
+The `Import-BrowserBookmarks` cmdlet imports bookmarks from a json file into Microsoft Edge or Google Chrome.
+
+.PARAMETER InputFile
+Specifies the path to the json file containing the bookmarks to import.
+
+.PARAMETER Bookmarks
+Specifies a collection of bookmarks to import.
+
+.PARAMETER Edge
+Imports bookmarks into Microsoft Edge.
+
+.PARAMETER Chrome
+Imports bookmarks into Google Chrome.
+
+.PARAMETER Firefox
+(Not supported) Importing bookmarks into Firefox is currently not supported by this cmdlet.
+
+.EXAMPLE
+Import-BrowserBookmarks -InputFile "C:\Bookmarks.csv" -Edge
+
+This command imports bookmarks from the specified CSV file into Edge.
+
+.NOTES
+For Edge and Chrome, the bookmarks are added to the 'Bookmarks Bar'. Importing into Firefox is currently not supported.
+#>
+function Import-BrowserBookmarks {
+
+    [CmdletBinding(DefaultParameterSetName = 'Default')]
+    param (
+        [Parameter(Mandatory = $false, Position = 0, ParameterSetName = 'FromFile', HelpMessage = "Specifies the path to the CSV file containing the bookmarks to import.")]
+        [string]$InputFile,
+
+        [Parameter(Mandatory = $false, Position = 0, ParameterSetName = 'FromCollection', HelpMessage = "Specifies a collection of bookmarks to import.")]
+        [array]$Bookmarks,
+
+        [Parameter(Mandatory = $false, HelpMessage = "Imports bookmarks into Google Chrome.")]
+        [switch]$Chrome,
+
+        [Parameter(Mandatory = $false, HelpMessage = "Imports bookmarks into Microsoft Edge.")]
+        [switch]$Edge,
+
+        [Parameter(Mandatory = $false, HelpMessage = "Importing bookmarks into Firefox is currently not supported.")]
+        [switch]$Firefox
+    )
+
+    $importedBookmarks = if ($Bookmarks) {
+        # Use the provided bookmarks collection
+        $Bookmarks
+    }
+    elseif ($InputFile) {
+        # Read the bookmarks from the CSV file
+        Import-Csv -Path $InputFile
+    }
+    else {
+        Write-Host "Please provide either an InputFile or a Bookmarks collection."
+        return
+    }
+
+    $installedBrowsers = Get-Webbrowser
+
+    function Write-Bookmarks {
+        param (
+            [string]$BookmarksFilePath,
+            [array]$BookmarksToWrite
+        )
+
+        if ($Edge -or $Chrome) {
+            $bookmarksContent = if (Test-Path $BookmarksFilePath) {
+                Get-Content -Path $BookmarksFilePath -Raw | ConvertFrom-Json
+            }
+            else {
+                @{
+                    roots = @{
+                        bookmark_bar = @{children = @() }
+                        other        = @{children = @() }
+                        synced       = @{children = @() }
+                    }
+                }
+            }
+
+            foreach ($bookmark in $BookmarksToWrite) {
+                $newBookmark = @{
+                    type          = "url"
+                    name          = $bookmark.Name
+                    url           = $bookmark.URL
+                    date_added    = if ($bookmark.DateAdded) {
+                        [string]$bookmark.DateAdded.ToFileTimeUtc()
+                    }
+                    else {
+                        [string][DateTime]::UtcNow.ToFileTimeUtc()
+                    }
+                    date_modified = if ($bookmark.DateModified) {
+                        [string]$bookmark.DateModified.ToFileTimeUtc()
+                    }
+                    else {
+                        $null
+                    }
+                }
+
+                # Determine the folder to add the bookmark to
+                $folderPath = $bookmark.Folder -split '\\'
+                $currentNode = $bookmarksContent.roots.bookmark_bar
+
+                foreach ($folder in $folderPath) {
+                    if ($folder -eq 'Bookmarks Bar') {
+                        $currentNode = $bookmarksContent.roots.bookmark_bar
+                    }
+                    elseif ($folder -eq 'Other Bookmarks') {
+                        $currentNode = $bookmarksContent.roots.other
+                    }
+                    elseif ($folder -eq 'Synced Bookmarks') {
+                        $currentNode = $bookmarksContent.roots.synced
+                    }
+                    else {
+                        $existingFolder = $currentNode.children | Where-Object { $PSItem.type -eq 'folder' -and $PSItem.name -eq $folder }
+                        if ($existingFolder) {
+                            $currentNode = $existingFolder
+                        }
+                        else {
+                            $newFolder = @{
+                                type     = 'folder'
+                                name     = $folder
+                                children = @()
+                            }
+                            $currentNode.children += $newFolder
+                            $currentNode = $newFolder
+                        }
+                    }
+                }
+
+                # Add the new bookmark to the determined folder
+                $currentNode.children += $newBookmark
+
+                $bookmarksContent | ConvertTo-Json -Depth 100 | Set-Content -Path $BookmarksFilePath
+            }
+            elseif ($Firefox) {
+                Write-Host "Importing bookmarks to Firefox is currently not supported in this script."
+                # Note: Importing bookmarks to Firefox would require SQLite operations to modify the places.sqlite file, which is more complex and not covered here.
+            }
+        }
+
+        # Ensure Expand-Path is available
+        if (-not (Get-Command -Name Expand-Path -ErrorAction SilentlyContinue)) {
+
+            Import-Module GenXdev.FileSystem
+        }
+        # Expand the input file path
+        $InputFile = Expand-Path $InputFile
+
+        # If no browser is specified, use the default browser
+        if (-not $Edge -and -not $Chrome -and -not $Firefox) {
+            $defaultBrowser = Get-DefaultWebbrowser
+            if ($defaultBrowser.Name -like '*Edge*') {
+                $Edge = $true
+            }
+            elseif ($defaultBrowser.Name -like '*Chrome*') {
+                $Chrome = $true
+            }
+            elseif ($defaultBrowser.Name -like '*Firefox*') {
+                $Firefox = $true
+            }
+            else {
+                Write-Host "Default browser is not Edge, Chrome, or Firefox."
+                return
+            }
+        }
+
+        if ($Edge) {
+            $browser = $installedBrowsers | Where-Object { $PSItem.Name -like '*Edge*' }
+            if (-not $browser) {
+                Write-Host "Microsoft Edge is not installed."
+                return
+            }
+            $bookmarksFilePath = Join-Path -Path $env:LOCALAPPDATA -ChildPath 'Microsoft\Edge\User Data\Default\Bookmarks'
+            Write-Bookmarks -BookmarksFilePath $bookmarksFilePath -BookmarksToWrite $importedBookmarks
+        }
+        elseif ($Chrome) {
+            $browser = $installedBrowsers | Where-Object { $PSItem.Name -like '*Chrome*' }
+            if (-not $browser) {
+                Write-Host "Google Chrome is not installed."
+                return
+            }
+            $bookmarksFilePath = Join-Path -Path $env:LOCALAPPDATA -ChildPath 'Google\Chrome\User Data\Default\Bookmarks'
+            Write-Bookmarks -BookmarksFilePath $bookmarksFilePath -BookmarksToWrite $importedBookmarks
+        }
+        elseif ($Firefox) {
+            Write-Host 'Importing bookmarks into Firefox is currently not supported in this script.'
+        }
+        else {
+            Write-Host 'Please specify either -Chrome, -Edge, or -Firefox switch.'
+        }
+    }
+}
+
+################################################################################
+<#
+.SYNOPSIS
+Evaluates JavaScript scriptblocks in the current web browser tab.
+
+.DESCRIPTION
+The `Invoke-WebbrowserEvaluation` cmdlet evaluates JavaScript scriptblocks
+in the current web browser tab. It does this by lock-stepping scriptblocks
+for evaluation using a websocket with the webbrowsers debug port.
+
+It first sends the first initial scriptblock which may await async-
+operations and even yield values. The scriptblock is then evaluated in the
+browser, and the results are returned to the pipeline in a PSCustomObject
+that can look like this:
+
+${
+    [GenXdev.Helpers.ChromiumDebugPipeSender] Sender;
+    [Object[]] Result;
+}
+
+or
+
+${
+    [GenXdev.Helpers.ChromiumDebugPipeSender] Sender;
+    [Exception] Error;
+}
+
+Sender has two methods:
+
+    1) Sender.Send([string] $Script)
+       Sends the next script to the browser for evaluation.
+
+    2) Sender.Close()
+       Closes the connection to the browser
+       and the pipeline will end.
+
+.PARAMETER InitialMessageToSend
+The initial message to send to the browser.
+
+.PARAMETER Inspect
+Will cause the developer tools of the webbrowser to break,
+before executing the scripts, allowing you to debug it.
+
+.PARAMETER NoAutoSelectTab
+Will not automatically select the tab, but will throw an error if no tab is selected.
+
+.PARAMETER Edge
+Evaluate in Microsoft Edge.
+
+.PARAMETER Chrome
+Evaluate in Google Chrome.
+
+.PARAMETER Timeout
+The timeout for the connection.
+
+.EXAMPLE
+Connect-WebbrowserTabEvaluationPipe -InitialMessageToSend "return document.title;" | ForEach-Object {
+
+    Write-Host "Title: $($PSItem.Result[0])"
+
+    $PSItem.Sender.Close();
+}
+
+#>
+function Connect-WebbrowserTabEvaluationPipe {
+
+    [CmdletBinding()]
+    param (
+        ###############################################################################
+        [Parameter(
+            Mandatory,
+            ValueFromPipeline,
+            HelpMessage = "The initial message to send"
+        )]
+        [string] $InitialMessageToSend,
+        ###############################################################################
+        [Parameter(
+            HelpMessage = "Will cause the developer tools of the webbrowser to break, before executing the scripts, allowing you to debug it"
+        )]
+        [switch] $Inspect,
+        ###############################################################################
+        [Parameter(
+            Mandatory = $false,
+            ValueFromPipeline = $false
+        )]
+        [switch] $NoAutoSelectTab,
+        ###############################################################################
+
+        [Alias("e")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Select in Microsoft Edge"
+        )]
+        [switch] $Edge,
+        ###############################################################################
+
+        [Alias("ch")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Select in Google Chrome"
+        )]
+        [switch] $Chrome,
+        ###############################################################################
+        [Parameter(
+            HelpMessage = "The timeout for the connection."
+        )]
+        [TimeSpan] $Timeout = [TimeSpan]::FromSeconds(30)
+        ###############################################################################
+    )
+
+    begin {
+        $js = $InitialMessageToSend
+
+        # '-Inspect' parameter provided?
+        if ($Inspect -eq $true) {
+
+            # invoke a debug break-point
+            $js = "debugger;`r`n$js"
+        }
+
+        $reference = $null;
+        try {
+            $reference = Get-ChromiumSessionReference
+        }
+        catch {
+            if ($NoAutoSelectTab -eq $true) {
+
+                throw $PSItem.Exception
+            }
+
+            Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge | Out-Null
+            $reference = Get-ChromiumSessionReference
+            $startTime = [DateTime]::UtcNow
+        }
+
+        if ($null -eq $reference) {
+
+            throw "No browser session found"
+        }
+
+        [GenXdev.Helpers.ChromiumDebugPipeSender] $PipeSender = `
+            Get-ChromiumDebuggerPipeSender `
+            -Url ($reference.debugUri) `
+            -Timeout ([TimeSpan]::FromSeconds(120))
+
+        [GenXdev.Helpers.ChromiumDebugPipeSender] $EvaluationPipeSender = `
+            Get-ChromiumDebuggerPipeSender `
+            -Url ($reference.debugUri) `
+            -Timeout ([TimeSpan]::FromSeconds(120))
+    }
+
+    process {
+
+        function constructJavascript($reference, $js) {
+
+            # convert data object to json, and then again to make it a json string
+            $json = ($reference.data | ConvertTo-Json -Compress -Depth 100 | ConvertTo-Json -Compress -Depth 100);
+
+            $ScriptHash = [GenXdev.Helpers.Hash]::FormatBytesAsHexString(
+                [GenXdev.Helpers.Hash]::GetSha256BytesOfString($js));
+
+            return "
+        (function(data) {
+
+            let resultData = window['iwae$ScriptHash'] || {
+
+                started: false,
+                done: false,
+                success: true,
+                data: data,
+                returnValues: []
+            }
+
+            window['iwae$ScriptHash'] = resultData;
+            let isFirst = window['iwaeaf$ScriptHash'] === undefined;
+            window['iwaeaf$ScriptHash'] = true;
+
+            function catcher(e) {
+
+                let resultData = window['iwae$ScriptHash'];
+                resultData.success = false;
+                resultData.done = true;
+                try {
+                    resultData.returnValue = JSON.parse(JSON.stringify(e));
+                }
+                catch (e2) {
+
+                    resultData.returnValue = e+`"`";
+                }
+            }
+
+            if (!resultData.started && isFirst) {
+
+                resultData.started = true;
+
+                try {
+
+                    eval($("
+
+                    (async () => {
+                        let result;
+                        try {
+
+                            let resultCount = 0;
+                            let resultValue;
+                            do {
+                                resultValue = await result.next();
+
+                                if (resultValue.value instanceof Promise) {
+
+                                    resultValue.value = await resultValue.value;
+                                }
+
+                                let resultData = window['iwae$ScriptHash']
+
+                                if (resultCount++ === 0 && resultValue.done) {
+
+                                    resultData.returnValue = resultValue.value;
+                                }
+                                else {
+                                    if (!resultValue.done) {
+
+                                        resultData.returnValues.push(resultValue.value);
+                                    }
+                                }
+                            } while (!resultValue.done)
+
+                            let resultData = window['iwae$ScriptHash']
+                            resultData.done = true;
+                            resultData.success = true;
+                        }
+                        catch (e) {
+
+                            catcher(e);
+                        }
+                    })()
+
+                    " | ConvertTo-Json -Compress -Depth 100));
+                }
+                catch(e) {
+
+                    catcher(e);
+                }
+            }
+
+            if (resultData.done) {
+
+                delete window['iwae$ScriptHash'];
+            }
+
+            let clone = JSON.parse(JSON.stringify(resultData));
+            resultData.returnValues = [];
+
+            return clone;
+
+        })(JSON.parse($json));
+    ";
+        }
+
+        $reference = Get-ChromiumSessionReference
+        Set-Variable -Name "Data" -Value $reference.data -Scope Global | Out-Null
+
+        $js = constructJavascript $reference $InitialMessageToSend
+        $batchResults = [System.Collections.Generic.List[object]]::new()
+
+        Register-ObjectEvent `
+            -InputObject $EvaluationPipeSender `
+            -EventName 'MessageSent' -Action {
+
+            param([object] $s, [string] $e)
+
+            $js = constructJavascript $reference $e
+
+            $PipeSender.Send($js);
+
+        } | Out-Null
+
+        Register-ObjectEvent `
+            -InputObject $EvaluationPipeSender `
+            -EventName 'CloseRequested' `
+            -Action {
+
+            $PipeSender.Close();
+        } | Out-Null
+
+        $js | Connect-ChromiumDebugPipe -Sender $PipeSender | ForEach-Object {
+
+            Write-Verbose "received from debug pipeline: $PSItem"
+            $reference = Get-ChromiumSessionReference
+            Set-Variable -Name "Data" -Value $reference.data -Scope Global | Out-Null
+
+            $json = $PSItem;
+
+            $result = $null;
+            try {
+
+                [int] $pollCount = 0;
+                do {
+
+                    # de-serialize outputed result object
+                    $reference = Get-ChromiumSessionReference
+                    Set-Variable -Name "Data" -Value $reference.data -Scope Global | Out-Null
+
+                    if ([string]::IsNullOrWhiteSpace($json)) {
+
+                        if ([datetime]::UtcNow - $startTime -gt [System.TimeSpan]::FromSeconds(120)) {
+
+                            throw "No response from browser"
+                        }
+
+                        Write-Verbose "Empty response from browser, retrying.."
+                        continue;
+                    }
+
+                    Write-Verbose "Got responses: $json"
+
+                    $result = ($json | ConvertFrom-Json).result;
+
+                    Write-Verbose "Got results: $($result | ConvertTo-Json -Compress -Depth 100)"
+
+                    # all good?
+                    if ($result -is [Object]) {
+
+                        $startTime = [DateTime]::UtcNow
+
+                        # get actual returned value
+                        $result = $result.result;
+
+                        # present?
+                        if ($result -is [Object]) {
+
+                            # there was an exception thrown?
+                            if ($result.subtype -eq "error") {
+
+                                # re-throw
+                                throw $result;
+                            }
+
+                            $result = $result.value;
+
+                            # got a data object?
+                            if ($result.data -is [PSObject]) {
+
+                                # initialize
+                                $reference.data = @{}
+
+                                # enumerate properties
+                                $result.data |
+                                Get-Member -ErrorAction SilentlyContinue |
+                                Where-Object -Property MemberType -Like *Property* |
+                                ForEach-Object -ErrorAction SilentlyContinue {
+
+                                    # set in a case-sensitive manner
+                                    $reference.data."$($PSItem.Name)" = $result.data."$($PSItem.Name)"
+                                }
+
+                                Set-Variable -Name "Data" -Value $reference.data -Scope Global | Out-Null
+                            }
+                        }
+                    }
+
+                    if ($pollCount -gt 0) {
+
+                        Start-Sleep 1 | Out-Null
+                    }
+
+                    $pollCount++;
+
+                    ($result.returnValues | ForEach-Object {
+
+                        $batchResults.Add($PSItem) | Out-Null
+                    })
+
+                    $result.returnValues = @();
+
+                } while (!$result.done);
+
+                # result indicate an exception thrown?
+                if ($result.success -eq $false) {
+
+                    if ($result.returnValue -is [string]) {
+
+                        # re-throw
+                        throw $result.returnValue;
+                    }
+
+                    throw $result;
+                }
+
+                Write-Output @{
+
+                    PipeSender = $EvaluationPipeSender
+                    Result     = $batchResults.ToArray();
+                }
+
+                $batchResults.Clear() | Out-Null
+            }
+            Catch {
+                Write-Output @{
+
+                    PipeSender = $EvaluationPipeSender
+                    Error      = $PSItem
+                }
+
+                $result = $null
+            }
+        }
+    }
+}
+
+################################################################################
+<#
+.SYNOPSIS
+Clears the application data of a web browser tab.
+
+.DESCRIPTION
+The `Clear-WebbrowserTabSiteApplicationData` cmdlet clears the application data of a web browser tab.
+
+These include:
+    - localStorage
+    - sessionStorage
+    - cookies
+    - indexedDB
+    - caches
+    - service workers
+#>
+function Clear-WebbrowserTabSiteApplicationData {
+
+    [CmdletBinding()]
+    [Alias("clearsitedata")]
+
+    param (
+        [Alias("e")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Clear in Microsoft Edge"
+        )]
+        [switch] $Edge,
+        ###############################################################################
+
+        [Alias("ch")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Clear in Google Chrome"
+        )]
+        [switch] $Chrome
+    )
+
+    [string] $LocationJSScriptLet = "`"javascript:(function()%7BlocalStorage.clear()%3BsessionStorage.clear()%3Bdocument.cookie.split(\`"%3B\`").forEach(function(c)%7Bdocument.cookie%3Dc.replace(%2F%5E %2B%2F%2C\`"\`").replace(%2F%3D.*%2F%2C\`"%3D%3Bexpires%3D\`"%2Bnew Date().toUTCString()%2B\`"%3Bpath%3D%2F\`")%7D)%3Bwindow.indexedDB.databases().then((dbs)%3D>%7Bdbs.forEach((db)%3D>%7BindexedDB.deleteDatabase(db.name)%7D)%7D)%3Bif('caches' in window)%7Bcaches.keys().then((names)%3D>%7Bnames.forEach(name%3D>%7Bcaches.delete(name)%7D)%7D)%7Dif('serviceWorker' in navigator)%7Bnavigator.serviceWorker.getRegistrations().then((registrations)%3D>%7Bregistrations.forEach((registration)%3D>%7Bregistration.unregister()%7D)%7D)%7Dalert('All browser storage cleared!')%7D)()`"" | ConvertFrom-Json
+
+    Set-WebbrowserTabLocation -Url $LocationJSScriptLet -Edge:$Edge -Chrome:$Chrome
+}
+
 ################################################################################
 ################################################################################
