@@ -2434,7 +2434,7 @@ function Set-WebbrowserTabLocation {
         [switch] $Chrome
     )
 
-        Invoke-WebbrowserEvaluation "setTimeout(function() { document.location = $($Url | ConvertTo-Json -Compress -Depth 1);}, 1000); return;" -Chrome:$Chrome -Edge:$Edge
+    Invoke-WebbrowserEvaluation "setTimeout(function() { document.location = $($Url | ConvertTo-Json -Compress -Depth 1);}, 1000); return;" -Chrome:$Chrome -Edge:$Edge
 }
 
 ###############################################################################
@@ -2912,17 +2912,20 @@ function Get-WebbrowserTabDomNodes {
 
         if (!!modifyScript && modifyScript != "") {
             try {
-
-                yield await (async function (e, i) {
-                    return eval(modifyScript);
-                })(node, i, nodes);
+                yield (
+                   await (
+                       async function(e, i, n, modifyScript) { return eval(modifyScript); }
+                     )(node, i, nodes, modifyScript)
+                );
             }
             catch (e) {
-                console.error(e);
+
+                yield e+'';
             }
         }
         else {
-            yield node.outerHTML;
+
+           yield node.outerHTML;
         }
     }
 "@
@@ -3111,7 +3114,7 @@ function Get-BrowserBookmarks {
             return
         }
         # Use the browser path to find the bookmarks file
-        $bookmarksFilePath = Join-Path -Path $env:LOCALAPPDATA -ChildPath 'Microsoft\Edge\User Data\Default\Bookmarks'
+        $bookmarksFilePath = Join-Path -Path "${env:LOCALAPPDATA}" -ChildPath 'Microsoft\Edge\User Data\Default\Bookmarks'
         $rootFolderName = 'Edge'
         $bookmarks = Get-Bookmarks -BookmarksFilePath $bookmarksFilePath -RootFolderName $rootFolderName -BrowserName ($browser.Name)
     }
@@ -3121,7 +3124,7 @@ function Get-BrowserBookmarks {
             Write-Host "Google Chrome is not installed."
             return
         }
-        $bookmarksFilePath = Join-Path -Path $env:LOCALAPPDATA -ChildPath 'Google\Chrome\User Data\Default\Bookmarks'
+        $bookmarksFilePath = Join-Path -Path "${env:LOCALAPPDATA}" -ChildPath 'Google\Chrome\User Data\Default\Bookmarks'
         $rootFolderName = 'Chrome'
         $bookmarks = Get-Bookmarks -BookmarksFilePath $bookmarksFilePath -RootFolderName $rootFolderName -BrowserName ($browser.Name)
     }
@@ -3649,7 +3652,7 @@ function Import-BrowserBookmarks {
                 Write-Host "Microsoft Edge is not installed."
                 return
             }
-            $bookmarksFilePath = Join-Path -Path $env:LOCALAPPDATA -ChildPath 'Microsoft\Edge\User Data\Default\Bookmarks'
+            $bookmarksFilePath = Join-Path -Path "${env:LOCALAPPDATA}" -ChildPath 'Microsoft\Edge\User Data\Default\Bookmarks'
             Write-Bookmarks -BookmarksFilePath $bookmarksFilePath -BookmarksToWrite $importedBookmarks
         }
         elseif ($Chrome) {
@@ -3658,7 +3661,7 @@ function Import-BrowserBookmarks {
                 Write-Host "Google Chrome is not installed."
                 return
             }
-            $bookmarksFilePath = Join-Path -Path $env:LOCALAPPDATA -ChildPath 'Google\Chrome\User Data\Default\Bookmarks'
+            $bookmarksFilePath = Join-Path -Path "${env:LOCALAPPDATA}" -ChildPath 'Google\Chrome\User Data\Default\Bookmarks'
             Write-Bookmarks -BookmarksFilePath $bookmarksFilePath -BookmarksToWrite $importedBookmarks
         }
         elseif ($Firefox) {

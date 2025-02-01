@@ -203,7 +203,6 @@ Update-Module
 | [Find-BrowserBookmarks](#Find-BrowserBookmarks) | bookmarks | The `Export-BrowserBookmarks` cmdlet exports bookmarks from Microsoft Edge, Google Chrome, or Mozilla Firefox into a json file. |
 | [Open-BrowserBookmarks](#Open-BrowserBookmarks) | sites | The `Export-BrowserBookmarks` cmdlet exports bookmarks from Microsoft Edge, Google Chrome, or Mozilla Firefox into a json file. |
 | [Import-BrowserBookmarks](#Import-BrowserBookmarks) |  | The `Import-BrowserBookmarks` cmdlet imports bookmarks from a json file into Microsoft Edge or Google Chrome. |
-| The `Invoke-WebbrowserEvaluation` cmdlet evaluates JavaScript scriptblocksin the current web browser tab. It does this by lock-stepping scriptblocksfor evaluation using a websocket with the webbrowsers debug port.It first sends the first initial scriptblock which may await async-operations and even yield values. The scriptblock is then evaluated in thebrowser, and the results are returned to the pipeline in a PSCustomObjectthat can look like this:${    [GenXdev.Helpers.ChromiumDebugPipeSender] Sender;    [Object[]] Result;}or${    [GenXdev.Helpers.ChromiumDebugPipeSender] Sender;    [Exception] Error;}Sender has two methods:    1) Sender.Send([string] $Script)       Sends the next script to the browser for evaluation.    2) Sender.Close()       Closes the connection to the browser       and the pipeline will end. |
 | [Clear-WebbrowserTabSiteApplicationData](#Clear-WebbrowserTabSiteApplicationData) | clearsitedata | The `Clear-WebbrowserTabSiteApplicationData` cmdlet clears the application data of a web browser tab.These include:    - localStorage    - sessionStorage    - cookies    - indexedDB    - caches    - service workers |
 
 <br/><hr/><hr/><br/>
@@ -235,7 +234,7 @@ Get-DefaultWebbrowser [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -268,7 +267,7 @@ Get-Webbrowser [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -291,11 +290,9 @@ Open-Webbrowser                      --> wb
 
 ### SYNTAX
 ````PowerShell
-Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chromium]
-[-Firefox] [-All] [-Monitor <Int32>] [-FullScreen] [-Width <Int32>] [-Height <Int32>] [-X
-<Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode]
-[-NoBrowserExtensions] [-AcceptLang <String>] [-RestoreFocus] [-NewWindow] [-PassThru]
-[<CommonParameters>]
+Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Monitor <Int32>] [-FullScreen] [-Width <Int32>] 
+[-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-AcceptLang <String>] 
+[-RestoreFocus] [-NewWindow] [-PassThru] [<CommonParameters>]
 ````
 
 ### DESCRIPTION
@@ -306,7 +303,7 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         The url to open
         Required?                    false
         Position?                    1
-        Default value
+        Default value                
         Accept pipeline input?       true (ByValue)
         Accept wildcard characters?  false
     -Private [<SwitchParameter>]
@@ -317,8 +314,7 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Force [<SwitchParameter>]
-        Enforced that the debugging port is enabled, even if that means stopping all already
-        opened browser processes
+        Enforced that the debugging port is enabled, even if that means stopping all already opened browser processes
         Required?                    false
         Position?                    named
         Default value                False
@@ -360,8 +356,7 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Monitor <Int32>
-        The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor,
-        defaults to `Global:DefaultSecondaryMonitor or 2 if not found --> -m, -mon
+        The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to `Global:DefaultSecondaryMonitor or 2 if not found --> -m, -mon
         Required?                    false
         Position?                    named
         Default value                -2
@@ -455,7 +450,7 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         Set the browser accept-lang http header
         Required?                    false
         Position?                    named
-        Default value
+        Default value                
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -RestoreFocus [<SwitchParameter>]
@@ -483,21 +478,18 @@ Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chro
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
     Requires the Windows 10+ Operating System
     This cmdlet was mend to be used, interactively.
-    It performs some strange tricks to position windows, including invoking alt-tab
-    keystrokes.
+    It performs some strange tricks to position windows, including invoking alt-tab keystrokes.
     It is best not to touch the keyboard or mouse, while it is doing that.
     For fast launches of multple urls:
     SET    : -Monitor -1
-    AND    : DO NOT use any of these switches: -X, -Y, -Left, -Right, -Top, -Bottom or
-    -RestoreFocus
-    For browsers that are not installed on the system, no actions may be performed or
-    errors occur - at all.
+    AND    : DO NOT use any of these switches: -X, -Y, -Left, -Right, -Top, -Bottom or -RestoreFocus
+    For browsers that are not installed on the system, no actions may be performed or errors occur - at all.
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> url from parameter
 PS C:\> Open-Webbrowser -Chrome -Left -Top -Url "https://genxdev.net/"
@@ -524,8 +516,7 @@ Close-Webbrowser                     --> wbc
 
 ### SYNTAX
 ````PowerShell
-Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All]
-[-IncludeBackgroundProcesses] [<CommonParameters>]
+Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-IncludeBackgroundProcesses] [<CommonParameters>]
 ````
 
 ### DESCRIPTION
@@ -578,7 +569,7 @@ Close-Webbrowser [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -603,20 +594,16 @@ Select-WebbrowserTab                 --> Select-BrowserTab, st
 ### SYNTAX
 ````PowerShell
 Select-WebbrowserTab [[-id] <Int32>] [-Edge] [-Chrome] [-Force] [<CommonParameters>]
-Select-WebbrowserTab [[-id] <Int32>] [-Name] <String> [-Edge] [-Chrome] [-Force]
-[<CommonParameters>]
-Select-WebbrowserTab [[-id] <Int32>] [-Edge] [-Chrome] -ByReference <Hashtable> [-Force]
-[<CommonParameters>]
+Select-WebbrowserTab [[-id] <Int32>] [-Name] <String> [-Edge] [-Chrome] [-Force] [<CommonParameters>]
+Select-WebbrowserTab [[-id] <Int32>] [-Edge] [-Chrome] -ByReference <Hashtable> [-Force] [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    Selects a webbrowser tab for use by the Cmdlets 'Invoke-WebbrowserEvaluation -> et, eval',
-    'Close-WebbrowserTab -> ct' and others
+    Selects a webbrowser tab for use by the Cmdlets 'Invoke-WebbrowserEvaluation -> et, eval', 'Close-WebbrowserTab -> ct' and others
 
 ### PARAMETERS
     -id <Int32>
-        When '-Id' is not supplied, a list of available webbrowser tabs is shown, where the
-        right value can be found
+        When '-Id' is not supplied, a list of available webbrowser tabs is shown, where the right value can be found
         Required?                    false
         Position?                    1
         Default value                -1
@@ -626,7 +613,7 @@ Select-WebbrowserTab [[-id] <Int32>] [-Edge] [-Chrome] -ByReference <Hashtable> 
         Selects the first entry that contains given name in its url
         Required?                    true
         Position?                    1
-        Default value
+        Default value                
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Edge [<SwitchParameter>]
@@ -647,7 +634,7 @@ Select-WebbrowserTab [[-id] <Int32>] [-Edge] [-Chrome] -ByReference <Hashtable> 
         Select tab using reference obtained with Get-ChromiumSessionReference
         Required?                    true
         Position?                    named
-        Default value
+        Default value                
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Force [<SwitchParameter>]
@@ -660,7 +647,7 @@ Select-WebbrowserTab [[-id] <Int32>] [-Edge] [-Chrome] -ByReference <Hashtable> 
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -684,26 +671,23 @@ Invoke-WebbrowserEvaluation          --> et, Eval
 
 ### SYNTAX
 ````PowerShell
-Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [-NoAutoSelectTab]
-[-Edge] [-Chrome] [<CommonParameters>]
+Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [-NoAutoSelectTab] [-Edge] [-Chrome] [<CommonParameters>]
 ````
 
 ### DESCRIPTION
     Runs one or more scripts inside a selected webbrowser tab.
-    You can access 'data' object from within javascript, to synchronize data between PowerShell
-    and the Webbrowser
+    You can access 'data' object from within javascript, to synchronize data between PowerShell and the Webbrowser
 
 ### PARAMETERS
     -Scripts <Object[]>
         A string containing javascript, a url or a file reference to a javascript file
         Required?                    false
         Position?                    1
-        Default value
+        Default value                
         Accept pipeline input?       true (ByValue, ByPropertyName)
         Accept wildcard characters?  false
     -Inspect [<SwitchParameter>]
-        Will cause the developer tools of the webbrowser to break, before executing the
-        scripts, allowing you to debug it
+        Will cause the developer tools of the webbrowser to break, before executing the scripts, allowing you to debug it
         Required?                    false
         Position?                    named
         Default value                False
@@ -738,16 +722,16 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-AsJob] [-NoAuto
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
     Requires the Windows 10+ Operating System
 -------------------------- EXAMPLE 1 --------------------------
-PS C:\>
+PS C:\> 
 Invoke-WebbrowserEvaluation "document.title = 'hello world'"
 -------------------------- EXAMPLE 2 --------------------------
-PS C:\>
+PS C:\> 
 # Synchronizing data
 Select-WebbrowserTab -Force;
 $Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
@@ -761,7 +745,7 @@ Write-Host "
     return value   : $Number
 ";
 -------------------------- EXAMPLE 3 --------------------------
-PS C:\>
+PS C:\> 
 # Support for promises
 Select-WebbrowserTab -Force;
 Invoke-WebbrowserEvaluation "
@@ -778,10 +762,9 @@ Invoke-WebbrowserEvaluation "
     });
 "
 -------------------------- EXAMPLE 4 --------------------------
-PS C:\>
+PS C:\> 
 # Support for promises and more
-# this function returns all rows of all tables/datastores of all databases of indexedDb in
-the selected tab
+# this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
 # beware, not all websites use indexedDb, it could return an empty set
 Select-WebbrowserTab -Force;
 Set-WebbrowserTabLocation "https://www.youtube.com/"
@@ -824,7 +807,7 @@ $AllIndexedDbData = Invoke-WebbrowserEvaluation "
 ";
 $AllIndexedDbData | Out-Host
 -------------------------- EXAMPLE 5 --------------------------
-PS C:\>
+PS C:\> 
 # Support for yielded pipeline results
 Select-WebbrowserTab -Force;
 Invoke-WebbrowserEvaluation "
@@ -862,7 +845,7 @@ Set-WebbrowserTabLocation [-Url] <String> [-Edge] [-Chrome] [<CommonParameters>]
         The Url the browsertab should navigate too
         Required?                    true
         Position?                    1
-        Default value
+        Default value                
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Edge [<SwitchParameter>]
@@ -881,7 +864,7 @@ Set-WebbrowserTabLocation [-Url] <String> [-Edge] [-Chrome] [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -913,7 +896,7 @@ Set-BrowserVideoFullscreen [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 <br/><hr/><hr/><br/>
 
@@ -938,7 +921,7 @@ Close-WebbrowserTab [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -956,8 +939,7 @@ Show-WebsiteInAllBrowsers            --> Show-UrlInAllBrowsers
 ````
 
 ### SYNOPSIS
-    Will open an url into three different browsers + a incognito window, with a window mosaic
-    layout
+    Will open an url into three different browsers + a incognito window, with a window mosaic layout
 
 ### SYNTAX
 ````PowerShell
@@ -965,28 +947,26 @@ Show-WebsiteInAllBrowsers [-Url] <String> [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    Will open an url into three different browsers + a incognito window, with a window mosaic
-    layout
+    Will open an url into three different browsers + a incognito window, with a window mosaic layout
 
 ### PARAMETERS
     -Url <String>
         Url to open
         Required?                    true
         Position?                    1
-        Default value
+        Default value                
         Accept pipeline input?       false
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
     Requires the Windows 10+ Operating System
-    To actually see four windows, you need Google Chrome, Firefox and Microsoft Edge
-    installed
+    To actually see four windows, you need Google Chrome, Firefox and Microsoft Edge installed
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> Show-WebsiteInallBrowsers "https://www.google.com/"
 ````
@@ -999,8 +979,7 @@ Set-RemoteDebuggerPortInBrowserShortcuts
 ````
 
 ### SYNOPSIS
-    Updates all browser shortcuts for current user, to enable the remote debugging port by
-    default
+    Updates all browser shortcuts for current user, to enable the remote debugging port by default
 
 ### SYNTAX
 ````PowerShell
@@ -1008,15 +987,14 @@ Set-RemoteDebuggerPortInBrowserShortcuts [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    Updates all browser shortcuts for current user, to enable the remote debugging port by
-    default
+    Updates all browser shortcuts for current user, to enable the remote debugging port by default
 
 ### PARAMETERS
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -1046,7 +1024,7 @@ Get-ChromeRemoteDebuggingPort [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -1076,7 +1054,7 @@ Get-EdgeRemoteDebuggingPort [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -1091,8 +1069,7 @@ Get-ChromiumRemoteDebuggingPort
 ````
 
 ### SYNOPSIS
-    Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which
-    ever is the default browser
+    Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which ever is the default browser
 
 ### SYNTAX
 ````PowerShell
@@ -1100,15 +1077,14 @@ Get-ChromiumRemoteDebuggingPort [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which
-    ever is the default browser
+    Returns the configured remote debugging port for Microsoft Edge or Google Chrome, which ever is the default browser
 
 ### PARAMETERS
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 <br/><hr/><hr/><br/>
 
@@ -1133,7 +1109,7 @@ Approve-FirefoxDebugging [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 <br/><hr/><hr/><br/>
 
@@ -1153,15 +1129,14 @@ Get-ChromiumSessionReference [<CommonParameters>]
 ### DESCRIPTION
     Returns a reference that can be used with Select-WebbrowserTab -ByReference
     This can be usefull when you want to evaluate the webbrowser inside a Job.
-    With this serializable reference, you can pass the webbrowser tab session reference on to
-    the Job commandblock.
+    With this serializable reference, you can pass the webbrowser tab session reference on to the Job commandblock.
 
 ### PARAMETERS
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 <br/><hr/><hr/><br/>
 
@@ -1171,39 +1146,36 @@ Get-WebbrowserTabDomNodes            --> wl
 ````
 
 ### SYNOPSIS
-    Returns the outer HTML of DOM nodes matching the specified query selector in the current
-    web browser tab.
+    Returns the outer HTML of DOM nodes matching the specified query selector in the current web browser tab.
 
 ### SYNTAX
 ````PowerShell
-Get-WebbrowserTabDomNodes [-QuerySelector] <String> [[-ModifyScript] <String>]
-[<CommonParameters>]
+Get-WebbrowserTabDomNodes [-QuerySelector] <String> [[-ModifyScript] <String>] [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    Uses Invoke-WebbrowserEvaluation to execute a JavaScript script that performs a
-    document.querySelectorAll with the specified query selector and returns the outer HTML of
-    each found node.
+    Uses Invoke-WebbrowserEvaluation to execute a JavaScript script that performs a document.querySelectorAll with the specified query selector and returns the 
+    outer HTML of each found node.
 
 ### PARAMETERS
     -QuerySelector <String>
         The query selector string to use for selecting DOM nodes.
         Required?                    true
         Position?                    1
-        Default value
+        Default value                
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -ModifyScript <String>
         Required?                    false
         Position?                    2
-        Default value
+        Default value                
         Accept pipeline input?       false
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
@@ -1217,7 +1189,7 @@ PS C:\> Get-WebbrowserTabDomNodes -QuerySelector "video" -ModifyScript "e.play()
 -------------------------- EXAMPLE 4 --------------------------
 PS C:\> wl video "e.pause()"
 -------------------------- EXAMPLE 5 --------------------------
-PS C:\>
+PS C:\> 
 ````
 
 <br/><hr/><hr/><br/>
@@ -1239,8 +1211,7 @@ Get-BrowserBookmarks [-Firefox] [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    The `Export-BrowserBookmarks` cmdlet returns all bookmarks from  Microsoft Edge, Google
-    Chrome, or Mozilla Firefox.
+    The `Export-BrowserBookmarks` cmdlet returns all bookmarks from  Microsoft Edge, Google Chrome, or Mozilla Firefox.
 
 ### PARAMETERS
     -Chrome [<SwitchParameter>]
@@ -1268,12 +1239,11 @@ Get-BrowserBookmarks [-Firefox] [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
-    Requires access to the browser's bookmarks file. For Firefox, the SQLite module is
-    needed to read from `places.sqlite`.
+    Requires access to the browser's bookmarks file. For Firefox, the SQLite module is needed to read from `places.sqlite`.
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> Export-BrowserBookmarks -OutputFile "C:\Bookmarks.csv" -Edge
 This command exports bookmarks from Edge to the specified CSV file.
@@ -1298,15 +1268,14 @@ Export-BrowserBookmarks [-OutputFile] <String> [-Firefox] [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    The `Export-BrowserBookmarks` cmdlet exports bookmarks from Microsoft Edge, Google Chrome,
-    or Mozilla Firefox into a json file.
+    The `Export-BrowserBookmarks` cmdlet exports bookmarks from Microsoft Edge, Google Chrome, or Mozilla Firefox into a json file.
 
 ### PARAMETERS
     -OutputFile <String>
         Specifies the path to the CSV file where the bookmarks will be saved.
         Required?                    true
         Position?                    1
-        Default value
+        Default value                
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Chrome [<SwitchParameter>]
@@ -1334,12 +1303,11 @@ Export-BrowserBookmarks [-OutputFile] <String> [-Firefox] [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
-    Requires access to the browser's bookmarks file. For Firefox, the SQLite module is
-    needed to read from `places.sqlite`.
+    Requires access to the browser's bookmarks file. For Firefox, the SQLite module is needed to read from `places.sqlite`.
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> Export-BrowserBookmarks -OutputFile "C:\Bookmarks.csv" -Edge
 This command exports bookmarks from Edge to the specified CSV file.
@@ -1357,19 +1325,17 @@ Find-BrowserBookmarks                --> bookmarks
 
 ### SYNTAX
 ````PowerShell
-Find-BrowserBookmarks [[-Queries] <String[]>] [-Edge] [-Chrome] [-Firefox] [-Count <Int32>]
-[-PassThru] [<CommonParameters>]
+Find-BrowserBookmarks [[-Queries] <String[]>] [-Edge] [-Chrome] [-Firefox] [-Count <Int32>] [-PassThru] [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    The `Export-BrowserBookmarks` cmdlet exports bookmarks from Microsoft Edge, Google Chrome,
-    or Mozilla Firefox into a json file.
+    The `Export-BrowserBookmarks` cmdlet exports bookmarks from Microsoft Edge, Google Chrome, or Mozilla Firefox into a json file.
 
 ### PARAMETERS
     -Queries <String[]>
         Required?                    false
         Position?                    1
-        Default value
+        Default value                
         Accept pipeline input?       true (ByValue, ByPropertyName)
         Accept wildcard characters?  false
     -Edge [<SwitchParameter>]
@@ -1409,12 +1375,11 @@ Find-BrowserBookmarks [[-Queries] <String[]>] [-Edge] [-Chrome] [-Firefox] [-Cou
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
-    Requires access to the browser's bookmarks file. For Firefox, the SQLite module is
-    needed to read from `places.sqlite`.
+    Requires access to the browser's bookmarks file. For Firefox, the SQLite module is needed to read from `places.sqlite`.
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> Export-BrowserBookmarks -OutputFile "C:\Bookmarks.csv" -Edge
 This command exports bookmarks from Edge to the specified CSV file.
@@ -1432,19 +1397,18 @@ Open-BrowserBookmarks                --> sites
 
 ### SYNTAX
 ````PowerShell
-Open-BrowserBookmarks [[-Queries] <String[]>] [-Edge] [-Chrome] [-Firefox] [-OpenInEdge]
-[-OpenInChrome] [-OpenInFirefox] [-Monitor <Int32>] [-Count <Int32>] [<CommonParameters>]
+Open-BrowserBookmarks [[-Queries] <String[]>] [-Edge] [-Chrome] [-Firefox] [-OpenInEdge] [-OpenInChrome] [-OpenInFirefox] [-Monitor <Int32>] [-Count <Int32>] 
+[<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    The `Export-BrowserBookmarks` cmdlet exports bookmarks from Microsoft Edge, Google Chrome,
-    or Mozilla Firefox into a json file.
+    The `Export-BrowserBookmarks` cmdlet exports bookmarks from Microsoft Edge, Google Chrome, or Mozilla Firefox into a json file.
 
 ### PARAMETERS
     -Queries <String[]>
         Required?                    false
         Position?                    1
-        Default value
+        Default value                
         Accept pipeline input?       true (ByValue, ByPropertyName)
         Accept wildcard characters?  false
     -Edge [<SwitchParameter>]
@@ -1502,12 +1466,11 @@ Open-BrowserBookmarks [[-Queries] <String[]>] [-Edge] [-Chrome] [-Firefox] [-Ope
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
-    Requires access to the browser's bookmarks file. For Firefox, the SQLite module is
-    needed to read from `places.sqlite`.
+    Requires access to the browser's bookmarks file. For Firefox, the SQLite module is needed to read from `places.sqlite`.
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> Export-BrowserBookmarks -OutputFile "C:\Bookmarks.csv" -Edge
 This command exports bookmarks from Edge to the specified CSV file.
@@ -1526,29 +1489,26 @@ Import-BrowserBookmarks
 ### SYNTAX
 ````PowerShell
 Import-BrowserBookmarks [-Chrome] [-Edge] [-Firefox] [<CommonParameters>]
-Import-BrowserBookmarks [[-InputFile] <String>] [-Chrome] [-Edge] [-Firefox]
-[<CommonParameters>]
-Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome] [-Edge] [-Firefox]
-[<CommonParameters>]
+Import-BrowserBookmarks [[-InputFile] <String>] [-Chrome] [-Edge] [-Firefox] [<CommonParameters>]
+Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome] [-Edge] [-Firefox] [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    The `Import-BrowserBookmarks` cmdlet imports bookmarks from a json file into Microsoft Edge
-    or Google Chrome.
+    The `Import-BrowserBookmarks` cmdlet imports bookmarks from a json file into Microsoft Edge or Google Chrome.
 
 ### PARAMETERS
     -InputFile <String>
         Specifies the path to the json file containing the bookmarks to import.
         Required?                    false
         Position?                    1
-        Default value
+        Default value                
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Bookmarks <Array>
         Specifies a collection of bookmarks to import.
         Required?                    false
         Position?                    1
-        Default value
+        Default value                
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Chrome [<SwitchParameter>]
@@ -1566,8 +1526,7 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome] [-Edge] [-Firefox]
         Accept pipeline input?       false
         Accept wildcard characters?  false
     -Firefox [<SwitchParameter>]
-        (Not supported) Importing bookmarks into Firefox is currently not supported by this
-        cmdlet.
+        (Not supported) Importing bookmarks into Firefox is currently not supported by this cmdlet.
         Required?                    false
         Position?                    named
         Default value                False
@@ -1577,12 +1536,11 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome] [-Edge] [-Firefox]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 ### NOTES
 ````PowerShell
-    For Edge and Chrome, the bookmarks are added to the 'Bookmarks Bar'. Importing into
-    Firefox is currently not supported.
+    For Edge and Chrome, the bookmarks are added to the 'Bookmarks Bar'. Importing into Firefox is currently not supported.
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> Import-BrowserBookmarks -InputFile "C:\Bookmarks.csv" -Edge
 This command imports bookmarks from the specified CSV file into Edge.
@@ -1604,8 +1562,7 @@ Clear-WebbrowserTabSiteApplicationData [-Edge] [-Chrome] [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    The `Clear-WebbrowserTabSiteApplicationData` cmdlet clears the application data of a web
-    browser tab.
+    The `Clear-WebbrowserTabSiteApplicationData` cmdlet clears the application data of a web browser tab.
     These include:
         - localStorage
         - sessionStorage
@@ -1631,6 +1588,6 @@ Clear-WebbrowserTabSiteApplicationData [-Edge] [-Chrome] [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
 
 <br/><hr/><hr/><br/>
