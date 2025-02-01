@@ -224,7 +224,8 @@ Close-PlaywrightDriver
 
 ### SYNTAX
 ````PowerShell
-Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [<CommonParameters>]
+Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] 
+[<CommonParameters>]
 ````
 
 ### DESCRIPTION
@@ -362,9 +363,10 @@ Get-PlaywrightDriver
 
 ### SYNTAX
 ````PowerShell
-Get-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [-Visible] [-Url <String>] [-Monitor 
-<Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] 
-[-Centered] [-FullScreen] [-PersistBrowserState] [<CommonParameters>]
+Get-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [-Visible] [-Url 
+<String>] [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] 
+[-Left] [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen] [-PersistBrowserState] 
+[<CommonParameters>]
 Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
 ````
 
@@ -518,8 +520,10 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
 
 ### NOTES
 ````PowerShell
-    This is a Playwright-specific implementation that may not support all features of Open-Webbrowser.
-    Some positioning and window management features may be limited by Playwright capabilities.
+    This is a Playwright-specific implementation that may not support all features of 
+    Open-Webbrowser.
+    Some positioning and window management features may be limited by Playwright 
+    capabilities.
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> Get-PlaywrightDriver -BrowserType Chromium -Visible -Url "https://github.com"
 ````
@@ -572,7 +576,8 @@ Close-PlaywrightDriver
 
 ### SYNTAX
 ````PowerShell
-Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [<CommonParameters>]
+Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] 
+[<CommonParameters>]
 ````
 
 ### DESCRIPTION
@@ -779,9 +784,10 @@ Get-PlaywrightDriver
 
 ### SYNTAX
 ````PowerShell
-Get-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [-Visible] [-Url <String>] [-Monitor 
-<Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] 
-[-Centered] [-FullScreen] [-PersistBrowserState] [<CommonParameters>]
+Get-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [-Visible] [-Url 
+<String>] [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] 
+[-Left] [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen] [-PersistBrowserState] 
+[<CommonParameters>]
 Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
 ````
 
@@ -935,8 +941,10 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
 
 ### NOTES
 ````PowerShell
-    This is a Playwright-specific implementation that may not support all features of Open-Webbrowser.
-    Some positioning and window management features may be limited by Playwright capabilities.
+    This is a Playwright-specific implementation that may not support all features of 
+    Open-Webbrowser.
+    Some positioning and window management features may be limited by Playwright 
+    capabilities.
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> Get-PlaywrightDriver -BrowserType Chromium -Visible -Url "https://github.com"
 ````
@@ -989,7 +997,8 @@ Close-PlaywrightDriver
 
 ### SYNTAX
 ````PowerShell
-Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [<CommonParameters>]
+Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] 
+[<CommonParameters>]
 ````
 
 ### DESCRIPTION
@@ -1196,9 +1205,10 @@ Get-PlaywrightDriver
 
 ### SYNTAX
 ````PowerShell
-Get-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [-Visible] [-Url <String>] [-Monitor 
-<Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] 
-[-Centered] [-FullScreen] [-PersistBrowserState] [<CommonParameters>]
+Get-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [-Visible] [-Url 
+<String>] [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] 
+[-Left] [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen] [-PersistBrowserState] 
+[<CommonParameters>]
 Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
 ````
 
@@ -1352,8 +1362,10 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
 
 ### NOTES
 ````PowerShell
-    This is a Playwright-specific implementation that may not support all features of Open-Webbrowser.
-    Some positioning and window management features may be limited by Playwright capabilities.
+    This is a Playwright-specific implementation that may not support all features of 
+    Open-Webbrowser.
+    Some positioning and window management features may be limited by Playwright 
+    capabilities.
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> Get-PlaywrightDriver -BrowserType Chromium -Visible -Url "https://github.com"
 ````
