@@ -6,7 +6,7 @@
   RootModule           = 'GenXdev.Webbrowser.psm1'
 
   # Version number of this module.
-  ModuleVersion        = '1.90.2025'
+  ModuleVersion        = '1.94.2025'
   # Supported PSEditions
   # CompatiblePSEditions = @()
 
@@ -26,19 +26,19 @@
   Description          = 'A Windows PowerShell module that allows you to run scripts against your casual desktop webbrowser-tab'
 
   # Minimum version of the PowerShell engine required by this module
-  PowerShellVersion    = '7.4.6'
+  PowerShellVersion    = '7.5.0'
 
   # # Intended for PowerShell Core
   CompatiblePSEditions = 'Core'
 
   # # Minimum version of the common language runtime (CLR) required by this module. This prerequisite is valid for the PowerShell Desktop edition only.
-  ClrVersion           = '8.0.10'
+  ClrVersion           = '9.0.1'
 
   # Processor architecture (None, X86, Amd64) required by this module
   # ProcessorArchitecture = ''
 
   # Modules that must be imported into the global environment prior to importing this module
-  RequiredModules      = @(@{ModuleName = 'GenXdev.Helpers'; ModuleVersion = '1.90.2025' }, @{ModuleName = 'GenXdev.Windows'; ModuleVersion = '1.90.2025' }, @{ModuleName = 'GenXdev.FileSystem'; ModuleVersion = '1.90.2025' });
+  RequiredModules      = @(@{ModuleName = 'GenXdev.Data'; ModuleVersion = '1.94.2025' }, @{ModuleName = 'GenXdev.Helpers'; ModuleVersion = '1.94.2025' }, @{ModuleName = 'GenXdev.Windows'; ModuleVersion = '1.94.2025' }, @{ModuleName = 'GenXdev.FileSystem'; ModuleVersion = '1.94.2025' });
 
   # Assemblies that must be loaded prior to importing this module
   RequiredAssemblies   = @()
@@ -53,7 +53,7 @@
   # FormatsToProcess = @()
 
   # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-  # NestedModules = @()
+  NestedModules        = @("GenXdev.Webbrowser.Playwright.psm1")
 
   # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
   FunctionsToExport    = '*' # @("*")
@@ -77,6 +77,40 @@
   FileList             = @(
 
 
+  ".\\Functions\\GenXdev.Webbrowser\\Approve-FirefoxDebugging.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Clear-WebbrowserTabSiteApplicationData.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Close-Webbrowser.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Close-WebbrowserTab.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Export-BrowserBookmarks.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Find-BrowserBookmarks.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Get-BrowserBookmarks.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Get-ChromeRemoteDebuggingPort.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Get-ChromiumRemoteDebuggingPort.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Get-ChromiumSessionReference.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Get-DefaultWebbrowser.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Get-EdgeRemoteDebuggingPort.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Get-Webbrowser.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Get-WebbrowserTabDomNodes.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Import-BrowserBookmarks.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Invoke-WebbrowserEvaluation.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Open-BrowserBookmarks.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Open-Webbrowser.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Select-WebbrowserTab.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Set-BrowserVideoFullscreen.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Set-RemoteDebuggerPortInBrowserShortcuts.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Set-WebbrowserTabLocation.ps1",
+  ".\\Functions\\GenXdev.Webbrowser\\Show-WebsiteInAllBrowsers.ps1",
+  ".\\Functions\\GenXdev.Webbrowser.Playwright\\_AssureTypes.ps1",
+  ".\\Functions\\GenXdev.Webbrowser.Playwright\\Close-PlaywrightDriver.ps1",
+  ".\\Functions\\GenXdev.Webbrowser.Playwright\\Connect-PlaywrightViaDebuggingPort.ps1",
+  ".\\Functions\\GenXdev.Webbrowser.Playwright\\Get-PlaywrightDriver.ps1",
+  ".\\Functions\\GenXdev.Webbrowser.Playwright\\Get-PlaywrightProfileDirectory.ps1",
+  ".\\Functions\\GenXdev.Webbrowser.Playwright\\Resume-WebbrowserTabVideo.ps1",
+  ".\\Functions\\GenXdev.Webbrowser.Playwright\\Stop-WebbrowserVideos.ps1",
+  ".\\Functions\\GenXdev.Webbrowser.Playwright\\Unprotect-WebbrowserTab.ps1",
+  ".\\Functions\\GenXdev.Webbrowser.Playwright\\Update-PlaywrightDriverCache.ps1",
+  ".\\Tests\\TestResults.xml",
+  ".\\GenXdev.Webbrowser.Playwright.psm1",
   ".\\GenXdev.Webbrowser.psd1",
   ".\\GenXdev.Webbrowser.psm1",
   ".\\LICENSE",
