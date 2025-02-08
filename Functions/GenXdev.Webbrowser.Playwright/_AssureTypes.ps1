@@ -1,13 +1,46 @@
-# using namespace System.Management.Automation
-# using namespace System.Collections.Concurrent
-# using namespace Microsoft.Playwright
+################################################################################
+using namespace System.Management.Automation
+using namespace System.Collections.Concurrent
+using namespace Microsoft.Playwright
 
-# Add required assemblies
-Add-Type -Path (Join-Path $PSScriptRoot '..\..\..\..\GenXdev.Helpers\1.102.2025\lib\Microsoft.Playwright.dll')
-Add-Type -Path (Join-Path $PSScriptRoot '..\..\..\..\GenXdev.Helpers\1.102.2025\lib\Microsoft.Playwright.TestAdapter.dll')
+# add required assemblies from the module's lib folder
+Add-Type -Path (Join-Path $PSScriptRoot `
+    '..\..\..\..\GenXdev.Helpers\1.104.2025\lib\Microsoft.Playwright.dll')
+Add-Type -Path (Join-Path $PSScriptRoot `
+    '..\..\..\..\GenXdev.Helpers\1.104.2025\lib\Microsoft.Playwright.TestAdapter.dll')
 
-# Playwright module using debugging port
-$Global:GenXdevPlaywrightBrowserDictionary = [System.Collections.Concurrent.ConcurrentDictionary[string, Microsoft.Playwright.IBrowser]]::new()
+# initialize concurrent dictionary for storing browser instances
+$Global:GenXdevPlaywrightBrowserDictionary = `
+    [ConcurrentDictionary[string, IBrowser]]::new()
 
-# Initialize Playwright on module load
-# $null = [Microsoft.Playwright.Playwright]::InstallAsync().Wait()
+################################################################################
+<#
+.SYNOPSIS
+Initializes required Playwright types and assemblies.
+
+.DESCRIPTION
+This internal function ensures the required Playwright assemblies are loaded and
+initializes the global browser dictionary. It is called automatically when the
+module loads.
+
+.EXAMPLE
+_AssureTypes
+#>
+function _AssureTypes {
+
+    [CmdletBinding()]
+    param()
+
+    begin {
+        Write-Verbose "Initializing Playwright types and assemblies..."
+    }
+
+    process {
+        # nothing to process
+    }
+
+    end {
+        # initialization handled by module-level code
+    }
+}
+################################################################################

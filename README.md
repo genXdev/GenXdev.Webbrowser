@@ -182,13 +182,6 @@ Update-Module
 | Command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | aliases&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Description |
 | --- | --- | --- |
 | [Close-PlaywrightDriver](#Close-PlaywrightDriver) |  | This function safely closes a previously opened Playwright browser instance andremoves its reference from the global browser dictionary. It ensures propercleanup of browser resources and handles errors gracefully. |
-| [Stop-WebbrowserVideos](#Stop-WebbrowserVideos) | ssst, wbsst, wbvideostop | This function iterates through all active Chrome sessions and pauses any playingvideos by executing a JavaScript command. |
-| [Resume-WebbrowserTabVideo](#Resume-WebbrowserTabVideo) | wbvideoplay | Finds the current YouTube browser tab and resumes video playback by executing theplay() method on any video elements found in the page. |
-| [Get-PlaywrightProfileDirectory](#Get-PlaywrightProfileDirectory) |  | Retrieves or creates the profile directory used by Playwright for persistentbrowser sessions. The directory is created under LocalAppData if it doesn't exist. |
-| [Get-PlaywrightDriver](#Get-PlaywrightDriver) |  | Creates and manages Playwright browser instances with support for multiple browsertypes, window positioning, and state persistence. |
-| [Connect-PlaywrightViaDebuggingPort](#Connect-PlaywrightViaDebuggingPort) |  | Establishes a connection to a running browser instance using the WebSocketdebugger URL. Returns a Playwright browser instance that can be used forautomation. |
-| [Close-PlaywrightDriver](#Close-PlaywrightDriver) |  | This function safely closes a previously opened Playwright browser instance andremoves its reference from the global browser dictionary. It ensures propercleanup of browser resources and handles errors gracefully. |
-| [Update-PlaywrightDriverCache](#Update-PlaywrightDriverCache) |  | This function cleans up disconnected or null browser instances from the globalPlaywright browser dictionary to prevent memory leaks and maintain cache health. |
 | [Unprotect-WebbrowserTab](#Unprotect-WebbrowserTab) | wbctrl | Allows interactive control of a browser tab previously selected using theSelect-WebbrowserTab cmdlet. Provides access to the Microsoft Playwright Pageobject properties and methods. |
 | [Stop-WebbrowserVideos](#Stop-WebbrowserVideos) | ssst, wbsst, wbvideostop | This function iterates through all active Chrome sessions and pauses any playingvideos by executing a JavaScript command. |
 | [Resume-WebbrowserTabVideo](#Resume-WebbrowserTabVideo) | wbvideoplay | Finds the current YouTube browser tab and resumes video playback by executing theplay() method on any video elements found in the page. |
@@ -196,6 +189,16 @@ Update-Module
 | [Get-PlaywrightDriver](#Get-PlaywrightDriver) |  | Creates and manages Playwright browser instances with support for multiple browsertypes, window positioning, and state persistence. |
 | [Connect-PlaywrightViaDebuggingPort](#Connect-PlaywrightViaDebuggingPort) |  | Establishes a connection to a running browser instance using the WebSocketdebugger URL. Returns a Playwright browser instance that can be used forautomation. |
 | [Close-PlaywrightDriver](#Close-PlaywrightDriver) |  | This function safely closes a previously opened Playwright browser instance andremoves its reference from the global browser dictionary. It ensures propercleanup of browser resources and handles errors gracefully. |
+| [_AssureTypes](#_AssureTypes) |  | This internal function ensures the required Playwright assemblies are loaded andinitializes the global browser dictionary. It is called automatically when themodule loads. |
+| [Update-PlaywrightDriverCache](#Update-PlaywrightDriverCache) |  | This function cleans up disconnected or null browser instances from the globalPlaywright browser dictionary to prevent memory leaks and maintain cache health. |
+| [Unprotect-WebbrowserTab](#Unprotect-WebbrowserTab) | wbctrl | Allows interactive control of a browser tab previously selected using theSelect-WebbrowserTab cmdlet. Provides access to the Microsoft Playwright Pageobject properties and methods. |
+| [Stop-WebbrowserVideos](#Stop-WebbrowserVideos) | ssst, wbsst, wbvideostop | This function iterates through all active Chrome sessions and pauses any playingvideos by executing a JavaScript command. |
+| [Update-PlaywrightDriverCache](#Update-PlaywrightDriverCache) |  | This function cleans up disconnected or null browser instances from the globalPlaywright browser dictionary to prevent memory leaks and maintain cache health. |
+| [Resume-WebbrowserTabVideo](#Resume-WebbrowserTabVideo) | wbvideoplay | Finds the current YouTube browser tab and resumes video playback by executing theplay() method on any video elements found in the page. |
+| [Get-PlaywrightDriver](#Get-PlaywrightDriver) |  | Creates and manages Playwright browser instances with support for multiple browsertypes, window positioning, and state persistence. |
+| [Connect-PlaywrightViaDebuggingPort](#Connect-PlaywrightViaDebuggingPort) |  | Establishes a connection to a running browser instance using the WebSocketdebugger URL. Returns a Playwright browser instance that can be used forautomation. |
+| [Close-PlaywrightDriver](#Close-PlaywrightDriver) |  | This function safely closes a previously opened Playwright browser instance andremoves its reference from the global browser dictionary. It ensures propercleanup of browser resources and handles errors gracefully. |
+| [_AssureTypes](#_AssureTypes) |  | This internal function ensures the required Playwright assemblies are loaded andinitializes the global browser dictionary. It is called automatically when themodule loads. |
 | [Update-PlaywrightDriverCache](#Update-PlaywrightDriverCache) |  | This function cleans up disconnected or null browser instances from the globalPlaywright browser dictionary to prevent memory leaks and maintain cache health. |
 | [Unprotect-WebbrowserTab](#Unprotect-WebbrowserTab) | wbctrl | Allows interactive control of a browser tab previously selected using theSelect-WebbrowserTab cmdlet. Provides access to the Microsoft Playwright Pageobject properties and methods. |
 | [Stop-WebbrowserVideos](#Stop-WebbrowserVideos) | ssst, wbsst, wbvideostop | This function iterates through all active Chrome sessions and pauses any playingvideos by executing a JavaScript command. |
@@ -203,8 +206,8 @@ Update-Module
 | [Get-PlaywrightProfileDirectory](#Get-PlaywrightProfileDirectory) |  | Retrieves or creates the profile directory used by Playwright for persistentbrowser sessions. The directory is created under LocalAppData if it doesn't exist. |
 | [Get-PlaywrightDriver](#Get-PlaywrightDriver) |  | Creates and manages Playwright browser instances with support for multiple browsertypes, window positioning, and state persistence. |
 | [Connect-PlaywrightViaDebuggingPort](#Connect-PlaywrightViaDebuggingPort) |  | Establishes a connection to a running browser instance using the WebSocketdebugger URL. Returns a Playwright browser instance that can be used forautomation. |
-| [Unprotect-WebbrowserTab](#Unprotect-WebbrowserTab) | wbctrl | Allows interactive control of a browser tab previously selected using theSelect-WebbrowserTab cmdlet. Provides access to the Microsoft Playwright Pageobject properties and methods. |
-| [Update-PlaywrightDriverCache](#Update-PlaywrightDriverCache) |  | This function cleans up disconnected or null browser instances from the globalPlaywright browser dictionary to prevent memory leaks and maintain cache health. |
+| [Get-PlaywrightProfileDirectory](#Get-PlaywrightProfileDirectory) |  | Retrieves or creates the profile directory used by Playwright for persistentbrowser sessions. The directory is created under LocalAppData if it doesn't exist. |
+| [_AssureTypes](#_AssureTypes) |  | This internal function ensures the required Playwright assemblies are loaded andinitializes the global browser dictionary. It is called automatically when themodule loads. |
 
 <br/><hr/><hr/><br/>
 
@@ -259,384 +262,6 @@ Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>]
 
 <br/><hr/><hr/><br/>
 
-##	Stop-WebbrowserVideos
-````PowerShell
-Stop-WebbrowserVideos                --> ssst, wbsst, wbvideostop
-````
-
-### SYNOPSIS
-    Pauses video playback in all active Chromium sessions.
-
-### SYNTAX
-````PowerShell
-Stop-WebbrowserVideos [<CommonParameters>]
-````
-
-### DESCRIPTION
-    This function iterates through all active Chrome sessions and pauses any playing
-    videos by executing a JavaScript command.
-
-### PARAMETERS
-    <CommonParameters>
-        This cmdlet supports the common parameters: Verbose, Debug,
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
-
-<br/><hr/><hr/><br/>
-
-##	Resume-WebbrowserTabVideo
-````PowerShell
-Resume-WebbrowserTabVideo            --> wbvideoplay
-````
-
-### SYNOPSIS
-    Resumes video playback in a YouTube browser tab.
-
-### SYNTAX
-````PowerShell
-Resume-WebbrowserTabVideo [<CommonParameters>]
-````
-
-### DESCRIPTION
-    Finds the current YouTube browser tab and resumes video playback by executing the
-    play() method on any video elements found in the page.
-
-### PARAMETERS
-    <CommonParameters>
-        This cmdlet supports the common parameters: Verbose, Debug,
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
-
-### NOTES
-````PowerShell
-    Requires an active Chrome browser session with at least one YouTube tab open.
--------------------------- EXAMPLE 1 --------------------------
-PS C:\> Resume-WebbrowserTabVideo
-````
-
-<br/><hr/><hr/><br/>
-
-##	Get-PlaywrightProfileDirectory
-````PowerShell
-Get-PlaywrightProfileDirectory
-````
-
-### SYNOPSIS
-    Gets the Playwright browser profile directory for persistent sessions.
-
-### SYNTAX
-````PowerShell
-Get-PlaywrightProfileDirectory [[-BrowserType] <String>] [<CommonParameters>]
-````
-
-### DESCRIPTION
-    Retrieves or creates the profile directory used by Playwright for persistent
-    browser sessions. The directory is created under LocalAppData if it doesn't exist.
-
-### PARAMETERS
-    -BrowserType <String>
-        The type of browser to get or create a profile directory for. Valid values are
-        Chromium, Firefox, or Webkit.
-        Required?                    false
-        Position?                    1
-        Default value                Chromium
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    <CommonParameters>
-        This cmdlet supports the common parameters: Verbose, Debug,
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
-
-<br/><hr/><hr/><br/>
-
-##	Get-PlaywrightDriver
-````PowerShell
-Get-PlaywrightDriver
-````
-
-### SYNOPSIS
-    Gets or creates a Playwright browser instance with full configuration options.
-
-### SYNTAX
-````PowerShell
-Get-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [-Visible] [-Url 
-<String>] [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] 
-[-Left] [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen] [-PersistBrowserState] 
-[<CommonParameters>]
-Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
-````
-
-### DESCRIPTION
-    Creates and manages Playwright browser instances with support for multiple browser
-    types, window positioning, and state persistence.
-
-### PARAMETERS
-    -BrowserType <String>
-        The type of browser to launch (Chromium, Firefox, or Webkit).
-        Required?                    false
-        Position?                    1
-        Default value                Chromium
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    -ReferenceKey <String>
-        Unique identifier for the browser instance. Defaults to "Default".
-        Required?                    false
-        Position?                    2
-        Default value                Default
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    -Visible [<SwitchParameter>]
-        Shows the browser window instead of running headless.
-        Required?                    false
-        Position?                    named
-        Default value                False
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    -Url <String>
-        The URL or URLs to open in the browser. Can be provided via pipeline.
-        Required?                    false
-        Position?                    named
-        Default value                
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    -Monitor <Int32>
-        The monitor to use (0=default, -1=discard, -2=configured secondary monitor, defaults to 
-        $Global:DefaultSecondaryMonitor or 2 if not found).
-        Required?                    false
-        Position?                    named
-        Default value                -2
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    -Width <Int32>
-        The initial width of the webbrowser window.
-        Required?                    false
-        Position?                    named
-        Default value                -1
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    -Height <Int32>
-        The initial height of the webbrowser window.
-        Required?                    false
-        Position?                    named
-        Default value                -1
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    -X <Int32>
-        The initial X position of the webbrowser window.
-        Required?                    false
-        Position?                    named
-        Default value                -999999
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    -Y <Int32>
-        The initial Y position of the webbrowser window.
-        Required?                    false
-        Position?                    named
-        Default value                -999999
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    -Left [<SwitchParameter>]
-        Places browser window on the left side of the screen.
-        Required?                    false
-        Position?                    named
-        Default value                False
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    -Right [<SwitchParameter>]
-        Places browser window on the right side of the screen.
-        Required?                    false
-        Position?                    named
-        Default value                False
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    -Top [<SwitchParameter>]
-        Places browser window on the top side of the screen.
-        Required?                    false
-        Position?                    named
-        Default value                False
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    -Bottom [<SwitchParameter>]
-        Places browser window on the bottom side of the screen.
-        Required?                    false
-        Position?                    named
-        Default value                False
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    -Centered [<SwitchParameter>]
-        Places browser window in the center of the screen.
-        Required?                    false
-        Position?                    named
-        Default value                False
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    -FullScreen [<SwitchParameter>]
-        Opens browser in fullscreen mode.
-        Required?                    false
-        Position?                    named
-        Default value                False
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    -PersistBrowserState [<SwitchParameter>]
-        Maintains browser state between sessions.
-        Required?                    false
-        Position?                    named
-        Default value                False
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    -WsEndpoint <String>
-        WebSocket URL for connecting to existing browser instance.
-        Required?                    true
-        Position?                    named
-        Default value                
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    <CommonParameters>
-        This cmdlet supports the common parameters: Verbose, Debug,
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
-
-### NOTES
-````PowerShell
-    This is a Playwright-specific implementation that may not support all features of 
-    Open-Webbrowser.
-    Some positioning and window management features may be limited by Playwright 
-    capabilities.
--------------------------- EXAMPLE 1 --------------------------
-PS C:\> Get-PlaywrightDriver -BrowserType Chromium -Visible -Url "https://github.com"
-````
-
-<br/><hr/><hr/><br/>
-
-##	Connect-PlaywrightViaDebuggingPort
-````PowerShell
-Connect-PlaywrightViaDebuggingPort
-````
-
-### SYNOPSIS
-    Connects to an existing browser instance via debugging port.
-
-### SYNTAX
-````PowerShell
-Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String> [<CommonParameters>]
-````
-
-### DESCRIPTION
-    Establishes a connection to a running browser instance using the WebSocket
-    debugger URL. Returns a Playwright browser instance that can be used for
-    automation.
-
-### PARAMETERS
-    -WsEndpoint <String>
-        The WebSocket URL for the browser's debugging port
-        (e.g., ws://localhost:9222/devtools/browser/...)
-        Required?                    true
-        Position?                    1
-        Default value                
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    <CommonParameters>
-        This cmdlet supports the common parameters: Verbose, Debug,
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
-
-<br/><hr/><hr/><br/>
-
-##	Close-PlaywrightDriver
-````PowerShell
-Close-PlaywrightDriver
-````
-
-### SYNOPSIS
-    Closes a Playwright browser instance and removes it from the global cache.
-
-### SYNTAX
-````PowerShell
-Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] 
-[<CommonParameters>]
-````
-
-### DESCRIPTION
-    This function safely closes a previously opened Playwright browser instance and
-    removes its reference from the global browser dictionary. It ensures proper
-    cleanup of browser resources and handles errors gracefully.
-
-### PARAMETERS
-    -BrowserType <String>
-        The type of browser to close (Chromium, Firefox, or Webkit).
-        Required?                    false
-        Position?                    1
-        Default value                Chromium
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    -ReferenceKey <String>
-        The unique identifier for the browser instance in the cache. Defaults to
-        "Default" if not specified.
-        Required?                    false
-        Position?                    2
-        Default value                Default
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    <CommonParameters>
-        This cmdlet supports the common parameters: Verbose, Debug,
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
-
-<br/><hr/><hr/><br/>
-
-##	Update-PlaywrightDriverCache
-````PowerShell
-Update-PlaywrightDriverCache
-````
-
-### SYNOPSIS
-    Maintains the Playwright browser instance cache.
-
-### SYNTAX
-````PowerShell
-Update-PlaywrightDriverCache [<CommonParameters>]
-````
-
-### DESCRIPTION
-    This function cleans up disconnected or null browser instances from the global
-    Playwright browser dictionary to prevent memory leaks and maintain cache health.
-
-### PARAMETERS
-    <CommonParameters>
-        This cmdlet supports the common parameters: Verbose, Debug,
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
-
-<br/><hr/><hr/><br/>
-
 ##	Unprotect-WebbrowserTab
 ````PowerShell
 Unprotect-WebbrowserTab              --> wbctrl
@@ -1032,6 +657,472 @@ Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>]
 
 <br/><hr/><hr/><br/>
 
+##	_AssureTypes
+````PowerShell
+_AssureTypes
+````
+
+### SYNOPSIS
+    Initializes required Playwright types and assemblies.
+
+### SYNTAX
+````PowerShell
+_AssureTypes [<CommonParameters>]
+````
+
+### DESCRIPTION
+    This internal function ensures the required Playwright assemblies are loaded and
+    initializes the global browser dictionary. It is called automatically when the
+    module loads.
+
+### PARAMETERS
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+
+<br/><hr/><hr/><br/>
+
+##	Update-PlaywrightDriverCache
+````PowerShell
+Update-PlaywrightDriverCache
+````
+
+### SYNOPSIS
+    Maintains the Playwright browser instance cache.
+
+### SYNTAX
+````PowerShell
+Update-PlaywrightDriverCache [<CommonParameters>]
+````
+
+### DESCRIPTION
+    This function cleans up disconnected or null browser instances from the global
+    Playwright browser dictionary to prevent memory leaks and maintain cache health.
+
+### PARAMETERS
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+
+<br/><hr/><hr/><br/>
+
+##	Unprotect-WebbrowserTab
+````PowerShell
+Unprotect-WebbrowserTab              --> wbctrl
+````
+
+### SYNOPSIS
+    Takes control of the selected webbrowser tab.
+
+### SYNTAX
+````PowerShell
+Unprotect-WebbrowserTab [[-UseCurrent]] [[-Force]] [<CommonParameters>]
+````
+
+### DESCRIPTION
+    Allows interactive control of a browser tab previously selected using the
+    Select-WebbrowserTab cmdlet. Provides access to the Microsoft Playwright Page
+    object properties and methods.
+
+### PARAMETERS
+    -UseCurrent [<SwitchParameter>]
+        Use the currently assigned tab instead of selecting a new one.
+        Required?                    false
+        Position?                    1
+        Default value                False
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    -Force [<SwitchParameter>]
+        Restart webbrowser (closes all tabs) if no debugging server is detected.
+        Required?                    false
+        Position?                    2
+        Default value                False
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+
+<br/><hr/><hr/><br/>
+
+##	Stop-WebbrowserVideos
+````PowerShell
+Stop-WebbrowserVideos                --> ssst, wbsst, wbvideostop
+````
+
+### SYNOPSIS
+    Pauses video playback in all active Chromium sessions.
+
+### SYNTAX
+````PowerShell
+Stop-WebbrowserVideos [<CommonParameters>]
+````
+
+### DESCRIPTION
+    This function iterates through all active Chrome sessions and pauses any playing
+    videos by executing a JavaScript command.
+
+### PARAMETERS
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+
+<br/><hr/><hr/><br/>
+
+##	Update-PlaywrightDriverCache
+````PowerShell
+Update-PlaywrightDriverCache
+````
+
+### SYNOPSIS
+    Maintains the Playwright browser instance cache.
+
+### SYNTAX
+````PowerShell
+Update-PlaywrightDriverCache [<CommonParameters>]
+````
+
+### DESCRIPTION
+    This function cleans up disconnected or null browser instances from the global
+    Playwright browser dictionary to prevent memory leaks and maintain cache health.
+
+### PARAMETERS
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+
+<br/><hr/><hr/><br/>
+
+##	Resume-WebbrowserTabVideo
+````PowerShell
+Resume-WebbrowserTabVideo            --> wbvideoplay
+````
+
+### SYNOPSIS
+    Resumes video playback in a YouTube browser tab.
+
+### SYNTAX
+````PowerShell
+Resume-WebbrowserTabVideo [<CommonParameters>]
+````
+
+### DESCRIPTION
+    Finds the current YouTube browser tab and resumes video playback by executing the
+    play() method on any video elements found in the page.
+
+### PARAMETERS
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+
+### NOTES
+````PowerShell
+    Requires an active Chrome browser session with at least one YouTube tab open.
+-------------------------- EXAMPLE 1 --------------------------
+PS C:\> Resume-WebbrowserTabVideo
+````
+
+<br/><hr/><hr/><br/>
+
+##	Get-PlaywrightDriver
+````PowerShell
+Get-PlaywrightDriver
+````
+
+### SYNOPSIS
+    Gets or creates a Playwright browser instance with full configuration options.
+
+### SYNTAX
+````PowerShell
+Get-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [-Visible] [-Url 
+<String>] [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] 
+[-Left] [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen] [-PersistBrowserState] 
+[<CommonParameters>]
+Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
+````
+
+### DESCRIPTION
+    Creates and manages Playwright browser instances with support for multiple browser
+    types, window positioning, and state persistence.
+
+### PARAMETERS
+    -BrowserType <String>
+        The type of browser to launch (Chromium, Firefox, or Webkit).
+        Required?                    false
+        Position?                    1
+        Default value                Chromium
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    -ReferenceKey <String>
+        Unique identifier for the browser instance. Defaults to "Default".
+        Required?                    false
+        Position?                    2
+        Default value                Default
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    -Visible [<SwitchParameter>]
+        Shows the browser window instead of running headless.
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    -Url <String>
+        The URL or URLs to open in the browser. Can be provided via pipeline.
+        Required?                    false
+        Position?                    named
+        Default value                
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    -Monitor <Int32>
+        The monitor to use (0=default, -1=discard, -2=configured secondary monitor, defaults to 
+        $Global:DefaultSecondaryMonitor or 2 if not found).
+        Required?                    false
+        Position?                    named
+        Default value                -2
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    -Width <Int32>
+        The initial width of the webbrowser window.
+        Required?                    false
+        Position?                    named
+        Default value                -1
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    -Height <Int32>
+        The initial height of the webbrowser window.
+        Required?                    false
+        Position?                    named
+        Default value                -1
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    -X <Int32>
+        The initial X position of the webbrowser window.
+        Required?                    false
+        Position?                    named
+        Default value                -999999
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    -Y <Int32>
+        The initial Y position of the webbrowser window.
+        Required?                    false
+        Position?                    named
+        Default value                -999999
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    -Left [<SwitchParameter>]
+        Places browser window on the left side of the screen.
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    -Right [<SwitchParameter>]
+        Places browser window on the right side of the screen.
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    -Top [<SwitchParameter>]
+        Places browser window on the top side of the screen.
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    -Bottom [<SwitchParameter>]
+        Places browser window on the bottom side of the screen.
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    -Centered [<SwitchParameter>]
+        Places browser window in the center of the screen.
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    -FullScreen [<SwitchParameter>]
+        Opens browser in fullscreen mode.
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    -PersistBrowserState [<SwitchParameter>]
+        Maintains browser state between sessions.
+        Required?                    false
+        Position?                    named
+        Default value                False
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    -WsEndpoint <String>
+        WebSocket URL for connecting to existing browser instance.
+        Required?                    true
+        Position?                    named
+        Default value                
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+
+### NOTES
+````PowerShell
+    This is a Playwright-specific implementation that may not support all features of 
+    Open-Webbrowser.
+    Some positioning and window management features may be limited by Playwright 
+    capabilities.
+-------------------------- EXAMPLE 1 --------------------------
+PS C:\> Get-PlaywrightDriver -BrowserType Chromium -Visible -Url "https://github.com"
+````
+
+<br/><hr/><hr/><br/>
+
+##	Connect-PlaywrightViaDebuggingPort
+````PowerShell
+Connect-PlaywrightViaDebuggingPort
+````
+
+### SYNOPSIS
+    Connects to an existing browser instance via debugging port.
+
+### SYNTAX
+````PowerShell
+Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String> [<CommonParameters>]
+````
+
+### DESCRIPTION
+    Establishes a connection to a running browser instance using the WebSocket
+    debugger URL. Returns a Playwright browser instance that can be used for
+    automation.
+
+### PARAMETERS
+    -WsEndpoint <String>
+        The WebSocket URL for the browser's debugging port
+        (e.g., ws://localhost:9222/devtools/browser/...)
+        Required?                    true
+        Position?                    1
+        Default value                
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+
+<br/><hr/><hr/><br/>
+
+##	Close-PlaywrightDriver
+````PowerShell
+Close-PlaywrightDriver
+````
+
+### SYNOPSIS
+    Closes a Playwright browser instance and removes it from the global cache.
+
+### SYNTAX
+````PowerShell
+Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] 
+[<CommonParameters>]
+````
+
+### DESCRIPTION
+    This function safely closes a previously opened Playwright browser instance and
+    removes its reference from the global browser dictionary. It ensures proper
+    cleanup of browser resources and handles errors gracefully.
+
+### PARAMETERS
+    -BrowserType <String>
+        The type of browser to close (Chromium, Firefox, or Webkit).
+        Required?                    false
+        Position?                    1
+        Default value                Chromium
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    -ReferenceKey <String>
+        The unique identifier for the browser instance in the cache. Defaults to
+        "Default" if not specified.
+        Required?                    false
+        Position?                    2
+        Default value                Default
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+
+<br/><hr/><hr/><br/>
+
+##	_AssureTypes
+````PowerShell
+_AssureTypes
+````
+
+### SYNOPSIS
+    Initializes required Playwright types and assemblies.
+
+### SYNTAX
+````PowerShell
+_AssureTypes [<CommonParameters>]
+````
+
+### DESCRIPTION
+    This internal function ensures the required Playwright assemblies are loaded and
+    initializes the global browser dictionary. It is called automatically when the
+    module loads.
+
+### PARAMETERS
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+
+<br/><hr/><hr/><br/>
+
 ##	Update-PlaywrightDriverCache
 ````PowerShell
 Update-PlaywrightDriverCache
@@ -1408,38 +1499,30 @@ Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String> [<CommonParameters>]
 
 <br/><hr/><hr/><br/>
 
-##	Unprotect-WebbrowserTab
+##	Get-PlaywrightProfileDirectory
 ````PowerShell
-Unprotect-WebbrowserTab              --> wbctrl
+Get-PlaywrightProfileDirectory
 ````
 
 ### SYNOPSIS
-    Takes control of the selected webbrowser tab.
+    Gets the Playwright browser profile directory for persistent sessions.
 
 ### SYNTAX
 ````PowerShell
-Unprotect-WebbrowserTab [[-UseCurrent]] [[-Force]] [<CommonParameters>]
+Get-PlaywrightProfileDirectory [[-BrowserType] <String>] [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    Allows interactive control of a browser tab previously selected using the
-    Select-WebbrowserTab cmdlet. Provides access to the Microsoft Playwright Page
-    object properties and methods.
+    Retrieves or creates the profile directory used by Playwright for persistent
+    browser sessions. The directory is created under LocalAppData if it doesn't exist.
 
 ### PARAMETERS
-    -UseCurrent [<SwitchParameter>]
-        Use the currently assigned tab instead of selecting a new one.
+    -BrowserType <String>
+        The type of browser to get or create a profile directory for. Valid values are
+        Chromium, Firefox, or Webkit.
         Required?                    false
         Position?                    1
-        Default value                False
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-    -Force [<SwitchParameter>]
-        Restart webbrowser (closes all tabs) if no debugging server is detected.
-        Required?                    false
-        Position?                    2
-        Default value                False
+        Default value                Chromium
         Accept pipeline input?       false
         Aliases                      
         Accept wildcard characters?  false
@@ -1451,22 +1534,23 @@ Unprotect-WebbrowserTab [[-UseCurrent]] [[-Force]] [<CommonParameters>]
 
 <br/><hr/><hr/><br/>
 
-##	Update-PlaywrightDriverCache
+##	_AssureTypes
 ````PowerShell
-Update-PlaywrightDriverCache
+_AssureTypes
 ````
 
 ### SYNOPSIS
-    Maintains the Playwright browser instance cache.
+    Initializes required Playwright types and assemblies.
 
 ### SYNTAX
 ````PowerShell
-Update-PlaywrightDriverCache [<CommonParameters>]
+_AssureTypes [<CommonParameters>]
 ````
 
 ### DESCRIPTION
-    This function cleans up disconnected or null browser instances from the global
-    Playwright browser dictionary to prevent memory leaks and maintain cache health.
+    This internal function ensures the required Playwright assemblies are loaded and
+    initializes the global browser dictionary. It is called automatically when the
+    module loads.
 
 ### PARAMETERS
     <CommonParameters>

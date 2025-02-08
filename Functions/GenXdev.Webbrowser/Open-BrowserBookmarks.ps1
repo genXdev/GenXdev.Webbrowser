@@ -105,6 +105,132 @@ function Open-BrowserBookmarks {
         )]
         [Alias("m", "mon")]
         [int] $Monitor = -1,
+
+        ###############################################################################
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "Opens in incognito/private browsing mode"
+        )]
+        [Alias("incognito", "inprivate")]
+        [switch] $Private,
+
+        ###############################################################################
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "Force enable debugging port, stopping existing browsers if needed"
+        )]
+        [switch] $Force,
+
+        ###############################################################################
+        [Alias("fs", "f")]
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "Opens in fullscreen mode"
+        )]
+        [switch] $FullScreen,
+
+        ###############################################################################
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "The initial width of the webbrowser window"
+        )]
+        [int] $Width = -1,
+
+        ###############################################################################
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "The initial height of the webbrowser window"
+        )]
+        [int] $Height = -1,
+
+        ###############################################################################
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "The initial X position of the webbrowser window"
+        )]
+        [int] $X = -999999,
+
+        ###############################################################################
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "The initial Y position of the webbrowser window"
+        )]
+        [int] $Y = -999999,
+
+        ###############################################################################
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "Place browser window on the left side of the screen"
+        )]
+        [switch] $Left,
+
+        ###############################################################################
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "Place browser window on the right side of the screen"
+        )]
+        [switch] $Right,
+
+        ###############################################################################
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "Place browser window on the top side of the screen"
+        )]
+        [switch] $Top,
+
+        ###############################################################################
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "Place browser window on the bottom side of the screen"
+        )]
+        [switch] $Bottom,
+
+        ###############################################################################
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "Place browser window in the center of the screen"
+        )]
+        [switch] $Centered,
+
+        ###############################################################################
+        [Alias("a", "app", "appmode")]
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "Hide the browser controls"
+        )]
+        [switch] $ApplicationMode,
+
+        ###############################################################################
+        [Alias("de", "ne", "NoExtensions")]
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "Prevent loading of browser extensions"
+        )]
+        [switch] $NoBrowserExtensions,
+
+        ###############################################################################
+        [Alias("lang", "locale")]
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "Set the browser accept-lang http header"
+        )]
+        [string] $AcceptLang = $null,
+
+        ###############################################################################
+        [Alias("bg")]
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "Restore PowerShell window focus"
+        )]
+        [switch] $RestoreFocus,
+
+        ###############################################################################
+        [Alias("nw", "new")]
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "Don't re-use existing browser window, instead, create a new one"
+        )]
+        [switch] $NewWindow,
         ###############################################################################
         [parameter(
             Mandatory = $false,
@@ -113,12 +239,6 @@ function Open-BrowserBookmarks {
         [int] $Count = 50
         ###############################################################################
     )
-
-    DynamicParam {
-
-        Copy-CommandParameters -CommandName "Open-Webbrowser" `
-            -ParametersToSkip "Queries", "Chrome", "Edge", "FireFox", "Url", "Monitor"
-    }
 
     begin {
 
