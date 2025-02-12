@@ -41,7 +41,7 @@ function Find-BrowserBookmarks {
         [parameter(
             Mandatory = $false,
             Position = 0,
-            ValueFromRemainingArguments = $true,
+            ValueFromRemainingArguments = $false,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true,
             HelpMessage = "Search terms to find matching bookmarks"

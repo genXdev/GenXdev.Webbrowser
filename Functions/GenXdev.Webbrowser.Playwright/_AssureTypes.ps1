@@ -5,9 +5,9 @@ using namespace Microsoft.Playwright
 
 # add required assemblies from the module's lib folder
 Add-Type -Path (Join-Path $PSScriptRoot `
-    '..\..\..\..\GenXdev.Helpers\1.110.2025\lib\Microsoft.Playwright.dll')
+    '..\..\..\..\GenXdev.Helpers\1.112.2025\lib\Microsoft.Playwright.dll')
 Add-Type -Path (Join-Path $PSScriptRoot `
-    '..\..\..\..\GenXdev.Helpers\1.110.2025\lib\Microsoft.Playwright.TestAdapter.dll')
+    '..\..\..\..\GenXdev.Helpers\1.112.2025\lib\Microsoft.Playwright.TestAdapter.dll')
 
 # initialize concurrent dictionary for storing browser instances
 $Global:GenXdevPlaywrightBrowserDictionary = `

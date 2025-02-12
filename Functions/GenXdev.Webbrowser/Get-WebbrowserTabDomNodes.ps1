@@ -44,7 +44,7 @@ function Get-WebbrowserTabDomNodes {
         [parameter(
             Mandatory = $false,
             Position = 1,
-            ValueFromRemainingArguments = $true,
+            ValueFromRemainingArguments = $false,
             HelpMessage = "The script to modify the output of the query selector"
         )]
         [string] $ModifyScript = ""
