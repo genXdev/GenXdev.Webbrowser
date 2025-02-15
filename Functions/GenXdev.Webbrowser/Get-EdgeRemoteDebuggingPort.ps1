@@ -4,15 +4,22 @@
 Returns the configured remote debugging port for Microsoft Edge browser.
 
 .DESCRIPTION
-Returns the configured remote debugging port for Microsoft Edge browser. Uses a
-default port of 9223 if no custom port is configured via $Global:EdgeDebugPort.
+Retrieves the remote debugging port number used for connecting to Microsoft Edge
+browser's debugging interface. If no custom port is configured via the global
+variable $Global:EdgeDebugPort, returns the default port 9223. The function
+validates any custom port configuration and falls back to the default if invalid.
+
+.OUTPUTS
+System.Int32
+Returns the port number to use for Edge remote debugging
 
 .EXAMPLE
 Get-EdgeRemoteDebuggingPort
 Returns the configured debug port (default 9223 if not configured)
 
 .NOTES
-Use $Global:EdgeDebugPort to override default value of 9223
+The function ensures $Global:EdgeDebugPort is always set to the returned value
+for consistency across the session.
 #>
 function Get-EdgeRemoteDebuggingPort {
 
@@ -27,14 +34,14 @@ function Get-EdgeRemoteDebuggingPort {
 
     process {
 
-        # initialize port variable with default value
+        # set default edge debugging port
         [int] $port = 9223
 
-        # check if global port override exists
+        # check if user has configured a custom port in global scope
         if ($Global:EdgeDebugPort) {
             Write-Verbose "Found global EdgeDebugPort configuration"
 
-            # try parse the configured port value
+            # attempt to parse the configured port value, keeping default if invalid
             if ([int]::TryParse($Global:EdgeDebugPort, [ref] $port)) {
                 Write-Verbose "Using configured port: $port"
             }
@@ -46,10 +53,13 @@ function Get-EdgeRemoteDebuggingPort {
             Write-Verbose "No custom port configured, using default: $port"
         }
 
-        # ensure global variable is set consistently
-        $null = Set-Variable -Name EdgeDebugPort -Value $port -Scope Global
+        # ensure global variable matches returned port for consistency
+        $null = Set-Variable `
+            -Name EdgeDebugPort `
+            -Value $port `
+            -Scope Global
 
-        # return the port number
+        # return the resolved port number
         return $port
     }
 

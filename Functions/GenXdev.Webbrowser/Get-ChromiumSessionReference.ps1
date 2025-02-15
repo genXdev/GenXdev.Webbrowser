@@ -4,12 +4,22 @@
 Gets a serializable reference to the current browser tab session.
 
 .DESCRIPTION
-Returns a hashtable containing debugger URI, port, and data for the current
-browser tab that can be used with Select-WebbrowserTab -ByReference. This is
-useful for accessing the browser tab from within background jobs.
+Returns a hashtable containing debugger URI, port, and session data for the
+current browser tab. This reference can be used with Select-WebbrowserTab
+-ByReference to reconnect to the same tab, especially useful in background jobs
+or across different PowerShell sessions.
+
+The function validates the existence of an active chrome session and ensures
+the browser controller is still running before returning the session reference.
 
 .EXAMPLE
-Get-ChromiumSessionReference
+# Get a reference to the current chrome tab session
+$sessionRef = Get-ChromiumSessionReference
+
+.EXAMPLE
+# Store the reference and use it later to reconnect
+$ref = Get-ChromiumSessionReference
+Select-WebbrowserTab -ByReference $ref
 #>
 function Get-ChromiumSessionReference {
 
@@ -19,13 +29,14 @@ function Get-ChromiumSessionReference {
 
     begin {
 
-        # check if browser session exists
+        # verify if a browser session exists in global scope
         Write-Verbose "Checking for active browser session"
 
-        # initialize global data hashtable if needed
+        # create global data storage if it doesn't exist
         if ($Global:Data -isnot [Hashtable]) {
             $globalData = @{}
-            $null = Set-Variable -Name "Data" -Value $globalData -Scope Global -Force
+            $null = Set-Variable -Name "Data" -Value $globalData `
+                -Scope Global -Force
         }
         else {
             $globalData = $Global:Data
@@ -34,7 +45,7 @@ function Get-ChromiumSessionReference {
 
     process {
 
-        # validate that an active chrome session exists
+        # ensure chrome session exists and is of correct type
         if (($null -eq $Global:chromeSession) -or
             ($Global:chromeSession -isnot [PSCustomObject])) {
 
@@ -43,17 +54,21 @@ function Get-ChromiumSessionReference {
 
         Write-Verbose "Found active session"
 
-        if (($null -eq $Global:chromeController) -or ($Global:chromeController.IsClosed)) {
+        # verify chrome controller is still active
+        if (($null -eq $Global:chromeController) -or
+            ($Global:chromeController.IsClosed)) {
 
-            throw "Browser session expired. Use Select-WebbrowserTab to select a new session."
+            throw "Browser session expired. Use Select-WebbrowserTab to select" +
+            " a new session."
         }
 
         Write-Verbose "Session is still active"
 
-        # return hashtable with session reference data
+        # ensure session has data property and return reference
         if (-not ($Global:chromeSession.data -is [hashtable])) {
 
-            Add-Member -InputObject $Global:chromeSession -MemberType NoteProperty -Name "data" -Value $globalData -Force
+            Add-Member -InputObject $Global:chromeSession `
+                -MemberType NoteProperty -Name "data" -Value $globalData -Force
         }
 
         return ($Global:chromeSession);

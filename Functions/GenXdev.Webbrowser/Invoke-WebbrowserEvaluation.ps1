@@ -1,23 +1,38 @@
-###############################################################################
+################################################################################
 
 <#
 .SYNOPSIS
 Executes JavaScript code in a selected web browser tab.
 
 .DESCRIPTION
-Runs one or more JavaScript scripts in a selected web browser tab. Scripts can be
-provided as strings, files, or URLs. The function supports data synchronization
-between PowerShell and the browser via a 'data' object.
+Executes JavaScript code in a selected browser tab with support for async/await,
+promises, and data synchronization between PowerShell and the browser context.
+Can execute code from strings, files, or URLs.
 
 .PARAMETER Scripts
-JavaScript code, URL, or file path to execute. Accepts pipeline input.
+JavaScript code to execute. Can be string content, file paths, or URLs.
+Accepts pipeline input.
 
 .PARAMETER Inspect
 Adds debugger statement before executing to enable debugging.
 
-.PARAMETER AsJob
-Executes the evaluation as a background job.
+.PARAMETER NoAutoSelectTab
+Prevents automatic tab selection if no tab is currently selected.
 
+.PARAMETER Edge
+Selects Microsoft Edge browser for execution.
+
+.PARAMETER Chrome
+Selects Google Chrome browser for execution.
+
+.PARAMETER Page
+Browser page object for execution when using ByReference mode.
+
+.PARAMETER ByReference
+Session reference object when using ByReference mode.
+
+.EXAMPLE
+# Execute simple JavaScript
 Invoke-WebbrowserEvaluation "document.title = 'hello world'"
 .EXAMPLE
 PS>
@@ -146,11 +161,10 @@ function Invoke-WebbrowserEvaluation {
 
     param(
         ###############################################################################
-
         [Parameter(
             Position = 0,
             Mandatory = $false,
-            HelpMessage = "A string containing javascript, a url or a file reference to a javascript file",
+            HelpMessage = "JavaScript code, file path or URL to execute",
             ValueFromPipeline,
             ValueFromPipelineByPropertyName)
         ]
@@ -159,7 +173,7 @@ function Invoke-WebbrowserEvaluation {
         ###############################################################################
         [Parameter(
             Mandatory = $false,
-            HelpMessage = "Will cause the developer tools of the webbrowser to break, before executing the scripts, allowing you to debug it",
+            HelpMessage = "Break in browser debugger before executing",
             ValueFromPipeline = $false)
         ]
         [switch] $Inspect,
@@ -167,7 +181,8 @@ function Invoke-WebbrowserEvaluation {
         [Parameter(
             ParameterSetName = "Default",
             Mandatory = $false,
-            ValueFromPipeline = $false
+            ValueFromPipeline = $false,
+            HelpMessage = "Prevent automatic tab selection"
         )]
         [switch] $NoAutoSelectTab,
         ###############################################################################
@@ -175,7 +190,7 @@ function Invoke-WebbrowserEvaluation {
         [parameter(
             ParameterSetName = "Default",
             Mandatory = $false,
-            HelpMessage = "Select in Microsoft Edge"
+            HelpMessage = "Use Microsoft Edge browser"
         )]
         [switch] $Edge,
         ###############################################################################
@@ -183,13 +198,14 @@ function Invoke-WebbrowserEvaluation {
         [parameter(
             ParameterSetName = "Default",
             Mandatory = $false,
-            HelpMessage = "Select in Google Chrome"
+            HelpMessage = "Use Google Chrome browser"
         )]
         [switch] $Chrome,
         ###############################################################################
         [Parameter(
             ParameterSetName = "ByReference",
             Mandatory = $true,
+            HelpMessage = "Browser page object reference",
             ValueFromPipeline = $false
         )]
         [object] $Page,
@@ -197,13 +213,17 @@ function Invoke-WebbrowserEvaluation {
         [Parameter(
             ParameterSetName = "ByReference",
             Mandatory = $true,
+            HelpMessage = "Browser session reference object",
             ValueFromPipeline = $false
         )]
         [PSCustomObject] $ByReference
     )
 
     Begin {
-        $reference = $null;
+        # initialize reference tracking
+        $reference = $null
+
+        # handle reference initialization
         if (($null -eq $Page) -or ($null -eq $ByReference)) {
 
             try {
@@ -212,29 +232,27 @@ function Invoke-WebbrowserEvaluation {
             }
             catch {
                 if ($NoAutoSelectTab -eq $true) {
-
                     throw $PSItem.Exception
                 }
 
+                # attempt auto-selection of browser tab
                 Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge | Out-Null
                 $Page = $Global:chromeController
                 $reference = Get-ChromiumSessionReference
             }
         }
         else {
-
             $reference = $ByReference
         }
 
+        # validate browser context
         if (($null -eq $Page) -or ($null -eq $reference)) {
-
             throw "No browser tab selected"
         }
     }
 
     Process {
-
-        Write-Verbose "Processing.."
+        Write-Verbose "Processing JavaScript evaluation request..."
 
         # Define the custom JavaScript for Visibility API events and CSS overrides
         $visibilityScript = @"
@@ -535,3 +553,4 @@ document.documentElement.style.setProperty('--default-color-scheme', 'dark');
 
     }
 }
+################################################################################

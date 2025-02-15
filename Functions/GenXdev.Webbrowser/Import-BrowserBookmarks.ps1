@@ -2,33 +2,44 @@
 
 <#
 .SYNOPSIS
-Imports bookmarks from a json file into a browser.
+Imports bookmarks from a file or collection into a web browser.
 
 .DESCRIPTION
-The `Import-BrowserBookmarks` cmdlet imports bookmarks from a json file into Microsoft Edge or Google Chrome.
+Imports bookmarks into Microsoft Edge or Google Chrome from either a CSV file or
+a collection of bookmark objects. The bookmarks are added to the browser's
+bookmark bar or specified folders. Firefox import is not currently supported.
 
 .PARAMETER InputFile
-Specifies the path to the json file containing the bookmarks to import.
+The path to a CSV file containing bookmarks to import. The CSV should have
+columns for Name, URL, Folder, DateAdded, and DateModified.
 
 .PARAMETER Bookmarks
-Specifies a collection of bookmarks to import.
-
-.PARAMETER Edge
-Imports bookmarks into Microsoft Edge.
+An array of bookmark objects to import. Each object should have properties for
+Name, URL, Folder, DateAdded, and DateModified.
 
 .PARAMETER Chrome
-Imports bookmarks into Google Chrome.
+Switch to import bookmarks into Google Chrome.
+
+.PARAMETER Edge
+Switch to import bookmarks into Microsoft Edge.
 
 .PARAMETER Firefox
-(Not supported) Importing bookmarks into Firefox is currently not supported by this cmdlet.
+Switch to indicate Firefox as target (currently not supported).
 
 .EXAMPLE
-Import-BrowserBookmarks -InputFile "C:\Bookmarks.csv" -Edge
+Import-BrowserBookmarks -InputFile "C:\MyBookmarks.csv" -Edge
+Imports bookmarks from the CSV file into Microsoft Edge.
 
-This command imports bookmarks from the specified CSV file into Edge.
-
-.NOTES
-For Edge and Chrome, the bookmarks are added to the 'Bookmarks Bar'. Importing into Firefox is currently not supported.
+.EXAMPLE
+$bookmarks = @(
+    @{
+        Name = "Microsoft";
+        URL = "https://microsoft.com";
+        Folder = "Tech"
+    }
+)
+Import-BrowserBookmarks -Bookmarks $bookmarks -Chrome
+Imports a collection of bookmarks into Google Chrome.
 #>
 function Import-BrowserBookmarks {
 
@@ -73,24 +84,25 @@ function Import-BrowserBookmarks {
 
     begin {
 
-        # ensure expand-path is available
+        # ensure the expand-path cmdlet is available for file operations
         if (-not (Get-Command -Name Expand-Path -ErrorAction SilentlyContinue)) {
             Import-Module GenXdev.FileSystem
         }
 
-        # get list of installed browsers
+        # get list of installed browsers on the system
         $installedBrowsers = Get-Webbrowser
+        Write-Verbose "Found installed browsers: $($installedBrowsers.Name)"
     }
 
     process {
 
-        # get bookmarks from input source
+        # load bookmarks from either the collection or input file
         $importedBookmarks = if ($Bookmarks) {
-            Write-Verbose "Using provided bookmarks collection"
+            Write-Verbose "Using provided collection of $($Bookmarks.Count) bookmarks"
             $Bookmarks
         }
         elseif ($InputFile) {
-            Write-Verbose "Reading bookmarks from CSV file: $InputFile"
+            Write-Verbose "Reading bookmarks from CSV: $InputFile"
             Import-Csv -Path (Expand-Path $InputFile)
         }
         else {
@@ -98,9 +110,11 @@ function Import-BrowserBookmarks {
             return
         }
 
-        # if no browser specified, use default
+        # determine target browser if none specified
         if (-not $Edge -and -not $Chrome -and -not $Firefox) {
             $defaultBrowser = Get-DefaultWebbrowser
+            Write-Verbose "No browser specified, using default: $($defaultBrowser.Name)"
+
             if ($defaultBrowser.Name -like '*Edge*') {
                 $Edge = $true
             }
@@ -116,10 +130,10 @@ function Import-BrowserBookmarks {
             }
         }
 
-        # write bookmarks based on selected browser
+        # handle import for each supported browser
         if ($Edge) {
             $browser = $installedBrowsers |
-                Where-Object { $PSItem.Name -like '*Edge*' }
+            Where-Object { $PSItem.Name -like '*Edge*' }
 
             if (-not $browser) {
                 Write-Host "Microsoft Edge is not installed."
@@ -135,14 +149,14 @@ function Import-BrowserBookmarks {
         }
         elseif ($Chrome) {
             $browser = $installedBrowsers |
-                Where-Object { $PSItem.Name -like '*Chrome*' }
+            Where-Object { $PSItem.Name -like '*Chrome*' }
 
             if (-not $browser) {
                 Write-Host "Google Chrome is not installed."
                 return
             }
 
-            $bookmarksFilePath = Join-Path -Path $env:LOCALAPPDATA `
+            $bookmarksFilePath = Join-Path -Path $env:LOCALAPPLOAD `
                 -ChildPath 'Google\Chrome\User Data\Default\Bookmarks'
 
             Write-Verbose "Writing bookmarks to Chrome at: $bookmarksFilePath"
@@ -161,6 +175,7 @@ function Import-BrowserBookmarks {
     }
 }
 
+# helper function to write bookmarks to browser's bookmark file
 function Write-Bookmarks {
     param (
         [string]$BookmarksFilePath,

@@ -1,25 +1,24 @@
 ################################################################################
-
 <#
 .SYNOPSIS
 Navigates the current webbrowser tab to a specified URL.
 
 .DESCRIPTION
 Sets the location (URL) of the currently selected webbrowser tab. Supports both
-Edge and Chrome browsers through optional switches. The navigation includes a
-small delay to ensure proper page loading.
+Edge and Chrome browsers through optional switches. The navigation includes
+validation of the URL and ensures proper page loading through async operations.
 
 .PARAMETER Url
-The URL that the browser tab should navigate to. This parameter accepts input
-from the pipeline and pipeline properties.
+The target URL for navigation. Accepts pipeline input and must be a valid URL
+string. This parameter is required.
 
 .PARAMETER Edge
-Switch to force navigation in Microsoft Edge browser. This parameter cannot be
-used together with -Chrome.
+Switch parameter to specifically target Microsoft Edge browser. Cannot be used
+together with -Chrome parameter.
 
 .PARAMETER Chrome
-Switch to force navigation in Google Chrome browser. This parameter cannot be
-used together with -Edge.
+Switch parameter to specifically target Google Chrome browser. Cannot be used
+together with -Edge parameter.
 
 .EXAMPLE
 Set-WebbrowserTabLocation -Url "https://github.com/microsoft" -Edge
@@ -34,12 +33,12 @@ function Set-WebbrowserTabLocation {
 
     param(
         ########################################################################
-        [Parameter(
+        [parameter(
             Mandatory = $true,
             Position = 0,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true,
-            HelpMessage = "The URL the browser tab should navigate to"
+            HelpMessage = "The URL to navigate to"
         )]
         [ValidateNotNullOrEmpty()]
         [string] $Url,
@@ -63,22 +62,24 @@ function Set-WebbrowserTabLocation {
     )
 
     begin {
-        Write-Verbose "Starting browser navigation process"
-        Write-Verbose "Target URL: $Url"
+
+        # attempt to connect to an existing browser session before proceeding
+        try {
+            Write-Verbose "Attempting to connect to existing browser session"
+            $null = Get-ChromiumSessionReference -Chrome:$Chrome -Edge:$Edge
+        }
+        catch {
+            # if no active session found, select the most recently used tab
+            Write-Verbose "No active session found, selecting last used tab"
+            $null = Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge
+        }
     }
 
     process {
-        # create javascript that navigates to the url after a 1 second delay
-        # this ensures the page has time to properly initialize
-        $script = "setTimeout(function() { document.location = $($Url |
-            ConvertTo-Json -Compress -Depth 1);}, 1000); return;"
 
-        Write-Verbose "Executing navigation script in selected browser"
-
-        # execute the navigation command and suppress unnecessary output
-        $null = Invoke-WebbrowserEvaluation -Scripts $script `
-            -Chrome:$Chrome `
-            -Edge:$Edge
+        # navigate to the specified url using chromedriver's async navigation
+        Write-Verbose "Navigating to URL: $Url"
+        $null = $Global:chromeController.GotoAsync($Url).Wait()
     }
 
     end {

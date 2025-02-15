@@ -1,18 +1,21 @@
 ################################################################################
 <#
 .SYNOPSIS
-Takes control of the selected webbrowser tab.
+Takes control of a selected web browser tab for interactive manipulation.
 
 .DESCRIPTION
-Allows interactive control of a browser tab previously selected using the
-Select-WebbrowserTab cmdlet. Provides access to the Microsoft Playwright Page
-object properties and methods.
+This function enables interactive control of a browser tab that was previously
+selected using Select-WebbrowserTab. It provides direct access to the Microsoft
+Playwright Page object's properties and methods, allowing for automated browser
+interaction.
 
 .PARAMETER UseCurrent
-Use the currently assigned tab instead of selecting a new one.
+When specified, uses the currently assigned browser tab instead of prompting to
+select a new one. This is useful for continuing work with the same tab.
 
 .PARAMETER Force
-Restart webbrowser (closes all tabs) if no debugging server is detected.
+Forces a browser restart by closing all tabs if no debugging server is detected.
+Use this when the browser connection is in an inconsistent state.
 
 .EXAMPLE
 Unprotect-WebbrowserTab -UseCurrent
@@ -45,9 +48,9 @@ function Unprotect-WebbrowserTab {
 
     begin {
 
-        # inform user that control sequence is starting
-        # Write-Verbose "Initializing browser tab control sequence..."
+        Write-Verbose "Initializing browser tab control sequence..."
 
+        # get references to powershell window and process for later manipulation
         $pwshW = Get-PowershellMainWindow
         $pwshP = Get-PowershellMainWindowProcess
     }
@@ -58,10 +61,10 @@ function Unprotect-WebbrowserTab {
 
             Clear-Host
 
-            # Write-Verbose "Prompting user to select a browser tab..."
+            Write-Verbose "Prompting user to select a browser tab..."
             Write-Host "Select to which browser tab you want to send commands to"
 
-            # attempt to select available browser tabs
+            # attempt to get list of available browser tabs
             Select-WebbrowserTab -Force:$Force | Out-Host
 
             if ($Global:ChromeSessions.Length -eq 0) {
@@ -70,7 +73,7 @@ function Unprotect-WebbrowserTab {
                 return
             }
 
-            # get valid tab selection from user
+            # get valid tab selection from user with input validation
             $tabNumber = 0
             do {
                 $tabNumber = Read-Host "Enter the number of the tab you want to control"
@@ -84,7 +87,7 @@ function Unprotect-WebbrowserTab {
                 break
             } while ($true)
 
-            # select the specified tab
+            # activate the selected browser tab
             Select-WebbrowserTab $tabNumber
         }
 
@@ -95,27 +98,27 @@ function Unprotect-WebbrowserTab {
         }
 
         try {
-
+            # maximize the powershell window
             $pwshW.maximize();
         }
         catch {
-
+            Write-Verbose "Failed to maximize PowerShell window"
         }
 
-        # create job to send keyboard commands in background
+        # create background job to handle keyboard input sequence
         $null = Start-Job {
 
-            # send sequence to reveal chrome controller object
+            # send keyboard sequence to expose chrome controller object
             $null = Send-Keys `
                 "{Escape}", "Clear-Host", "{Enter}", "`$ChromeController", ".", "^( )", "y" `
                 -DelayMilliSeconds 500
 
-            # wait for commands to complete
+            # allow time for commands to complete
             $null = Start-Sleep 3
         }
 
         try {
-            # attempt to focus the powershell window
+            # attempt to bring powershell window to front
             $null = Get-PowershellMainWindow | ForEach-Object {
 
                 $null = $_.setForeground()
@@ -123,7 +126,7 @@ function Unprotect-WebbrowserTab {
             }
         }
         catch {
-            # Write-Verbose "Failed to set PowerShell window focus: $_"
+            Write-Verbose "Failed to set PowerShell window focus"
         }
     }
 

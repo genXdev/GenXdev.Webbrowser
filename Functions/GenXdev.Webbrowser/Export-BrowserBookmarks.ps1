@@ -1,30 +1,32 @@
 ################################################################################
 <#
 .SYNOPSIS
-Exports bookmarks from a browser to a json file.
+Exports browser bookmarks to a JSON file.
 
 .DESCRIPTION
-The Export-BrowserBookmarks cmdlet exports bookmarks from Microsoft Edge, Google
-Chrome, or Mozilla Firefox into a json file. Only one browser type can be
-specified at a time.
+The Export-BrowserBookmarks cmdlet exports bookmarks from a specified web browser
+(Microsoft Edge, Google Chrome, or Mozilla Firefox) to a JSON file. Only one
+browser type can be specified at a time. The bookmarks are exported with full
+preservation of their structure and metadata.
 
 .PARAMETER OutputFile
-Specifies the path to the JSON file where the bookmarks will be saved.
+The path to the JSON file where the bookmarks will be saved. The path will be
+expanded to a full path before use.
 
 .PARAMETER Chrome
-Exports bookmarks from Google Chrome.
+Switch parameter to export bookmarks from Google Chrome browser.
 
 .PARAMETER Edge
-Exports bookmarks from Microsoft Edge.
+Switch parameter to export bookmarks from Microsoft Edge browser.
 
 .PARAMETER Firefox
-Exports bookmarks from Mozilla Firefox.
+Switch parameter to export bookmarks from Mozilla Firefox browser.
 
 .EXAMPLE
-Export-BrowserBookmarks -OutputFile "C:\Bookmarks.json" -Edge
+Export-BrowserBookmarks -OutputFile "C:\MyBookmarks.json" -Edge
 
 .EXAMPLE
-Export-BrowserBookmarks "C:\Bookmarks.json" -Chrome
+Export-BrowserBookmarks "C:\MyBookmarks.json" -Chrome
 #>
 function Export-BrowserBookmarks {
 
@@ -64,18 +66,19 @@ function Export-BrowserBookmarks {
 
     begin {
 
-        # expand the output file path to full path
+        # convert relative or partial path to full filesystem path
         $outputFilePath = Expand-Path $OutputFile
 
+        # inform user about the output destination
         Write-Verbose "Exporting bookmarks to: $outputFilePath"
     }
 
     process {
 
-        # prepare arguments for Get-BrowserBookmarks based on selected browser
+        # initialize empty hashtable for browser selection parameters
         $bookmarksArguments = @{}
 
-        # determine which browser was selected and set appropriate argument
+        # set appropriate flag based on selected browser type
         if ($Chrome) {
             $bookmarksArguments["Chrome"] = $true
             Write-Verbose "Exporting Chrome bookmarks"
@@ -89,10 +92,10 @@ function Export-BrowserBookmarks {
             Write-Verbose "Exporting Firefox bookmarks"
         }
 
-        # get bookmarks and convert to json with full depth preservation
+        # retrieve bookmarks and save them as formatted json to the output file
         Get-BrowserBookmarks @bookmarksArguments |
-            ConvertTo-Json -Depth 100 |
-            Set-Content -Path $outputFilePath -Force
+        ConvertTo-Json -Depth 100 |
+        Set-Content -Path $outputFilePath -Force
 
         Write-Verbose "Bookmarks exported successfully"
     }

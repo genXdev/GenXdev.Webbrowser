@@ -1,17 +1,19 @@
 ################################################################################
 <#
 .SYNOPSIS
-Configures Firefox to enable remote debugging and app-mode features.
+Configures Firefox's debugging and standalone app mode features.
 
 .DESCRIPTION
-Modifies Firefox user preferences to enable remote debugging capabilities and 
-standalone app mode (SSB) features. Updates the prefs.js files in all Firefox 
-profile directories by adding or updating required debugging preferences.
+Enables remote debugging and standalone app mode (SSB) capabilities in Firefox by
+modifying user preferences in the prefs.js file of all Firefox profile
+directories. This function updates or adds required debugging preferences to
+enable development tools and remote debugging while disabling connection prompts.
 
 .EXAMPLE
 Approve-FirefoxDebugging
 
-Enables remote debugging and SSB features in all Firefox profiles.
+Enables remote debugging and SSB features across all Firefox profiles found in
+the current user's AppData directory.
 #>
 function Approve-FirefoxDebugging {
 
@@ -21,11 +23,11 @@ function Approve-FirefoxDebugging {
 
     begin {
 
-        # define firefox profiles directory path using environment variable
+        # construct the path to firefox profiles using environment variables
         $profilesPath = Join-Path -Path $env:APPDATA -ChildPath "Mozilla\Firefox\Profiles"
         Write-Verbose "Searching for Firefox profiles in: $profilesPath"
 
-        # define the preferences that need to be added or updated
+        # define new preferences to be added to firefox configuration
         $newPrefs = @(
             'user_pref("devtools.chrome.enabled", true);',
             'user_pref("devtools.debugger.remote-enabled", true);',
@@ -33,7 +35,7 @@ function Approve-FirefoxDebugging {
             'user_pref("browser.ssb.enabled", true);'
         )
 
-        # define preference keys to remove before adding new ones
+        # define preference keys that need to be removed before adding new ones
         $prefsToFilter = @(
             '"browser.ssb.enabled"',
             '"devtools.chrome.enabled"',
@@ -45,7 +47,7 @@ function Approve-FirefoxDebugging {
     process {
 
         try {
-            # find all prefs.js files in firefox profile directories
+            # locate all firefox preference files recursively
             $prefFiles = Get-ChildItem -Path $profilesPath `
                 -Filter "prefs.js" `
                 -File `
@@ -55,19 +57,19 @@ function Approve-FirefoxDebugging {
             foreach ($prefFile in $prefFiles) {
                 Write-Verbose "Processing preferences file: $($prefFile.FullName)"
 
-                # read existing preferences using safe io methods
+                # safely read existing preferences using system io
                 $prefLines = [System.IO.File]::ReadAllLines($prefFile.FullName)
 
-                # remove any existing debug/app-mode preferences
+                # filter out existing debug/app-mode preferences
                 $prefLines = $prefLines | Where-Object {
                     $line = $_
                     -not ($prefsToFilter | Where-Object { $line.Contains($_) })
                 }
 
-                # add new preferences to the filtered list
+                # append new preferences to the filtered configuration
                 $prefLines += $newPrefs
 
-                # save updated preferences using safe io methods
+                # safely write updated preferences back to file
                 [System.IO.File]::WriteAllLines($prefFile.FullName, $prefLines)
                 Write-Verbose "Successfully updated preferences in: $($prefFile.FullName)"
             }

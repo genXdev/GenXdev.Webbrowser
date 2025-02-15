@@ -4,17 +4,25 @@
 Opens a URL in multiple browsers simultaneously in a mosaic layout.
 
 .DESCRIPTION
-Opens the specified URL in Chrome, Edge, Firefox, and an incognito window,
-arranging them in a 2x2 mosaic layout on the screen. Each browser window is
-positioned in a different quadrant of the screen.
+This function creates a mosaic layout of browser windows by opening the specified
+URL in Chrome, Edge, Firefox, and a private browsing window. The browsers are
+arranged in a 2x2 grid pattern:
+- Chrome: Top-left quadrant
+- Edge: Bottom-left quadrant
+- Firefox: Top-right quadrant
+- Private window: Bottom-right quadrant
 
 .PARAMETER Url
-The URL to open in all browsers. This parameter accepts pipeline input and can be
-specified by position.
+The URL to open in all browsers. Accepts pipeline input and can be specified by
+position or through properties.
 
 .EXAMPLE
 Show-WebsiteInAllBrowsers -Url "https://www.github.com"
-Opens github.com in all browsers in a mosaic layout.
+Opens github.com in four different browsers arranged in a mosaic layout.
+
+.EXAMPLE
+"https://www.github.com" | Show-UrlInAllBrowsers
+Uses the function's alias and pipeline input to achieve the same result.
 #>
 function Show-WebsiteInAllBrowsers {
 
@@ -42,19 +50,19 @@ function Show-WebsiteInAllBrowsers {
 
     process {
 
-        # initialize chrome in the top-left quadrant
+        # initialize chrome in the top-left quadrant of the screen
         Write-Verbose "Launching Chrome in top-left quadrant"
         $null = Open-Webbrowser -Chrome -Left -Top -Url $Url
 
-        # initialize edge in the bottom-left quadrant
+        # initialize edge in the bottom-left quadrant of the screen
         Write-Verbose "Launching Edge in bottom-left quadrant"
         $null = Open-Webbrowser -Edge -Left -Bottom -Url $Url
 
-        # initialize firefox in the top-right quadrant
+        # initialize firefox in the top-right quadrant of the screen
         Write-Verbose "Launching Firefox in top-right quadrant"
         $null = Open-Webbrowser -Firefox -Right -Top -Url $Url
 
-        # initialize private window in the bottom-right quadrant
+        # initialize private window in the bottom-right quadrant of the screen
         Write-Verbose "Launching Private window in bottom-right quadrant"
         $null = Open-Webbrowser -Private -Right -Bottom -Url $Url
     }

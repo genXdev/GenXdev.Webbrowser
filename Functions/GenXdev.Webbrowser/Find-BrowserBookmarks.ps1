@@ -4,32 +4,39 @@
 Finds bookmarks from one or more web browsers.
 
 .DESCRIPTION
-Searches through bookmarks from Microsoft Edge, Google Chrome, or Mozilla Firefox
-and returns matches based on search queries.
+Searches through bookmarks from Microsoft Edge, Google Chrome, or Mozilla Firefox.
+Returns bookmarks that match one or more search queries in their name, URL, or
+folder path. If no queries are provided, returns all bookmarks from the selected
+browsers.
 
 .PARAMETER Queries
-One or more search terms to find matching bookmarks.
+One or more search terms to find matching bookmarks. Matches are found in the
+bookmark name, URL, or folder path using wildcard pattern matching.
 
 .PARAMETER Edge
-Search through Microsoft Edge bookmarks.
+Switch to include Microsoft Edge bookmarks in the search.
 
 .PARAMETER Chrome
-Search through Google Chrome bookmarks.
+Switch to include Google Chrome bookmarks in the search.
 
 .PARAMETER Firefox
-Search through Mozilla Firefox bookmarks.
+Switch to include Mozilla Firefox bookmarks in the search.
 
 .PARAMETER Count
-Maximum number of results to return. Default is 99999999.
+Maximum number of results to return. Must be a positive integer.
+Default is 99999999.
 
 .PARAMETER PassThru
-Returns bookmark objects instead of just URLs.
+Switch to return complete bookmark objects instead of just URLs. Each bookmark
+object contains Name, URL, and Folder properties.
 
 .EXAMPLE
 Find-BrowserBookmarks -Query "github" -Edge -Chrome -Count 10
+# Searches Edge and Chrome bookmarks for "github", returns first 10 URLs
 
 .EXAMPLE
-bookmarks github -e -ch -Count 10
+bookmarks powershell -e -ff -PassThru
+# Searches Edge and Firefox bookmarks for "powershell", returns full objects
 #>
 function Find-BrowserBookmarks {
 
@@ -97,42 +104,61 @@ function Find-BrowserBookmarks {
 
     process {
 
-        # build arguments for Get-BrowserBookmarks based on selected browsers
-        if ($Chrome) { $bookmarksArguments["Chrome"] = $true }
-        if ($Edge) { $bookmarksArguments["Edge"] = $true }
-        if ($Firefox) { $bookmarksArguments["Firefox"] = $true }
+        # create empty hashtable to store browser selection flags
+        Write-Verbose "Configuring browser selection parameters"
+        $bookmarksArguments = @{}
 
-        Write-Verbose "Retrieving bookmarks from selected browsers"
+        # add each selected browser to the arguments
+        if ($Chrome) {
+            Write-Verbose "Including Chrome bookmarks in search"
+            $bookmarksArguments["Chrome"] = $true
+        }
+        if ($Edge) {
+            Write-Verbose "Including Edge bookmarks in search"
+            $bookmarksArguments["Edge"] = $true
+        }
+        if ($Firefox) {
+            Write-Verbose "Including Firefox bookmarks in search"
+            $bookmarksArguments["Firefox"] = $true
+        }
+
+        # retrieve all bookmarks from selected browsers
+        Write-Verbose "Fetching bookmarks from selected browsers"
         $bookmarks = Get-BrowserBookmarks @bookmarksArguments
 
-        # if no search queries provided, return all bookmarks up to Count
+        # handle case when no search queries provided
         if (($null -eq $Queries) -or ($Queries.Length -eq 0)) {
 
-            Write-Verbose "No search queries specified, returning all bookmarks"
-            $bookmarks | Select-Object -First $Count
+            Write-Verbose "No search terms specified - returning all bookmarks"
+            $bookmarks |
+            Select-Object -First $Count
             return
         }
 
-        Write-Verbose "Searching bookmarks for matches to queries"
+        # search bookmarks for matches to any query terms
+        Write-Verbose "Searching bookmarks for matches to $($Queries.Count) queries"
         $results = $Queries |
-            ForEach-Object {
-                $query = $PSItem
-                $bookmarks |
-                    Where-Object {
+        ForEach-Object {
+            $query = $PSItem
+            Write-Verbose "Processing query: $query"
+            $bookmarks |
+            Where-Object {
                         ($PSItem.Folder -like "*$query*") -or `
-                        ($PSItem.Name -Like "*$query*") -or `
-                        ($PSItem.URL -Like "*$query*")
-                    }
-            } |
-            Select-Object -First $Count
+                ($PSItem.Name -Like "*$query*") -or `
+                ($PSItem.URL -Like "*$query*")
+            }
+        } |
+        Select-Object -First $Count
 
+        # return either full bookmark objects or just URLs
         if ($PassThru) {
-            Write-Verbose "Returning full bookmark objects"
+            Write-Verbose "Returning $($results.Count) bookmark objects"
             $results
         }
         else {
-            Write-Verbose "Returning bookmark URLs only"
-            $results | ForEach-Object URL
+            Write-Verbose "Returning $($results.Count) bookmark URLs"
+            $results |
+            ForEach-Object URL
         }
     }
 

@@ -3,25 +3,28 @@ using namespace System.Management.Automation
 using namespace System.Collections.Concurrent
 using namespace Microsoft.Playwright
 
-# add required assemblies from the module's lib folder
+# load the main Playwright assembly from module's lib folder
 Add-Type -Path (Join-Path $PSScriptRoot `
-    '..\..\..\..\GenXdev.Helpers\1.112.2025\lib\Microsoft.Playwright.dll')
-Add-Type -Path (Join-Path $PSScriptRoot `
-    '..\..\..\..\GenXdev.Helpers\1.112.2025\lib\Microsoft.Playwright.TestAdapter.dll')
+        '..\..\..\..\GenXdev.Helpers\1.114.2025\lib\Microsoft.Playwright.dll')
 
-# initialize concurrent dictionary for storing browser instances
+# load the Playwright test adapter assembly
+Add-Type -Path (Join-Path $PSScriptRoot `
+        '..\..\..\..\GenXdev.Helpers\1.114.2025\lib\Microsoft.Playwright.TestAdapter.dll')
+
+# initialize thread-safe dictionary to store browser instances
 $Global:GenXdevPlaywrightBrowserDictionary = `
     [ConcurrentDictionary[string, IBrowser]]::new()
 
 ################################################################################
 <#
 .SYNOPSIS
-Initializes required Playwright types and assemblies.
+Initializes required Playwright types and assemblies for web automation.
 
 .DESCRIPTION
-This internal function ensures the required Playwright assemblies are loaded and
-initializes the global browser dictionary. It is called automatically when the
-module loads.
+This internal function ensures the required Microsoft Playwright assemblies are
+loaded and initializes the global concurrent dictionary used to store browser
+instances. The function is called automatically when the module loads and sets up
+the foundation for browser automation tasks.
 
 .EXAMPLE
 _AssureTypes
@@ -32,15 +35,14 @@ function _AssureTypes {
     param()
 
     begin {
+
         Write-Verbose "Initializing Playwright types and assemblies..."
     }
 
     process {
-        # nothing to process
     }
 
     end {
-        # initialization handled by module-level code
     }
 }
 ################################################################################

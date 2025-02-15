@@ -9,21 +9,24 @@ Closes a Playwright browser instance and removes it from the global cache.
 
 .DESCRIPTION
 This function safely closes a previously opened Playwright browser instance and
-removes its reference from the global browser dictionary. It ensures proper
-cleanup of browser resources and handles errors gracefully.
+removes its reference from the global browser dictionary. The function handles
+cleanup of browser resources and provides error handling for graceful shutdown.
 
 .PARAMETER BrowserType
-The type of browser to close (Chromium, Firefox, or Webkit).
+Specifies the type of browser instance to close (Chromium, Firefox, or Webkit).
+If not specified, defaults to Chromium.
 
 .PARAMETER ReferenceKey
-The unique identifier for the browser instance in the cache. Defaults to
-"Default" if not specified.
+The unique identifier used to retrieve the browser instance from the global
+cache. If not specified, defaults to "Default".
 
 .EXAMPLE
 Close-PlaywrightDriver -BrowserType Chromium -ReferenceKey "MainBrowser"
+Closes a specific Chromium browser instance identified by "MainBrowser"
 
 .EXAMPLE
-Close-PlaywrightDriver Chrome Default
+Close-PlaywrightDriver Chrome
+Closes the default Chromium browser instance using position parameters
 #>
 function Close-PlaywrightDriver {
 
@@ -50,26 +53,28 @@ function Close-PlaywrightDriver {
 
     begin {
 
-        # ensure the browser cache is initialized and up to date
+        # ensure the browser cache dictionary is initialized
+        Write-Verbose "Initializing browser cache dictionary"
         Update-PlaywrightDriverCache
 
-        # Write-Verbose "Attempting to close browser [$BrowserType] with key: $ReferenceKey"
     }
 
     process {
 
-        # normalize the reference key to ensure consistent caching
+        # normalize the reference key to handle null/empty cases
+        Write-Verbose "Processing browser closure for key: $ReferenceKey"
         $referenceKey = [string]::IsNullOrWhiteSpace($ReferenceKey) ?
         "Default" : $ReferenceKey
 
-        # attempt to retrieve the browser instance from the global dictionary
+        # attempt to retrieve the browser instance from cache
+        Write-Verbose "Attempting to retrieve browser instance from cache"
         $browser = $null
         if ($Global:GenXdevPlaywrightBrowserDictionary.TryGetValue(
                 $referenceKey, [ref]$browser)) {
 
             try {
-                # attempt to gracefully close the browser instance
-                # Write-Verbose "Closing browser instance..."
+                # close the browser instance asynchronously
+                Write-Verbose "Closing browser instance..."
                 $null = $browser.CloseAsync().Wait()
             }
             catch {
@@ -77,12 +82,13 @@ function Close-PlaywrightDriver {
             }
             finally {
                 # remove the browser reference from the global dictionary
+                Write-Verbose "Removing browser reference from cache"
                 $null = $Global:GenXdevPlaywrightBrowserDictionary.TryRemove(
                     $referenceKey, [ref]$browser)
             }
         }
         else {
-            # Write-Verbose "No browser instance found for key: $ReferenceKey"
+            Write-Verbose "No browser instance found for key: $ReferenceKey"
         }
     }
 

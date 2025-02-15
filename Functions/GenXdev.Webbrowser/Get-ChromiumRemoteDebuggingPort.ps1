@@ -1,21 +1,23 @@
 ################################################################################
-
 <#
 .SYNOPSIS
-Returns the configured remote debugging port for the default Chromium browser.
+Returns the remote debugging port for the system's default Chromium browser.
 
 .DESCRIPTION
-Returns the configured remote debugging port for either Microsoft Edge or Google
-Chrome, depending on which is set as the default browser. If Edge is the default
-or no browser is detected, returns the Edge debugging port. Otherwise returns
-the Chrome debugging port.
+Detects whether Microsoft Edge or Google Chrome is the default browser and
+returns the appropriate debugging port number. If Chrome is the default browser,
+returns the Chrome debugging port. Otherwise returns the Edge debugging port
+(also used when no default browser is detected).
+
+.OUTPUTS
+[int] The remote debugging port number for the detected browser.
 
 .EXAMPLE
-# Get the debugging port using full command name
+# Get debugging port using full command name
 Get-ChromiumRemoteDebuggingPort
 
 .EXAMPLE
-# Get the debugging port using alias
+# Get debugging port using alias
 Get-BrowserDebugPort
 #>
 function Get-ChromiumRemoteDebuggingPort {
@@ -28,30 +30,31 @@ function Get-ChromiumRemoteDebuggingPort {
 
     begin {
 
-        # output verbose information about starting browser detection
+        # verbose output to indicate start of browser detection
         Write-Verbose "Starting detection of default Chromium browser type"
 
-        # get reference to default browser for later port determination
+        # get the system's default browser information
         $defaultBrowser = Get-DefaultWebbrowser
 
-        # output verbose information about detected browser
+        # log the detected default browser name
         Write-Verbose ("Default browser detected: {0}" -f `
-            $(if ($null -eq $defaultBrowser) { 'None' } else { $defaultBrowser.Name }))
+            $(if ($null -eq $defaultBrowser) { 'None' }
+                else { $defaultBrowser.Name }))
     }
 
     process {
 
-        # determine which debug port to use based on default browser type
+        # determine and return appropriate debugging port based on browser
         if (($null -ne $defaultBrowser) -and
             ($defaultBrowser.Name -like "*Chrome*")) {
 
-            # chrome is default, use chrome debugging port
+            # chrome is default - return chrome debugging port
             Write-Verbose "Using Chrome debugging port"
             Get-ChromeRemoteDebuggingPort
         }
         else {
 
-            # edge is default or no browser detected, use edge debugging port
+            # edge is default or no browser - return edge debugging port
             Write-Verbose "Using Edge debugging port"
             Get-EdgeRemoteDebuggingPort
         }

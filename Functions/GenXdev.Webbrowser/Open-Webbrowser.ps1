@@ -833,7 +833,12 @@ function Open-Webbrowser {
 
                 if ($Force) {
 
-                    $a = Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge
+                    try {
+                        $a = Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge
+                    }
+                    catch {
+                        $a = @()
+                    }
 
                     if ($a.length -eq 0 -or ($a -is [string])) {
 
@@ -1118,22 +1123,25 @@ function Open-Webbrowser {
                     }
                 }
             }
+        }
+    }
 
-            if ($RestoreFocus) {
+    end {
 
-                # restore it
-                $PowerShellWindow = Get-PowershellMainWindow
+        if ($RestoreFocus) {
 
-                if ($null -ne $PowerShellWindow) {
+            # restore it
+            $PowerShellWindow = Get-PowershellMainWindow
 
-                    # wait a little
-                    [System.Threading.Thread]::Sleep(500) | Out-Null
+            if ($null -ne $PowerShellWindow) {
 
-                    $PowerShellWindow.Show() | Out-Null;
-                    $PowerShellWindow.SetForeground() | Out-Null;
+                # wait a little
+                [System.Threading.Thread]::Sleep(500) | Out-Null
 
-                    Set-ForegroundWindow ($PowerShellWindow.Handle) | Out-Null;
-                }
+                $PowerShellWindow.Show() | Out-Null;
+                $PowerShellWindow.SetForeground() | Out-Null;
+
+                Set-ForegroundWindow ($PowerShellWindow.Handle) | Out-Null;
             }
         }
     }

@@ -1,44 +1,96 @@
 ################################################################################
 <#
 .SYNOPSIS
-Opens bookmarks from various browsers based on search queries.
+Opens browser bookmarks that match specified search criteria.
 
 .DESCRIPTION
-Opens browser bookmarks matching specified search queries in the selected browser.
-Supports Microsoft Edge, Google Chrome, and Mozilla Firefox.
+Searches bookmarks across Microsoft Edge, Google Chrome, and Mozilla Firefox
+browsers based on provided search queries. Opens matching bookmarks in the
+selected browser with configurable window settings and browser modes.
 
 .PARAMETER Queries
-Search terms to filter bookmarks.
+Search terms used to filter bookmarks by title or URL.
 
 .PARAMETER Edge
-Select bookmarks from Microsoft Edge.
+Use Microsoft Edge browser bookmarks as search source.
 
 .PARAMETER Chrome
-Select bookmarks from Google Chrome.
+Use Google Chrome browser bookmarks as search source.
 
 .PARAMETER Firefox
-Select bookmarks from Mozilla Firefox.
+Use Mozilla Firefox browser bookmarks as search source.
 
 .PARAMETER OpenInEdge
-Open found bookmarks in Microsoft Edge.
+Open found bookmarks in Microsoft Edge browser.
 
 .PARAMETER OpenInChrome
-Open found bookmarks in Google Chrome.
+Open found bookmarks in Google Chrome browser.
 
 .PARAMETER OpenInFirefox
-Open found bookmarks in Mozilla Firefox.
+Open found bookmarks in Mozilla Firefox browser.
 
 .PARAMETER Monitor
-The monitor to display on. 0=default, -1=discard, -2=secondary monitor.
+Specifies target monitor: 0=default, -1=discard, -2=secondary monitor.
+
+.PARAMETER Private
+Opens bookmarks in private/incognito browsing mode.
+
+.PARAMETER Force
+Forces enabling of debugging port, stops existing browser instances if needed.
+
+.PARAMETER FullScreen
+Opens browser windows in fullscreen mode.
+
+.PARAMETER Width
+Sets initial browser window width in pixels.
+
+.PARAMETER Height
+Sets initial browser window height in pixels.
+
+.PARAMETER X
+Sets initial browser window X position.
+
+.PARAMETER Y
+Sets initial browser window Y position.
+
+.PARAMETER Left
+Places browser window on left side of screen.
+
+.PARAMETER Right
+Places browser window on right side of screen.
+
+.PARAMETER Top
+Places browser window on top of screen.
+
+.PARAMETER Bottom
+Places browser window on bottom of screen.
+
+.PARAMETER Centered
+Centers browser window on screen.
+
+.PARAMETER ApplicationMode
+Hides browser controls for clean app-like experience.
+
+.PARAMETER NoBrowserExtensions
+Prevents loading of browser extensions.
+
+.PARAMETER AcceptLang
+Sets browser accept-language HTTP header.
+
+.PARAMETER RestoreFocus
+Restores PowerShell window focus after opening bookmarks.
+
+.PARAMETER NewWindow
+Creates new browser window instead of reusing existing one.
 
 .PARAMETER Count
-Maximum number of bookmarks to open.
+Maximum number of bookmarks to open (default 50).
 
 .EXAMPLE
-Open-BrowserBookmarks -Query "github" -Edge -OpenInChrome -Count 5
+Open-BrowserBookmarks -Queries "github" -Edge -OpenInChrome -Count 5
 
 .EXAMPLE
-sites gh -e -och -Count 5
+sites gh -e -och -c 5
 #>
 function Open-BrowserBookmarks {
 
@@ -242,52 +294,55 @@ function Open-BrowserBookmarks {
 
     begin {
 
-        # prepare parameters for Open-Webbrowser
+        # prepare browser opening parameters by copying relevant ones
         $boundParams = @{}
         $boundParams["Monitor"] = $Monitor
 
+        # set target browser based on parameters
         if ($OpenInEdge) { $boundParams["Edge"] = $true }
         if ($OpenInChrome) { $boundParams["Chrome"] = $true }
         if ($OpenInFirefox) { $boundParams["Firefox"] = $true }
 
-        # copy remaining parameters
+        # copy remaining window/browser configuration parameters
         foreach ($key in $PSBoundParameters.Keys) {
-            if ($key -notin @('Queries','Chrome','Firefox','Edge','Count',
-                'OpenInEdge','OpenInChrome','OpenInFirefox','Monitor')) {
+            if ($key -notin @('Queries', 'Chrome', 'Firefox', 'Edge', 'Count',
+                    'OpenInEdge', 'OpenInChrome', 'OpenInFirefox', 'Monitor')) {
                 $boundParams[$key] = $PSBoundParameters[$key]
             }
         }
 
-        Write-Verbose "Initialized parameters for browser opening"
+        Write-Verbose "Initialized browser parameters for bookmark opening"
     }
 
     process {
 
-        # prepare parameters for finding bookmarks
+        # setup bookmark search parameters
         $findParams = @{
             PassThru = $true
-            Queries = $Queries
+            Queries  = $Queries
         }
 
+        # configure which browsers to search
         if ($Chrome) { $findParams["Chrome"] = $true }
         if ($Edge) { $findParams["Edge"] = $true }
         if ($Firefox) { $findParams["Firefox"] = $true }
 
-        Write-Verbose "Searching for bookmarks with specified criteria"
+        Write-Verbose "Searching bookmarks with criteria: $($Queries -join ',')"
 
-        # find and collect urls
+        # find matching bookmarks and extract urls
         $urls = @(Find-BrowserBookmarks @findParams |
             ForEach-Object Url |
             Select-Object -First $Count)
 
+        # handle case when no bookmarks found
         if ($urls.Length -eq 0) {
             Write-Host "No bookmarks found matching the criteria"
             return
         }
 
-        Write-Verbose "Found $($urls.Length) matching bookmarks"
+        Write-Verbose "Found $($urls.Length) matching bookmarks, opening in browser"
 
-        # open urls in specified browser
+        # pass urls to browser opening function
         $boundParams["Url"] = $urls
         Open-Webbrowser @boundParams
     }

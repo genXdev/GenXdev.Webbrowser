@@ -1,35 +1,38 @@
 ################################################################################
 <#
 .SYNOPSIS
-Closes one or more webbrowser instances.
+Closes one or more webbrowser instances selectively.
 
 .DESCRIPTION
-Closes one or more webbrowser instances in a selective manner, using commandline
-switches to specify which browser(s) to close.
+Provides granular control over closing web browser instances. Can target specific
+browsers (Edge, Chrome, Firefox) or close all browsers. Supports closing both main
+windows and background processes.
 
 .PARAMETER Edge
-Closes Microsoft Edge browser instances.
+Closes all Microsoft Edge browser instances.
 
 .PARAMETER Chrome
-Closes Google Chrome browser instances.
+Closes all Google Chrome browser instances.
 
 .PARAMETER Chromium
-Closes Microsoft Edge or Google Chrome, depending on the default browser.
+Closes the default Chromium-based browser (Edge or Chrome).
 
 .PARAMETER Firefox
-Closes Firefox browser instances.
+Closes all Firefox browser instances.
 
 .PARAMETER All
-Closes all registered modern browsers.
+Closes all detected modern browser instances.
 
 .PARAMETER IncludeBackgroundProcesses
-Closes all instances of the webbrowser, including background tasks.
+Also closes background processes and tasks for the selected browsers.
 
 .EXAMPLE
 Close-Webbrowser -Chrome -Firefox -IncludeBackgroundProcesses
+# Closes all Chrome and Firefox instances including background processes
 
 .EXAMPLE
-wbc -ch -ff -bg
+wbc -a -bg
+# Closes all browser instances including background processes using aliases
 #>
 function Close-Webbrowser {
 
@@ -95,10 +98,10 @@ function Close-Webbrowser {
 
     begin {
 
-        # get installed browsers
+        # query system for installed browser information
         $installedBrowsers = Get-Webbrowser
 
-        # get default browser
+        # determine system default browser
         $defaultBrowser = Get-DefaultWebbrowser
 
         Write-Verbose "Found $($installedBrowsers.Count) installed browsers"
@@ -114,104 +117,109 @@ function Close-Webbrowser {
 
             Write-Verbose "Attempting to close $($Browser.Name)"
 
-            # get the browser executable name without extension
+            # extract process name without extension for matching
             $processName = [System.IO.Path]::GetFileNameWithoutExtension($Browser.Path)
 
-            # find all processes for this browser
+            # find and process all matching browser instances
             Get-Process -Name $processName -ErrorAction SilentlyContinue |
-                ForEach-Object {
+            ForEach-Object {
 
-                    $currentProcess = $_
+                $currentProcess = $_
 
-                    # skip background processes unless specified
-                    if ((-not $IncludeBackgroundProcesses) -and
-                        ($currentProcess.MainWindowHandle -eq 0)) {
-                        Write-Verbose "Skipping background process $($currentProcess.Id)"
-                        return
-                    }
+                # handle background processes based on user preference
+                if ((-not $IncludeBackgroundProcesses) -and
+                    ($currentProcess.MainWindowHandle -eq 0)) {
 
-                    # get main window handle
+                    Write-Verbose "Skipping background process $($currentProcess.Id)"
+                    return
+                }
+                elseif ($currentProcess.MainWindowHandle -ne 0) {
+
+                    # attempt graceful window close for processes with UI
                     [GenXdev.Helpers.WindowObj]::GetMainWindow($currentProcess) |
-                        ForEach-Object {
+                    ForEach-Object {
 
-                            $startTime = [DateTime]::UtcNow
-                            $window = $_
+                        $startTime = [DateTime]::UtcNow
+                        $window = $_
 
-                            # try graceful close first
-                            $null = $window.Close()
+                        # try graceful close
+                        $null = $window.Close()
 
-                            # wait for process to exit
-                            while (!$currentProcess.HasExited -and
-                                ([datetime]::UtcNow - $startTime -lt
-                                    [TimeSpan]::FromSeconds(4))) {
-                                Start-Sleep -Milliseconds 20
-                            }
+                        # wait up to 4 seconds for process to exit
+                        while (!$currentProcess.HasExited -and
+                            ([datetime]::UtcNow - $startTime -lt
+                            [TimeSpan]::FromSeconds(4))) {
 
-                            if ($currentProcess.HasExited) {
-                                Set-Variable -Scope Global `
-                                    -Name "_LastClose$($Browser.Name)" `
-                                    -Value ([DateTime]::UtcNow.AddSeconds(-1))
-                                return
-                            }
+                            Start-Sleep -Milliseconds 20
                         }
 
-                    # force kill if still running
-                    try {
-                        $currentProcess.Kill()
-                        Set-Variable -Scope Global -Name "_LastClose$($Browser.Name)" `
-                            -Value ([DateTime]::UtcNow)
-                    }
-                    catch {
-                        Write-Warning "Failed to kill $($Browser.Name) process: $_"
+                        if ($currentProcess.HasExited) {
+                            Set-Variable -Scope Global `
+                                -Name "_LastClose$($Browser.Name)" `
+                                -Value ([DateTime]::UtcNow.AddSeconds(-1))
+                            return
+                        }
                     }
                 }
+
+                # force terminate if process still running
+                try {
+                    $currentProcess.Kill()
+                    Set-Variable -Scope Global -Name "_LastClose$($Browser.Name)" `
+                        -Value ([DateTime]::UtcNow)
+                }
+                catch {
+                    Write-Warning "Failed to kill $($Browser.Name) process: $_"
+                }
+            }
         }
 
-        # handle All parameter
+        # close all browsers if requested
         if ($All) {
             Write-Verbose "Closing all browsers"
             $installedBrowsers | ForEach-Object { Close-BrowserInstance $_ }
             return
         }
 
-        # handle Chromium parameter
+        # handle default chromium browser closure
         if ($Chromium) {
             if ($defaultBrowser.Name -like "*Chrome*" -or
                 $defaultBrowser.Name -like "*Edge*") {
+
                 Close-BrowserInstance $defaultBrowser
                 return
             }
 
-            # try Edge then Chrome if default is not chromium
+            # fallback to first available chromium browser
             $installedBrowsers |
-                Where-Object { $_.Name -like "*Edge*" -or $_.Name -like "*Chrome*" } |
-                Select-Object -First 1 |
-                ForEach-Object {
-                    Close-BrowserInstance $_
-                }
+            Where-Object { $_.Name -like "*Edge*" -or $_.Name -like "*Chrome*" } |
+            Select-Object -First 1 |
+            ForEach-Object {
+                Close-BrowserInstance $_
+            }
             return
         }
 
-        # handle individual browser parameters
+        # handle specific browser closures
         if ($Chrome) {
             $installedBrowsers |
-                Where-Object { $_.Name -like "*Chrome*" } |
-                ForEach-Object { Close-BrowserInstance $_ }
+            Where-Object { $_.Name -like "*Chrome*" } |
+            ForEach-Object { Close-BrowserInstance $_ }
         }
 
         if ($Edge) {
             $installedBrowsers |
-                Where-Object { $_.Name -like "*Edge*" } |
-                ForEach-Object { Close-BrowserInstance $_ }
+            Where-Object { $_.Name -like "*Edge*" } |
+            ForEach-Object { Close-BrowserInstance $_ }
         }
 
         if ($Firefox) {
             $installedBrowsers |
-                Where-Object { $_.Name -like "*Firefox*" } |
-                ForEach-Object { Close-BrowserInstance $_ }
+            Where-Object { $_.Name -like "*Firefox*" } |
+            ForEach-Object { Close-BrowserInstance $_ }
         }
 
-        # if no browser specified, close default
+        # close default browser if no specific browser selected
         if (-not ($Chromium -or $Chrome -or $Edge -or $Firefox)) {
             Close-BrowserInstance $defaultBrowser
         }

@@ -4,24 +4,27 @@
 Returns all bookmarks from installed web browsers.
 
 .DESCRIPTION
-Returns bookmarks from Microsoft Edge, Google Chrome, or Mozilla Firefox.
-Supports filtering by browser type and returns details like name, URL, folder,
-and timestamps.
+Retrieves bookmarks from Microsoft Edge, Google Chrome, or Mozilla Firefox
+browsers installed on the system. The function can filter by browser type and
+returns detailed bookmark information including name, URL, folder location, and
+timestamps.
 
 .PARAMETER Chrome
-Returns bookmarks from Google Chrome.
+Retrieves bookmarks specifically from Google Chrome browser.
 
 .PARAMETER Edge
-Returns bookmarks from Microsoft Edge.
+Retrieves bookmarks specifically from Microsoft Edge browser.
 
 .PARAMETER Firefox
-Returns bookmarks from Mozilla Firefox.
+Retrieves bookmarks specifically from Mozilla Firefox browser.
 
 .EXAMPLE
 Get-BrowserBookmarks -Edge | Format-Table Name, URL, Folder
+Returns Edge bookmarks formatted as a table showing name, URL and folder.
 
 .EXAMPLE
-gbm -Chrome -Firefox | Where-Object URL -like "*github*"
+gbm -Chrome | Where-Object URL -like "*github*"
+Returns Chrome bookmarks filtered to only show GitHub-related URLs.
 #>
 function Get-BrowserBookmarks {
 
@@ -58,22 +61,24 @@ function Get-BrowserBookmarks {
     )
 
     begin {
-        # ensure filesystem module is available
+
+        # ensure filesystem module is loaded for path handling
         if (-not (Get-Command -Name Expand-Path -ErrorAction SilentlyContinue)) {
             Import-Module GenXdev.FileSystem
         }
 
         Write-Verbose "Getting installed browsers..."
 
-        # get list of installed browsers
+        # get list of installed browsers for validation
         $installedBrowsers = Get-Webbrowser
 
-        # if no browser specified, use default
+        # if no specific browser selected, use system default
         if (-not $Edge -and -not $Chrome -and -not $Firefox) {
 
-            Write-Verbose "No browser specified, using default browser"
+            Write-Verbose "No browser specified, detecting default browser..."
             $defaultBrowser = Get-DefaultWebbrowser
 
+            # set appropriate switch based on default browser
             if ($defaultBrowser.Name -like '*Edge*') {
                 $Edge = $true
             }
@@ -91,6 +96,8 @@ function Get-BrowserBookmarks {
     }
 
     process {
+
+        # helper function to parse Chromium-based browser bookmarks
         function Get-ChromiumBookmarks {
             param (
                 [string] $bookmarksFilePath,
@@ -105,7 +112,7 @@ function Get-BrowserBookmarks {
 
             # read bookmarks json file
             $bookmarksContent = Get-Content -Path $bookmarksFilePath -Raw |
-                ConvertFrom-Json
+            ConvertFrom-Json
 
             $bookmarks = [System.Collections.Generic.List[object]]::new()
 
@@ -123,23 +130,23 @@ function Get-BrowserBookmarks {
                     }
                     elseif ($item.type -eq "url") {
                         $bookmarks.Add([pscustomobject]@{
-                            Name          = $item.name
-                            URL           = $item.url
-                            Folder        = $parentFolder
-                            DateAdded     = [DateTime]::FromFileTimeUtc(
-                                [int64]$item.date_added
-                            )
-                            DateModified  = if ($item.PSObject.Properties.Match(
-                                'date_modified')) {
-                                [DateTime]::FromFileTimeUtc(
-                                    [int64]$item.date_modified
+                                Name          = $item.name
+                                URL           = $item.url
+                                Folder        = $parentFolder
+                                DateAdded     = [DateTime]::FromFileTimeUtc(
+                                    [int64]$item.date_added
                                 )
-                            }
-                            else {
-                                $null
-                            }
-                            BrowserSource = $browserName
-                        })
+                                DateModified  = if ($item.PSObject.Properties.Match(
+                                        'date_modified')) {
+                                    [DateTime]::FromFileTimeUtc(
+                                        [int64]$item.date_modified
+                                    )
+                                }
+                                else {
+                                    $null
+                                }
+                                BrowserSource = $browserName
+                            })
                     }
                 }
             }
@@ -155,6 +162,7 @@ function Get-BrowserBookmarks {
             return $bookmarks
         }
 
+        # helper function to parse Firefox bookmarks from SQLite
         function Get-FirefoxBookmarks {
             param (
                 [string] $placesFilePath,
@@ -214,51 +222,63 @@ function Get-BrowserBookmarks {
         Write-Verbose "Processing browser selection..."
 
         if ($Edge) {
+            # validate Edge installation
             $browser = $installedBrowsers |
-                Where-Object { $PSItem.Name -like '*Edge*' }
+            Where-Object { $PSItem.Name -like '*Edge*' }
 
             if (-not $browser) {
                 Write-Warning "Microsoft Edge is not installed."
                 return
             }
 
+            # construct path to Edge bookmarks file
             $bookmarksFilePath = Join-Path `
                 -Path $env:LOCALAPPDATA `
                 -ChildPath 'Microsoft\Edge\User Data\Default\Bookmarks'
 
             $rootFolderName = 'Edge'
+
+            # get Edge bookmarks
             $bookmarks = Get-ChromiumBookmarks `
                 -BookmarksFilePath $bookmarksFilePath `
                 -RootFolderName $rootFolderName `
                 -BrowserName $browser.Name
+
         }
         elseif ($Chrome) {
+            # validate Chrome installation
             $browser = $installedBrowsers | Where-Object { $PSItem.Name -like '*Chrome*' }
             if (-not $browser) {
                 Write-Host "Google Chrome is not installed."
                 return
             }
+            # construct path to Chrome bookmarks file
             $bookmarksFilePath = Join-Path -Path "${env:LOCALAPPDATA}" -ChildPath 'Google\Chrome\User Data\Default\Bookmarks'
             $rootFolderName = 'Chrome'
+            # get Chrome bookmarks
             $bookmarks = Get-ChromiumBookmarks -bookmarksFilePath $bookmarksFilePath -rootFolderName $rootFolderName -browserName ($browser.Name)
         }
         elseif ($Firefox) {
+            # validate Firefox installation
             $browser = $installedBrowsers | Where-Object { $PSItem.Name -like '*Firefox*' }
             if (-not $browser) {
                 Write-Host "Mozilla Firefox is not installed."
                 return
             }
+            # find Firefox profile folder
             $profileFolderPath = "$env:APPDATA\Mozilla\Firefox\Profiles"
             $profileFolder = Get-ChildItem -Path $profileFolderPath -Directory | Where-Object { $PSItem.Name -match '\.default-release$' } | Select-Object -First 1
             if ($null -eq $profileFolder) {
                 Write-Host 'Firefox profile folder not found.'
                 return
             }
+            # construct path to Firefox places.sqlite file
             $placesFilePath = Join-Path -Path $profileFolder.FullName -ChildPath 'places.sqlite'
+            # get Firefox bookmarks
             $bookmarks = Get-FirefoxBookmarks -placesFilePath $placesFilePath -browserName ($browser.Name)
         }
         else {
-            Write-Host 'Please specify either -Chrome, -Edge, or -Firefox switch.'
+            Write-Warning 'Please specify either -Chrome, -Edge, or -Firefox switch.'
             return
         }
 

@@ -6,69 +6,71 @@ using namespace Microsoft.Playwright
 ################################################################################
 <#
 .SYNOPSIS
-Gets or creates a Playwright browser instance with full configuration options.
+Creates or retrieves a configured Playwright browser instance.
 
 .DESCRIPTION
-Creates and manages Playwright browser instances with support for multiple browser
-types, window positioning, and state persistence.
+Manages Playwright browser instances with support for Chrome, Firefox and Webkit.
+Handles browser window positioning, state persistence, and reconnection to
+existing instances. Provides a unified interface for browser automation tasks.
 
 .PARAMETER BrowserType
-The type of browser to launch (Chromium, Firefox, or Webkit).
+The browser engine to use (Chromium, Firefox, or Webkit).
 
 .PARAMETER ReferenceKey
-Unique identifier for the browser instance. Defaults to "Default".
+Unique identifier to track browser instances across sessions.
 
 .PARAMETER Visible
 Shows the browser window instead of running headless.
 
 .PARAMETER Url
-The URL or URLs to open in the browser. Can be provided via pipeline.
+Initial URL to navigate after launching the browser.
 
 .PARAMETER Monitor
-The monitor to use (0=default, -1=discard, -2=configured secondary monitor, defaults to $Global:DefaultSecondaryMonitor or 2 if not found).
+Target monitor for window placement (0=primary, -1=discard, -2=secondary).
 
 .PARAMETER Width
-The initial width of the webbrowser window.
+Browser window width in pixels.
 
 .PARAMETER Height
-The initial height of the webbrowser window.
+Browser window height in pixels.
 
 .PARAMETER X
-The initial X position of the webbrowser window.
+Horizontal window position in pixels.
 
 .PARAMETER Y
-The initial Y position of the webbrowser window.
+Vertical window position in pixels.
 
 .PARAMETER Left
-Places browser window on the left side of the screen.
+Aligns window to screen left.
 
 .PARAMETER Right
-Places browser window on the right side of the screen.
+Aligns window to screen right.
 
 .PARAMETER Top
-Places browser window on the top side of the screen.
+Aligns window to screen top.
 
 .PARAMETER Bottom
-Places browser window on the bottom side of the screen.
+Aligns window to screen bottom.
 
 .PARAMETER Centered
-Places browser window in the center of the screen.
+Centers window on screen.
 
 .PARAMETER FullScreen
-Opens browser in fullscreen mode.
+Launches browser in fullscreen mode.
 
 .PARAMETER PersistBrowserState
-Maintains browser state between sessions.
+Maintains browser profile between sessions.
 
 .PARAMETER WsEndpoint
 WebSocket URL for connecting to existing browser instance.
 
 .EXAMPLE
+# Launch visible Chrome browser at GitHub
 Get-PlaywrightDriver -BrowserType Chromium -Visible -Url "https://github.com"
 
-.NOTES
-This is a Playwright-specific implementation that may not support all features of Open-Webbrowser.
-Some positioning and window management features may be limited by Playwright capabilities.
+.EXAMPLE
+# Connect to existing browser via WebSocket
+Get-PlaywrightDriver -WsEndpoint "ws://localhost:9222"
 #>
 function Get-PlaywrightDriver {
 
@@ -79,7 +81,7 @@ function Get-PlaywrightDriver {
         [Parameter(
             Position = 0,
             ParameterSetName = 'Default',
-            HelpMessage = "The type of browser to launch"
+            HelpMessage = "Browser engine to use (Chromium/Firefox/Webkit)"
         )]
         [ValidateSet("Chromium", "Firefox", "Webkit")]
         [string]$BrowserType = "Chromium",
@@ -202,81 +204,81 @@ function Get-PlaywrightDriver {
 
     begin {
 
-        # ensure playwright cache is up to date
+        Write-Verbose "Initializing Playwright driver for $BrowserType browser"
+
+        # ensure browser dependencies are installed
         Update-PlaywrightDriverCache
 
-        # normalize reference key
+        # normalize empty reference key to default
         $referenceKey = [string]::IsNullOrWhiteSpace($ReferenceKey) ? `
             "Default" : $ReferenceKey
 
-        # Write-Verbose "Using browser reference key: $referenceKey"
+        Write-Verbose "Using browser reference key: $referenceKey"
     }
 
     process {
 
-        # Early return for WebSocket parameter set
+        # handle websocket connection mode
         if ($PSCmdlet.ParameterSetName -eq 'WebSocket') {
+            Write-Verbose "Connecting to existing browser via WebSocket"
             return Connect-PlaywrightViaDebuggingPort -WsEndpoint $WsEndpoint
         }
 
-        # check if browser instance already exists
+        # check for existing browser instance
         if (-not $Global:GenXdevPlaywrightBrowserDictionary.TryGetValue(
                 $referenceKey, [ref]$browser)) {
 
-            # configure browser launch options
+            Write-Verbose "Creating new browser instance"
+
+            # configure launch options
             $launchOptions = @{
                 Headless = -not $Visible
                 Args     = @()
             }
 
-            # add window size arguments if specified
+            # configure window dimensions if specified
             if ($Width -gt 0 -and $Height -gt 0) {
-                # Write-Verbose "Setting window size to ${Width}x${Height}"
+                Write-Verbose "Setting window size to ${Width}x${Height}"
                 $launchOptions.Args += "--window-size=${Width},${Height}"
             }
 
-            # configure persistent profile if requested
+            # setup profile persistence if requested
             if ($PersistBrowserState) {
                 $profileDir = Get-PlaywrightProfileDirectory -BrowserType $BrowserType
-                # Write-Verbose "Using profile directory: $profileDir"
+                Write-Verbose "Using profile directory: $profileDir"
                 $launchOptions.Args += "--user-data-dir=$profileDir"
             }
 
             try {
-                # create playwright instance
+                # initialize playwright
                 $pw = [Microsoft.Playwright.Playwright]::CreateAsync().Result
 
-                # launch browser based on type
+                # launch browser based on selected type
                 $browser = switch ($BrowserType) {
                     "Chromium" { $pw.Chromium.LaunchAsync($launchOptions).Result }
                     "Firefox" { $pw.Firefox.LaunchAsync($launchOptions).Result }
                     "Webkit" { $pw.Webkit.LaunchAsync($launchOptions).Result }
                 }
 
-                # store browser instance in global dictionary
+                # store browser instance for reuse
                 $null = $Global:GenXdevPlaywrightBrowserDictionary.TryAdd(
                     $referenceKey, $browser)
             }
             catch {
-
                 Write-Error "Failed to launch $BrowserType browser: $_"
                 return
             }
         }
 
-        # warn about unsupported window positioning
         if ($X -ne -999999 -or $Y -ne -999999) {
-
             Write-Warning "Window positioning is not yet supported in Playwright"
         }
 
-        # navigate to url if specified
+        # navigate to initial url if specified
         if ($Url) {
-
-            # Write-Verbose "Navigating to $Url"
+            Write-Verbose "Navigating to $Url"
             $page = $browser.NewPageAsync().Result
             $null = $page.GotoAsync($Url).Wait()
-
             return $page
         }
 

@@ -4,17 +4,22 @@
 Returns the configured remote debugging port for Google Chrome.
 
 .DESCRIPTION
-Retrieves the remote debugging port number for Google Chrome browser. If no port 
-is specified via $Global:ChromeDebugPort, defaults to port 9222. The port 
-number is stored in the global scope for use by other functions.
+Retrieves and manages the remote debugging port configuration for Google Chrome.
+The function first checks for a custom port number stored in $Global:ChromeDebugPort.
+If not found or invalid, it defaults to port 9222. The port number is then stored
+globally for use by other Chrome automation functions.
 
 .OUTPUTS
 System.Int32
-Returns the configured debug port number.
+Returns the configured Chrome debugging port number.
 
 .EXAMPLE
-Get-ChromeRemoteDebuggingPort
-# Returns the configured debug port (default 9222)
+$port = Get-ChromeRemoteDebuggingPort
+Write-Host "Chrome debug port: $port"
+
+.EXAMPLE
+$port = Get-ChromePort
+Write-Host "Chrome debug port: $port"
 #>
 function Get-ChromeRemoteDebuggingPort {
 
@@ -26,31 +31,34 @@ function Get-ChromeRemoteDebuggingPort {
 
     begin {
 
-        # initialize port variable with default value
+        # initialize the default chrome debugging port
         [int] $port = 9222
     }
 
     process {
 
-        # attempt to get custom port from global variable if it exists
+        # check if a custom port is configured in the global scope
         if ($Global:ChromeDebugPort) {
-            
-            # try to parse the global port variable
+
+            # attempt to parse the global port value to ensure it's a valid number
             if ([int]::TryParse($Global:ChromeDebugPort, [ref] $port)) {
-                
+
+                # log successful use of custom port
                 Write-Verbose "Using configured Chrome debug port: $port"
             }
             else {
-                
+
+                # log fallback to default port due to invalid configuration
                 Write-Verbose "Invalid port config, using default port: $port"
             }
         }
         else {
-            
+
+            # log use of default port when no custom port is configured
             Write-Verbose "No custom port configured, using default port: $port"
         }
 
-        # ensure port is set in global scope
+        # ensure the port is available in global scope for other functions
         $null = Set-Variable `
             -Name ChromeDebugPort `
             -Value $port `
