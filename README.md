@@ -15,15 +15,16 @@
 
 ### FEATURES
 
+    * ✅ full controll of the webbrowser with the 'wbctrl' cmdlet
+    * ✅ retreiving and manipulating of webbrowser-tab DOM nodes with 'wl' cmdlet
     * ✅ evaluating javascript-strings, javascript-files in opened webbrowser-tab
     * ✅ adding html script tags, by url, to opened webbrowser-tabs, for normal javascript files or modules
     * ✅ evaluating scripts, with support for async patterns, like promises
     * ✅ evaluating asynchronous scripts, with support for yielded PowerShell pipeline returns
-
+    * ✅ exporting of favourites/bookmarks from Microsoft Edge, Google Chrome or Firefox
     * ✅ launching of default browser, Microsoft Edge, Google Chrome or Firefox
     * ✅ launching of webbrowser with full control of window positioning
-    * ✅ launching of webbrowser in ApplicationMode, Incognito/In-Private
-    * ✅ repositioning of already opened webbrowser
+    * ✅ launching of webbrowser with a large set of options
 
 ### NOTES
 
@@ -227,7 +228,7 @@ Close-PlaywrightDriver
 
 ### SYNTAX
 ````PowerShell
-Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] 
+Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>]
 [<CommonParameters>]
 ````
 
@@ -243,7 +244,7 @@ Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>]
         Position?                    1
         Default value                Chromium
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -ReferenceKey <String>
         The unique identifier for the browser instance in the cache. Defaults to
@@ -252,13 +253,13 @@ Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>]
         Position?                    2
         Default value                Default
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>
 
@@ -287,7 +288,7 @@ Unprotect-WebbrowserTab [[-UseCurrent]] [[-Force]] [<CommonParameters>]
         Position?                    1
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Force [<SwitchParameter>]
         Restart webbrowser (closes all tabs) if no debugging server is detected.
@@ -295,13 +296,13 @@ Unprotect-WebbrowserTab [[-UseCurrent]] [[-Force]] [<CommonParameters>]
         Position?                    2
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>
 
@@ -327,7 +328,7 @@ Stop-WebbrowserVideos [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>
 
@@ -353,7 +354,7 @@ Resume-WebbrowserTabVideo [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ### NOTES
 ````PowerShell
@@ -389,13 +390,13 @@ Get-PlaywrightProfileDirectory [[-BrowserType] <String>] [<CommonParameters>]
         Position?                    1
         Default value                Chromium
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>
 
@@ -409,9 +410,9 @@ Get-PlaywrightDriver
 
 ### SYNTAX
 ````PowerShell
-Get-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [-Visible] [-Url 
-<String>] [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] 
-[-Left] [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen] [-PersistBrowserState] 
+Get-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [-Visible] [-Url
+<String>] [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>]
+[-Left] [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen] [-PersistBrowserState]
 [<CommonParameters>]
 Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
 ````
@@ -427,7 +428,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    1
         Default value                Chromium
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -ReferenceKey <String>
         Unique identifier for the browser instance. Defaults to "Default".
@@ -435,7 +436,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    2
         Default value                Default
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Visible [<SwitchParameter>]
         Shows the browser window instead of running headless.
@@ -443,24 +444,24 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Url <String>
         The URL or URLs to open in the browser. Can be provided via pipeline.
         Required?                    false
         Position?                    named
-        Default value                
+        Default value
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Monitor <Int32>
-        The monitor to use (0=default, -1=discard, -2=configured secondary monitor, defaults to 
+        The monitor to use (0=default, -1=discard, -2=configured secondary monitor, defaults to
         $Global:DefaultSecondaryMonitor or 2 if not found).
         Required?                    false
         Position?                    named
         Default value                -2
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Width <Int32>
         The initial width of the webbrowser window.
@@ -468,7 +469,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                -1
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Height <Int32>
         The initial height of the webbrowser window.
@@ -476,7 +477,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                -1
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -X <Int32>
         The initial X position of the webbrowser window.
@@ -484,7 +485,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                -999999
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Y <Int32>
         The initial Y position of the webbrowser window.
@@ -492,7 +493,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                -999999
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Left [<SwitchParameter>]
         Places browser window on the left side of the screen.
@@ -500,7 +501,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Right [<SwitchParameter>]
         Places browser window on the right side of the screen.
@@ -508,7 +509,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Top [<SwitchParameter>]
         Places browser window on the top side of the screen.
@@ -516,7 +517,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Bottom [<SwitchParameter>]
         Places browser window on the bottom side of the screen.
@@ -524,7 +525,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Centered [<SwitchParameter>]
         Places browser window in the center of the screen.
@@ -532,7 +533,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -FullScreen [<SwitchParameter>]
         Opens browser in fullscreen mode.
@@ -540,7 +541,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -PersistBrowserState [<SwitchParameter>]
         Maintains browser state between sessions.
@@ -548,27 +549,27 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -WsEndpoint <String>
         WebSocket URL for connecting to existing browser instance.
         Required?                    true
         Position?                    named
-        Default value                
+        Default value
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ### NOTES
 ````PowerShell
-    This is a Playwright-specific implementation that may not support all features of 
+    This is a Playwright-specific implementation that may not support all features of
     Open-Webbrowser.
-    Some positioning and window management features may be limited by Playwright 
+    Some positioning and window management features may be limited by Playwright
     capabilities.
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> Get-PlaywrightDriver -BrowserType Chromium -Visible -Url "https://github.com"
@@ -600,15 +601,15 @@ Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String> [<CommonParameters>]
         (e.g., ws://localhost:9222/devtools/browser/...)
         Required?                    true
         Position?                    1
-        Default value                
+        Default value
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>
 
@@ -622,7 +623,7 @@ Close-PlaywrightDriver
 
 ### SYNTAX
 ````PowerShell
-Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] 
+Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>]
 [<CommonParameters>]
 ````
 
@@ -638,7 +639,7 @@ Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>]
         Position?                    1
         Default value                Chromium
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -ReferenceKey <String>
         The unique identifier for the browser instance in the cache. Defaults to
@@ -647,13 +648,13 @@ Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>]
         Position?                    2
         Default value                Default
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>
 
@@ -680,7 +681,7 @@ _AssureTypes [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>
 
@@ -706,7 +707,7 @@ Update-PlaywrightDriverCache [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>
 
@@ -735,7 +736,7 @@ Unprotect-WebbrowserTab [[-UseCurrent]] [[-Force]] [<CommonParameters>]
         Position?                    1
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Force [<SwitchParameter>]
         Restart webbrowser (closes all tabs) if no debugging server is detected.
@@ -743,13 +744,13 @@ Unprotect-WebbrowserTab [[-UseCurrent]] [[-Force]] [<CommonParameters>]
         Position?                    2
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>
 
@@ -775,7 +776,7 @@ Stop-WebbrowserVideos [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>
 
@@ -801,7 +802,7 @@ Update-PlaywrightDriverCache [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>
 
@@ -827,7 +828,7 @@ Resume-WebbrowserTabVideo [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ### NOTES
 ````PowerShell
@@ -848,9 +849,9 @@ Get-PlaywrightDriver
 
 ### SYNTAX
 ````PowerShell
-Get-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [-Visible] [-Url 
-<String>] [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] 
-[-Left] [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen] [-PersistBrowserState] 
+Get-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [-Visible] [-Url
+<String>] [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>]
+[-Left] [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen] [-PersistBrowserState]
 [<CommonParameters>]
 Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
 ````
@@ -866,7 +867,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    1
         Default value                Chromium
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -ReferenceKey <String>
         Unique identifier for the browser instance. Defaults to "Default".
@@ -874,7 +875,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    2
         Default value                Default
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Visible [<SwitchParameter>]
         Shows the browser window instead of running headless.
@@ -882,24 +883,24 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Url <String>
         The URL or URLs to open in the browser. Can be provided via pipeline.
         Required?                    false
         Position?                    named
-        Default value                
+        Default value
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Monitor <Int32>
-        The monitor to use (0=default, -1=discard, -2=configured secondary monitor, defaults to 
+        The monitor to use (0=default, -1=discard, -2=configured secondary monitor, defaults to
         $Global:DefaultSecondaryMonitor or 2 if not found).
         Required?                    false
         Position?                    named
         Default value                -2
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Width <Int32>
         The initial width of the webbrowser window.
@@ -907,7 +908,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                -1
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Height <Int32>
         The initial height of the webbrowser window.
@@ -915,7 +916,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                -1
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -X <Int32>
         The initial X position of the webbrowser window.
@@ -923,7 +924,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                -999999
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Y <Int32>
         The initial Y position of the webbrowser window.
@@ -931,7 +932,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                -999999
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Left [<SwitchParameter>]
         Places browser window on the left side of the screen.
@@ -939,7 +940,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Right [<SwitchParameter>]
         Places browser window on the right side of the screen.
@@ -947,7 +948,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Top [<SwitchParameter>]
         Places browser window on the top side of the screen.
@@ -955,7 +956,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Bottom [<SwitchParameter>]
         Places browser window on the bottom side of the screen.
@@ -963,7 +964,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Centered [<SwitchParameter>]
         Places browser window in the center of the screen.
@@ -971,7 +972,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -FullScreen [<SwitchParameter>]
         Opens browser in fullscreen mode.
@@ -979,7 +980,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -PersistBrowserState [<SwitchParameter>]
         Maintains browser state between sessions.
@@ -987,27 +988,27 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -WsEndpoint <String>
         WebSocket URL for connecting to existing browser instance.
         Required?                    true
         Position?                    named
-        Default value                
+        Default value
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ### NOTES
 ````PowerShell
-    This is a Playwright-specific implementation that may not support all features of 
+    This is a Playwright-specific implementation that may not support all features of
     Open-Webbrowser.
-    Some positioning and window management features may be limited by Playwright 
+    Some positioning and window management features may be limited by Playwright
     capabilities.
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> Get-PlaywrightDriver -BrowserType Chromium -Visible -Url "https://github.com"
@@ -1039,15 +1040,15 @@ Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String> [<CommonParameters>]
         (e.g., ws://localhost:9222/devtools/browser/...)
         Required?                    true
         Position?                    1
-        Default value                
+        Default value
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>
 
@@ -1061,7 +1062,7 @@ Close-PlaywrightDriver
 
 ### SYNTAX
 ````PowerShell
-Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] 
+Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>]
 [<CommonParameters>]
 ````
 
@@ -1077,7 +1078,7 @@ Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>]
         Position?                    1
         Default value                Chromium
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -ReferenceKey <String>
         The unique identifier for the browser instance in the cache. Defaults to
@@ -1086,13 +1087,13 @@ Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>]
         Position?                    2
         Default value                Default
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>
 
@@ -1119,7 +1120,7 @@ _AssureTypes [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>
 
@@ -1145,7 +1146,7 @@ Update-PlaywrightDriverCache [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>
 
@@ -1174,7 +1175,7 @@ Unprotect-WebbrowserTab [[-UseCurrent]] [[-Force]] [<CommonParameters>]
         Position?                    1
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Force [<SwitchParameter>]
         Restart webbrowser (closes all tabs) if no debugging server is detected.
@@ -1182,13 +1183,13 @@ Unprotect-WebbrowserTab [[-UseCurrent]] [[-Force]] [<CommonParameters>]
         Position?                    2
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>
 
@@ -1214,7 +1215,7 @@ Stop-WebbrowserVideos [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>
 
@@ -1240,7 +1241,7 @@ Resume-WebbrowserTabVideo [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ### NOTES
 ````PowerShell
@@ -1276,13 +1277,13 @@ Get-PlaywrightProfileDirectory [[-BrowserType] <String>] [<CommonParameters>]
         Position?                    1
         Default value                Chromium
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>
 
@@ -1296,9 +1297,9 @@ Get-PlaywrightDriver
 
 ### SYNTAX
 ````PowerShell
-Get-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [-Visible] [-Url 
-<String>] [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] 
-[-Left] [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen] [-PersistBrowserState] 
+Get-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [-Visible] [-Url
+<String>] [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>]
+[-Left] [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen] [-PersistBrowserState]
 [<CommonParameters>]
 Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
 ````
@@ -1314,7 +1315,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    1
         Default value                Chromium
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -ReferenceKey <String>
         Unique identifier for the browser instance. Defaults to "Default".
@@ -1322,7 +1323,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    2
         Default value                Default
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Visible [<SwitchParameter>]
         Shows the browser window instead of running headless.
@@ -1330,24 +1331,24 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Url <String>
         The URL or URLs to open in the browser. Can be provided via pipeline.
         Required?                    false
         Position?                    named
-        Default value                
+        Default value
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Monitor <Int32>
-        The monitor to use (0=default, -1=discard, -2=configured secondary monitor, defaults to 
+        The monitor to use (0=default, -1=discard, -2=configured secondary monitor, defaults to
         $Global:DefaultSecondaryMonitor or 2 if not found).
         Required?                    false
         Position?                    named
         Default value                -2
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Width <Int32>
         The initial width of the webbrowser window.
@@ -1355,7 +1356,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                -1
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Height <Int32>
         The initial height of the webbrowser window.
@@ -1363,7 +1364,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                -1
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -X <Int32>
         The initial X position of the webbrowser window.
@@ -1371,7 +1372,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                -999999
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Y <Int32>
         The initial Y position of the webbrowser window.
@@ -1379,7 +1380,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                -999999
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Left [<SwitchParameter>]
         Places browser window on the left side of the screen.
@@ -1387,7 +1388,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Right [<SwitchParameter>]
         Places browser window on the right side of the screen.
@@ -1395,7 +1396,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Top [<SwitchParameter>]
         Places browser window on the top side of the screen.
@@ -1403,7 +1404,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Bottom [<SwitchParameter>]
         Places browser window on the bottom side of the screen.
@@ -1411,7 +1412,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -Centered [<SwitchParameter>]
         Places browser window in the center of the screen.
@@ -1419,7 +1420,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -FullScreen [<SwitchParameter>]
         Opens browser in fullscreen mode.
@@ -1427,7 +1428,7 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -PersistBrowserState [<SwitchParameter>]
         Maintains browser state between sessions.
@@ -1435,27 +1436,27 @@ Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]
         Position?                    named
         Default value                False
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     -WsEndpoint <String>
         WebSocket URL for connecting to existing browser instance.
         Required?                    true
         Position?                    named
-        Default value                
+        Default value
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ### NOTES
 ````PowerShell
-    This is a Playwright-specific implementation that may not support all features of 
+    This is a Playwright-specific implementation that may not support all features of
     Open-Webbrowser.
-    Some positioning and window management features may be limited by Playwright 
+    Some positioning and window management features may be limited by Playwright
     capabilities.
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> Get-PlaywrightDriver -BrowserType Chromium -Visible -Url "https://github.com"
@@ -1487,15 +1488,15 @@ Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String> [<CommonParameters>]
         (e.g., ws://localhost:9222/devtools/browser/...)
         Required?                    true
         Position?                    1
-        Default value                
+        Default value
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>
 
@@ -1524,13 +1525,13 @@ Get-PlaywrightProfileDirectory [[-BrowserType] <String>] [<CommonParameters>]
         Position?                    1
         Default value                Chromium
         Accept pipeline input?       false
-        Aliases                      
+        Aliases
         Accept wildcard characters?  false
     <CommonParameters>
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>
 
@@ -1557,6 +1558,6 @@ _AssureTypes [<CommonParameters>]
         This cmdlet supports the common parameters: Verbose, Debug,
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,
         OutBuffer, PipelineVariable, and OutVariable. For more information, see
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216). 
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).
 
 <br/><hr/><hr/><br/>

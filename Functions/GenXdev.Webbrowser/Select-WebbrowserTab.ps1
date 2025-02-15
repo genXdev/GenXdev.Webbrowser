@@ -157,7 +157,7 @@ function Select-WebbrowserTab {
                 Debugurl = "http://localhost:$debugPort"
                 Port     = $debugPort
                 Browser  = Connect-PlaywrightViaDebuggingPort `
-                    -WsEndpoint "http://localhost:$debugPort" -Verbose
+                    -WsEndpoint "http://localhost:$debugPort" 
             }
 
             $Global:CurrentChromiumDebugPort = $debugPort
