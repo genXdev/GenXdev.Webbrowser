@@ -30,7 +30,10 @@ Export-BrowserBookmarks "C:\MyBookmarks.json" -Chrome
 #>
 function Export-BrowserBookmarks {
 
-    [CmdletBinding(DefaultParameterSetName = 'Edge')]
+    [CmdletBinding()]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
     param (
         ########################################################################
         [Parameter(
@@ -43,14 +46,12 @@ function Export-BrowserBookmarks {
         ########################################################################
         [Parameter(
             Mandatory = $false,
-            ParameterSetName = 'Chrome',
             HelpMessage = "Export bookmarks from Google Chrome"
         )]
         [switch]$Chrome,
         ########################################################################
         [Parameter(
             Mandatory = $false,
-            ParameterSetName = 'Edge',
             HelpMessage = "Export bookmarks from Microsoft Edge"
         )]
         [switch]$Edge,
@@ -65,9 +66,8 @@ function Export-BrowserBookmarks {
     )
 
     begin {
-
         # convert relative or partial path to full filesystem path
-        $outputFilePath = Expand-Path $OutputFile
+        $outputFilePath = GenXdev.FileSystem\Expand-Path $OutputFile
 
         # inform user about the output destination
         Write-Verbose "Exporting bookmarks to: $outputFilePath"
@@ -93,7 +93,7 @@ function Export-BrowserBookmarks {
         }
 
         # retrieve bookmarks and save them as formatted json to the output file
-        Get-BrowserBookmarks @bookmarksArguments |
+        Get-BrowserBookmark @bookmarksArguments |
         ConvertTo-Json -Depth 100 |
         Set-Content -Path $outputFilePath -Force
 

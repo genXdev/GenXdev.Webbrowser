@@ -25,15 +25,14 @@ function Get-EdgeRemoteDebuggingPort {
 
     [CmdletBinding()]
     [OutputType([int])]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
     param()
 
     begin {
-
         Write-Verbose "Starting Get-EdgeRemoteDebuggingPort"
     }
 
     process {
-
         # set default edge debugging port
         [int] $port = 9223
 
@@ -64,6 +63,7 @@ function Get-EdgeRemoteDebuggingPort {
     }
 
     end {
+        Write-Verbose "Completed Get-EdgeRemoteDebuggingPort"
     }
 }
 ################################################################################

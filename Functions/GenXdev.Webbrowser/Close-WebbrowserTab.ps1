@@ -19,12 +19,14 @@ Uses the alias to close the currently active browser tab
 function Close-WebbrowserTab {
 
     [CmdletBinding()]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
     [Alias("ct", "CloseTab")]
     param(
         ########################################################################
         [Parameter(
             Mandatory = $false,
-            ParameterSetName = 'Edge',
             HelpMessage = "Navigate using Microsoft Edge browser"
         )]
         [Alias("e")]
@@ -32,7 +34,6 @@ function Close-WebbrowserTab {
         ########################################################################
         [Parameter(
             Mandatory = $false,
-            ParameterSetName = 'Chrome',
             HelpMessage = "Navigate using Google Chrome browser"
         )]
         [Alias("ch")]
@@ -41,7 +42,6 @@ function Close-WebbrowserTab {
     )
 
     begin {
-
         # attempt to get reference to existing chrome session
         # if this fails, we'll try to select the last used tab
         try {

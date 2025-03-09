@@ -35,7 +35,6 @@ function Get-PlaywrightProfileDirectory {
     )
 
     begin {
-
         # construct the base directory path for all browser profiles
         $baseDir = Join-Path -Path $env:LOCALAPPDATA `
             -ChildPath "GenXdev.Powershell\Playwright.profiles\"

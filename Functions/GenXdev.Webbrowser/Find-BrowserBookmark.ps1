@@ -31,14 +31,14 @@ Switch to return complete bookmark objects instead of just URLs. Each bookmark
 object contains Name, URL, and Folder properties.
 
 .EXAMPLE
-Find-BrowserBookmarks -Query "github" -Edge -Chrome -Count 10
+Find-BrowserBookmark -Query "github" -Edge -Chrome -Count 10
 # Searches Edge and Chrome bookmarks for "github", returns first 10 URLs
 
 .EXAMPLE
 bookmarks powershell -e -ff -PassThru
 # Searches Edge and Firefox bookmarks for "powershell", returns full objects
 #>
-function Find-BrowserBookmarks {
+function Find-BrowserBookmark {
 
     [CmdletBinding(DefaultParameterSetName = 'Default')]
     [Alias("bookmarks")]
@@ -53,6 +53,7 @@ function Find-BrowserBookmarks {
             ValueFromPipelineByPropertyName = $true,
             HelpMessage = "Search terms to find matching bookmarks"
         )]
+        [SupportsWildcards()]
         [string[]] $Queries,
         ########################################################################
 
@@ -97,34 +98,18 @@ function Find-BrowserBookmarks {
     )
 
     begin {
-
         Write-Verbose "Initializing browser bookmark search"
-        $bookmarksArguments = @{}
+        $bookmarksArguments = GenXdev.Helpers\Copy-IdenticalParamValues `
+            -BoundParameters $PSBoundParameters `
+            -FunctionName "Get-BrowserBookmark" `
+            -DefaultValues (Get-Variable -Scope Local -Name * -ErrorAction SilentlyContinue)
     }
 
     process {
 
-        # create empty hashtable to store browser selection flags
-        Write-Verbose "Configuring browser selection parameters"
-        $bookmarksArguments = @{}
-
-        # add each selected browser to the arguments
-        if ($Chrome) {
-            Write-Verbose "Including Chrome bookmarks in search"
-            $bookmarksArguments["Chrome"] = $true
-        }
-        if ($Edge) {
-            Write-Verbose "Including Edge bookmarks in search"
-            $bookmarksArguments["Edge"] = $true
-        }
-        if ($Firefox) {
-            Write-Verbose "Including Firefox bookmarks in search"
-            $bookmarksArguments["Firefox"] = $true
-        }
-
         # retrieve all bookmarks from selected browsers
         Write-Verbose "Fetching bookmarks from selected browsers"
-        $bookmarks = Get-BrowserBookmarks @bookmarksArguments
+        $bookmarks = Get-BrowserBookmark @bookmarksArguments
 
         # handle case when no search queries provided
         if (($null -eq $Queries) -or ($Queries.Length -eq 0)) {
@@ -140,12 +125,16 @@ function Find-BrowserBookmarks {
         $results = $Queries |
         ForEach-Object {
             $query = $PSItem
+            if (-not ($query.Contains("*") -or ($query.Contains("?")))) {
+                $query = "*$query*"
+            }
             Write-Verbose "Processing query: $query"
+
             $bookmarks |
             Where-Object {
-                        ($PSItem.Folder -like "*$query*") -or `
-                ($PSItem.Name -Like "*$query*") -or `
-                ($PSItem.URL -Like "*$query*")
+                ($PSItem.Folder -like "$query") -or
+                ($PSItem.Name -Like "$query") -or
+                ($PSItem.URL -Like "$query")
             }
         } |
         Select-Object -First $Count

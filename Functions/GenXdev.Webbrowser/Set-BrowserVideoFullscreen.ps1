@@ -14,29 +14,32 @@ Set-BrowserVideoFullscreen
 #>
 function Set-BrowserVideoFullscreen {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     [Alias("fsvideo")]
-
     param()
 
     begin {
 
-        # prepare the javascript that will handle the video manipulation
-        Write-Verbose "Preparing JavaScript code for video fullscreen"
+        # prepare the javascript command that will handle video manipulation
+        $script = @(
+            "window.video = document.getElementsByTagName('video')[0];" +
+            "video.setAttribute('style','position:fixed;left:0;top:0;bottom:0;" +
+            "right:0;z-index:10000;width:100vw;height:100vh');" +
+            "document.body.appendChild(video);" +
+            "document.body.setAttribute('style', 'overflow:hidden');"
+        ) -join ''
+
+        Write-Verbose "Prepared JavaScript code for video fullscreen manipulation"
     }
 
     process {
 
-        # find the first video element on the page
-        # set its style to fixed position covering the viewport
-        # move it to the top of the document body
-        # hide page scrollbars
-        Write-Verbose "Executing JavaScript to maximize video element"
-        Invoke-WebbrowserEvaluation "window.video = document.getElementsByTagName('video')[0]; `
-            video.setAttribute('style','position:fixed;left:0;top:0;bottom:0;right:0;`
-            z-index:10000;width:100vw;height:100vh'); `
-            document.body.appendChild(video);`
-            document.body.setAttribute('style', 'overflow:hidden');"
+        # check if we should proceed with the operation
+        if ($PSCmdlet.ShouldProcess("browser video", "Set to fullscreen mode")) {
+
+            Write-Verbose "Executing JavaScript to maximize video element"
+            Invoke-WebbrowserEvaluation $script
+        }
     }
 
     end {

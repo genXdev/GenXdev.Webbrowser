@@ -49,7 +49,6 @@ function Clear-WebbrowserTabSiteApplicationData {
     )
 
     begin {
-
         Write-Verbose "Preparing JavaScript code to clear browser storage"
 
         # javascript snippet that clears all browser storage types
@@ -72,7 +71,7 @@ function Clear-WebbrowserTabSiteApplicationData {
         Write-Verbose "Adding URL parameter to execute JavaScript in browser"
 
         # add the javascript url to the parameters for Set-WebbrowserTabLocation
-        $PSBoundParameters.Add("Url", $LocationJSScriptLet)
+        $null = $PSBoundParameters.Add("Url", $LocationJSScriptLet)
 
         Write-Verbose "Executing clear storage script in browser tab"
 

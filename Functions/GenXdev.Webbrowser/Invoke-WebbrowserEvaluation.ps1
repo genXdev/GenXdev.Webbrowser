@@ -156,7 +156,10 @@ Requires the Windows 10+ Operating System
 #>
 function Invoke-WebbrowserEvaluation {
 
-    [CmdletBinding(DefaultParameterSetName = "Default")]
+    [CmdletBinding()]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
     [Alias("Eval", "et")]
 
     param(
@@ -179,7 +182,6 @@ function Invoke-WebbrowserEvaluation {
         [switch] $Inspect,
         ###############################################################################
         [Parameter(
-            ParameterSetName = "Default",
             Mandatory = $false,
             ValueFromPipeline = $false,
             HelpMessage = "Prevent automatic tab selection"
@@ -188,7 +190,6 @@ function Invoke-WebbrowserEvaluation {
         ###############################################################################
         [Alias("e")]
         [parameter(
-            ParameterSetName = "Default",
             Mandatory = $false,
             HelpMessage = "Use Microsoft Edge browser"
         )]
@@ -196,23 +197,18 @@ function Invoke-WebbrowserEvaluation {
         ###############################################################################
         [Alias("ch")]
         [parameter(
-            ParameterSetName = "Default",
             Mandatory = $false,
             HelpMessage = "Use Google Chrome browser"
         )]
         [switch] $Chrome,
         ###############################################################################
         [Parameter(
-            ParameterSetName = "ByReference",
-            Mandatory = $true,
             HelpMessage = "Browser page object reference",
             ValueFromPipeline = $false
         )]
         [object] $Page,
         ###############################################################################
         [Parameter(
-            ParameterSetName = "ByReference",
-            Mandatory = $true,
             HelpMessage = "Browser session reference object",
             ValueFromPipeline = $false
         )]
@@ -267,8 +263,8 @@ document.documentElement.style.setProperty('--default-color-scheme', 'dark');
 
         # Subscribe to the FrameNavigated event to inject the custom JavaScript
         $null = Register-ObjectEvent -InputObject $page -EventName FrameNavigated -Action {
-            $page.EvaluateAsync($visibilityScript).Wait()
-            $page.EvaluateAsync($cssOverrideScript).Wait()
+            $null = $page.EvaluateAsync($visibilityScript).Wait()
+            $null = $page.EvaluateAsync($cssOverrideScript).Wait()
         }
 
         # enumerate provided scripts

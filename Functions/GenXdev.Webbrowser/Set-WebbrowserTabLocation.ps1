@@ -28,7 +28,11 @@ Set-WebbrowserTabLocation -Url "https://github.com/microsoft" -Edge
 #>
 function Set-WebbrowserTabLocation {
 
-    [CmdletBinding(DefaultParameterSetName = 'Default')]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
+    [CmdletBinding(
+        SupportsShouldProcess = $true,
+        DefaultParameterSetName = 'Default'
+    )]
     [Alias("lt", "Nav")]
 
     param(
@@ -77,9 +81,11 @@ function Set-WebbrowserTabLocation {
 
     process {
 
-        # navigate to the specified url using chromedriver's async navigation
-        Write-Verbose "Navigating to URL: $Url"
-        $null = $Global:chromeController.GotoAsync($Url).Wait()
+        if ($PSCmdlet.ShouldProcess($Url, "Navigate to URL")) {
+
+            Write-Verbose "Navigating to URL: $Url"
+            $null = $Global:chromeController.GotoAsync($Url).Wait()
+        }
     }
 
     end {

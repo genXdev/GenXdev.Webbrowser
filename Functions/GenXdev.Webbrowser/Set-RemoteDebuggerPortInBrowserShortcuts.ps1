@@ -23,12 +23,11 @@ Requires administrative access to modify system shortcuts.
 #>
 function Set-RemoteDebuggerPortInBrowserShortcuts {
 
-    [CmdletBinding()]
-    [Alias("Set-BrowserDebugPorts")]
+    [CmdletBinding(SupportsShouldProcess)]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
     param()
 
     begin {
-
         # initialize windows shell automation object for shortcut manipulation
         $shell = New-Object -ComObject WScript.Shell
         Write-Verbose "Created WScript.Shell COM object for shortcut management"
@@ -54,7 +53,8 @@ function Set-RemoteDebuggerPortInBrowserShortcuts {
         #>
         function Remove-PreviousPortParam {
 
-            [CmdletBinding()]
+            [CmdletBinding(SupportsShouldProcess)]
+            [OutputType([string])]
             param(
                 [Parameter(
                     Mandatory = $true,
@@ -73,19 +73,25 @@ function Set-RemoteDebuggerPortInBrowserShortcuts {
             # continue cleaning while port parameters exist
             while ($portParamIndex -ge 0) {
 
-                # remove port parameter and preserve other arguments
-                $cleanedArgs = $cleanedArgs.Substring(0, $portParamIndex).Trim() `
-                    + " " + $cleanedArgs.Substring($portParamIndex + 25).Trim()
+                if ($PSCmdlet.ShouldProcess(
+                        "Removing debug port parameter at position $portParamIndex",
+                        "Remove port parameter?",
+                        "Cleaning shortcut arguments")) {
 
-                # remove any remaining port number digits
-                while ($cleanedArgs.Length -ge 0 -and
-                    "012345679".IndexOf($cleanedArgs[0]) -ge 0) {
+                    # remove port parameter and preserve other arguments
+                    $cleanedArgs = $cleanedArgs.Substring(0, $portParamIndex).Trim() `
+                        + " " + $cleanedArgs.Substring($portParamIndex + 25).Trim()
 
-                    $cleanedArgs = if ($cleanedArgs.Length -ge 1) {
-                        $cleanedArgs.Substring(1)
-                    }
-                    else {
-                        ""
+                    # remove any remaining port number digits
+                    while ($cleanedArgs.Length -ge 0 -and
+                        "012345679".IndexOf($cleanedArgs[0]) -ge 0) {
+
+                        $cleanedArgs = if ($cleanedArgs.Length -ge 1) {
+                            $cleanedArgs.Substring(1)
+                        }
+                        else {
+                            ""
+                        }
                     }
                 }
 
@@ -113,15 +119,22 @@ function Set-RemoteDebuggerPortInBrowserShortcuts {
         $chromePaths | ForEach-Object {
             Get-ChildItem $PSItem -File -Recurse -ErrorAction SilentlyContinue |
             ForEach-Object {
-                try {
-                    $shortcut = $shell.CreateShortcut($PSItem.FullName)
-                    $shortcut.Arguments = $shortcut.Arguments.Replace("222", "")
-                    $shortcut.Arguments = "$(Remove-PreviousPortParam $shortcut.Arguments) $chromeParam".Trim()
-                    $null = $shortcut.Save()
-                    Write-Verbose "Updated Chrome shortcut: $($PSItem.FullName)"
-                }
-                catch {
-                    Write-Verbose "Failed to update Chrome shortcut: $($PSItem.FullName)"
+
+                if ($PSCmdlet.ShouldProcess(
+                        $PSItem.FullName,
+                        "Update Chrome shortcut with debug port $chromePort")) {
+
+                    try {
+                        $shortcut = $shell.CreateShortcut($PSItem.FullName)
+                        $shortcut.Arguments = $shortcut.Arguments.Replace("222", "")
+                        $shortcut.Arguments = "$(Remove-PreviousPortParam `
+                            $shortcut.Arguments) $chromeParam".Trim()
+                        $null = $shortcut.Save()
+                        Write-Verbose "Updated Chrome shortcut: $($PSItem.FullName)"
+                    }
+                    catch {
+                        Write-Verbose "Failed to update Chrome shortcut: $($PSItem.FullName)"
+                    }
                 }
             }
         }
@@ -143,14 +156,21 @@ function Set-RemoteDebuggerPortInBrowserShortcuts {
         $edgePaths | ForEach-Object {
             Get-ChildItem $PSItem -File -Recurse -ErrorAction SilentlyContinue |
             ForEach-Object {
-                try {
-                    $shortcut = $shell.CreateShortcut($PSItem.FullName)
-                    $shortcut.Arguments = "$(Remove-PreviousPortParam $shortcut.Arguments.Replace($edgeParam, '').Trim())$edgeParam"
-                    $null = $shortcut.Save()
-                    Write-Verbose "Updated Edge shortcut: $($PSItem.FullName)"
-                }
-                catch {
-                    Write-Verbose "Failed to update Edge shortcut: $($PSItem.FullName)"
+
+                if ($PSCmdlet.ShouldProcess(
+                        $PSItem.FullName,
+                        "Update Edge shortcut with debug port $edgePort")) {
+
+                    try {
+                        $shortcut = $shell.CreateShortcut($PSItem.FullName)
+                        $shortcut.Arguments = "$(Remove-PreviousPortParam `
+                            $shortcut.Arguments.Replace($edgeParam, '').Trim())$edgeParam"
+                        $null = $shortcut.Save()
+                        Write-Verbose "Updated Edge shortcut: $($PSItem.FullName)"
+                    }
+                    catch {
+                        Write-Verbose "Failed to update Edge shortcut: $($PSItem.FullName)"
+                    }
                 }
             }
         }

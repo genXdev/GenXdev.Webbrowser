@@ -31,8 +31,8 @@ wl "video" "e.pause()"
 function Get-WebbrowserTabDomNodes {
 
     [CmdletBinding()]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
     [Alias("wl")]
-
     param(
         #######################################################################
         [parameter(
@@ -49,12 +49,37 @@ function Get-WebbrowserTabDomNodes {
             ValueFromRemainingArguments = $false,
             HelpMessage = "The script to modify the output of the query selector"
         )]
-        [string] $ModifyScript = ""
+        [string] $ModifyScript = "",
         #######################################################################
+        [Alias("e")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Use Microsoft Edge browser"
+        )]
+        [switch] $Edge,
+        ###############################################################################
+        [Alias("ch")]
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = "Use Google Chrome browser"
+        )]
+        [switch] $Chrome,
+        ###############################################################################
+        [Parameter(
+            HelpMessage = "Browser page object reference",
+            ValueFromPipeline = $false
+        )]
+        [object] $Page,
+        ###############################################################################
+        [Parameter(
+            HelpMessage = "Browser session reference object",
+            ValueFromPipeline = $false
+        )]
+        [PSCustomObject] $ByReference
+        ###############################################################################
     )
 
     begin {
-
         # convert input parameters to json to prevent script injection attacks
         $jsonModifyScript = $ModifyScript |
         ConvertTo-Json -Compress -Depth 100 |
@@ -100,7 +125,12 @@ for (let i = 0; i < nodes.length; i++) {
         Write-Verbose "Executing query '$QuerySelector' with modifier script:`n$ModifyScript"
 
         # execute the javascript in browser and return results
-        Invoke-WebbrowserEvaluation -Scripts $browserScript
+        $invocationParams = GenXdev.Helpers\Copy-IdenticalParamValues `
+            -BoundParameters $PSBoundParameters `
+            -FunctionName "GenXdev.Webbrowser\Invoke-WebbrowserEvaluation"
+
+        $invocationParams.Scripts = $browserScript
+        Invoke-WebbrowserEvaluation @invocationParams
     }
 
     end {

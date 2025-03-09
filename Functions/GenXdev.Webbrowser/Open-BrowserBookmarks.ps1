@@ -95,62 +95,74 @@ sites gh -e -och -c 5
 function Open-BrowserBookmarks {
 
     [CmdletBinding(DefaultParameterSetName = 'Default')]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
     [Alias("sites")]
+
     param (
-        ###############################################################################
+        #######################################################################
         [parameter(
-            Mandatory = $false,
             Position = 0,
-            ValueFromRemainingArguments,
-            ValueFromPipeline,
-            ValueFromPipelineByPropertyName,
+            Mandatory = $false,
+
+            ValueFromPipeline = $true,
+            ValueFromPipelineByPropertyName = $true,
             HelpMessage = "Search terms to filter bookmarks"
         )]
         [Alias("q", "Value", "Name", "Text", "Query")]
         [string[]] $Queries,
-        ###############################################################################
+
+        #######################################################################
+        [parameter(
+            Position = 1,
+            Mandatory = $false,
+            HelpMessage = "Maximum number of urls to open"
+        )]
+        [int] $Count = 50,
+        #######################################################################
         [parameter(
             Mandatory = $false,
             HelpMessage = "Select in Microsoft Edge"
         )]
         [Alias("e")]
         [switch] $Edge,
-        ###############################################################################
+        #######################################################################
         [parameter(
             Mandatory = $false,
             HelpMessage = "Select in Google Chrome"
         )]
         [Alias("ch")]
         [switch] $Chrome,
-        ###############################################################################
+        #######################################################################
         [parameter(
             Mandatory = $false,
             HelpMessage = "Select in Firefox"
         )]
         [Alias("ff")]
         [switch] $Firefox,
-        ###############################################################################
+        #######################################################################
         [parameter(
             Mandatory = $false,
             HelpMessage = "Open urls in Microsoft Edge"
         )]
         [Alias("oe")]
         [switch] $OpenInEdge,
-        ###############################################################################
+        #######################################################################
         [parameter(
             Mandatory = $false,
             HelpMessage = "Open urls in Google Chrome"
         )]
         [Alias("och")]
         [switch] $OpenInChrome,
-        ###############################################################################
+        #######################################################################
         [parameter(
             Mandatory = $false,
             HelpMessage = "Open urls in Firefox"
         )]
         [Alias("off")]
         [switch] $OpenInFirefox,
-        ###############################################################################
+        #######################################################################
         [parameter(
             Mandatory = $false,
             HelpMessage = "Monitor to use (0=default, -1=discard, -2=secondary)"
@@ -158,7 +170,7 @@ function Open-BrowserBookmarks {
         [Alias("m", "mon")]
         [int] $Monitor = -1,
 
-        ###############################################################################
+        #######################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = "Opens in incognito/private browsing mode"
@@ -166,14 +178,14 @@ function Open-BrowserBookmarks {
         [Alias("incognito", "inprivate")]
         [switch] $Private,
 
-        ###############################################################################
+        #######################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = "Force enable debugging port, stopping existing browsers if needed"
         )]
         [switch] $Force,
 
-        ###############################################################################
+        #######################################################################
         [Alias("fs", "f")]
         [Parameter(
             Mandatory = $false,
@@ -181,70 +193,70 @@ function Open-BrowserBookmarks {
         )]
         [switch] $FullScreen,
 
-        ###############################################################################
+        #######################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = "The initial width of the webbrowser window"
         )]
         [int] $Width = -1,
 
-        ###############################################################################
+        #######################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = "The initial height of the webbrowser window"
         )]
         [int] $Height = -1,
 
-        ###############################################################################
+        #######################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = "The initial X position of the webbrowser window"
         )]
         [int] $X = -999999,
 
-        ###############################################################################
+        #######################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = "The initial Y position of the webbrowser window"
         )]
         [int] $Y = -999999,
 
-        ###############################################################################
+        #######################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = "Place browser window on the left side of the screen"
         )]
         [switch] $Left,
 
-        ###############################################################################
+        #######################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = "Place browser window on the right side of the screen"
         )]
         [switch] $Right,
 
-        ###############################################################################
+        #######################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = "Place browser window on the top side of the screen"
         )]
         [switch] $Top,
 
-        ###############################################################################
+        #######################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = "Place browser window on the bottom side of the screen"
         )]
         [switch] $Bottom,
 
-        ###############################################################################
+        #######################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = "Place browser window in the center of the screen"
         )]
         [switch] $Centered,
 
-        ###############################################################################
+        #######################################################################
         [Alias("a", "app", "appmode")]
         [Parameter(
             Mandatory = $false,
@@ -252,7 +264,7 @@ function Open-BrowserBookmarks {
         )]
         [switch] $ApplicationMode,
 
-        ###############################################################################
+        #######################################################################
         [Alias("de", "ne", "NoExtensions")]
         [Parameter(
             Mandatory = $false,
@@ -260,7 +272,7 @@ function Open-BrowserBookmarks {
         )]
         [switch] $NoBrowserExtensions,
 
-        ###############################################################################
+        #######################################################################
         [Alias("lang", "locale")]
         [Parameter(
             Mandatory = $false,
@@ -268,7 +280,7 @@ function Open-BrowserBookmarks {
         )]
         [string] $AcceptLang = $null,
 
-        ###############################################################################
+        #######################################################################
         [Alias("bg")]
         [Parameter(
             Mandatory = $false,
@@ -276,75 +288,66 @@ function Open-BrowserBookmarks {
         )]
         [switch] $RestoreFocus,
 
-        ###############################################################################
+        #######################################################################
         [Alias("nw", "new")]
         [Parameter(
             Mandatory = $false,
             HelpMessage = "Don't re-use existing browser window, instead, create a new one"
         )]
-        [switch] $NewWindow,
-        ###############################################################################
-        [parameter(
-            Mandatory = $false,
-            HelpMessage = "Maximum number of urls to open"
-        )]
-        [int] $Count = 50
-        ###############################################################################
+        [switch] $NewWindow
+        #######################################################################
     )
 
     begin {
 
-        # prepare browser opening parameters by copying relevant ones
-        $boundParams = @{}
-        $boundParams["Monitor"] = $Monitor
+        Write-Verbose "Initializing browser parameters for bookmark search..."
 
-        # set target browser based on parameters
-        if ($OpenInEdge) { $boundParams["Edge"] = $true }
-        if ($OpenInChrome) { $boundParams["Chrome"] = $true }
-        if ($OpenInFirefox) { $boundParams["Firefox"] = $true }
+        # prepare browser opening parameters
+        $invocationParams = GenXdev.Helpers\Copy-IdenticalParamValues `
+            -BoundParameters $PSBoundParameters `
+            -FunctionName "Open-Webbrowser" `
+            -DefaultValues (Get-Variable -Scope Local -Name * -ErrorAction SilentlyContinue)
 
-        # copy remaining window/browser configuration parameters
-        foreach ($key in $PSBoundParameters.Keys) {
-            if ($key -notin @('Queries', 'Chrome', 'Firefox', 'Edge', 'Count',
-                    'OpenInEdge', 'OpenInChrome', 'OpenInFirefox', 'Monitor')) {
-                $boundParams[$key] = $PSBoundParameters[$key]
-            }
+        # remove count parameter as it's not used by Open-Webbrowser
+        if ($invocationParams.ContainsKey("Count")) {
+
+            $null = $invocationParams.Remove("Count")
         }
 
-        Write-Verbose "Initialized browser parameters for bookmark opening"
+        # configure target browser based on parameters
+        if ($OpenInEdge) { $invocationParams["Edge"] = $true }
+        if ($OpenInChrome) { $invocationParams["Chrome"] = $true }
+        if ($OpenInFirefox) { $invocationParams["Firefox"] = $true }
     }
 
     process {
 
+        Write-Verbose ("Searching bookmarks with criteria: " + ($Queries -join ", "))
+
         # setup bookmark search parameters
-        $findParams = @{
-            PassThru = $true
-            Queries  = $Queries
-        }
+        $findParams = GenXdev.Helpers\Copy-IdenticalParamValues `
+            -BoundParameters $PSBoundParameters `
+            -FunctionName "Find-BrowserBookmark" `
+            -DefaultValues (Get-Variable -Scope Local -Name * `
+                -ErrorAction SilentlyContinue)
 
-        # configure which browsers to search
-        if ($Chrome) { $findParams["Chrome"] = $true }
-        if ($Edge) { $findParams["Edge"] = $true }
-        if ($Firefox) { $findParams["Firefox"] = $true }
-
-        Write-Verbose "Searching bookmarks with criteria: $($Queries -join ',')"
+        $findParams["PassThru"] = $true
 
         # find matching bookmarks and extract urls
-        $urls = @(Find-BrowserBookmarks @findParams |
+        $urls = @(Find-BrowserBookmark @findParams |
             ForEach-Object Url |
             Select-Object -First $Count)
 
-        # handle case when no bookmarks found
         if ($urls.Length -eq 0) {
             Write-Host "No bookmarks found matching the criteria"
             return
         }
 
-        Write-Verbose "Found $($urls.Length) matching bookmarks, opening in browser"
+        Write-Verbose "Opening $($urls.Length) matching bookmarks in browser..."
 
         # pass urls to browser opening function
-        $boundParams["Url"] = $urls
-        Open-Webbrowser @boundParams
+        $invocationParams["Url"] = $urls
+        Open-Webbrowser @invocationParams
     }
 
     end {

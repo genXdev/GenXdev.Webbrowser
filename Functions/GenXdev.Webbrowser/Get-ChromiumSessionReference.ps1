@@ -24,11 +24,11 @@ Select-WebbrowserTab -ByReference $ref
 function Get-ChromiumSessionReference {
 
     [CmdletBinding()]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
     [OutputType([hashtable])]
     param()
 
     begin {
-
         # verify if a browser session exists in global scope
         Write-Verbose "Checking for active browser session"
 
@@ -49,7 +49,7 @@ function Get-ChromiumSessionReference {
         if (($null -eq $Global:chromeSession) -or
             ($Global:chromeSession -isnot [PSCustomObject])) {
 
-            throw "No active browser session. Use Select-WebbrowserTab first."
+            throw "No browser available with open debugging port, use -Force to restart"
         }
 
         Write-Verbose "Found active session"

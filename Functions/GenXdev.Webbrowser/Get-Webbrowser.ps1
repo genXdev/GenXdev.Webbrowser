@@ -35,7 +35,6 @@ function Get-Webbrowser {
     param()
 
     begin {
-
         # ensure the HKEY_CURRENT_USER registry drive is mounted
         if (!(Test-Path HKCU:\)) {
             $null = New-PSDrive -Name HKCU `

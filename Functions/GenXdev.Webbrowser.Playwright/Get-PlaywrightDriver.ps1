@@ -3,13 +3,21 @@ using namespace System.Management.Automation
 using namespace System.Collections.Concurrent
 using namespace Microsoft.Playwright
 
+# suppress global variable warning as this is required for browser instance sharing
+[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute(
+    "PSAvoidGlobalVars",
+    "",
+    Justification = "Required for maintaining browser state across sessions"
+)]
+param()
+
 ################################################################################
 <#
 .SYNOPSIS
 Creates or retrieves a configured Playwright browser instance.
 
 .DESCRIPTION
-Manages Playwright browser instances with support for Chrome, Firefox and Webkit.
+iManages Playwright browser instances with support for Chrome, Firefox and Webkit.
 Handles browser window positioning, state persistence, and reconnection to
 existing instances. Provides a unified interface for browser automation tasks.
 
@@ -75,7 +83,7 @@ Get-PlaywrightDriver -WsEndpoint "ws://localhost:9222"
 function Get-PlaywrightDriver {
 
     [CmdletBinding(DefaultParameterSetName = 'Default')]
-
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
     param (
         ########################################################################
         [Parameter(
@@ -203,13 +211,12 @@ function Get-PlaywrightDriver {
 
 
     begin {
-
         Write-Verbose "Initializing Playwright driver for $BrowserType browser"
 
         # ensure browser dependencies are installed
         Update-PlaywrightDriverCache
 
-        # normalize empty reference key to default
+        # normalize reference key for consistency
         $referenceKey = [string]::IsNullOrWhiteSpace($ReferenceKey) ? `
             "Default" : $ReferenceKey
 
@@ -218,42 +225,48 @@ function Get-PlaywrightDriver {
 
     process {
 
-        # handle websocket connection mode
+        # handle websocket connection mode first
         if ($PSCmdlet.ParameterSetName -eq 'WebSocket') {
+
             Write-Verbose "Connecting to existing browser via WebSocket"
             return Connect-PlaywrightViaDebuggingPort -WsEndpoint $WsEndpoint
         }
 
-        # check for existing browser instance
+        # attempt to retrieve existing browser instance
+        $browser = $null
         if (-not $Global:GenXdevPlaywrightBrowserDictionary.TryGetValue(
                 $referenceKey, [ref]$browser)) {
 
             Write-Verbose "Creating new browser instance"
 
-            # configure launch options
+            # configure browser launch options
             $launchOptions = @{
                 Headless = -not $Visible
                 Args     = @()
             }
 
-            # configure window dimensions if specified
+            # add window sizing if specified
             if ($Width -gt 0 -and $Height -gt 0) {
+
                 Write-Verbose "Setting window size to ${Width}x${Height}"
                 $launchOptions.Args += "--window-size=${Width},${Height}"
             }
 
-            # setup profile persistence if requested
+            # configure profile persistence
             if ($PersistBrowserState) {
-                $profileDir = Get-PlaywrightProfileDirectory -BrowserType $BrowserType
+
+                $profileDir = Get-PlaywrightProfileDirectory `
+                    -BrowserType $BrowserType
+
                 Write-Verbose "Using profile directory: $profileDir"
                 $launchOptions.Args += "--user-data-dir=$profileDir"
             }
 
             try {
-                # initialize playwright
+                # initialize playwright instance
                 $pw = [Microsoft.Playwright.Playwright]::CreateAsync().Result
 
-                # launch browser based on selected type
+                # launch browser based on type
                 $browser = switch ($BrowserType) {
                     "Chromium" { $pw.Chromium.LaunchAsync($launchOptions).Result }
                     "Firefox" { $pw.Firefox.LaunchAsync($launchOptions).Result }
@@ -271,11 +284,12 @@ function Get-PlaywrightDriver {
         }
 
         if ($X -ne -999999 -or $Y -ne -999999) {
-            Write-Warning "Window positioning is not yet supported in Playwright"
+            Write-Warning "Window positioning not yet supported in Playwright"
         }
 
-        # navigate to initial url if specified
+        # handle initial navigation if URL specified
         if ($Url) {
+
             Write-Verbose "Navigating to $Url"
             $page = $browser.NewPageAsync().Result
             $null = $page.GotoAsync($Url).Wait()

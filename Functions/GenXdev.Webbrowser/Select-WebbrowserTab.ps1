@@ -38,6 +38,9 @@ Selects first tab containing "github.com" in Edge browser using alias.
 function Select-WebbrowserTab {
 
     [CmdletBinding(DefaultParameterSetName = "ById")]
+    [OutputType([string], [PSCustomObject])]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
     [Alias("st", "Select-BrowserTab")]
 
     param(
@@ -59,6 +62,7 @@ function Select-WebbrowserTab {
             HelpMessage = "Selects first tab containing this name in URL"
         )]
         [ValidateNotNullOrEmpty()]
+        [SupportsWildcards()]
         [string] $Name,
 
         ########################################################################
@@ -96,7 +100,6 @@ function Select-WebbrowserTab {
     )
 
     begin {
-
         # determine debugging port based on browser selection or reference
         $debugPort = if ($null -ne $ByReference) {
             $ByReference.webSocketDebuggerUrl -replace "ws://localhost:(\d+)/.*", '$1'
@@ -157,7 +160,7 @@ function Select-WebbrowserTab {
                 Debugurl = "http://localhost:$debugPort"
                 Port     = $debugPort
                 Browser  = Connect-PlaywrightViaDebuggingPort `
-                    -WsEndpoint "http://localhost:$debugPort" 
+                    -WsEndpoint "http://localhost:$debugPort"
             }
 
             $Global:CurrentChromiumDebugPort = $debugPort
@@ -182,10 +185,9 @@ function Select-WebbrowserTab {
                 if ($Force -and ($null -eq $ByReference)) {
 
                     # force browser restart if requested
-                    $null = Get-Process msedge, chrome | Stop-Process -Force
                     $null = Close-Webbrowser -Chrome:$Chrome -Edge:$Edge -Force -Chromium
 
-                    $invocationArguments = Copy-IdenticalParamValues `
+                    $invocationArguments = GenXdev.Helpers\Copy-IdenticalParamValues `
                         -BoundParameters $PSBoundParameters `
                         -FunctionName "GenXdev.Webbrowser\Open-Webbrowser" `
                         -DefaultValues (Get-Variable -Scope Local -Name * `
@@ -200,7 +202,7 @@ function Select-WebbrowserTab {
 
                     $null = Open-Webbrowser @invocationArguments
 
-                    $invocationArguments = Copy-IdenticalParamValues `
+                    $invocationArguments = GenXdev.Helpers\Copy-IdenticalParamValues `
                         -BoundParameters $PSBoundParameters `
                         -FunctionName "GenXdev.Webbrowser\Select-WebbrowserTab" `
                         -DefaultValues (Get-Variable -Scope Local -Name * `
@@ -209,13 +211,8 @@ function Select-WebbrowserTab {
                     $invocationArguments.Force = $false
                 }
                 else {
-                    # provide guidance if browser not running
-                    if ($Global:Host.Name.Contains("Visual Studio")) {
-                        return "Press F5 to start debugging first.."
-                    }
-                    else {
-                        return "Use Open-Webbrowser (wb) to start browser with debugging"
-                    }
+
+                    return "No browser available with open debugging port, use -Force to restart"
                 }
 
                 # reset global state

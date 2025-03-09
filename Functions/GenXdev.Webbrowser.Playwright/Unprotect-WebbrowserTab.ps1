@@ -25,14 +25,16 @@ wbctrl -Force
 #>
 function Unprotect-WebbrowserTab {
 
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = "Default")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
     [Alias("wbctrl")]
     param(
         ########################################################################
         [Parameter(
             Mandatory = $false,
             Position = 0,
-            HelpMessage = "Use the current tab already assigned instead of selecting a new one"
+            ParameterSetName = "Default",
+            HelpMessage = "Use current tab instead of selecting a new one"
         )]
         [Alias("current")]
         [switch] $UseCurrent,
@@ -40,7 +42,8 @@ function Unprotect-WebbrowserTab {
         [Parameter(
             Mandatory = $false,
             Position = 1,
-            HelpMessage = "Restart webbrowser (closes all) if no debugging server is detected"
+            ParameterSetName = "Default",
+            HelpMessage = "Restart browser if no debugging server detected"
         )]
         [switch] $Force
         ########################################################################
@@ -50,9 +53,8 @@ function Unprotect-WebbrowserTab {
 
         Write-Verbose "Initializing browser tab control sequence..."
 
-        # get references to powershell window and process for later manipulation
+        # get reference to powershell window for manipulation
         $pwshW = Get-PowershellMainWindow
-        $pwshP = Get-PowershellMainWindowProcess
     }
 
     process {
@@ -65,7 +67,7 @@ function Unprotect-WebbrowserTab {
             Write-Host "Select to which browser tab you want to send commands to"
 
             # attempt to get list of available browser tabs
-            Select-WebbrowserTab -Force:$Force | Out-Host
+            $null = Select-WebbrowserTab -Force:$Force
 
             if ($Global:ChromeSessions.Length -eq 0) {
 
@@ -73,7 +75,7 @@ function Unprotect-WebbrowserTab {
                 return
             }
 
-            # get valid tab selection from user with input validation
+            # get valid tab selection from user
             $tabNumber = 0
             do {
                 $tabNumber = Read-Host "Enter the number of the tab you want to control"
@@ -81,7 +83,8 @@ function Unprotect-WebbrowserTab {
                 $tabCount = $Global:ChromeSessions.Length
 
                 if ($tabNumber -lt 0 -or $tabNumber -gt $tabCount - 1) {
-                    Write-Host "Invalid tab number. Please enter a number between 0 and $($tabCount-1)"
+                    Write-Host ("Invalid tab number. Please enter a number " +
+                        "between 0 and $($tabCount-1)")
                     continue
                 }
                 break
@@ -99,18 +102,19 @@ function Unprotect-WebbrowserTab {
 
         try {
             # maximize the powershell window
-            $pwshW.maximize();
+            $null = $pwshW.Maximize()
         }
         catch {
-            Write-Verbose "Failed to maximize PowerShell window"
+            Write-Verbose "Failed to maximize PowerShell window: $_"
         }
 
-        # create background job to handle keyboard input sequence
+        # create background job for keyboard input
         $null = Start-Job {
 
             # send keyboard sequence to expose chrome controller object
-            $null = Send-Keys `
-                "{Escape}", "Clear-Host", "{Enter}", "`$ChromeController", ".", "^( )", "y" `
+            $null = Send-Key `
+                "{Escape}", "Clear-Host", "{Enter}", "`$ChromeController", ".",
+            "^( )", "y" `
                 -DelayMilliSeconds 500
 
             # allow time for commands to complete
@@ -122,11 +126,11 @@ function Unprotect-WebbrowserTab {
             $null = Get-PowershellMainWindow | ForEach-Object {
 
                 $null = $_.setForeground()
-                Set-ForegroundWindow $_.handle
+                $null = Set-ForegroundWindow $_.handle
             }
         }
         catch {
-            Write-Verbose "Failed to set PowerShell window focus"
+            Write-Verbose "Failed to set PowerShell window focus: $_"
         }
     }
 

@@ -117,6 +117,7 @@ For browsers that are not installed on the system, no actions may be performed o
 function Open-Webbrowser {
 
     [CmdletBinding()]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
     [Alias("wb")]
 
     param(
@@ -282,6 +283,14 @@ function Open-Webbrowser {
         [switch] $NoBrowserExtensions,
 
         ###############################################################################
+        [Alias("allowpopups")]
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "Disable the popup blocker"
+        )]
+        [switch] $DisablePopupBlocker,
+
+        ###############################################################################
         [Alias("lang", "locale")]
         [Parameter(
             Mandatory = $false,
@@ -313,9 +322,7 @@ function Open-Webbrowser {
         [switch] $PassThru
     )
 
-    Begin {
-
-        $window = @();
+    begin {
         $AllScreens = @([WpfScreenHelper.Screen]::AllScreens | ForEach-Object { $PSItem });
 
         Write-Verbose "Open-Webbrowser monitor = $Monitor, Urls=$($Url | ConvertTo-Json)"
@@ -328,7 +335,7 @@ function Open-Webbrowser {
             $UrlSpecified = $false;
 
             # show the help page from github
-            $Url = @("https://github.com/genXdev/GenXdev.Webbrowser/blob/main/README.md#Open-Webbrowser")
+            $Url = @("https://powershell.genxdev.net/")
         }
         else {
 
@@ -337,7 +344,7 @@ function Open-Webbrowser {
                     $NewUrl = $PSItem.Trim(" `"'".ToCharArray());
                     $filePath = $NewUrl
                     try {
-                        $filePath = (Expand-Path $NewUrl);
+                        $filePath = (GenXdev.FileSystem\Expand-Path $NewUrl);
                     }
                     catch {
 
@@ -586,6 +593,12 @@ function Open-Webbrowser {
                     $ArgumentList = $ArgumentList + @("-safe-mode");
                 }
 
+                # '-DisablePopupBlocker' parameter supplied?
+                if ($DisablePopupBlocker -eq $true) {
+
+                    $ArgumentList = $ArgumentList + @("-disable-popup-blocking");
+                }
+
                 # '-AcceptLang' parameter supplied?
                 if ($null -ne $AcceptLang) {
 
@@ -632,7 +645,7 @@ function Open-Webbrowser {
                 if ($browser.Name -like "*Edge*" -or $browser.Name -like "*Chrome*") {
 
                     # get the right debugging tcp port for this browser
-                    $port = Get-ChromiumRemoteDebuggingPort
+                    $port = Get-ChromiumRemoteDebuggingPort -Chrome:$Chrome -Edge:$Edge
 
                     # set default commandline parameters
                     # https://peter.sh/experiments/chromium-command-line-switches/
@@ -661,6 +674,12 @@ function Open-Webbrowser {
                     if ($NoBrowserExtensions -eq $true) {
 
                         $ArgumentList = $ArgumentList + @("--disable-extensions");
+                    }
+
+                    # disable popup blocker
+                    if ($DisablePopupBlocker -eq $true) {
+
+                        $ArgumentList = $ArgumentList + @("--disable-popup-blocking");
                     }
 
                     # '-AcceptLang' parameter supplied?
@@ -731,6 +750,7 @@ function Open-Webbrowser {
 
             $ArgumentList
         }
+
         function findProcess($browser, $process, $State) {
 
             $State.existingWindow = $false;
@@ -941,12 +961,12 @@ function Open-Webbrowser {
                 # if maximized, restore window style
                 if (-not $FullScreen) {
 
-                    $window[0].Show() | Out-Null
-                    $window[0].Restore() | Out-Null;
+                    $null = $window[0].Show() | Out-Null
+                    $null = $window[0].Restore() | Out-Null;
                 }
 
                 # move it to it's place
-                $window[0].Move($X, $Y, $Width, $Height)  | Out-Null
+                $null = $window[0].Move($X, $Y, $Width, $Height)  | Out-Null
             }
 
             Start-Sleep 2 | Out-Null
@@ -1114,7 +1134,7 @@ function Open-Webbrowser {
 
                         # send F11
                         $helper = New-Object -ComObject WScript.Shell;
-                        $helper.sendKeys("{F11}");
+                        $null = $helper.sendKeys("{F11}");
                         Write-Verbose "Sending F11"
                         [System.Threading.Thread]::Sleep(500) | Out-Null
                     }
@@ -1138,8 +1158,8 @@ function Open-Webbrowser {
                 # wait a little
                 [System.Threading.Thread]::Sleep(500) | Out-Null
 
-                $PowerShellWindow.Show() | Out-Null;
-                $PowerShellWindow.SetForeground() | Out-Null;
+                $null = $PowerShellWindow.Show() | Out-Null;
+                $null = $PowerShellWindow.SetForeground() | Out-Null;
 
                 Set-ForegroundWindow ($PowerShellWindow.Handle) | Out-Null;
             }

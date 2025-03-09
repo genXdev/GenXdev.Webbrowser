@@ -97,7 +97,6 @@ function Close-Webbrowser {
     )
 
     begin {
-
         # query system for installed browser information
         $installedBrowsers = Get-Webbrowser
 
@@ -148,7 +147,7 @@ function Close-Webbrowser {
                         # wait up to 4 seconds for process to exit
                         while (!$currentProcess.HasExited -and
                             ([datetime]::UtcNow - $startTime -lt
-                            [TimeSpan]::FromSeconds(4))) {
+                            [System.TimeSpan]::FromSeconds(4))) {
 
                             Start-Sleep -Milliseconds 20
                         }
@@ -164,7 +163,7 @@ function Close-Webbrowser {
 
                 # force terminate if process still running
                 try {
-                    $currentProcess.Kill()
+                            $null = $currentProcess.Kill()
                     Set-Variable -Scope Global -Name "_LastClose$($Browser.Name)" `
                         -Value ([DateTime]::UtcNow)
                 }

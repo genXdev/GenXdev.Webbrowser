@@ -25,6 +25,7 @@ Connect-PlaywrightViaDebuggingPort `
 function Connect-PlaywrightViaDebuggingPort {
 
     [CmdletBinding()]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
     param(
         ########################################################################
         [Parameter(
@@ -38,26 +39,24 @@ function Connect-PlaywrightViaDebuggingPort {
     )
 
     begin {
-
-        # log the connection attempt with the provided endpoint
+        # log connection attempt for debugging purposes
         Write-Verbose "Attempting to connect to browser at: $WsEndpoint"
     }
 
     process {
         try {
-            # initialize a new playwright instance asynchronously
+            # create new playwright instance
             Write-Verbose "Creating Playwright instance"
             $playwright = [Microsoft.Playwright.Playwright]::CreateAsync().Result
 
-            # establish CDP connection to the browser using the websocket endpoint
+            # connect to browser using CDP protocol
             Write-Verbose "Connecting to browser via CDP"
             $browser = $playwright.Chromium.ConnectOverCDPAsync($WsEndpoint).Result
 
-            # store the browser instance in global dictionary for later access
+            # store browser instance for module-wide access
             Write-Verbose "Storing browser instance in global dictionary"
             $Global:GenXdevPlaywrightBrowserDictionary[$WsEndpoint] = $browser
 
-            # return the connected browser instance to the caller
             return $browser
         }
         catch {

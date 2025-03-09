@@ -23,6 +23,7 @@ function Resume-WebbrowserTabVideo {
 
     [CmdletBinding()]
     [Alias("wbvideoplay")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
     param (
         ########################################################################
     )

@@ -43,7 +43,8 @@ Imports a collection of bookmarks into Google Chrome.
 #>
 function Import-BrowserBookmarks {
 
-    [CmdletBinding(DefaultParameterSetName = 'Default')]
+    [CmdletBinding(DefaultParameterSetName = 'Default', SupportsShouldProcess)]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
     param (
         ########################################################################
         [Parameter(
@@ -83,9 +84,8 @@ function Import-BrowserBookmarks {
     )
 
     begin {
-
-        # ensure the expand-path cmdlet is available for file operations
-        if (-not (Get-Command -Name Expand-Path -ErrorAction SilentlyContinue)) {
+        # ensure the GenXdev.FileSystem\Expand-Path cmdlet is available for file operations
+        if (-not (Get-Command -Name GenXdev.FileSystem\Expand-Path -ErrorAction SilentlyContinue)) {
             Import-Module GenXdev.FileSystem
         }
 
@@ -103,7 +103,7 @@ function Import-BrowserBookmarks {
         }
         elseif ($InputFile) {
             Write-Verbose "Reading bookmarks from CSV: $InputFile"
-            Import-Csv -Path (Expand-Path $InputFile)
+            Import-Csv -Path (GenXdev.FileSystem\Expand-Path $InputFile)
         }
         else {
             Write-Host "Please provide either an InputFile or Bookmarks collection."
@@ -143,9 +143,11 @@ function Import-BrowserBookmarks {
             $bookmarksFilePath = Join-Path -Path $env:LOCALAPPDATA `
                 -ChildPath 'Microsoft\Edge\User Data\Default\Bookmarks'
 
-            Write-Verbose "Writing bookmarks to Edge at: $bookmarksFilePath"
-            Write-Bookmarks -BookmarksFilePath $bookmarksFilePath `
-                -BookmarksToWrite $importedBookmarks
+            if ($PSCmdlet.ShouldProcess($bookmarksFilePath, "Import bookmarks to Microsoft Edge")) {
+                Write-Verbose "Writing bookmarks to Edge at: $bookmarksFilePath"
+                Write-Bookmarks -BookmarksFilePath $bookmarksFilePath `
+                    -BookmarksToWrite $importedBookmarks
+            }
         }
         elseif ($Chrome) {
             $browser = $installedBrowsers |
@@ -159,9 +161,11 @@ function Import-BrowserBookmarks {
             $bookmarksFilePath = Join-Path -Path $env:LOCALAPPLOAD `
                 -ChildPath 'Google\Chrome\User Data\Default\Bookmarks'
 
-            Write-Verbose "Writing bookmarks to Chrome at: $bookmarksFilePath"
-            Write-Bookmarks -BookmarksFilePath $bookmarksFilePath `
-                -BookmarksToWrite $importedBookmarks
+            if ($PSCmdlet.ShouldProcess($bookmarksFilePath, "Import bookmarks to Google Chrome")) {
+                Write-Verbose "Writing bookmarks to Chrome at: $bookmarksFilePath"
+                Write-Bookmarks -BookmarksFilePath $bookmarksFilePath `
+                    -BookmarksToWrite $importedBookmarks
+            }
         }
         elseif ($Firefox) {
             Write-Host "Firefox import not supported"
@@ -177,84 +181,95 @@ function Import-BrowserBookmarks {
 
 # helper function to write bookmarks to browser's bookmark file
 function Write-Bookmarks {
+    [CmdletBinding(SupportsShouldProcess)]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
     param (
+        [Parameter(Mandatory)]
         [string]$BookmarksFilePath,
+
+        [Parameter(Mandatory)]
         [array]$BookmarksToWrite
     )
 
-    if ($Edge -or $Chrome) {
-        $bookmarksContent = if (Test-Path $BookmarksFilePath) {
-            Get-Content -Path $BookmarksFilePath -Raw | ConvertFrom-Json
+    if (-not ($Edge -or $Chrome)) { return }
+
+    $bookmarksContent = if (Test-Path $BookmarksFilePath) {
+        Get-Content -Path $BookmarksFilePath -Raw | ConvertFrom-Json
+    }
+    else {
+        @{
+            roots = @{
+                bookmark_bar = @{children = @() }
+                other        = @{children = @() }
+                synced       = @{children = @() }
+            }
         }
-        else {
-            @{
-                roots = @{
-                    bookmark_bar = @{children = @() }
-                    other        = @{children = @() }
-                    synced       = @{children = @() }
-                }
+    }
+
+    $changes = $false
+    foreach ($bookmark in $BookmarksToWrite) {
+        if (-not $PSCmdlet.ShouldProcess(
+                "$BookmarksFilePath",
+                "Add bookmark '$($bookmark.Name)' to $(if($Edge){'Edge'}else{'Chrome'}) at folder '$($bookmark.Folder)'"
+            )) { continue }
+
+        $newBookmark = @{
+            type          = "url"
+            name          = $bookmark.Name
+            url           = $bookmark.URL
+            date_added    = if ($bookmark.DateAdded) {
+                [string]$bookmark.DateAdded.ToFileTimeUtc()
+            }
+            else {
+                [string][DateTime]::UtcNow.ToFileTimeUtc()
+            }
+            date_modified = if ($bookmark.DateModified) {
+                [string]$bookmark.DateModified.ToFileTimeUtc()
+            }
+            else {
+                $null
             }
         }
 
-        foreach ($bookmark in $BookmarksToWrite) {
-            $newBookmark = @{
-                type          = "url"
-                name          = $bookmark.Name
-                url           = $bookmark.URL
-                date_added    = if ($bookmark.DateAdded) {
-                    [string]$bookmark.DateAdded.ToFileTimeUtc()
-                }
-                else {
-                    [string][DateTime]::UtcNow.ToFileTimeUtc()
-                }
-                date_modified = if ($bookmark.DateModified) {
-                    [string]$bookmark.DateModified.ToFileTimeUtc()
-                }
-                else {
-                    $null
-                }
+        # Determine the folder to add the bookmark to
+        $folderPath = $bookmark.Folder -split '\\'
+        $currentNode = $bookmarksContent.roots.bookmark_bar
+
+        foreach ($folder in $folderPath) {
+            if ($folder -eq 'Bookmarks Bar') {
+                $currentNode = $bookmarksContent.roots.bookmark_bar
             }
-
-            # Determine the folder to add the bookmark to
-            $folderPath = $bookmark.Folder -split '\\'
-            $currentNode = $bookmarksContent.roots.bookmark_bar
-
-            foreach ($folder in $folderPath) {
-                if ($folder -eq 'Bookmarks Bar') {
-                    $currentNode = $bookmarksContent.roots.bookmark_bar
-                }
-                elseif ($folder -eq 'Other Bookmarks') {
-                    $currentNode = $bookmarksContent.roots.other
-                }
-                elseif ($folder -eq 'Synced Bookmarks') {
-                    $currentNode = $bookmarksContent.roots.synced
+            elseif ($folder -eq 'Other Bookmarks') {
+                $currentNode = $bookmarksContent.roots.other
+            }
+            elseif ($folder -eq 'Synced Bookmarks') {
+                $currentNode = $bookmarksContent.roots.synced
+            }
+            else {
+                $existingFolder = $currentNode.children | Where-Object { $PSItem.type -eq 'folder' -and $PSItem.name -eq $folder }
+                if ($existingFolder) {
+                    $currentNode = $existingFolder
                 }
                 else {
-                    $existingFolder = $currentNode.children | Where-Object { $PSItem.type -eq 'folder' -and $PSItem.name -eq $folder }
-                    if ($existingFolder) {
-                        $currentNode = $existingFolder
+                    $newFolder = @{
+                        type     = 'folder'
+                        name     = $folder
+                        children = @()
                     }
-                    else {
-                        $newFolder = @{
-                            type     = 'folder'
-                            name     = $folder
-                            children = @()
-                        }
-                        $currentNode.children += $newFolder
-                        $currentNode = $newFolder
-                    }
+                    $currentNode.children += $newFolder
+                    $currentNode = $newFolder
                 }
             }
-
-            # Add the new bookmark to the determined folder
-            $currentNode.children += $newBookmark
-
-            $bookmarksContent | ConvertTo-Json -Depth 100 | Set-Content -Path $BookmarksFilePath
         }
-        elseif ($Firefox) {
-            Write-Host "Importing bookmarks to Firefox is currently not supported in this script."
-            # Note: Importing bookmarks to Firefox would require SQLite operations to modify the places.sqlite file, which is more complex and not covered here.
-        }
+
+        # Add the new bookmark to the determined folder
+        $currentNode.children += $newBookmark
+        $changes = $true
+    }
+
+    # Only write file if changes were made and approved
+    if ($changes -and $PSCmdlet.ShouldProcess($BookmarksFilePath, "Save bookmarks file")) {
+        $bookmarksContent | ConvertTo-Json -Depth 100 | Set-Content -Path $BookmarksFilePath
     }
 }
 ################################################################################

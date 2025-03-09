@@ -31,7 +31,6 @@ function Get-DefaultWebbrowser {
     param()
 
     begin {
-
         # define registry paths for url associations and browser information
         $urlAssocPath = "HKCU:\SOFTWARE\Microsoft\Windows\Shell\Associations\" +
         "UrlAssociations\https\UserChoice"

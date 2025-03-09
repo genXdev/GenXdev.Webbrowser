@@ -27,6 +27,7 @@ Uses the function's alias and pipeline input to achieve the same result.
 function Show-WebsiteInAllBrowsers {
 
     [CmdletBinding()]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
     [Alias("Show-UrlInAllBrowsers")]
     param(
         ########################################################################
@@ -43,7 +44,6 @@ function Show-WebsiteInAllBrowsers {
     )
 
     begin {
-
         # log the start of the operation with the target url
         Write-Verbose "Starting browser mosaic layout for URL: $Url"
     }

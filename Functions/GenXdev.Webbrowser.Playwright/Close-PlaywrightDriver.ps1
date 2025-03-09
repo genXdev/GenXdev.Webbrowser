@@ -31,6 +31,7 @@ Closes the default Chromium browser instance using position parameters
 function Close-PlaywrightDriver {
 
     [CmdletBinding()]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
     param (
         ########################################################################
         [Parameter(
@@ -52,7 +53,6 @@ function Close-PlaywrightDriver {
     )
 
     begin {
-
         # ensure the browser cache dictionary is initialized
         Write-Verbose "Initializing browser cache dictionary"
         Update-PlaywrightDriverCache

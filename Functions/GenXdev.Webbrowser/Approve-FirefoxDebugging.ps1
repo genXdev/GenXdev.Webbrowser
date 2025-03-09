@@ -22,7 +22,6 @@ function Approve-FirefoxDebugging {
     param()
 
     begin {
-
         # construct the path to firefox profiles using environment variables
         $profilesPath = Join-Path -Path $env:APPDATA -ChildPath "Mozilla\Firefox\Profiles"
         Write-Verbose "Searching for Firefox profiles in: $profilesPath"

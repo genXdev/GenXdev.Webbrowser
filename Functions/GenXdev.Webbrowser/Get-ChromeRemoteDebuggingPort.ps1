@@ -26,6 +26,7 @@ function Get-ChromeRemoteDebuggingPort {
     [CmdletBinding()]
     [OutputType([System.Int32])]
     [Alias("Get-ChromePort")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
 
     param()
 
@@ -40,25 +41,25 @@ function Get-ChromeRemoteDebuggingPort {
         # check if a custom port is configured in the global scope
         if ($Global:ChromeDebugPort) {
 
-            # attempt to parse the global port value to ensure it's a valid number
+            # attempt to parse the global port value
             if ([int]::TryParse($Global:ChromeDebugPort, [ref] $port)) {
 
-                # log successful use of custom port
-                Write-Verbose "Using configured Chrome debug port: $port"
+                Write-Verbose `
+                    -Message "Using configured Chrome debug port: $port"
             }
             else {
 
-                # log fallback to default port due to invalid configuration
-                Write-Verbose "Invalid port config, using default port: $port"
+                Write-Verbose `
+                    -Message "Invalid port config, using default port: $port"
             }
         }
         else {
 
-            # log use of default port when no custom port is configured
-            Write-Verbose "No custom port configured, using default port: $port"
+            Write-Verbose `
+                -Message "No custom port configured, using default port: $port"
         }
 
-        # ensure the port is available in global scope for other functions
+        # ensure the port is available in global scope
         $null = Set-Variable `
             -Name ChromeDebugPort `
             -Value $port `

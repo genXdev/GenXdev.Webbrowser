@@ -16,52 +16,69 @@ wbsst
 #>
 function Stop-WebbrowserVideos {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
     [Alias("wbsst")]
     [Alias("ssst")]
     [Alias("wbvideostop")]
-    param()
+    param(
+        [Alias("e")]
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "Opens in Microsoft Edge"
+        )]
+        [switch] $Edge,
+        ###############################################################################
+        [Alias("ch")]
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = "Opens in Google Chrome"
+        )]
+        [switch] $Chrome
+    )
 
     begin {
-
         Write-Verbose "Starting video pause operation across browser sessions"
 
-        # store the current chrome session reference to restore it later
-        $origReference = $Global:chromeSession
+        # store the current session reference to restore it later
+        $script:originalSession = $script:chromeSession
 
         # ensure we have an active browser session
-        if (($null -eq $Global:chromeSessions) -or
-            ($Global:chromeSessions.Count -eq 0)) {
+        if (($null -eq $script:chromeSessions) -or
+            ($script:chromeSessions.Count -eq 0)) {
 
             # select a browser tab if none are active
-            $null = Select-WebbrowserTab
+            $null = Select-WebbrowserTab -Chrome:$chrome -Edge:$edge
         }
     }
 
     process {
-
         # iterate through each browser session and pause videos
-        $chromeSessions | ForEach-Object {
+        $script:chromeSessions | ForEach-Object {
 
-            try {
-                Write-Verbose "Attempting to pause videos in session: $_"
+            $currentSession = $_
+            if ($PSCmdlet.ShouldProcess("Browser session", "Pause videos")) {
 
-                # select the current tab for processing
-                Select-WebbrowserTab -ByReference $_
+                try {
+                    Write-Verbose "Attempting to pause videos in session: $currentSession"
 
-                # execute pause() command on all video elements
-                Get-WebbrowserTabDomNodes "video" "e.pause()"
-            }
-            catch {
-                Write-Warning "Failed to pause videos in session: $_"
+                    # select the current tab for processing
+                    $null = Select-WebbrowserTab -ByReference $currentSession -Chrome:$chrome -Edge:$edge
+
+                    # execute pause() command on all video elements
+                    Get-WebbrowserTabDomNodes "video" "e.pause()" -Chrome:$chrome -Edge:$edge -ByReference $currentSession -Page:($Global:chromeController)
+                }
+                catch {
+                    Write-Warning "Failed to pause videos in session: $currentSession"
+                }
             }
         }
     }
 
     end {
-
         Write-Verbose "Restoring original browser session reference"
-        $Global:chromeSession = $origReference
+        $script:chromeSession = $script:originalSession
     }
 }
 ################################################################################

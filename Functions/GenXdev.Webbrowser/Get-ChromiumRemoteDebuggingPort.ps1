@@ -25,11 +25,14 @@ function Get-ChromiumRemoteDebuggingPort {
     [CmdletBinding()]
     [OutputType([int])]
     [Alias('Get-BrowserDebugPort')]
-    param()
+    param(
+
+        [switch] $Chrome,
+        [switch] $Edge
+    )
     ############################################################################
 
     begin {
-
         # verbose output to indicate start of browser detection
         Write-Verbose "Starting detection of default Chromium browser type"
 
@@ -43,6 +46,20 @@ function Get-ChromiumRemoteDebuggingPort {
     }
 
     process {
+
+        if ($Chrome) {
+            # return chrome debugging port
+            Write-Verbose "Using Chrome debugging port"
+            Get-ChromeRemoteDebuggingPort
+            return;
+        }
+
+        if ($Edge) {
+            # return edge debugging port
+            Write-Verbose "Using Edge debugging port"
+            Get-EdgeRemoteDebuggingPort
+            return;
+        }
 
         # determine and return appropriate debugging port based on browser
         if (($null -ne $defaultBrowser) -and
