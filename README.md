@@ -885,8 +885,7 @@ Update-Module
 ### SYNTAX 
 ````PowerShell 
 
-   Get-WebbrowserTabDomNodes [-QuerySelector] <String> [[-ModifyScript] <String>] [-Edge] [-Chrome] [-Page <Object>] [-ByReference <PSObject>]   
-   [<CommonParameters>]  
+   Get-WebbrowserTabDomNodes [-QuerySelector] <String> [[-ModifyScript] <String>] [-Edge] [-Chrome] [-Page <Object>] [-ByReference <PSObject>] [<CommonParameters>]  
 ```` 
 
 ### DESCRIPTION 
@@ -1054,8 +1053,7 @@ Update-Module
 ### SYNTAX 
 ````PowerShell 
 
-   Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-NoAutoSelectTab] [-Edge] [-Chrome] [-Page <Object>] [-ByReference <PSObject>]   
-   [<CommonParameters>]  
+   Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-NoAutoSelectTab] [-Edge] [-Chrome] [-Page <Object>] [-ByReference <PSObject>] [<CommonParameters>]  
 ```` 
 
 ### DESCRIPTION 
@@ -1241,9 +1239,9 @@ Update-Module
 ### SYNTAX 
 ````PowerShell 
 
-   Open-BrowserBookmarks [[-Queries] <String[]>] [[-Count] <Int32>] [-Edge] [-Chrome] [-Firefox] [-OpenInEdge] [-OpenInChrome] [-OpenInFirefox] [-Monitor   
-   <Int32>] [-Private] [-Force] [-FullScreen] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered]   
-   [-ApplicationMode] [-NoBrowserExtensions] [-AcceptLang <String>] [-RestoreFocus] [-NewWindow] [<CommonParameters>]  
+   Open-BrowserBookmarks [[-Queries] <String[]>] [[-Count] <Int32>] [-Edge] [-Chrome] [-Firefox] [-OpenInEdge] [-OpenInChrome] [-OpenInFirefox] [-Monitor <Int32>] [-Private] [-Force]   
+   [-FullScreen] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-AcceptLang <String>]   
+   [-RestoreFocus] [-NewWindow] [<CommonParameters>]  
 ```` 
 
 ### DESCRIPTION 
@@ -1481,9 +1479,9 @@ Update-Module
 ### SYNTAX 
 ````PowerShell 
 
-   Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Monitor <Int32>] [-FullScreen] [-Width <Int32>]   
-   [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-DisablePopupBlocker]   
-   [-AcceptLang <String>] [-RestoreFocus] [-NewWindow] [-PassThru] [<CommonParameters>]  
+   Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Monitor <Int32>] [-FullScreen] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y   
+   <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-DisablePopupBlocker] [-AcceptLang <String>] [-RestoreFocus] [-NewWindow] [-PassThru]   
+   [<CommonParameters>]  
 ```` 
 
 ### DESCRIPTION 
@@ -2166,8 +2164,8 @@ Update-Module
 ### SYNTAX 
 ````PowerShell 
 
-   Get-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [-Visible] [-Url <String>] [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>]   
-   [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen] [-PersistBrowserState] [<CommonParameters>]  
+   Get-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [-Visible] [-Url <String>] [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-Left]   
+   [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen] [-PersistBrowserState] [<CommonParameters>]  
    Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]  
 ```` 
 
