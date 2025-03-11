@@ -75,7 +75,14 @@ function Get-WebbrowserTabDomNodes {
             HelpMessage = "Browser session reference object",
             ValueFromPipeline = $false
         )]
-        [PSCustomObject] $ByReference
+        [PSCustomObject] $ByReference,
+        ###############################################################################
+        [Parameter(
+            Mandatory = $false,
+            ValueFromPipeline = $false,
+            HelpMessage = "Prevent automatic tab selection"
+        )]
+        [switch] $NoAutoSelectTab
         ###############################################################################
     )
 

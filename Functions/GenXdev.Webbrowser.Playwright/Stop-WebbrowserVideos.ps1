@@ -42,11 +42,12 @@ function Stop-WebbrowserVideos {
         Write-Verbose "Starting video pause operation across browser sessions"
 
         # store the current session reference to restore it later
-        $script:originalSession = $script:chromeSession
+        $originalSession = $Global:chromeSession
+        $originalController = $Global:chromeController
 
         # ensure we have an active browser session
-        if (($null -eq $script:chromeSessions) -or
-            ($script:chromeSessions.Count -eq 0)) {
+        if (($null -eq $Global:chromeSessions) -or
+            ($Global:chromeSessions.Count -eq 0)) {
 
             # select a browser tab if none are active
             $null = Select-WebbrowserTab -Chrome:$chrome -Edge:$edge
@@ -55,22 +56,23 @@ function Stop-WebbrowserVideos {
 
     process {
         # iterate through each browser session and pause videos
-        $script:chromeSessions | ForEach-Object {
+        $Global:chromeSessions | ForEach-Object {
 
             $currentSession = $_
+            if ($null -eq $_) { return }
             if ($PSCmdlet.ShouldProcess("Browser session", "Pause videos")) {
 
                 try {
                     Write-Verbose "Attempting to pause videos in session: $currentSession"
 
                     # select the current tab for processing
-                    $null = Select-WebbrowserTab -ByReference $currentSession -Chrome:$chrome -Edge:$edge
+                    $null = Select-WebbrowserTab -ByReference $currentSession
 
                     # execute pause() command on all video elements
-                    Get-WebbrowserTabDomNodes "video" "e.pause()" -Chrome:$chrome -Edge:$edge -ByReference $currentSession -Page:($Global:chromeController)
+                    Get-WebbrowserTabDomNodes "video" "e.pause()" -NoAutoSelectTab
                 }
                 catch {
-                    Write-Warning "Failed to pause videos in session: $currentSession"
+                    Write-Warning "Failed to pause videos in session: $currentSession  `r`n$($_.Exception.Message)"
                 }
             }
         }
@@ -78,7 +80,8 @@ function Stop-WebbrowserVideos {
 
     end {
         Write-Verbose "Restoring original browser session reference"
-        $script:chromeSession = $script:originalSession
+        $Global:chromeSession = $originalSession
+        $Global:chromeController = $originalController
     }
 }
 ################################################################################
