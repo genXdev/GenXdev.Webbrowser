@@ -52,7 +52,7 @@ function Clear-WebbrowserTabSiteApplicationData {
         Write-Verbose "Preparing JavaScript code to clear browser storage"
 
         # javascript snippet that clears all browser storage types
-        [string] $LocationJSScriptLet = "`"javascript:(function()%7BlocalStorage." +
+        [string] $LocationJSScriptLet = ("`"javascript:(function()%7BlocalStorage." +
             "clear()%3BsessionStorage.clear()%3Bdocument.cookie.split(\`"%3B\`")." +
             "forEach(function(c)%7Bdocument.cookie%3Dc.replace(%2F%5E %2B%2F%2C\`"\`")" +
             ".replace(%2F%3D.*%2F%2C\`"%3D%3Bexpires%3D\`"%2Bnew Date().toUTCString()" +
@@ -63,7 +63,7 @@ function Clear-WebbrowserTabSiteApplicationData {
             "navigator)%7Bnavigator.serviceWorker.getRegistrations().then(" +
             "(registrations)%3D>%7Bregistrations.forEach((registration)%3D>%7B" +
             "registration.unregister()%7D)%7D)%7Dalert('All browser storage " +
-            "cleared!')%7D)()`"" | ConvertFrom-Json
+            "cleared!')%7D)()`"") | ConvertFrom-Json
     }
 
     process {
@@ -76,7 +76,7 @@ function Clear-WebbrowserTabSiteApplicationData {
         Write-Verbose "Executing clear storage script in browser tab"
 
         # execute the javascript in the browser tab
-        Set-WebbrowserTabLocation @LocationJSScriptLet
+        Set-WebbrowserTabLocation @PSBoundParameters
     }
 
     end {

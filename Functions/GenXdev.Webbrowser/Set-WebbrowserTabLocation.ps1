@@ -84,7 +84,7 @@ function Set-WebbrowserTabLocation {
         if ($PSCmdlet.ShouldProcess($Url, "Navigate to URL")) {
 
             Write-Verbose "Navigating to URL: $Url"
-            $null = $Global:chromeController.GotoAsync($Url).Wait()
+            $null = $Global:chromeController.GotoAsync($Url).Result
         }
     }
 
