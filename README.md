@@ -889,7 +889,8 @@ Update-Module
 ````PowerShell 
 
    Get-WebbrowserTabDomNodes [-QuerySelector] <String> [[-ModifyScript] <String>] [-Edge]   
-   [-Chrome] [-Page <Object>] [-ByReference <PSObject>] [-NoAutoSelectTab] [<CommonParameters>]  
+   [-Chrome] [-Page <Object>] [-ByReference <PSObject>] [-NoAutoSelectTab]   
+   [<CommonParameters>]  
 ```` 
 
 ### DESCRIPTION 
@@ -1257,8 +1258,8 @@ Update-Module
 
    Open-BrowserBookmarks [[-Queries] <String[]>] [[-Count] <Int32>] [-Edge] [-Chrome]   
    [-Firefox] [-OpenInEdge] [-OpenInChrome] [-OpenInFirefox] [-Monitor <Int32>] [-Private]   
-   [-Force] [-FullScreen] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-Left]   
-   [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions]   
+   [-Force] [-FullScreen] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>]   
+   [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions]   
    [-AcceptLang <String>] [-RestoreFocus] [-NewWindow] [<CommonParameters>]  
 ```` 
 
@@ -1767,7 +1768,8 @@ Update-Module
 
    Select-WebbrowserTab [[-Id] <Int32>] [-Edge] [-Chrome] [-Force] [<CommonParameters>]  
    Select-WebbrowserTab [-Name] <String> [-Edge] [-Chrome] [-Force] [<CommonParameters>]  
-   Select-WebbrowserTab [-Edge] [-Chrome] -ByReference <PSObject> [-Force] [<CommonParameters>]  
+   Select-WebbrowserTab [-Edge] [-Chrome] -ByReference <PSObject> [-Force]   
+   [<CommonParameters>]  
 ```` 
 
 ### DESCRIPTION 

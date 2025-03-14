@@ -163,7 +163,7 @@ function Close-Webbrowser {
 
                 # force terminate if process still running
                 try {
-                            $null = $currentProcess.Kill()
+                    $null = $currentProcess.Kill()
                     Set-Variable -Scope Global -Name "_LastClose$($Browser.Name)" `
                         -Value ([DateTime]::UtcNow)
                 }
