@@ -324,8 +324,7 @@ Update-Module
 ### SYNTAX 
 ````PowerShell 
 
-   Close-Webbrowser [[-Edge]] [[-Chrome]] [[-Chromium]] [[-Firefox]]   
-   [[-IncludeBackgroundProcesses]] [<CommonParameters>]  
+   Close-Webbrowser [[-Edge]] [[-Chrome]] [[-Chromium]] [[-Firefox]] [[-IncludeBackgroundProcesses]] [<CommonParameters>]  
    Close-Webbrowser [[-All]] [[-IncludeBackgroundProcesses]] [<CommonParameters>]  
 ```` 
 
@@ -448,8 +447,7 @@ Update-Module
 ### SYNTAX 
 ````PowerShell 
 
-   Export-BrowserBookmarks [-OutputFile] <String> [-Chrome] [-Edge] [-Firefox]   
-   [<CommonParameters>]  
+   Export-BrowserBookmarks [-OutputFile] <String> [-Chrome] [-Edge] [-Firefox] [<CommonParameters>]  
 ```` 
 
 ### DESCRIPTION 
@@ -513,8 +511,7 @@ Update-Module
 ### SYNTAX 
 ````PowerShell 
 
-   Find-BrowserBookmark [[-Queries] <String[]>] [-Edge] [-Chrome] [-Firefox] [-Count <Int32>]   
-   [-PassThru] [<CommonParameters>]  
+   Find-BrowserBookmark [[-Queries] <String[]>] [-Edge] [-Chrome] [-Firefox] [-Count <Int32>] [-PassThru] [<CommonParameters>]  
 ```` 
 
 ### DESCRIPTION 
@@ -888,9 +885,8 @@ Update-Module
 ### SYNTAX 
 ````PowerShell 
 
-   Get-WebbrowserTabDomNodes [-QuerySelector] <String> [[-ModifyScript] <String>] [-Edge]   
-   [-Chrome] [-Page <Object>] [-ByReference <PSObject>] [-NoAutoSelectTab]   
-   [<CommonParameters>]  
+   Get-WebbrowserTabDomNodes [-QuerySelector] <String> [[-ModifyScript] <String>] [-Edge] [-Chrome] [-Page <Object>] [-ByReference <PSObject>]   
+   [-NoAutoSelectTab] [<CommonParameters>]  
 ```` 
 
 ### DESCRIPTION 
@@ -977,12 +973,9 @@ Update-Module
 ### SYNTAX 
 ````PowerShell 
 
-   Import-BrowserBookmarks [-Chrome] [-Edge] [-Firefox] [-WhatIf] [-Confirm]   
-   [<CommonParameters>]  
-   Import-BrowserBookmarks [[-InputFile] <String>] [-Chrome] [-Edge] [-Firefox] [-WhatIf]   
-   [-Confirm] [<CommonParameters>]  
-   Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome] [-Edge] [-Firefox] [-WhatIf]   
-   [-Confirm] [<CommonParameters>]  
+   Import-BrowserBookmarks [-Chrome] [-Edge] [-Firefox] [-WhatIf] [-Confirm] [<CommonParameters>]  
+   Import-BrowserBookmarks [[-InputFile] <String>] [-Chrome] [-Edge] [-Firefox] [-WhatIf] [-Confirm] [<CommonParameters>]  
+   Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome] [-Edge] [-Firefox] [-WhatIf] [-Confirm] [<CommonParameters>]  
 ```` 
 
 ### DESCRIPTION 
@@ -1068,8 +1061,8 @@ Update-Module
 ### SYNTAX 
 ````PowerShell 
 
-   Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-NoAutoSelectTab] [-Edge]   
-   [-Chrome] [-Page <Object>] [-ByReference <PSObject>] [<CommonParameters>]  
+   Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-NoAutoSelectTab] [-Edge] [-Chrome] [-Page <Object>] [-ByReference <PSObject>]   
+   [<CommonParameters>]  
 ```` 
 
 ### DESCRIPTION 
@@ -1182,8 +1175,7 @@ Update-Module
    -------------------------- EXAMPLE 4 --------------------------  
    PS>  
    # Support for promises and more  
-   # this function returns all rows of all tables/datastores of all databases of indexedDb in   
-   the selected tab  
+   # this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab  
    # beware, not all websites use indexedDb, it could return an empty set  
    Select-WebbrowserTab -Force;  
    Set-WebbrowserTabLocation "https://www.youtube.com/"  
@@ -1256,11 +1248,9 @@ Update-Module
 ### SYNTAX 
 ````PowerShell 
 
-   Open-BrowserBookmarks [[-Queries] <String[]>] [[-Count] <Int32>] [-Edge] [-Chrome]   
-   [-Firefox] [-OpenInEdge] [-OpenInChrome] [-OpenInFirefox] [-Monitor <Int32>] [-Private]   
-   [-Force] [-FullScreen] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>]   
-   [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions]   
-   [-AcceptLang <String>] [-RestoreFocus] [-NewWindow] [<CommonParameters>]  
+   Open-BrowserBookmarks [[-Queries] <String[]>] [[-Count] <Int32>] [-Edge] [-Chrome] [-Firefox] [-OpenInEdge] [-OpenInChrome] [-OpenInFirefox] [-Monitor   
+   <Int32>] [-Private] [-Force] [-FullScreen] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered]   
+   [-ApplicationMode] [-NoBrowserExtensions] [-AcceptLang <String>] [-RestoreFocus] [-NewWindow] [<CommonParameters>]  
 ```` 
 
 ### DESCRIPTION 
@@ -1498,11 +1488,9 @@ Update-Module
 ### SYNTAX 
 ````PowerShell 
 
-   Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chromium]   
-   [-Firefox] [-All] [-Monitor <Int32>] [-FullScreen] [-Width <Int32>] [-Height <Int32>] [-X   
-   <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode]   
-   [-NoBrowserExtensions] [-DisablePopupBlocker] [-AcceptLang <String>] [-RestoreFocus]   
-   [-NewWindow] [-PassThru] [<CommonParameters>]  
+   Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Monitor <Int32>] [-FullScreen] [-Width   
+   <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions]   
+   [-DisablePopupBlocker] [-AcceptLang <String>] [-RestoreFocus] [-NewWindow] [-PassThru] [<CommonParameters>]  
 ```` 
 
 ### DESCRIPTION 
@@ -1728,15 +1716,12 @@ Update-Module
 
        Requires the Windows 10+ Operating System  
        This cmdlet was mend to be used, interactively.  
-       It performs some strange tricks to position windows, including invoking alt-tab   
-       keystrokes.  
+       It performs some strange tricks to position windows, including invoking alt-tab keystrokes.  
        It is best not to touch the keyboard or mouse, while it is doing that.  
        For fast launches of multple urls:  
        SET    : -Monitor -1  
-       AND    : DO NOT use any of these switches: -X, -Y, -Left, -Right, -Top, -Bottom or   
-       -RestoreFocus  
-       For browsers that are not installed on the system, no actions may be performed or   
-       errors occur - at all.  
+       AND    : DO NOT use any of these switches: -X, -Y, -Left, -Right, -Top, -Bottom or -RestoreFocus  
+       For browsers that are not installed on the system, no actions may be performed or errors occur - at all.  
    -------------------------- EXAMPLE 1 --------------------------  
    PS C:\> url from parameter  
    PS> Open-Webbrowser -Chrome -Left -Top -Url "https://genxdev.net/"  
@@ -1768,8 +1753,7 @@ Update-Module
 
    Select-WebbrowserTab [[-Id] <Int32>] [-Edge] [-Chrome] [-Force] [<CommonParameters>]  
    Select-WebbrowserTab [-Name] <String> [-Edge] [-Chrome] [-Force] [<CommonParameters>]  
-   Select-WebbrowserTab [-Edge] [-Chrome] -ByReference <PSObject> [-Force]   
-   [<CommonParameters>]  
+   Select-WebbrowserTab [-Edge] [-Chrome] -ByReference <PSObject> [-Force] [<CommonParameters>]  
 ```` 
 
 ### DESCRIPTION 
@@ -1953,8 +1937,7 @@ Update-Module
 
    Set-WebbrowserTabLocation [-Url] <String> [-WhatIf] [-Confirm] [<CommonParameters>]  
    Set-WebbrowserTabLocation [-Url] <String> [-Edge] [-WhatIf] [-Confirm] [<CommonParameters>]  
-   Set-WebbrowserTabLocation [-Url] <String> [-Chrome] [-WhatIf] [-Confirm]   
-   [<CommonParameters>]  
+   Set-WebbrowserTabLocation [-Url] <String> [-Chrome] [-WhatIf] [-Confirm] [<CommonParameters>]  
 ```` 
 
 ### DESCRIPTION 
@@ -2102,8 +2085,7 @@ Update-Module
 ### SYNTAX 
 ````PowerShell 
 
-   Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>]   
-   [<CommonParameters>]  
+   Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [<CommonParameters>]  
 ```` 
 
 ### DESCRIPTION 
@@ -2191,10 +2173,8 @@ Update-Module
 ### SYNTAX 
 ````PowerShell 
 
-   Get-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [-Visible] [-Url   
-   <String>] [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>]   
-   [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen] [-PersistBrowserState]   
-   [<CommonParameters>]  
+   Get-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [-Visible] [-Url <String>] [-Monitor <Int32>] [-Width <Int32>] [-Height   
+   <Int32>] [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen] [-PersistBrowserState] [<CommonParameters>]  
    Get-PlaywrightDriver -WsEndpoint <String> [<CommonParameters>]  
 ```` 
 
@@ -2549,8 +2529,7 @@ Update-Module
 ### SYNTAX 
 ````PowerShell 
 
-   Update-PlaywrightDriverCache [-BrowserDictionary] <ConcurrentDictionary`2> [-WhatIf]   
-   [-Confirm] [<CommonParameters>]  
+   Update-PlaywrightDriverCache [-BrowserDictionary] <ConcurrentDictionary`2> [-WhatIf] [-Confirm] [<CommonParameters>]  
 ```` 
 
 ### DESCRIPTION 
