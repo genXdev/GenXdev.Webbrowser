@@ -38,10 +38,10 @@ function Get-WebbrowserTabDomNodes {
         [parameter(
             Mandatory = $true,
             Position = 0,
-            HelpMessage = "The query selector string to use for selecting DOM nodes"
+            HelpMessage = "The query selector string or array of strings to use for selecting DOM nodes"
         )]
         [ValidateNotNullOrEmpty()]
-        [string] $QuerySelector,
+        [string[]] $QuerySelector,
         #######################################################################
         [parameter(
             Mandatory = $false,
@@ -92,36 +92,68 @@ function Get-WebbrowserTabDomNodes {
         ConvertTo-Json -Compress -Depth 100 |
         ConvertTo-Json -Compress
 
-        $jsonQuerySelector = $QuerySelector |
+        $jsonQuerySelector = @($QuerySelector) |
         ConvertTo-Json -Compress -Depth 100 |
         ConvertTo-Json -Compress
 
         # javascript that will be executed in the browser context
         # it handles both simple HTML extraction and custom modifications
         $browserScript = @"
+        debugger;
 let modifyScript = JSON.parse($jsonModifyScript);
-let querySelector = JSON.parse($jsonQuerySelector);
-let nodes = document.querySelectorAll(querySelector);
+let selectors = JSON.parse($jsonQuerySelector);
+selectors = selectors instanceof Array ? selectors : [selectors];
+let currentSelector = selectors[0];
+async function* traverseNodes(node, selectorIndex) {
+    if (selectorIndex >= selectors.length) return;
 
-for (let i = 0; i < nodes.length; i++) {
-    let node = nodes[i];
-    if (!!modifyScript && modifyScript != "") {
-        try {
-            yield (
-               await (
-                   async function(e, i, n, modifyScript) {
-                       return eval(modifyScript);
-                   }
-                 )(node, i, nodes, modifyScript)
-            );
+    let currentSelector = selectors[selectorIndex];
+    let nodes = node.querySelectorAll(currentSelector);
+
+    for (let i = 0; i < nodes.length; i++) {
+        let currentNode = nodes[i];
+
+        // Check for Shadow DOM
+        if (currentNode.shadowRoot) {
+            yield* traverseNodes(currentNode.shadowRoot, selectorIndex + 1);
+            continue;
         }
-        catch (e) {
-            yield e+'';
+
+        // Check for IFrames
+        if (currentNode.tagName === 'IFRAME') {
+            try {
+                let iframeDoc = currentNode.contentDocument || currentNode.contentWindow.document;
+                yield* traverseNodes(iframeDoc, selectorIndex + 1);
+            } catch(e) {
+                // Handle cross-origin iframe access errors
+                console.warn('Cannot access iframe content');
+            }
+            continue;
+        }
+
+        // If this is the last selector, process the node
+        if (selectorIndex === selectors.length - 1) {
+            if (!!modifyScript && modifyScript != "") {
+                try {
+                    yield await (async function(e, i, n, modifyScript) {
+                        return eval(modifyScript);
+                    })(currentNode, i, nodes, modifyScript);
+                } catch (e) {
+                    yield e+'';
+                }
+            } else {
+                yield currentNode.outerHTML;
+            }
+        } else {
+            // Continue traversing with next selector
+            yield* traverseNodes(currentNode, selectorIndex + 1);
         }
     }
-    else {
-       yield node.outerHTML;
-    }
+}
+
+// Start traversal from document root
+for await (let result of traverseNodes(document, 0)) {
+    yield result;
 }
 "@
     }
