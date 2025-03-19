@@ -12,7 +12,7 @@
 RootModule = 'GenXdev.Webbrowser.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.136.2025'
+ModuleVersion = '1.138.2025'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Core'
@@ -51,10 +51,10 @@ ClrVersion = '9.0.1'
 ProcessorArchitecture = 'Amd64'
 
 # Modules that must be imported into the global environment prior to importing this module
-RequiredModules = @(@{ModuleName = 'GenXdev.Data'; ModuleVersion = '1.136.2025'; }, 
-               @{ModuleName = 'GenXdev.Helpers'; ModuleVersion = '1.136.2025'; }, 
-               @{ModuleName = 'GenXdev.Windows'; ModuleVersion = '1.136.2025'; }, 
-               @{ModuleName = 'GenXdev.FileSystem'; ModuleVersion = '1.136.2025'; })
+RequiredModules = @(@{ModuleName = 'GenXdev.Data'; ModuleVersion = '1.138.2025'; }, 
+               @{ModuleName = 'GenXdev.Helpers'; ModuleVersion = '1.138.2025'; }, 
+               @{ModuleName = 'GenXdev.Windows'; ModuleVersion = '1.138.2025'; }, 
+               @{ModuleName = 'GenXdev.FileSystem'; ModuleVersion = '1.138.2025'; })
 
 # Assemblies that must be loaded prior to importing this module
 # RequiredAssemblies = @()
@@ -112,7 +112,7 @@ ModuleList = @('GenXdev.Webbrowser')
 FileList = 'GenXdev.Webbrowser.Playwright.psm1', 'GenXdev.Webbrowser.psd1', 
                'GenXdev.Webbrowser.psm1', 'LICENSE', 'license.txt', 'powershell.jpg', 
                'README.md', 
-               'Tests\GenXdev.Webbrowser.Playwright\_AssureTypes.Tests.ps1', 
+               'Tests\GenXdev.Webbrowser.Playwright\AssureTypes.Tests.ps1', 
                'Tests\GenXdev.Webbrowser.Playwright\Close-PlaywrightDriver.Tests.ps1', 
                'Tests\GenXdev.Webbrowser.Playwright\Connect-PlaywrightViaDebuggingPort.Tests.ps1', 
                'Tests\GenXdev.Webbrowser.Playwright\Get-PlaywrightDriver.Tests.ps1', 
@@ -144,7 +144,7 @@ FileList = 'GenXdev.Webbrowser.Playwright.psm1', 'GenXdev.Webbrowser.psd1',
                'Tests\GenXdev.Webbrowser\Set-RemoteDebuggerPortInBrowserShortcuts.Tests.ps1', 
                'Tests\GenXdev.Webbrowser\Set-WebbrowserTabLocation.Tests.ps1', 
                'Tests\GenXdev.Webbrowser\Show-WebsiteInAllBrowsers.Tests.ps1', 
-               'Functions\GenXdev.Webbrowser.Playwright\_AssureTypes.ps1', 
+               'Functions\GenXdev.Webbrowser.Playwright\AssureTypes.ps1', 
                'Functions\GenXdev.Webbrowser.Playwright\Close-PlaywrightDriver.ps1', 
                'Functions\GenXdev.Webbrowser.Playwright\Connect-PlaywrightViaDebuggingPort.ps1', 
                'Functions\GenXdev.Webbrowser.Playwright\Get-PlaywrightDriver.ps1', 
