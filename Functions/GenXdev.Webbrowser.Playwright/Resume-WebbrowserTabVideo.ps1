@@ -31,8 +31,8 @@ function Resume-WebbrowserTabVideo {
     begin {
 
         # search for a youtube tab in the current browser session
-        Write-Verbose "Attempting to locate an active YouTube tab..."
-        $null = Select-WebbrowserTab -Name "*youtube*"
+        Microsoft.PowerShell.Utility\Write-Verbose "Attempting to locate an active YouTube tab..."
+        $null = GenXdev.Webbrowser\Select-WebbrowserTab -Name "*youtube*"
     }
 
     process {
@@ -43,12 +43,12 @@ function Resume-WebbrowserTabVideo {
             throw "No YouTube tab found in current browser session"
         }
 
-        Write-Verbose "YouTube tab found - initiating video playback..."
+        Microsoft.PowerShell.Utility\Write-Verbose "YouTube tab found - initiating video playback..."
 
         # execute the play() method on all video elements in the current page
-        $null = Get-WebbrowserTabDomNodes "video" "e.play()"
+        $null = GenXdev.Webbrowser\Get-WebbrowserTabDomNodes "video" "e.play()"
 
-        Write-Verbose "Video playback successfully resumed"
+        Microsoft.PowerShell.Utility\Write-Verbose "Video playback successfully resumed"
     }
 
     end {

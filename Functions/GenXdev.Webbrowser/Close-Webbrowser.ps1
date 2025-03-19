@@ -98,13 +98,13 @@ function Close-Webbrowser {
 
     begin {
         # query system for installed browser information
-        $installedBrowsers = Get-Webbrowser
+        $installedBrowsers = GenXdev.Webbrowser\Get-Webbrowser
 
         # determine system default browser
-        $defaultBrowser = Get-DefaultWebbrowser
+        $defaultBrowser = GenXdev.Webbrowser\Get-DefaultWebbrowser
 
-        Write-Verbose "Found $($installedBrowsers.Count) installed browsers"
-        Write-Verbose "Default browser: $($defaultBrowser.Name)"
+        Microsoft.PowerShell.Utility\Write-Verbose "Found $($installedBrowsers.Count) installed browsers"
+        Microsoft.PowerShell.Utility\Write-Verbose "Default browser: $($defaultBrowser.Name)"
     }
 
     process {
@@ -114,14 +114,14 @@ function Close-Webbrowser {
                 [object] $Browser
             )
 
-            Write-Verbose "Attempting to close $($Browser.Name)"
+            Microsoft.PowerShell.Utility\Write-Verbose "Attempting to close $($Browser.Name)"
 
             # extract process name without extension for matching
             $processName = [System.IO.Path]::GetFileNameWithoutExtension($Browser.Path)
 
             # find and process all matching browser instances
-            Get-Process -Name $processName -ErrorAction SilentlyContinue |
-            ForEach-Object {
+            Microsoft.PowerShell.Management\Get-Process -Name $processName -ErrorAction SilentlyContinue |
+            Microsoft.PowerShell.Core\ForEach-Object {
 
                 $currentProcess = $_
 
@@ -129,14 +129,14 @@ function Close-Webbrowser {
                 if ((-not $IncludeBackgroundProcesses) -and
                     ($currentProcess.MainWindowHandle -eq 0)) {
 
-                    Write-Verbose "Skipping background process $($currentProcess.Id)"
+                    Microsoft.PowerShell.Utility\Write-Verbose "Skipping background process $($currentProcess.Id)"
                     return
                 }
                 elseif ($currentProcess.MainWindowHandle -ne 0) {
 
                     # attempt graceful window close for processes with UI
                     [GenXdev.Helpers.WindowObj]::GetMainWindow($currentProcess) |
-                    ForEach-Object {
+                    Microsoft.PowerShell.Core\ForEach-Object {
 
                         $startTime = [DateTime]::UtcNow
                         $window = $_
@@ -149,11 +149,11 @@ function Close-Webbrowser {
                             ([datetime]::UtcNow - $startTime -lt
                             [System.TimeSpan]::FromSeconds(4))) {
 
-                            Start-Sleep -Milliseconds 20
+                            Microsoft.PowerShell.Utility\Start-Sleep -Milliseconds 20
                         }
 
                         if ($currentProcess.HasExited) {
-                            Set-Variable -Scope Global `
+                            Microsoft.PowerShell.Utility\Set-Variable -Scope Global `
                                 -Name "_LastClose$($Browser.Name)" `
                                 -Value ([DateTime]::UtcNow.AddSeconds(-1))
                             return
@@ -164,19 +164,19 @@ function Close-Webbrowser {
                 # force terminate if process still running
                 try {
                     $null = $currentProcess.Kill()
-                    Set-Variable -Scope Global -Name "_LastClose$($Browser.Name)" `
+                    Microsoft.PowerShell.Utility\Set-Variable -Scope Global -Name "_LastClose$($Browser.Name)" `
                         -Value ([DateTime]::UtcNow)
                 }
                 catch {
-                    Write-Warning "Failed to kill $($Browser.Name) process: $_"
+                    Microsoft.PowerShell.Utility\Write-Warning "Failed to kill $($Browser.Name) process: $_"
                 }
             }
         }
 
         # close all browsers if requested
         if ($All) {
-            Write-Verbose "Closing all browsers"
-            $installedBrowsers | ForEach-Object { Close-BrowserInstance $_ }
+            Microsoft.PowerShell.Utility\Write-Verbose "Closing all browsers"
+            $installedBrowsers | Microsoft.PowerShell.Core\ForEach-Object { Close-BrowserInstance $_ }
             return
         }
 
@@ -191,9 +191,9 @@ function Close-Webbrowser {
 
             # fallback to first available chromium browser
             $installedBrowsers |
-            Where-Object { $_.Name -like "*Edge*" -or $_.Name -like "*Chrome*" } |
-            Select-Object -First 1 |
-            ForEach-Object {
+            Microsoft.PowerShell.Core\Where-Object { $_.Name -like "*Edge*" -or $_.Name -like "*Chrome*" } |
+            Microsoft.PowerShell.Utility\Select-Object -First 1 |
+            Microsoft.PowerShell.Core\ForEach-Object {
                 Close-BrowserInstance $_
             }
             return
@@ -202,20 +202,20 @@ function Close-Webbrowser {
         # handle specific browser closures
         if ($Chrome) {
             $installedBrowsers |
-            Where-Object { $_.Name -like "*Chrome*" } |
-            ForEach-Object { Close-BrowserInstance $_ }
+            Microsoft.PowerShell.Core\Where-Object { $_.Name -like "*Chrome*" } |
+            Microsoft.PowerShell.Core\ForEach-Object { Close-BrowserInstance $_ }
         }
 
         if ($Edge) {
             $installedBrowsers |
-            Where-Object { $_.Name -like "*Edge*" } |
-            ForEach-Object { Close-BrowserInstance $_ }
+            Microsoft.PowerShell.Core\Where-Object { $_.Name -like "*Edge*" } |
+            Microsoft.PowerShell.Core\ForEach-Object { Close-BrowserInstance $_ }
         }
 
         if ($Firefox) {
             $installedBrowsers |
-            Where-Object { $_.Name -like "*Firefox*" } |
-            ForEach-Object { Close-BrowserInstance $_ }
+            Microsoft.PowerShell.Core\Where-Object { $_.Name -like "*Firefox*" } |
+            Microsoft.PowerShell.Core\ForEach-Object { Close-BrowserInstance $_ }
         }
 
         # close default browser if no specific browser selected

@@ -29,7 +29,7 @@ function Get-EdgeRemoteDebuggingPort {
     param()
 
     begin {
-        Write-Verbose "Starting Get-EdgeRemoteDebuggingPort"
+        Microsoft.PowerShell.Utility\Write-Verbose "Starting Get-EdgeRemoteDebuggingPort"
     }
 
     process {
@@ -38,22 +38,22 @@ function Get-EdgeRemoteDebuggingPort {
 
         # check if user has configured a custom port in global scope
         if ($Global:EdgeDebugPort) {
-            Write-Verbose "Found global EdgeDebugPort configuration"
+            Microsoft.PowerShell.Utility\Write-Verbose "Found global EdgeDebugPort configuration"
 
             # attempt to parse the configured port value, keeping default if invalid
             if ([int]::TryParse($Global:EdgeDebugPort, [ref] $port)) {
-                Write-Verbose "Using configured port: $port"
+                Microsoft.PowerShell.Utility\Write-Verbose "Using configured port: $port"
             }
             else {
-                Write-Verbose "Invalid port config, using default: $port"
+                Microsoft.PowerShell.Utility\Write-Verbose "Invalid port config, using default: $port"
             }
         }
         else {
-            Write-Verbose "No custom port configured, using default: $port"
+            Microsoft.PowerShell.Utility\Write-Verbose "No custom port configured, using default: $port"
         }
 
         # ensure global variable matches returned port for consistency
-        $null = Set-Variable `
+        $null = Microsoft.PowerShell.Utility\Set-Variable `
             -Name EdgeDebugPort `
             -Value $port `
             -Scope Global
@@ -63,7 +63,7 @@ function Get-EdgeRemoteDebuggingPort {
     }
 
     end {
-        Write-Verbose "Completed Get-EdgeRemoteDebuggingPort"
+        Microsoft.PowerShell.Utility\Write-Verbose "Completed Get-EdgeRemoteDebuggingPort"
     }
 }
 ################################################################################

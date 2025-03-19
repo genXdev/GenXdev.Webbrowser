@@ -29,7 +29,7 @@ function Set-BrowserVideoFullscreen {
             "document.body.setAttribute('style', 'overflow:hidden');"
         ) -join ''
 
-        Write-Verbose "Prepared JavaScript code for video fullscreen manipulation"
+        Microsoft.PowerShell.Utility\Write-Verbose "Prepared JavaScript code for video fullscreen manipulation"
     }
 
     process {
@@ -37,8 +37,8 @@ function Set-BrowserVideoFullscreen {
         # check if we should proceed with the operation
         if ($PSCmdlet.ShouldProcess("browser video", "Set to fullscreen mode")) {
 
-            Write-Verbose "Executing JavaScript to maximize video element"
-            Invoke-WebbrowserEvaluation $script
+            Microsoft.PowerShell.Utility\Write-Verbose "Executing JavaScript to maximize video element"
+            GenXdev.Webbrowser\Invoke-WebbrowserEvaluation $script
         }
     }
 

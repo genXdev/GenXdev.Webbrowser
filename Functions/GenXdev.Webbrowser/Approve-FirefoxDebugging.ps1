@@ -23,8 +23,8 @@ function Approve-FirefoxDebugging {
 
     begin {
         # construct the path to firefox profiles using environment variables
-        $profilesPath = Join-Path -Path $env:APPDATA -ChildPath "Mozilla\Firefox\Profiles"
-        Write-Verbose "Searching for Firefox profiles in: $profilesPath"
+        $profilesPath = Microsoft.PowerShell.Management\Join-Path -Path $env:APPDATA -ChildPath "Mozilla\Firefox\Profiles"
+        Microsoft.PowerShell.Utility\Write-Verbose "Searching for Firefox profiles in: $profilesPath"
 
         # define new preferences to be added to firefox configuration
         $newPrefs = @(
@@ -47,22 +47,22 @@ function Approve-FirefoxDebugging {
 
         try {
             # locate all firefox preference files recursively
-            $prefFiles = Get-ChildItem -Path $profilesPath `
+            $prefFiles = Microsoft.PowerShell.Management\Get-ChildItem -Path $profilesPath `
                 -Filter "prefs.js" `
                 -File `
                 -Recurse `
                 -ErrorAction SilentlyContinue
 
             foreach ($prefFile in $prefFiles) {
-                Write-Verbose "Processing preferences file: $($prefFile.FullName)"
+                Microsoft.PowerShell.Utility\Write-Verbose "Processing preferences file: $($prefFile.FullName)"
 
                 # safely read existing preferences using system io
                 $prefLines = [System.IO.File]::ReadAllLines($prefFile.FullName)
 
                 # filter out existing debug/app-mode preferences
-                $prefLines = $prefLines | Where-Object {
+                $prefLines = $prefLines | Microsoft.PowerShell.Core\Where-Object {
                     $line = $_
-                    -not ($prefsToFilter | Where-Object { $line.Contains($_) })
+                    -not ($prefsToFilter | Microsoft.PowerShell.Core\Where-Object { $line.Contains($_) })
                 }
 
                 # append new preferences to the filtered configuration
@@ -70,11 +70,11 @@ function Approve-FirefoxDebugging {
 
                 # safely write updated preferences back to file
                 [System.IO.File]::WriteAllLines($prefFile.FullName, $prefLines)
-                Write-Verbose "Successfully updated preferences in: $($prefFile.FullName)"
+                Microsoft.PowerShell.Utility\Write-Verbose "Successfully updated preferences in: $($prefFile.FullName)"
             }
         }
         catch {
-            Write-Error "Failed to update Firefox preferences: $_"
+            Microsoft.PowerShell.Utility\Write-Error "Failed to update Firefox preferences: $_"
             throw
         }
     }

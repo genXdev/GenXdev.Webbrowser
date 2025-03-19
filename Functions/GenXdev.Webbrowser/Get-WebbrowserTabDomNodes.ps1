@@ -89,12 +89,12 @@ function Get-WebbrowserTabDomNodes {
     begin {
         # convert input parameters to json to prevent script injection attacks
         $jsonModifyScript = $ModifyScript |
-        ConvertTo-Json -Compress -Depth 100 |
-        ConvertTo-Json -Compress
+        Microsoft.PowerShell.Utility\ConvertTo-Json -Compress -Depth 100 |
+        Microsoft.PowerShell.Utility\ConvertTo-Json -Compress
 
         $jsonQuerySelector = @($QuerySelector) |
-        ConvertTo-Json -Compress -Depth 100 |
-        ConvertTo-Json -Compress
+        Microsoft.PowerShell.Utility\ConvertTo-Json -Compress -Depth 100 |
+        Microsoft.PowerShell.Utility\ConvertTo-Json -Compress
 
         # javascript that will be executed in the browser context
         # it handles both simple HTML extraction and custom modifications
@@ -161,7 +161,7 @@ for await (let result of traverseNodes(document, 0)) {
     process {
 
         # log the operation for debugging purposes
-        Write-Verbose "Executing query '$QuerySelector' with modifier script:`n$ModifyScript"
+        Microsoft.PowerShell.Utility\Write-Verbose "Executing query '$QuerySelector' with modifier script:`n$ModifyScript"
 
         # execute the javascript in browser and return results
         $invocationParams = GenXdev.Helpers\Copy-IdenticalParamValues `
@@ -169,7 +169,7 @@ for await (let result of traverseNodes(document, 0)) {
             -FunctionName "GenXdev.Webbrowser\Invoke-WebbrowserEvaluation"
 
         $invocationParams.Scripts = $browserScript
-        Invoke-WebbrowserEvaluation @invocationParams
+        GenXdev.Webbrowser\Invoke-WebbrowserEvaluation @invocationParams
     }
 
     end {

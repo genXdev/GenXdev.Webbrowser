@@ -39,7 +39,7 @@ function Stop-WebbrowserVideos {
     )
 
     begin {
-        Write-Verbose "Starting video pause operation across browser sessions"
+        Microsoft.PowerShell.Utility\Write-Verbose "Starting video pause operation across browser sessions"
 
         # store the current session reference to restore it later
         $originalSession = $Global:chromeSession
@@ -50,36 +50,36 @@ function Stop-WebbrowserVideos {
             ($Global:chromeSessions.Count -eq 0)) {
 
             # select a browser tab if none are active
-            $null = Select-WebbrowserTab -Chrome:$chrome -Edge:$edge
+            $null = GenXdev.Webbrowser\Select-WebbrowserTab -Chrome:$chrome -Edge:$edge
         }
     }
 
     process {
         # iterate through each browser session and pause videos
-        $Global:chromeSessions | ForEach-Object {
+        $Global:chromeSessions | Microsoft.PowerShell.Core\ForEach-Object {
 
             $currentSession = $_
             if ($null -eq $_) { return }
             if ($PSCmdlet.ShouldProcess("Browser session", "Pause videos")) {
 
                 try {
-                    Write-Verbose "Attempting to pause videos in session: $currentSession"
+                    Microsoft.PowerShell.Utility\Write-Verbose "Attempting to pause videos in session: $currentSession"
 
                     # select the current tab for processing
-                    $null = Select-WebbrowserTab -ByReference $currentSession
+                    $null = GenXdev.Webbrowser\Select-WebbrowserTab -ByReference $currentSession
 
                     # execute pause() command on all video elements
-                    Get-WebbrowserTabDomNodes "video" "e.pause()" -NoAutoSelectTab
+                    GenXdev.Webbrowser\Get-WebbrowserTabDomNodes "video" "e.pause()" -NoAutoSelectTab
                 }
                 catch {
-                    Write-Warning "Failed to pause videos in session: $currentSession  `r`n$($_.Exception.Message)"
+                    Microsoft.PowerShell.Utility\Write-Warning "Failed to pause videos in session: $currentSession  `r`n$($_.Exception.Message)"
                 }
             }
         }
     }
 
     end {
-        Write-Verbose "Restoring original browser session reference"
+        Microsoft.PowerShell.Utility\Write-Verbose "Restoring original browser session reference"
         $Global:chromeSession = $originalSession
         $Global:chromeController = $originalController
     }

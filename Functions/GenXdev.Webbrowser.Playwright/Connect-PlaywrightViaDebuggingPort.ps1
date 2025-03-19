@@ -40,27 +40,27 @@ function Connect-PlaywrightViaDebuggingPort {
 
     begin {
         # log connection attempt for debugging purposes
-        Write-Verbose "Attempting to connect to browser at: $WsEndpoint"
+        Microsoft.PowerShell.Utility\Write-Verbose "Attempting to connect to browser at: $WsEndpoint"
     }
 
     process {
         try {
             # create new playwright instance
-            Write-Verbose "Creating Playwright instance"
+            Microsoft.PowerShell.Utility\Write-Verbose "Creating Playwright instance"
             $playwright = [Microsoft.Playwright.Playwright]::CreateAsync().Result
 
             # connect to browser using CDP protocol
-            Write-Verbose "Connecting to browser via CDP"
+            Microsoft.PowerShell.Utility\Write-Verbose "Connecting to browser via CDP"
             $browser = $playwright.Chromium.ConnectOverCDPAsync($WsEndpoint).Result
 
             # store browser instance for module-wide access
-            Write-Verbose "Storing browser instance in global dictionary"
+            Microsoft.PowerShell.Utility\Write-Verbose "Storing browser instance in global dictionary"
             $Global:GenXdevPlaywrightBrowserDictionary[$WsEndpoint] = $browser
 
             return $browser
         }
         catch {
-            Write-Error "Failed to connect via debugging port: $_"
+            Microsoft.PowerShell.Utility\Write-Error "Failed to connect via debugging port: $_"
             throw
         }
     }

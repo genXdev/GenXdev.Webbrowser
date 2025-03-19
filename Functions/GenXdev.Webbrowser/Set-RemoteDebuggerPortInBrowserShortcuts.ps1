@@ -29,8 +29,8 @@ function Set-RemoteDebuggerPortInBrowserShortcuts {
 
     begin {
         # initialize windows shell automation object for shortcut manipulation
-        $shell = New-Object -ComObject WScript.Shell
-        Write-Verbose "Created WScript.Shell COM object for shortcut management"
+        $shell = Microsoft.PowerShell.Utility\New-Object -ComObject WScript.Shell
+        Microsoft.PowerShell.Utility\Write-Verbose "Created WScript.Shell COM object for shortcut management"
     }
 
     process {
@@ -103,22 +103,22 @@ function Set-RemoteDebuggerPortInBrowserShortcuts {
         }
 
         # configure chrome debugging settings
-        $chromePort = Get-ChromeRemoteDebuggingPort
+        $chromePort = GenXdev.Webbrowser\Get-ChromeRemoteDebuggingPort
         $chromeParam = " --remote-allow-origins=* --remote-debugging-port=$chromePort"
-        Write-Verbose "Configuring Chrome debugging port: $chromePort"
+        Microsoft.PowerShell.Utility\Write-Verbose "Configuring Chrome debugging port: $chromePort"
 
         # define chrome shortcut paths to process
         $chromePaths = @(
             "$Env:AppData\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\Google Chrome.lnk",
             "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Google Chrome.lnk",
-            (Join-Path (Get-KnownFolderPath StartMenu) "Google Chrome.lnk"),
-            (Join-Path (Get-KnownFolderPath Desktop) "Google Chrome.lnk")
+            (Microsoft.PowerShell.Management\Join-Path (GenXdev.Windows\Get-KnownFolderPath StartMenu) "Google Chrome.lnk"),
+            (Microsoft.PowerShell.Management\Join-Path (GenXdev.Windows\Get-KnownFolderPath Desktop) "Google Chrome.lnk")
         )
 
         # update chrome shortcuts
-        $chromePaths | ForEach-Object {
-            Get-ChildItem $PSItem -File -Recurse -ErrorAction SilentlyContinue |
-            ForEach-Object {
+        $chromePaths | Microsoft.PowerShell.Core\ForEach-Object {
+            Microsoft.PowerShell.Management\Get-ChildItem $PSItem -File -Recurse -ErrorAction SilentlyContinue |
+            Microsoft.PowerShell.Core\ForEach-Object {
 
                 if ($PSCmdlet.ShouldProcess(
                         $PSItem.FullName,
@@ -130,32 +130,32 @@ function Set-RemoteDebuggerPortInBrowserShortcuts {
                         $shortcut.Arguments = "$(Remove-PreviousPortParam `
                             $shortcut.Arguments) $chromeParam".Trim()
                         $null = $shortcut.Save()
-                        Write-Verbose "Updated Chrome shortcut: $($PSItem.FullName)"
+                        Microsoft.PowerShell.Utility\Write-Verbose "Updated Chrome shortcut: $($PSItem.FullName)"
                     }
                     catch {
-                        Write-Verbose "Failed to update Chrome shortcut: $($PSItem.FullName)"
+                        Microsoft.PowerShell.Utility\Write-Verbose "Failed to update Chrome shortcut: $($PSItem.FullName)"
                     }
                 }
             }
         }
 
         # configure edge debugging settings
-        $edgePort = Get-EdgeRemoteDebuggingPort
+        $edgePort = GenXdev.Webbrowser\Get-EdgeRemoteDebuggingPort
         $edgeParam = " --remote-allow-origins=* --remote-debugging-port=$edgePort"
-        Write-Verbose "Configuring Edge debugging port: $edgePort"
+        Microsoft.PowerShell.Utility\Write-Verbose "Configuring Edge debugging port: $edgePort"
 
         # define edge shortcut paths to process
         $edgePaths = @(
             "$Env:AppData\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\Microsoft Edge.lnk",
             "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft Edge.lnk",
-            (Join-Path (Get-KnownFolderPath StartMenu) "Microsoft Edge.lnk"),
-            (Join-Path (Get-KnownFolderPath Desktop) "Microsoft Edge.lnk")
+            (Microsoft.PowerShell.Management\Join-Path (GenXdev.Windows\Get-KnownFolderPath StartMenu) "Microsoft Edge.lnk"),
+            (Microsoft.PowerShell.Management\Join-Path (GenXdev.Windows\Get-KnownFolderPath Desktop) "Microsoft Edge.lnk")
         )
 
         # update edge shortcuts
-        $edgePaths | ForEach-Object {
-            Get-ChildItem $PSItem -File -Recurse -ErrorAction SilentlyContinue |
-            ForEach-Object {
+        $edgePaths | Microsoft.PowerShell.Core\ForEach-Object {
+            Microsoft.PowerShell.Management\Get-ChildItem $PSItem -File -Recurse -ErrorAction SilentlyContinue |
+            Microsoft.PowerShell.Core\ForEach-Object {
 
                 if ($PSCmdlet.ShouldProcess(
                         $PSItem.FullName,
@@ -166,10 +166,10 @@ function Set-RemoteDebuggerPortInBrowserShortcuts {
                         $shortcut.Arguments = "$(Remove-PreviousPortParam `
                             $shortcut.Arguments.Replace($edgeParam, '').Trim())$edgeParam"
                         $null = $shortcut.Save()
-                        Write-Verbose "Updated Edge shortcut: $($PSItem.FullName)"
+                        Microsoft.PowerShell.Utility\Write-Verbose "Updated Edge shortcut: $($PSItem.FullName)"
                     }
                     catch {
-                        Write-Verbose "Failed to update Edge shortcut: $($PSItem.FullName)"
+                        Microsoft.PowerShell.Utility\Write-Verbose "Failed to update Edge shortcut: $($PSItem.FullName)"
                     }
                 }
             }

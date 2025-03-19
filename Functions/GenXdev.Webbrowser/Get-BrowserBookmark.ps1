@@ -61,20 +61,20 @@ function Get-BrowserBookmark {
 
     begin {
         # ensure filesystem module is loaded for path handling
-        if (-not (Get-Command -Name GenXdev.FileSystem\Expand-Path -ErrorAction SilentlyContinue)) {
-            Import-Module GenXdev.FileSystem
+        if (-not (Microsoft.PowerShell.Core\Get-Command -Name GenXdev.FileSystem\Expand-Path -ErrorAction SilentlyContinue)) {
+            Microsoft.PowerShell.Core\Import-Module GenXdev.FileSystem
         }
 
-        Write-Verbose "Getting installed browsers..."
+        Microsoft.PowerShell.Utility\Write-Verbose "Getting installed browsers..."
 
         # get list of installed browsers for validation
-        $Script:installedBrowsers = Get-Webbrowser
+        $Script:installedBrowsers = GenXdev.Webbrowser\Get-Webbrowser
 
         # if no specific browser selected, use system default
         if (-not $Edge -and -not $Chrome -and -not $Firefox) {
 
-            Write-Verbose "No browser specified, detecting default browser..."
-            $defaultBrowser = Get-DefaultWebbrowser
+            Microsoft.PowerShell.Utility\Write-Verbose "No browser specified, detecting default browser..."
+            $defaultBrowser = GenXdev.Webbrowser\Get-DefaultWebbrowser
 
             # set appropriate switch based on default browser
             if ($defaultBrowser.Name -like '*Edge*') {
@@ -87,7 +87,7 @@ function Get-BrowserBookmark {
                 $Firefox = $true
             }
             else {
-                Write-Warning "Default browser is not Edge, Chrome, or Firefox."
+                Microsoft.PowerShell.Utility\Write-Warning "Default browser is not Edge, Chrome, or Firefox."
                 return
             }
         }
@@ -109,14 +109,14 @@ function Get-BrowserBookmark {
                 [string] $browserName
             )
 
-            if (-not (Test-Path $bookmarksFilePath)) {
-                Write-Verbose "Bookmarks file not found: $bookmarksFilePath"
+            if (-not (Microsoft.PowerShell.Management\Test-Path $bookmarksFilePath)) {
+                Microsoft.PowerShell.Utility\Write-Verbose "Bookmarks file not found: $bookmarksFilePath"
                 return @()
             }
 
             # read bookmarks json file
-            $bookmarksContent = Get-Content -Path $bookmarksFilePath -Raw |
-            ConvertFrom-Json
+            $bookmarksContent = Microsoft.PowerShell.Management\Get-Content -Path $bookmarksFilePath -Raw |
+            Microsoft.PowerShell.Utility\ConvertFrom-Json
 
             $bookmarks = [System.Collections.Generic.List[object]]::new()
 
@@ -177,8 +177,8 @@ function Get-BrowserBookmark {
                 [string] $browserName
             )
 
-            if (-not (Test-Path $placesFilePath)) {
-                Write-Verbose "Firefox places.sqlite not found: $placesFilePath"
+            if (-not (Microsoft.PowerShell.Management\Test-Path $placesFilePath)) {
+                Microsoft.PowerShell.Utility\Write-Verbose "Firefox places.sqlite not found: $placesFilePath"
                 return @()
             }
 
@@ -200,7 +200,7 @@ function Get-BrowserBookmark {
 
             try {
 
-                $connection = New-Object System.Data.SQLite.SQLiteConnection($connectionString)
+                $connection = Microsoft.PowerShell.Utility\New-Object System.Data.SQLite.SQLiteConnection($connectionString)
                 $connection.Open()
                 $command = $connection.CreateCommand()
                 $command.CommandText = $query
@@ -221,26 +221,26 @@ function Get-BrowserBookmark {
                 $connection.Close()
             }
             catch {
-                Write-Host "Error reading Firefox bookmarks: $PSItem"
+                Microsoft.PowerShell.Utility\Write-Host "Error reading Firefox bookmarks: $PSItem"
             }
 
             return $bookmarks
         }
 
-        Write-Verbose "Processing browser selection..."
+        Microsoft.PowerShell.Utility\Write-Verbose "Processing browser selection..."
 
         if ($Edge) {
             # validate Edge installation
             $browser = $Script:installedBrowsers |
-            Where-Object { $PSItem.Name -like '*Edge*' }
+            Microsoft.PowerShell.Core\Where-Object { $PSItem.Name -like '*Edge*' }
 
             if (-not $browser) {
-                Write-Warning "Microsoft Edge is not installed."
+                Microsoft.PowerShell.Utility\Write-Warning "Microsoft Edge is not installed."
                 return
             }
 
             # construct path to Edge bookmarks file
-            $bookmarksFilePath = Join-Path `
+            $bookmarksFilePath = Microsoft.PowerShell.Management\Join-Path `
                 -Path $env:LOCALAPPDATA `
                 -ChildPath 'Microsoft\Edge\User Data\Default\Bookmarks'
 
@@ -255,38 +255,38 @@ function Get-BrowserBookmark {
         }
         elseif ($Chrome) {
             # validate Chrome installation
-            $browser = $Script:installedBrowsers | Where-Object { $PSItem.Name -like '*Chrome*' }
+            $browser = $Script:installedBrowsers | Microsoft.PowerShell.Core\Where-Object { $PSItem.Name -like '*Chrome*' }
             if (-not $browser) {
-                Write-Host "Google Chrome is not installed."
+                Microsoft.PowerShell.Utility\Write-Host "Google Chrome is not installed."
                 return
             }
             # construct path to Chrome bookmarks file
-            $bookmarksFilePath = Join-Path -Path "${env:LOCALAPPDATA}" -ChildPath 'Google\Chrome\User Data\Default\Bookmarks'
+            $bookmarksFilePath = Microsoft.PowerShell.Management\Join-Path -Path "${env:LOCALAPPDATA}" -ChildPath 'Google\Chrome\User Data\Default\Bookmarks'
             $rootFolderName = 'Chrome'
             # get Chrome bookmarks
             $bookmarks = Get-ChromiumBookmarks -bookmarksFilePath $bookmarksFilePath -rootFolderName $rootFolderName -browserName ($browser.Name)
         }
         elseif ($Firefox) {
             # validate Firefox installation
-            $browser = $Script:installedBrowsers | Where-Object { $PSItem.Name -like '*Firefox*' }
+            $browser = $Script:installedBrowsers | Microsoft.PowerShell.Core\Where-Object { $PSItem.Name -like '*Firefox*' }
             if (-not $browser) {
-                Write-Host "Mozilla Firefox is not installed."
+                Microsoft.PowerShell.Utility\Write-Host "Mozilla Firefox is not installed."
                 return
             }
             # find Firefox profile folder
             $profileFolderPath = "$env:APPDATA\Mozilla\Firefox\Profiles"
-            $profileFolder = Get-ChildItem -Path $profileFolderPath -Directory | Where-Object { $PSItem.Name -match '\.default-release$' } | Select-Object -First 1
+            $profileFolder = Microsoft.PowerShell.Management\Get-ChildItem -Path $profileFolderPath -Directory | Microsoft.PowerShell.Core\Where-Object { $PSItem.Name -match '\.default-release$' } | Microsoft.PowerShell.Utility\Select-Object -First 1
             if ($null -eq $profileFolder) {
-                Write-Host 'Firefox profile folder not found.'
+                Microsoft.PowerShell.Utility\Write-Host 'Firefox profile folder not found.'
                 return
             }
             # construct path to Firefox places.sqlite file
-            $placesFilePath = Join-Path -Path $profileFolder.FullName -ChildPath 'places.sqlite'
+            $placesFilePath = Microsoft.PowerShell.Management\Join-Path -Path $profileFolder.FullName -ChildPath 'places.sqlite'
             # get Firefox bookmarks
             $bookmarks = Get-FirefoxBookmark -placesFilePath $placesFilePath -browserName ($browser.Name)
         }
         else {
-            Write-Warning 'Please specify either -Chrome, -Edge, or -Firefox switch.'
+            Microsoft.PowerShell.Utility\Write-Warning 'Please specify either -Chrome, -Edge, or -Firefox switch.'
             return
         }
 

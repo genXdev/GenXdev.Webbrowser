@@ -36,55 +36,55 @@ function Get-Webbrowser {
 
     begin {
         # ensure the HKEY_CURRENT_USER registry drive is mounted
-        if (!(Test-Path HKCU:\)) {
-            $null = New-PSDrive -Name HKCU `
+        if (!(Microsoft.PowerShell.Management\Test-Path HKCU:\)) {
+            $null = Microsoft.PowerShell.Management\New-PSDrive -Name HKCU `
                 -PSProvider Registry `
                 -Root HKEY_CURRENT_USER
         }
 
         # ensure the HKEY_LOCAL_MACHINE registry drive is mounted
-        if (!(Test-Path HKLM:\)) {
-            $null = New-PSDrive -Name HKLM `
+        if (!(Microsoft.PowerShell.Management\Test-Path HKLM:\)) {
+            $null = Microsoft.PowerShell.Management\New-PSDrive -Name HKLM `
                 -PSProvider Registry `
                 -Root HKEY_LOCAL_MACHINE
         }
 
         # get the user's default handler for https URLs from registry settings
-        Write-Verbose "Retrieving default browser URL handler ID from registry"
-        $urlHandlerId = Get-ItemProperty `
+        Microsoft.PowerShell.Utility\Write-Verbose "Retrieving default browser URL handler ID from registry"
+        $urlHandlerId = Microsoft.PowerShell.Management\Get-ItemProperty `
             "HKCU:\SOFTWARE\Microsoft\Windows\Shell\Associations\UrlAssociations\https\UserChoice" |
-        Select-Object -ExpandProperty ProgId
+        Microsoft.PowerShell.Utility\Select-Object -ExpandProperty ProgId
     }
 
     process {
 
         # enumerate all browser entries in the Windows registry
-        Write-Verbose "Enumerating installed browsers from registry"
-        Get-ChildItem "HKLM:\SOFTWARE\WOW6432Node\Clients\StartMenuInternet" |
-        ForEach-Object {
+        Microsoft.PowerShell.Utility\Write-Verbose "Enumerating installed browsers from registry"
+        Microsoft.PowerShell.Management\Get-ChildItem "HKLM:\SOFTWARE\WOW6432Node\Clients\StartMenuInternet" |
+        Microsoft.PowerShell.Core\ForEach-Object {
 
             # construct the full registry path for the current browser
             $browserRoot = "HKLM:\SOFTWARE\WOW6432Node\Clients\StartMenuInternet\" +
             "$($PSItem.PSChildName)"
 
             # verify browser has required capabilities and command info
-            if ((Test-Path "$browserRoot\shell\open\command") -and
-                    (Test-Path "$browserRoot\Capabilities")) {
+            if ((Microsoft.PowerShell.Management\Test-Path "$browserRoot\shell\open\command") -and
+                    (Microsoft.PowerShell.Management\Test-Path "$browserRoot\Capabilities")) {
 
-                Write-Verbose "Processing browser details at: $browserRoot"
+                Microsoft.PowerShell.Utility\Write-Verbose "Processing browser details at: $browserRoot"
 
                 # get browser capabilities metadata from registry
-                $capabilities = Get-ItemProperty "$browserRoot\Capabilities"
+                $capabilities = Microsoft.PowerShell.Management\Get-ItemProperty "$browserRoot\Capabilities"
 
                 # extract the browser executable path, removing quotes
-                $browserPath = Get-ItemProperty "$browserRoot\shell\open\command" |
-                Select-Object -ExpandProperty "(default)" |
-                ForEach-Object { $_.Trim('"') }
+                $browserPath = Microsoft.PowerShell.Management\Get-ItemProperty "$browserRoot\shell\open\command" |
+                Microsoft.PowerShell.Utility\Select-Object -ExpandProperty "(default)" |
+                Microsoft.PowerShell.Core\ForEach-Object { $_.Trim('"') }
 
                 # determine if this browser is set as the system default
-                $isDefault = (Test-Path "$browserRoot\Capabilities\URLAssociations") -and
-                        ((Get-ItemProperty "$browserRoot\Capabilities\URLAssociations" |
-                    Select-Object -ExpandProperty https) -eq $urlHandlerId)
+                $isDefault = (Microsoft.PowerShell.Management\Test-Path "$browserRoot\Capabilities\URLAssociations") -and
+                        ((Microsoft.PowerShell.Management\Get-ItemProperty "$browserRoot\Capabilities\URLAssociations" |
+                    Microsoft.PowerShell.Utility\Select-Object -ExpandProperty https) -eq $urlHandlerId)
 
                 # return a hashtable with the browser's details
                 @{

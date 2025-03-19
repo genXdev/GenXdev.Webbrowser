@@ -37,59 +37,59 @@ function Get-DefaultWebbrowser {
         $browserPath = "HKLM:\SOFTWARE\WOW6432Node\Clients\StartMenuInternet"
 
         # ensure HKCU registry drive is available
-        if (!(Test-Path HKCU:)) {
-            $null = New-PSDrive -Name HKCU -PSProvider Registry `
+        if (!(Microsoft.PowerShell.Management\Test-Path HKCU:)) {
+            $null = Microsoft.PowerShell.Management\New-PSDrive -Name HKCU -PSProvider Registry `
                 -Root HKEY_CURRENT_USER
         }
 
         # ensure HKLM registry drive is available
-        if (!(Test-Path HKLM:)) {
-            $null = New-PSDrive -Name HKLM -PSProvider Registry `
+        if (!(Microsoft.PowerShell.Management\Test-Path HKLM:)) {
+            $null = Microsoft.PowerShell.Management\New-PSDrive -Name HKLM -PSProvider Registry `
                 -Root HKEY_LOCAL_MACHINE
         }
 
-        Write-Verbose "Retrieving default browser URL handler configuration"
+        Microsoft.PowerShell.Utility\Write-Verbose "Retrieving default browser URL handler configuration"
 
         # get the default handler ID for HTTPS URLs from user preferences
-        $urlHandlerId = Get-ItemProperty -Path $urlAssocPath |
-        Select-Object -ExpandProperty ProgId
+        $urlHandlerId = Microsoft.PowerShell.Management\Get-ItemProperty -Path $urlAssocPath |
+        Microsoft.PowerShell.Utility\Select-Object -ExpandProperty ProgId
 
-        Write-Verbose "URL handler ID: $urlHandlerId"
+        Microsoft.PowerShell.Utility\Write-Verbose "URL handler ID: $urlHandlerId"
     }
 
     process {
 
-        Write-Verbose "Scanning installed browsers in registry"
+        Microsoft.PowerShell.Utility\Write-Verbose "Scanning installed browsers in registry"
 
         # iterate through all registered browsers in the system
-        foreach ($browser in (Get-ChildItem -Path $browserPath)) {
+        foreach ($browser in (Microsoft.PowerShell.Management\Get-ChildItem -Path $browserPath)) {
 
             # construct the full registry path for the current browser
-            $browserRoot = Join-Path $browserPath $browser.PSChildName
+            $browserRoot = Microsoft.PowerShell.Management\Join-Path $browserPath $browser.PSChildName
 
             # verify browser has required registry keys for URL handling
-            if ((Test-Path "$browserRoot\shell\open\command") -and
-                (Test-Path "$browserRoot\Capabilities\URLAssociations")) {
+            if ((Microsoft.PowerShell.Management\Test-Path "$browserRoot\shell\open\command") -and
+                (Microsoft.PowerShell.Management\Test-Path "$browserRoot\Capabilities\URLAssociations")) {
 
                 # get the HTTPS handler ID for this browser
-                $browserHandler = Get-ItemProperty `
+                $browserHandler = Microsoft.PowerShell.Management\Get-ItemProperty `
                     -Path "$browserRoot\Capabilities\URLAssociations" |
-                Select-Object -ExpandProperty https
+                Microsoft.PowerShell.Utility\Select-Object -ExpandProperty https
 
                 # check if this browser is the default handler
                 if ($browserHandler -eq $urlHandlerId) {
-                    Write-Verbose "Found default browser: $browserRoot"
+                    Microsoft.PowerShell.Utility\Write-Verbose "Found default browser: $browserRoot"
 
                     # return browser details in a hashtable
                     return @{
-                        Name        = (Get-ItemProperty "$browserRoot\Capabilities" |
-                            Select-Object -ExpandProperty ApplicationName)
-                        Description = (Get-ItemProperty "$browserRoot\Capabilities" |
-                            Select-Object -ExpandProperty ApplicationDescription)
-                        Icon        = (Get-ItemProperty "$browserRoot\Capabilities" |
-                            Select-Object -ExpandProperty ApplicationIcon)
-                        Path        = (Get-ItemProperty "$browserRoot\shell\open\command" |
-                            Select-Object -ExpandProperty "(default)").Trim('"')
+                        Name        = (Microsoft.PowerShell.Management\Get-ItemProperty "$browserRoot\Capabilities" |
+                            Microsoft.PowerShell.Utility\Select-Object -ExpandProperty ApplicationName)
+                        Description = (Microsoft.PowerShell.Management\Get-ItemProperty "$browserRoot\Capabilities" |
+                            Microsoft.PowerShell.Utility\Select-Object -ExpandProperty ApplicationDescription)
+                        Icon        = (Microsoft.PowerShell.Management\Get-ItemProperty "$browserRoot\Capabilities" |
+                            Microsoft.PowerShell.Utility\Select-Object -ExpandProperty ApplicationIcon)
+                        Path        = (Microsoft.PowerShell.Management\Get-ItemProperty "$browserRoot\shell\open\command" |
+                            Microsoft.PowerShell.Utility\Select-Object -ExpandProperty "(default)").Trim('"')
                     }
                 }
             }

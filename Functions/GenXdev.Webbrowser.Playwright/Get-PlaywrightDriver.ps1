@@ -211,16 +211,16 @@ function Get-PlaywrightDriver {
 
 
     begin {
-        Write-Verbose "Initializing Playwright driver for $BrowserType browser"
+        Microsoft.PowerShell.Utility\Write-Verbose "Initializing Playwright driver for $BrowserType browser"
 
         # ensure browser dependencies are installed
-        Update-PlaywrightDriverCache
+        GenXdev.Webbrowser\Update-PlaywrightDriverCache
 
         # normalize reference key for consistency
         $referenceKey = [string]::IsNullOrWhiteSpace($ReferenceKey) ? `
             "Default" : $ReferenceKey
 
-        Write-Verbose "Using browser reference key: $referenceKey"
+        Microsoft.PowerShell.Utility\Write-Verbose "Using browser reference key: $referenceKey"
     }
 
     process {
@@ -228,8 +228,8 @@ function Get-PlaywrightDriver {
         # handle websocket connection mode first
         if ($PSCmdlet.ParameterSetName -eq 'WebSocket') {
 
-            Write-Verbose "Connecting to existing browser via WebSocket"
-            return Connect-PlaywrightViaDebuggingPort -WsEndpoint $WsEndpoint
+            Microsoft.PowerShell.Utility\Write-Verbose "Connecting to existing browser via WebSocket"
+            return GenXdev.Webbrowser\Connect-PlaywrightViaDebuggingPort -WsEndpoint $WsEndpoint
         }
 
         # attempt to retrieve existing browser instance
@@ -237,7 +237,7 @@ function Get-PlaywrightDriver {
         if (-not $Global:GenXdevPlaywrightBrowserDictionary.TryGetValue(
                 $referenceKey, [ref]$browser)) {
 
-            Write-Verbose "Creating new browser instance"
+            Microsoft.PowerShell.Utility\Write-Verbose "Creating new browser instance"
 
             # configure browser launch options
             $launchOptions = @{
@@ -248,17 +248,17 @@ function Get-PlaywrightDriver {
             # add window sizing if specified
             if ($Width -gt 0 -and $Height -gt 0) {
 
-                Write-Verbose "Setting window size to ${Width}x${Height}"
+                Microsoft.PowerShell.Utility\Write-Verbose "Setting window size to ${Width}x${Height}"
                 $launchOptions.Args += "--window-size=${Width},${Height}"
             }
 
             # configure profile persistence
             if ($PersistBrowserState) {
 
-                $profileDir = Get-PlaywrightProfileDirectory `
+                $profileDir = GenXdev.Webbrowser\Get-PlaywrightProfileDirectory `
                     -BrowserType $BrowserType
 
-                Write-Verbose "Using profile directory: $profileDir"
+                Microsoft.PowerShell.Utility\Write-Verbose "Using profile directory: $profileDir"
                 $launchOptions.Args += "--user-data-dir=$profileDir"
             }
 
@@ -278,19 +278,19 @@ function Get-PlaywrightDriver {
                     $referenceKey, $browser)
             }
             catch {
-                Write-Error "Failed to launch $BrowserType browser: $_"
+                Microsoft.PowerShell.Utility\Write-Error "Failed to launch $BrowserType browser: $_"
                 return
             }
         }
 
         if ($X -ne -999999 -or $Y -ne -999999) {
-            Write-Warning "Window positioning not yet supported in Playwright"
+            Microsoft.PowerShell.Utility\Write-Warning "Window positioning not yet supported in Playwright"
         }
 
         # handle initial navigation if URL specified
         if ($Url) {
 
-            Write-Verbose "Navigating to $Url"
+            Microsoft.PowerShell.Utility\Write-Verbose "Navigating to $Url"
             $page = $browser.NewPageAsync().Result
             $null = $page.GotoAsync($Url).Wait()
             return $page

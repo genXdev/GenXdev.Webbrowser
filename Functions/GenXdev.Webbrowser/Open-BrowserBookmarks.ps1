@@ -300,13 +300,13 @@ function Open-BrowserBookmarks {
 
     begin {
 
-        Write-Verbose "Initializing browser parameters for bookmark search..."
+        Microsoft.PowerShell.Utility\Write-Verbose "Initializing browser parameters for bookmark search..."
 
         # prepare browser opening parameters
         $invocationParams = GenXdev.Helpers\Copy-IdenticalParamValues `
             -BoundParameters $PSBoundParameters `
-            -FunctionName "Open-Webbrowser" `
-            -DefaultValues (Get-Variable -Scope Local -Name * -ErrorAction SilentlyContinue)
+            -FunctionName "GenXdev.Webbrowser\Open-Webbrowser" `
+            -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable -Scope Local -Name * -ErrorAction SilentlyContinue)
 
         # remove count parameter as it's not used by Open-Webbrowser
         if ($invocationParams.ContainsKey("Count")) {
@@ -322,32 +322,32 @@ function Open-BrowserBookmarks {
 
     process {
 
-        Write-Verbose ("Searching bookmarks with criteria: " + ($Queries -join ", "))
+        Microsoft.PowerShell.Utility\Write-Verbose ("Searching bookmarks with criteria: " + ($Queries -join ", "))
 
         # setup bookmark search parameters
         $findParams = GenXdev.Helpers\Copy-IdenticalParamValues `
             -BoundParameters $PSBoundParameters `
-            -FunctionName "Find-BrowserBookmark" `
-            -DefaultValues (Get-Variable -Scope Local -Name * `
+            -FunctionName "GenXdev.Webbrowser\Find-BrowserBookmark" `
+            -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable -Scope Local -Name * `
                 -ErrorAction SilentlyContinue)
 
         $findParams["PassThru"] = $true
 
         # find matching bookmarks and extract urls
-        $urls = @(Find-BrowserBookmark @findParams |
-            ForEach-Object Url |
-            Select-Object -First $Count)
+        $urls = @(GenXdev.Webbrowser\Find-BrowserBookmark @findParams |
+            Microsoft.PowerShell.Core\ForEach-Object Url |
+            Microsoft.PowerShell.Utility\Select-Object -First $Count)
 
         if ($urls.Length -eq 0) {
-            Write-Host "No bookmarks found matching the criteria"
+            Microsoft.PowerShell.Utility\Write-Host "No bookmarks found matching the criteria"
             return
         }
 
-        Write-Verbose "Opening $($urls.Length) matching bookmarks in browser..."
+        Microsoft.PowerShell.Utility\Write-Verbose "Opening $($urls.Length) matching bookmarks in browser..."
 
         # pass urls to browser opening function
         $invocationParams["Url"] = $urls
-        Open-Webbrowser @invocationParams
+        GenXdev.Webbrowser\Open-Webbrowser @invocationParams
     }
 
     end {

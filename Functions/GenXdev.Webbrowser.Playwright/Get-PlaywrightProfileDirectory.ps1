@@ -36,25 +36,25 @@ function Get-PlaywrightProfileDirectory {
 
     begin {
         # construct the base directory path for all browser profiles
-        $baseDir = Join-Path -Path $env:LOCALAPPDATA `
+        $baseDir = Microsoft.PowerShell.Management\Join-Path -Path $env:LOCALAPPDATA `
             -ChildPath "GenXdev.Powershell\Playwright.profiles\"
 
-        Write-Verbose "Base profile directory: $baseDir"
+        Microsoft.PowerShell.Utility\Write-Verbose "Base profile directory: $baseDir"
     }
 
     process {
 
         # generate the specific browser profile directory path
-        $browserDir = Join-Path -Path $baseDir -ChildPath $BrowserType
+        $browserDir = Microsoft.PowerShell.Management\Join-Path -Path $baseDir -ChildPath $BrowserType
 
-        Write-Verbose "Browser profile directory: $browserDir"
+        Microsoft.PowerShell.Utility\Write-Verbose "Browser profile directory: $browserDir"
 
         # ensure the profile directory exists
-        if (-not (Test-Path -Path $browserDir)) {
+        if (-not (Microsoft.PowerShell.Management\Test-Path -Path $browserDir)) {
 
-            Write-Verbose "Creating new profile directory for $BrowserType"
-            $null = New-Item -ItemType Directory -Path $browserDir -Force
-            Write-Host "Created profile directory for $BrowserType at: $browserDir"
+            Microsoft.PowerShell.Utility\Write-Verbose "Creating new profile directory for $BrowserType"
+            $null = Microsoft.PowerShell.Management\New-Item -ItemType Directory -Path $browserDir -Force
+            Microsoft.PowerShell.Utility\Write-Host "Created profile directory for $BrowserType at: $browserDir"
         }
 
         # return the full profile directory path

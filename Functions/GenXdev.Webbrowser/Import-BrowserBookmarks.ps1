@@ -85,35 +85,35 @@ function Import-BrowserBookmarks {
 
     begin {
         # ensure the GenXdev.FileSystem\Expand-Path cmdlet is available for file operations
-        if (-not (Get-Command -Name GenXdev.FileSystem\Expand-Path -ErrorAction SilentlyContinue)) {
-            Import-Module GenXdev.FileSystem
+        if (-not (Microsoft.PowerShell.Core\Get-Command -Name GenXdev.FileSystem\Expand-Path -ErrorAction SilentlyContinue)) {
+            Microsoft.PowerShell.Core\Import-Module GenXdev.FileSystem
         }
 
         # get list of installed browsers on the system
-        $installedBrowsers = Get-Webbrowser
-        Write-Verbose "Found installed browsers: $($installedBrowsers.Name)"
+        $installedBrowsers = GenXdev.Webbrowser\Get-Webbrowser
+        Microsoft.PowerShell.Utility\Write-Verbose "Found installed browsers: $($installedBrowsers.Name)"
     }
 
     process {
 
         # load bookmarks from either the collection or input file
         $importedBookmarks = if ($Bookmarks) {
-            Write-Verbose "Using provided collection of $($Bookmarks.Count) bookmarks"
+            Microsoft.PowerShell.Utility\Write-Verbose "Using provided collection of $($Bookmarks.Count) bookmarks"
             $Bookmarks
         }
         elseif ($InputFile) {
-            Write-Verbose "Reading bookmarks from CSV: $InputFile"
-            Import-Csv -Path (GenXdev.FileSystem\Expand-Path $InputFile)
+            Microsoft.PowerShell.Utility\Write-Verbose "Reading bookmarks from CSV: $InputFile"
+            Microsoft.PowerShell.Utility\Import-Csv -Path (GenXdev.FileSystem\Expand-Path $InputFile)
         }
         else {
-            Write-Host "Please provide either an InputFile or Bookmarks collection."
+            Microsoft.PowerShell.Utility\Write-Host "Please provide either an InputFile or Bookmarks collection."
             return
         }
 
         # determine target browser if none specified
         if (-not $Edge -and -not $Chrome -and -not $Firefox) {
-            $defaultBrowser = Get-DefaultWebbrowser
-            Write-Verbose "No browser specified, using default: $($defaultBrowser.Name)"
+            $defaultBrowser = GenXdev.Webbrowser\Get-DefaultWebbrowser
+            Microsoft.PowerShell.Utility\Write-Verbose "No browser specified, using default: $($defaultBrowser.Name)"
 
             if ($defaultBrowser.Name -like '*Edge*') {
                 $Edge = $true
@@ -125,7 +125,7 @@ function Import-BrowserBookmarks {
                 $Firefox = $true
             }
             else {
-                Write-Host "Default browser is not Edge, Chrome, or Firefox."
+                Microsoft.PowerShell.Utility\Write-Host "Default browser is not Edge, Chrome, or Firefox."
                 return
             }
         }
@@ -133,45 +133,45 @@ function Import-BrowserBookmarks {
         # handle import for each supported browser
         if ($Edge) {
             $browser = $installedBrowsers |
-            Where-Object { $PSItem.Name -like '*Edge*' }
+            Microsoft.PowerShell.Core\Where-Object { $PSItem.Name -like '*Edge*' }
 
             if (-not $browser) {
-                Write-Host "Microsoft Edge is not installed."
+                Microsoft.PowerShell.Utility\Write-Host "Microsoft Edge is not installed."
                 return
             }
 
-            $bookmarksFilePath = Join-Path -Path $env:LOCALAPPDATA `
+            $bookmarksFilePath = Microsoft.PowerShell.Management\Join-Path -Path $env:LOCALAPPDATA `
                 -ChildPath 'Microsoft\Edge\User Data\Default\Bookmarks'
 
             if ($PSCmdlet.ShouldProcess($bookmarksFilePath, "Import bookmarks to Microsoft Edge")) {
-                Write-Verbose "Writing bookmarks to Edge at: $bookmarksFilePath"
-                Write-Bookmarks -BookmarksFilePath $bookmarksFilePath `
+                Microsoft.PowerShell.Utility\Write-Verbose "Writing bookmarks to Edge at: $bookmarksFilePath"
+                GenXdev.Webbrowser\Write-Bookmarks -BookmarksFilePath $bookmarksFilePath `
                     -BookmarksToWrite $importedBookmarks
             }
         }
         elseif ($Chrome) {
             $browser = $installedBrowsers |
-            Where-Object { $PSItem.Name -like '*Chrome*' }
+            Microsoft.PowerShell.Core\Where-Object { $PSItem.Name -like '*Chrome*' }
 
             if (-not $browser) {
-                Write-Host "Google Chrome is not installed."
+                Microsoft.PowerShell.Utility\Write-Host "Google Chrome is not installed."
                 return
             }
 
-            $bookmarksFilePath = Join-Path -Path $env:LOCALAPPLOAD `
+            $bookmarksFilePath = Microsoft.PowerShell.Management\Join-Path -Path $env:LOCALAPPLOAD `
                 -ChildPath 'Google\Chrome\User Data\Default\Bookmarks'
 
             if ($PSCmdlet.ShouldProcess($bookmarksFilePath, "Import bookmarks to Google Chrome")) {
-                Write-Verbose "Writing bookmarks to Chrome at: $bookmarksFilePath"
-                Write-Bookmarks -BookmarksFilePath $bookmarksFilePath `
+                Microsoft.PowerShell.Utility\Write-Verbose "Writing bookmarks to Chrome at: $bookmarksFilePath"
+                GenXdev.Webbrowser\Write-Bookmarks -BookmarksFilePath $bookmarksFilePath `
                     -BookmarksToWrite $importedBookmarks
             }
         }
         elseif ($Firefox) {
-            Write-Host "Firefox import not supported"
+            Microsoft.PowerShell.Utility\Write-Host "Firefox import not supported"
         }
         else {
-            Write-Host "Please specify -Chrome, -Edge, or -Firefox switch."
+            Microsoft.PowerShell.Utility\Write-Host "Please specify -Chrome, -Edge, or -Firefox switch."
         }
     }
 
@@ -193,8 +193,8 @@ function Write-Bookmarks {
 
     if (-not ($Edge -or $Chrome)) { return }
 
-    $bookmarksContent = if (Test-Path $BookmarksFilePath) {
-        Get-Content -Path $BookmarksFilePath -Raw | ConvertFrom-Json
+    $bookmarksContent = if (Microsoft.PowerShell.Management\Test-Path $BookmarksFilePath) {
+        Microsoft.PowerShell.Management\Get-Content -Path $BookmarksFilePath -Raw | Microsoft.PowerShell.Utility\ConvertFrom-Json
     }
     else {
         @{
@@ -246,7 +246,7 @@ function Write-Bookmarks {
                 $currentNode = $bookmarksContent.roots.synced
             }
             else {
-                $existingFolder = $currentNode.children | Where-Object { $PSItem.type -eq 'folder' -and $PSItem.name -eq $folder }
+                $existingFolder = $currentNode.children | Microsoft.PowerShell.Core\Where-Object { $PSItem.type -eq 'folder' -and $PSItem.name -eq $folder }
                 if ($existingFolder) {
                     $currentNode = $existingFolder
                 }
@@ -269,7 +269,7 @@ function Write-Bookmarks {
 
     # Only write file if changes were made and approved
     if ($changes -and $PSCmdlet.ShouldProcess($BookmarksFilePath, "Save bookmarks file")) {
-        $bookmarksContent | ConvertTo-Json -Depth 100 | Set-Content -Path $BookmarksFilePath
+        $bookmarksContent | Microsoft.PowerShell.Utility\ConvertTo-Json -Depth 100 | Microsoft.PowerShell.Management\Set-Content -Path $BookmarksFilePath
     }
 }
 ################################################################################

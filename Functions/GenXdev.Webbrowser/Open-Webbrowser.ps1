@@ -323,9 +323,9 @@ function Open-Webbrowser {
     )
 
     begin {
-        $AllScreens = @([WpfScreenHelper.Screen]::AllScreens | ForEach-Object { $PSItem });
+        $AllScreens = @([WpfScreenHelper.Screen]::AllScreens | Microsoft.PowerShell.Core\ForEach-Object { $PSItem });
 
-        Write-Verbose "Open-Webbrowser monitor = $Monitor, Urls=$($Url | ConvertTo-Json)"
+        Microsoft.PowerShell.Utility\Write-Verbose "Open-Webbrowser monitor = $Monitor, Urls=$($Url | Microsoft.PowerShell.Utility\ConvertTo-Json)"
 
         [bool] $UrlSpecified = $true;
 
@@ -339,7 +339,7 @@ function Open-Webbrowser {
         }
         else {
 
-            $Url = $($Url | ForEach-Object {
+            $Url = $($Url | Microsoft.PowerShell.Core\ForEach-Object {
 
                     $NewUrl = $PSItem.Trim(" `"'".ToCharArray());
                     $filePath = $NewUrl
@@ -361,42 +361,42 @@ function Open-Webbrowser {
         }
 
         # reference powershell main window
-        $PowerShellWindow = Get-PowershellMainWindow
+        $PowerShellWindow = GenXdev.Windows\Get-PowershellMainWindow
 
         # get a list of all available/installed modern webbrowsers
-        $Browsers = Get-Webbrowser
+        $Browsers = GenXdev.Webbrowser\Get-Webbrowser
 
         # get the configured default webbrowser
-        $DefaultBrowser = Get-DefaultWebbrowser
+        $DefaultBrowser = GenXdev.Webbrowser\Get-DefaultWebbrowser
 
         # reference the main monitor
         $Screen = [WpfScreenHelper.Screen]::PrimaryScreen;
-        $AllScreens = @([WpfScreenHelper.Screen]::AllScreens | ForEach-Object { $PSItem });
+        $AllScreens = @([WpfScreenHelper.Screen]::AllScreens | Microsoft.PowerShell.Core\ForEach-Object { $PSItem });
 
         # reference the requested monitor
         if ($Monitor -eq 0) {
 
-            Write-Verbose "Choosing primary monitor, because default monitor requested using -Monitor 0"
+            Microsoft.PowerShell.Utility\Write-Verbose "Choosing primary monitor, because default monitor requested using -Monitor 0"
         }
         else {
             if ($Monitor -eq -2 -and $Global:DefaultSecondaryMonitor -is [int] -and $Global:DefaultSecondaryMonitor -ge 0) {
 
-                Write-Verbose "Picking monitor #$((($Global:DefaultSecondaryMonitor-1) % $AllScreens.Length)) as secondary (requested with -monitor -2) set by `$Global:DefaultSecondaryMonitor"
+                Microsoft.PowerShell.Utility\Write-Verbose "Picking monitor #$((($Global:DefaultSecondaryMonitor-1) % $AllScreens.Length)) as secondary (requested with -monitor -2) set by `$Global:DefaultSecondaryMonitor"
                 $Screen = $AllScreens[($Global:DefaultSecondaryMonitor - 1) % $AllScreens.Length];
             }
-            elseif ($Monitor -eq -2 -and (-not ($Global:DefaultSecondaryMonitor -is [int] -and $Global:DefaultSecondaryMonitor -ge 0)) -and ((Get-MonitorCount) -gt 1)) {
+            elseif ($Monitor -eq -2 -and (-not ($Global:DefaultSecondaryMonitor -is [int] -and $Global:DefaultSecondaryMonitor -ge 0)) -and ((GenXdev.Windows\Get-MonitorCount) -gt 1)) {
 
-                Write-Verbose "Picking monitor #1 as default secondary (requested with -monitor -2), because `$Global:DefaultSecondaryMonitor not set"
+                Microsoft.PowerShell.Utility\Write-Verbose "Picking monitor #1 as default secondary (requested with -monitor -2), because `$Global:DefaultSecondaryMonitor not set"
                 $Screen = $AllScreens[1];
             }
             elseif ($Monitor -ge 1) {
 
-                Write-Verbose "Picking monitor #$(($Monitor - 1) % $AllScreens.Length) as requested by the -Monitor parameter"
+                Microsoft.PowerShell.Utility\Write-Verbose "Picking monitor #$(($Monitor - 1) % $AllScreens.Length) as requested by the -Monitor parameter"
                 $Screen = $AllScreens[($Monitor - 1) % $AllScreens.Length]
             }
             else {
 
-                Write-Verbose "Picking monitor #1 (same as PowerShell), because no monitor specified"
+                Microsoft.PowerShell.Utility\Write-Verbose "Picking monitor #1 (same as PowerShell), because no monitor specified"
                 $Screen = [WpfScreenHelper.Screen]::FromPoint(@{X = $PowerShellWindow[0].Position().X; Y = $PowerShellWindow[0].Position().Y });
             }
         }
@@ -550,7 +550,7 @@ function Open-Webbrowser {
                 return;
             }
 
-            $last = (Get-Variable -Scope Global -Name "_LastClose$($Browser.Name)" -ErrorAction SilentlyContinue);
+            $last = (Microsoft.PowerShell.Utility\Get-Variable -Scope Global -Name "_LastClose$($Browser.Name)" -ErrorAction SilentlyContinue);
 
             if (($null -ne $last) -and ($last.Value -is [DateTime])) {
 
@@ -558,7 +558,7 @@ function Open-Webbrowser {
 
                 if ($now - $last.Value -lt [System.TimeSpan]::FromSeconds(1)) {
 
-                    [System.Threading.Thread]::Sleep(200) | Out-Null
+                    [System.Threading.Thread]::Sleep(200) | Microsoft.PowerShell.Core\Out-Null
                 }
             }
         }
@@ -616,9 +616,9 @@ function Open-Webbrowser {
                     # '-ApplicationMode' parameter supplied?
                     if ($ApplicationMode -eq $true) {
 
-                        Write-Warning "Firefox does not support -ApplicationMode at this time"
+                        Microsoft.PowerShell.Utility\Write-Warning "Firefox does not support -ApplicationMode at this time"
 
-                        Approve-FirefoxDebugging
+                        GenXdev.Webbrowser\Approve-FirefoxDebugging
 
                         # set commandline argument
                         $ArgumentList = $ArgumentList + @("--ssb", $CurrentUrl)
@@ -645,7 +645,7 @@ function Open-Webbrowser {
                 if ($browser.Name -like "*Edge*" -or $browser.Name -like "*Chrome*") {
 
                     # get the right debugging tcp port for this browser
-                    $port = Get-ChromiumRemoteDebuggingPort -Chrome:$Chrome -Edge:$Edge
+                    $port = GenXdev.Webbrowser\Get-ChromiumRemoteDebuggingPort -Chrome:$Chrome -Edge:$Edge
 
                     # set default commandline parameters
                     # https://peter.sh/experiments/chromium-command-line-switches/
@@ -762,26 +762,26 @@ function Open-Webbrowser {
                     # and did it then exit?
                     # if (($null -eq $process) -or ($process.HasExited)) {
 
-                    [System.Threading.Thread]::Sleep(100) | Out-Null;
+                    [System.Threading.Thread]::Sleep(100) | Microsoft.PowerShell.Core\Out-Null;
 
                     # find the process
-                    $processesNew = @(Get-Process ([IO.Path]::GetFileNameWithoutExtension($browser.Path)) -ErrorAction SilentlyContinue |
-                        Where-Object -Property Path -EQ $browser.Path |
-                        Where-Object -Property MainWindowHandle -NE 0 |
-                        Sort-Object { $PSItem.StartTime } -Descending |
-                        Select-Object -First 1)
+                    $processesNew = @(Microsoft.PowerShell.Management\Get-Process ([IO.Path]::GetFileNameWithoutExtension($browser.Path)) -ErrorAction SilentlyContinue |
+                        Microsoft.PowerShell.Core\Where-Object -Property Path -EQ $browser.Path |
+                        Microsoft.PowerShell.Core\Where-Object -Property MainWindowHandle -NE 0 |
+                        Microsoft.PowerShell.Utility\Sort-Object { $PSItem.StartTime } -Descending |
+                        Microsoft.PowerShell.Utility\Select-Object -First 1)
 
                     # not found?
                     if (($processesNew.Length -eq 0) -or ($null -eq $processesNew[0])) {
 
-                        Write-Verbose "No process found, retrying.."
+                        Microsoft.PowerShell.Utility\Write-Verbose "No process found, retrying.."
                         $window = @();
 
-                        [System.Threading.Thread]::Sleep(80) | Out-Null;
+                        [System.Threading.Thread]::Sleep(80) | Microsoft.PowerShell.Core\Out-Null;
                     }
                     else {
 
-                        Write-Verbose "Found new process"
+                        Microsoft.PowerShell.Utility\Write-Verbose "Found new process"
 
                         # get window helper utility for the mainwindow of the process
                         $State.existingWindow = $State.hadVisibleBrowser;
@@ -799,9 +799,9 @@ function Open-Webbrowser {
                     # }
                 }
                 catch {
-                    Write-Verbose "Error: $($_.Exception.Message)"
+                    Microsoft.PowerShell.Utility\Write-Verbose "Error: $($_.Exception.Message)"
                     $window = @()
-                    [System.Threading.Thread]::Sleep(100) | Out-Null
+                    [System.Threading.Thread]::Sleep(100) | Microsoft.PowerShell.Core\Out-Null
                 }
             } while (($i++ -lt 50) -and ($window.length -le 0));
 
@@ -813,7 +813,7 @@ function Open-Webbrowser {
 
         function open($browser, $CurrentUrl, $State) {
 
-            Write-Verbose "open()"
+            Microsoft.PowerShell.Utility\Write-Verbose "open()"
 
             $State.IsDefaultBrowser = $browser -eq $DefaultBrowser
 
@@ -825,16 +825,16 @@ function Open-Webbrowser {
             $process = $null;
 
             # find any existing  process
-            $prcBefore = @(Get-Process ([IO.Path]::GetFileNameWithoutExtension($browser.Path)) -ErrorAction SilentlyContinue) |
-            Where-Object -Property Path -EQ $browser.Path |
-            Where-Object -Property MainWindowHandle -NE 0 |
-            Sort-Object { $PSItem.StartTime } -Descending |
-            Select-Object -First 1
+            $prcBefore = @(Microsoft.PowerShell.Management\Get-Process ([IO.Path]::GetFileNameWithoutExtension($browser.Path)) -ErrorAction SilentlyContinue) |
+            Microsoft.PowerShell.Core\Where-Object -Property Path -EQ $browser.Path |
+            Microsoft.PowerShell.Core\Where-Object -Property MainWindowHandle -NE 0 |
+            Microsoft.PowerShell.Utility\Sort-Object { $PSItem.StartTime } -Descending |
+            Microsoft.PowerShell.Utility\Select-Object -First 1
 
             #found?
             if ($State.PositioningDone -or (($prcBefore.Length -ge 1) -and ($null -ne $prcBefore[0]))) {
 
-                Write-Verbose "Found existing webbrowser window"
+                Microsoft.PowerShell.Utility\Write-Verbose "Found existing webbrowser window"
                 $State.hadVisibleBrowser = $true;
             }
 
@@ -843,7 +843,7 @@ function Open-Webbrowser {
 
                 if ($State.hadVisibleBrowser) {
 
-                    Write-Verbose "No url specified, found existing webbrowser window"
+                    Microsoft.PowerShell.Utility\Write-Verbose "No url specified, found existing webbrowser window"
                     $StartBrowser = $false;
                     $process = if ($State.FirstProcess) { $State.FirstProcess } else { $prcBefore[0] }
                 }
@@ -854,7 +854,7 @@ function Open-Webbrowser {
                 if ($Force) {
 
                     try {
-                        $a = Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge
+                        $a = GenXdev.Webbrowser\Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge
                     }
                     catch {
                         $a = @()
@@ -862,12 +862,12 @@ function Open-Webbrowser {
 
                     if ($a.length -eq 0 -or ($a -is [string])) {
 
-                        Write-Verbose "No browser with open debugger port found, closing all browser instances and starting a new one"
-                        Get-Process -Name ([IO.Path]::GetFileNameWithoutExtension($Browser.Path)) -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue | Out-Null
+                        Microsoft.PowerShell.Utility\Write-Verbose "No browser with open debugger port found, closing all browser instances and starting a new one"
+                        Microsoft.PowerShell.Management\Get-Process -Name ([IO.Path]::GetFileNameWithoutExtension($Browser.Path)) -ErrorAction SilentlyContinue | Microsoft.PowerShell.Management\Stop-Process -Force -ErrorAction SilentlyContinue | Microsoft.PowerShell.Core\Out-Null
                     }
                 }
 
-                $currentProcesses = @((Get-Process -Name ([IO.Path]::GetFileNameWithoutExtension($Browser.Path)) -ErrorAction SilentlyContinue))
+                $currentProcesses = @((Microsoft.PowerShell.Management\Get-Process -Name ([IO.Path]::GetFileNameWithoutExtension($Browser.Path)) -ErrorAction SilentlyContinue))
                 if ($currentProcesses.Count -eq 0) {
 
                     $NewWindow = $false;
@@ -877,20 +877,20 @@ function Open-Webbrowser {
                 $ArgumentList = constructArgumentList $browser $CurrentUrl $State
 
                 # log
-                Write-Verbose "$($browser.Name) --> $($ArgumentList | ConvertTo-Json)"
+                Microsoft.PowerShell.Utility\Write-Verbose "$($browser.Name) --> $($ArgumentList | Microsoft.PowerShell.Utility\ConvertTo-Json)"
 
                 # start process
-                $process = Start-Process -FilePath ($browser.Path) -ArgumentList $argumentList -PassThru
+                $process = Microsoft.PowerShell.Management\Start-Process -FilePath ($browser.Path) -ArgumentList $argumentList -PassThru
 
                 # wait a little
-                $process.WaitForExit(200) | Out-Null;
+                $process.WaitForExit(200) | Microsoft.PowerShell.Core\Out-Null;
             }
 
             ###############################################################################
 
             if ($null -eq $process) {
 
-                Write-Warning "Could not start browser $($browser.Name)"
+                Microsoft.PowerShell.Utility\Write-Warning "Could not start browser $($browser.Name)"
                 return;
             }
 
@@ -899,7 +899,7 @@ function Open-Webbrowser {
             # nothing to do anymore? then don't waste time on positioning the window
             if ((-not $PassThru) -and ((-not ($HavePositioning -or ($FullScreen -and -not $state.PositioningDone))) -or $State.PositioningDone)) {
 
-                Write-Verbose "No positioning required, done.."
+                Microsoft.PowerShell.Utility\Write-Verbose "No positioning required, done.."
                 return;
             }
 
@@ -909,15 +909,15 @@ function Open-Webbrowser {
 
                 if (($State.PositioningDone -or ((-not $FullScreen) -and (-not $HavePositioning))) -and ($null -ne $State.FirstProcess) -and (-not $State.FirstProcess.HasExited) -and ($State.FirstProcess.MainWindowHandle -ne 0)) {
 
-                    Write-Verbose "Returning first process"
-                    Write-Output $State.FirstProcess
+                    Microsoft.PowerShell.Utility\Write-Verbose "Returning first process"
+                    Microsoft.PowerShell.Utility\Write-Output $State.FirstProcess
                     return;
                 }
 
                 if (($null -ne $process) -and (-not $process.HasExited) -and ($process.MainWindowHandle -ne 0)) {
 
-                    Write-Verbose "Returning process"
-                    Write-Output $process
+                    Microsoft.PowerShell.Utility\Write-Verbose "Returning process"
+                    Microsoft.PowerShell.Utility\Write-Output $process
 
                     if (-not $HavePositioning) {
 
@@ -934,13 +934,13 @@ function Open-Webbrowser {
 
             if (($PassThru -eq $true) -and ($null -ne $process)) {
 
-                Write-Verbose "Returning process after process lookup"
-                Write-Output $process
+                Microsoft.PowerShell.Utility\Write-Verbose "Returning process after process lookup"
+                Microsoft.PowerShell.Utility\Write-Output $process
             }
 
             if ((-not ($HavePositioning -or ($FullScreen -and -not $state.PositioningDone))) -or $State.PositioningDone) {
 
-                Write-Verbose "No positioning required, done.."
+                Microsoft.PowerShell.Utility\Write-Verbose "No positioning required, done.."
                 return;
             }
 
@@ -956,20 +956,20 @@ function Open-Webbrowser {
                 $State.BrowserWindow = $window[0];
                 ###############################################################################
 
-                Write-Verbose "Restoring and positioning browser window"
+                Microsoft.PowerShell.Utility\Write-Verbose "Restoring and positioning browser window"
 
                 # if maximized, restore window style
                 if (-not $FullScreen) {
 
-                    $null = $window[0].Show() | Out-Null
-                    $null = $window[0].Restore() | Out-Null;
+                    $null = $window[0].Show() | Microsoft.PowerShell.Core\Out-Null
+                    $null = $window[0].Restore() | Microsoft.PowerShell.Core\Out-Null;
                 }
 
                 # move it to it's place
-                $null = $window[0].Move($X, $Y, $Width, $Height)  | Out-Null
+                $null = $window[0].Move($X, $Y, $Width, $Height)  | Microsoft.PowerShell.Core\Out-Null
             }
 
-            Start-Sleep 2 | Out-Null
+            Microsoft.PowerShell.Utility\Start-Sleep 2 | Microsoft.PowerShell.Core\Out-Null
         }
 
         ###############################################################################
@@ -979,14 +979,14 @@ function Open-Webbrowser {
             foreach ($CurrentUrl in $Url) {
 
                 $index++
-                Write-Verbose "Opening $CurrentUrl"
+                Microsoft.PowerShell.Utility\Write-Verbose "Opening $CurrentUrl"
 
                 if ($UseStartProcess -or (($index -gt 0) -and ($State.IsDefaultBrowser))) {
 
-                    Write-Verbose "Start-Process"
+                    Microsoft.PowerShell.Utility\Write-Verbose "Start-Process"
 
                     # open default browser
-                    $process = Start-Process $CurrentUrl -PassThru
+                    $process = Microsoft.PowerShell.Management\Start-Process $CurrentUrl -PassThru
 
                     # need to return a process and this is the first non-positioning webbrowser launch?
                     if ($PassThru -and $UseStartProcess -and ($index -eq 0)) {
@@ -996,8 +996,8 @@ function Open-Webbrowser {
                         $process = $browserFound.Process
                         $window = $browserFound.Window
 
-                        Write-Verbose "Returning process after Start-Process"
-                        Write-Output $process
+                        Microsoft.PowerShell.Utility\Write-Verbose "Returning process after Start-Process"
+                        Microsoft.PowerShell.Utility\Write-Output $process
                     }
 
                     continue;
@@ -1007,7 +1007,7 @@ function Open-Webbrowser {
                 if ($All -eq $true) {
 
                     # open for all browsers
-                    $Browsers | ForEach-Object { open $PSItem $CurrentUrl }
+                    $Browsers | Microsoft.PowerShell.Core\ForEach-Object { open $PSItem $CurrentUrl }
 
                     continue;
                 }
@@ -1015,7 +1015,7 @@ function Open-Webbrowser {
                 elseif ($Chrome -eq $true) {
 
                     # enumerate all browsers
-                    $Browsers | ForEach-Object {
+                    $Browsers | Microsoft.PowerShell.Core\ForEach-Object {
 
                         # found chrome?
                         if ($PSItem.Name -like "*Chrome*") {
@@ -1029,7 +1029,7 @@ function Open-Webbrowser {
                 elseif ($Edge -eq $true) {
 
                     # enumerate all browsers
-                    $Browsers | ForEach-Object {
+                    $Browsers | Microsoft.PowerShell.Core\ForEach-Object {
 
                         # found Edge?
                         if ($PSItem.Name -like "*Edge*") {
@@ -1050,7 +1050,7 @@ function Open-Webbrowser {
                     }
 
                     # enumerate all browsers
-                    $Browsers | Sort-Object { $PSItem.Name } -Descending | ForEach-Object {
+                    $Browsers | Microsoft.PowerShell.Utility\Sort-Object { $PSItem.Name } -Descending | Microsoft.PowerShell.Core\ForEach-Object {
 
                         # found edge or chrome?
                         if (($PSItem.Name -like "*Chrome*") -or ($PSItem.Name -like "*Edge*")) {
@@ -1065,7 +1065,7 @@ function Open-Webbrowser {
                 if ($Firefox -eq $true) {
 
                     # enumerate all browsers
-                    $Browsers | ForEach-Object {
+                    $Browsers | Microsoft.PowerShell.Core\ForEach-Object {
 
                         # found Firefox?
                         if ($PSItem.Name -like "*Firefox*") {
@@ -1089,54 +1089,54 @@ function Open-Webbrowser {
             # needs to be set fullscreen?
             if ($FullScreen -eq $true) {
 
-                Write-Verbose "Setting fullscreen"
+                Microsoft.PowerShell.Utility\Write-Verbose "Setting fullscreen"
 
                 if ($null -ne $State.BrowserWindow) {
 
-                    Write-Verbose "Changing focus to browser window"
+                    Microsoft.PowerShell.Utility\Write-Verbose "Changing focus to browser window"
 
-                    try { $State.BrowserWindow.Maximize() | Out-Null; $State.BrowserWindow.SetForeground() | Out-Null }
+                    try { $State.BrowserWindow.Maximize() | Microsoft.PowerShell.Core\Out-Null; $State.BrowserWindow.SetForeground() | Microsoft.PowerShell.Core\Out-Null }
                     catch { }
                     $tt = 0;
-                    $focusedWindowProcess = Get-CurrentFocusedProcess
+                    $focusedWindowProcess = GenXdev.Windows\Get-CurrentFocusedProcess
                     while (($tt++ -lt 20) -and (
                         ($null -eq $focusedWindowProcess) -or
                         ($focusedWindowProcess.MainWindowHandle -ne $State.BrowserWindow.Handle))) {
 
-                        Write-Verbose "have browser window, sleeping 500ms"
-                        [System.Threading.Thread]::Sleep(500) | Out-Null
+                        Microsoft.PowerShell.Utility\Write-Verbose "have browser window, sleeping 500ms"
+                        [System.Threading.Thread]::Sleep(500) | Microsoft.PowerShell.Core\Out-Null
 
-                        try { $State.BrowserWindow.Maximize() | Out-Null; $State.BrowserWindow.SetForeground() | Out-Null }
+                        try { $State.BrowserWindow.Maximize() | Microsoft.PowerShell.Core\Out-Null; $State.BrowserWindow.SetForeground() | Microsoft.PowerShell.Core\Out-Null }
                         catch { }
-                        Set-ForegroundWindow ($State.BrowserWindow.Handle) | Out-Null
+                        GenXdev.Windows\Set-ForegroundWindow ($State.BrowserWindow.Handle) | Microsoft.PowerShell.Core\Out-Null
 
-                        $focusedWindowProcess = Get-CurrentFocusedProcess
+                        $focusedWindowProcess = GenXdev.Windows\Get-CurrentFocusedProcess
                     }
                 }
                 else {
-                    Write-Verbose "Setting fullscreen without having reference to browser window"
+                    Microsoft.PowerShell.Utility\Write-Verbose "Setting fullscreen without having reference to browser window"
                     $tt = 0;
-                    $focusedWindowProcess = Get-CurrentFocusedProcess
-                    $powershellWindow = Get-PowershellMainWindow
+                    $focusedWindowProcess = GenXdev.Windows\Get-CurrentFocusedProcess
+                    $powershellWindow = GenXdev.Windows\Get-PowershellMainWindow
                     while (($tt++ -lt 20) -and (
                         ($null -eq $focusedWindowProcess) -or ($null -eq $PowerShellWindow) -or
                         ($focusedWindowProcess.MainWindowHandle -ne $PowerShellWindow.Handle))) {
-                        Write-Verbose "no browser window, sleeping 500ms"
-                        [System.Threading.Thread]::Sleep(500) | Out-Null
+                        Microsoft.PowerShell.Utility\Write-Verbose "no browser window, sleeping 500ms"
+                        [System.Threading.Thread]::Sleep(500) | Microsoft.PowerShell.Core\Out-Null
 
-                        $focusedWindowProcess = Get-CurrentFocusedProcess
-                        $powershellWindow = Get-PowershellMainWindow
+                        $focusedWindowProcess = GenXdev.Windows\Get-CurrentFocusedProcess
+                        $powershellWindow = GenXdev.Windows\Get-PowershellMainWindow
                     }
                 }
 
-                if ((Get-CurrentFocusedProcess).MainWindowHandle -ne (Get-PowershellMainWindow).Handle) {
+                if ((GenXdev.Windows\Get-CurrentFocusedProcess).MainWindowHandle -ne (GenXdev.Windows\Get-PowershellMainWindow).Handle) {
                     try {
 
                         # send F11
-                        $helper = New-Object -ComObject WScript.Shell;
+                        $helper = Microsoft.PowerShell.Utility\New-Object -ComObject WScript.Shell;
                         $null = $helper.sendKeys("{F11}");
-                        Write-Verbose "Sending F11"
-                        [System.Threading.Thread]::Sleep(500) | Out-Null
+                        Microsoft.PowerShell.Utility\Write-Verbose "Sending F11"
+                        [System.Threading.Thread]::Sleep(500) | Microsoft.PowerShell.Core\Out-Null
                     }
                     catch {
 
@@ -1151,17 +1151,17 @@ function Open-Webbrowser {
         if ($RestoreFocus) {
 
             # restore it
-            $PowerShellWindow = Get-PowershellMainWindow
+            $PowerShellWindow = GenXdev.Windows\Get-PowershellMainWindow
 
             if ($null -ne $PowerShellWindow) {
 
                 # wait a little
-                [System.Threading.Thread]::Sleep(500) | Out-Null
+                [System.Threading.Thread]::Sleep(500) | Microsoft.PowerShell.Core\Out-Null
 
-                $null = $PowerShellWindow.Show() | Out-Null;
-                $null = $PowerShellWindow.SetForeground() | Out-Null;
+                $null = $PowerShellWindow.Show() | Microsoft.PowerShell.Core\Out-Null;
+                $null = $PowerShellWindow.SetForeground() | Microsoft.PowerShell.Core\Out-Null;
 
-                Set-ForegroundWindow ($PowerShellWindow.Handle) | Out-Null;
+                GenXdev.Windows\Set-ForegroundWindow ($PowerShellWindow.Handle) | Microsoft.PowerShell.Core\Out-Null;
             }
         }
     }

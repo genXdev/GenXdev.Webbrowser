@@ -54,41 +54,41 @@ function Close-PlaywrightDriver {
 
     begin {
         # ensure the browser cache dictionary is initialized
-        Write-Verbose "Initializing browser cache dictionary"
-        Update-PlaywrightDriverCache
+        Microsoft.PowerShell.Utility\Write-Verbose "Initializing browser cache dictionary"
+        GenXdev.Webbrowser\Update-PlaywrightDriverCache
 
     }
 
     process {
 
         # normalize the reference key to handle null/empty cases
-        Write-Verbose "Processing browser closure for key: $ReferenceKey"
+        Microsoft.PowerShell.Utility\Write-Verbose "Processing browser closure for key: $ReferenceKey"
         $referenceKey = [string]::IsNullOrWhiteSpace($ReferenceKey) ?
         "Default" : $ReferenceKey
 
         # attempt to retrieve the browser instance from cache
-        Write-Verbose "Attempting to retrieve browser instance from cache"
+        Microsoft.PowerShell.Utility\Write-Verbose "Attempting to retrieve browser instance from cache"
         $browser = $null
         if ($Global:GenXdevPlaywrightBrowserDictionary.TryGetValue(
                 $referenceKey, [ref]$browser)) {
 
             try {
                 # close the browser instance asynchronously
-                Write-Verbose "Closing browser instance..."
+                Microsoft.PowerShell.Utility\Write-Verbose "Closing browser instance..."
                 $null = $browser.CloseAsync().Wait()
             }
             catch {
-                Write-Warning "Failed to close browser: $_"
+                Microsoft.PowerShell.Utility\Write-Warning "Failed to close browser: $_"
             }
             finally {
                 # remove the browser reference from the global dictionary
-                Write-Verbose "Removing browser reference from cache"
+                Microsoft.PowerShell.Utility\Write-Verbose "Removing browser reference from cache"
                 $null = $Global:GenXdevPlaywrightBrowserDictionary.TryRemove(
                     $referenceKey, [ref]$browser)
             }
         }
         else {
-            Write-Verbose "No browser instance found for key: $ReferenceKey"
+            Microsoft.PowerShell.Utility\Write-Verbose "No browser instance found for key: $ReferenceKey"
         }
     }
 

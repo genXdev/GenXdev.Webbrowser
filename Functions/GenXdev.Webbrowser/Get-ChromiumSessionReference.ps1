@@ -30,12 +30,12 @@ function Get-ChromiumSessionReference {
 
     begin {
         # verify if a browser session exists in global scope
-        Write-Verbose "Checking for active browser session"
+        Microsoft.PowerShell.Utility\Write-Verbose "Checking for active browser session"
 
         # create global data storage if it doesn't exist
         if ($Global:Data -isnot [Hashtable]) {
             $globalData = @{}
-            $null = Set-Variable -Name "Data" -Value $globalData `
+            $null = Microsoft.PowerShell.Utility\Set-Variable -Name "Data" -Value $globalData `
                 -Scope Global -Force
         }
         else {
@@ -52,7 +52,7 @@ function Get-ChromiumSessionReference {
             throw "No browser available with open debugging port, use -Force to restart"
         }
 
-        Write-Verbose "Found active session"
+        Microsoft.PowerShell.Utility\Write-Verbose "Found active session"
 
         # verify chrome controller is still active
         if (($null -eq $Global:chromeController) -or
@@ -62,12 +62,12 @@ function Get-ChromiumSessionReference {
             " a new session."
         }
 
-        Write-Verbose "Session is still active"
+        Microsoft.PowerShell.Utility\Write-Verbose "Session is still active"
 
         # ensure session has data property and return reference
         if (-not ($Global:chromeSession.data -is [hashtable])) {
 
-            Add-Member -InputObject $Global:chromeSession `
+            Microsoft.PowerShell.Utility\Add-Member -InputObject $Global:chromeSession `
                 -MemberType NoteProperty -Name "data" -Value $globalData -Force
         }
 

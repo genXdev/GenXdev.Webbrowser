@@ -98,56 +98,56 @@ function Find-BrowserBookmark {
     )
 
     begin {
-        Write-Verbose "Initializing browser bookmark search"
+        Microsoft.PowerShell.Utility\Write-Verbose "Initializing browser bookmark search"
         $bookmarksArguments = GenXdev.Helpers\Copy-IdenticalParamValues `
             -BoundParameters $PSBoundParameters `
-            -FunctionName "Get-BrowserBookmark" `
-            -DefaultValues (Get-Variable -Scope Local -Name * -ErrorAction SilentlyContinue)
+            -FunctionName "GenXdev.Webbrowser\Get-BrowserBookmark" `
+            -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable -Scope Local -Name * -ErrorAction SilentlyContinue)
     }
 
     process {
 
         # retrieve all bookmarks from selected browsers
-        Write-Verbose "Fetching bookmarks from selected browsers"
-        $bookmarks = Get-BrowserBookmark @bookmarksArguments
+        Microsoft.PowerShell.Utility\Write-Verbose "Fetching bookmarks from selected browsers"
+        $bookmarks = GenXdev.Webbrowser\Get-BrowserBookmark @bookmarksArguments
 
         # handle case when no search queries provided
         if (($null -eq $Queries) -or ($Queries.Length -eq 0)) {
 
-            Write-Verbose "No search terms specified - returning all bookmarks"
+            Microsoft.PowerShell.Utility\Write-Verbose "No search terms specified - returning all bookmarks"
             $bookmarks |
-            Select-Object -First $Count
+            Microsoft.PowerShell.Utility\Select-Object -First $Count
             return
         }
 
         # search bookmarks for matches to any query terms
-        Write-Verbose "Searching bookmarks for matches to $($Queries.Count) queries"
+        Microsoft.PowerShell.Utility\Write-Verbose "Searching bookmarks for matches to $($Queries.Count) queries"
         $results = $Queries |
-        ForEach-Object {
+        Microsoft.PowerShell.Core\ForEach-Object {
             $query = $PSItem
             if (-not ($query.Contains("*") -or ($query.Contains("?")))) {
                 $query = "*$query*"
             }
-            Write-Verbose "Processing query: $query"
+            Microsoft.PowerShell.Utility\Write-Verbose "Processing query: $query"
 
             $bookmarks |
-            Where-Object {
+            Microsoft.PowerShell.Core\Where-Object {
                 ($PSItem.Folder -like "$query") -or
                 ($PSItem.Name -Like "$query") -or
                 ($PSItem.URL -Like "$query")
             }
         } |
-        Select-Object -First $Count
+        Microsoft.PowerShell.Utility\Select-Object -First $Count
 
         # return either full bookmark objects or just URLs
         if ($PassThru) {
-            Write-Verbose "Returning $($results.Count) bookmark objects"
+            Microsoft.PowerShell.Utility\Write-Verbose "Returning $($results.Count) bookmark objects"
             $results
         }
         else {
-            Write-Verbose "Returning $($results.Count) bookmark URLs"
+            Microsoft.PowerShell.Utility\Write-Verbose "Returning $($results.Count) bookmark URLs"
             $results |
-            ForEach-Object URL
+            Microsoft.PowerShell.Core\ForEach-Object URL
         }
     }
 

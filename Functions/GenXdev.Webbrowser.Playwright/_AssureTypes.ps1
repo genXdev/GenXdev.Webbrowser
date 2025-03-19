@@ -4,12 +4,12 @@ using namespace System.Collections.Concurrent
 using namespace Microsoft.Playwright
 
 # load the main Playwright assembly from module's lib folder
-Add-Type -Path (Join-Path $PSScriptRoot `
-        '..\..\..\..\GenXdev.Helpers\1.134.2025\lib\Microsoft.Playwright.dll')
+Microsoft.PowerShell.Utility\Add-Type -Path (Microsoft.PowerShell.Management\Join-Path $PSScriptRoot `
+        '..\..\..\..\GenXdev.Helpers\1.136.2025\lib\Microsoft.Playwright.dll')
 
 # load the Playwright test adapter assembly
-Add-Type -Path (Join-Path $PSScriptRoot `
-        '..\..\..\..\GenXdev.Helpers\1.134.2025\lib\Microsoft.Playwright.TestAdapter.dll')
+Microsoft.PowerShell.Utility\Add-Type -Path (Microsoft.PowerShell.Management\Join-Path $PSScriptRoot `
+        '..\..\..\..\GenXdev.Helpers\1.136.2025\lib\Microsoft.Playwright.TestAdapter.dll')
 
 # initialize thread-safe dictionary to store browser instances
 $Global:GenXdevPlaywrightBrowserDictionary = `
@@ -36,7 +36,7 @@ function _AssureTypes {
     param()
 
     begin {
-        Write-Verbose "Initializing Playwright types and assemblies..."
+        Microsoft.PowerShell.Utility\Write-Verbose "Initializing Playwright types and assemblies..."
     }
 
     process {

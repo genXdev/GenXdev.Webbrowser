@@ -31,7 +31,7 @@ function Update-PlaywrightDriverCache {
     begin {
 
         # log the start of cache cleanup operation
-        Write-Verbose "Starting Playwright browser cache maintenance"
+        Microsoft.PowerShell.Utility\Write-Verbose "Starting Playwright browser cache maintenance"
     }
 
     process {
@@ -39,10 +39,10 @@ function Update-PlaywrightDriverCache {
         try {
             # iterate through all browser instances and remove stale ones
             $BrowserDictionary.GetEnumerator() |
-            ForEach-Object {
+            Microsoft.PowerShell.Core\ForEach-Object {
 
                 # output verbose info about current instance being checked
-                Write-Verbose "Checking browser instance: $($_.Key)"
+                Microsoft.PowerShell.Utility\Write-Verbose "Checking browser instance: $($_.Key)"
 
                 # check if browser instance is null or disconnected
                 if ($null -eq $_.Value -or -not $_.Value.IsConnected) {
@@ -51,7 +51,7 @@ function Update-PlaywrightDriverCache {
                             "Browser instance $($_.Key)",
                             "Remove inactive browser instance")) {
 
-                        Write-Verbose "Removing instance: $($_.Key)"
+                        Microsoft.PowerShell.Utility\Write-Verbose "Removing instance: $($_.Key)"
                         $null = $BrowserDictionary.TryRemove(
                             $_.Key,
                             [ref]$null
@@ -61,14 +61,14 @@ function Update-PlaywrightDriverCache {
             }
         }
         catch {
-            Write-Error "Failed to update browser cache: $_"
+            Microsoft.PowerShell.Utility\Write-Error "Failed to update browser cache: $_"
             throw
         }
     }
 
     end {
 
-        Write-Verbose "Completed browser cache maintenance"
+        Microsoft.PowerShell.Utility\Write-Verbose "Completed browser cache maintenance"
     }
 }
 ################################################################################

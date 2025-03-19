@@ -69,13 +69,13 @@ function Set-WebbrowserTabLocation {
 
         # attempt to connect to an existing browser session before proceeding
         try {
-            Write-Verbose "Attempting to connect to existing browser session"
-            $null = Get-ChromiumSessionReference -Chrome:$Chrome -Edge:$Edge
+            Microsoft.PowerShell.Utility\Write-Verbose "Attempting to connect to existing browser session"
+            $null = GenXdev.Webbrowser\Get-ChromiumSessionReference -Chrome:$Chrome -Edge:$Edge
         }
         catch {
             # if no active session found, select the most recently used tab
-            Write-Verbose "No active session found, selecting last used tab"
-            $null = Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge
+            Microsoft.PowerShell.Utility\Write-Verbose "No active session found, selecting last used tab"
+            $null = GenXdev.Webbrowser\Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge
         }
     }
 
@@ -83,7 +83,7 @@ function Set-WebbrowserTabLocation {
 
         if ($PSCmdlet.ShouldProcess($Url, "Navigate to URL")) {
 
-            Write-Verbose "Navigating to URL: $Url"
+            Microsoft.PowerShell.Utility\Write-Verbose "Navigating to URL: $Url"
             $null = $Global:chromeController.GotoAsync($Url)
             $null = $Global:chromeController.WaitForNavigationAsync().Result
         }

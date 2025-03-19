@@ -45,19 +45,19 @@ function Close-WebbrowserTab {
         # attempt to get reference to existing chrome session
         # if this fails, we'll try to select the last used tab
         try {
-            Write-Verbose "Attempting to locate active browser session"
-            $null = Get-ChromiumSessionReference -Chrome:$Chrome -Edge:$Edge
+            Microsoft.PowerShell.Utility\Write-Verbose "Attempting to locate active browser session"
+            $null = GenXdev.Webbrowser\Get-ChromiumSessionReference -Chrome:$Chrome -Edge:$Edge
         }
         catch {
-            Write-Verbose "No active session found, selecting last used tab"
-            $null = Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge
+            Microsoft.PowerShell.Utility\Write-Verbose "No active session found, selecting last used tab"
+            $null = GenXdev.Webbrowser\Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge
         }
     }
 
     process {
 
         # log the tab information before closing
-        Write-Verbose ("Closing browser tab: '$($Global:chromeSession.title)' " +
+        Microsoft.PowerShell.Utility\Write-Verbose ("Closing browser tab: '$($Global:chromeSession.title)' " +
             "at URL: $($Global:chromeSession.url)")
 
         # use chromedriver's closeAsync method to close the current tab

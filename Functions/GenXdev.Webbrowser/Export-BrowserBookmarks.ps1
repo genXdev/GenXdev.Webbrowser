@@ -70,7 +70,7 @@ function Export-BrowserBookmarks {
         $outputFilePath = GenXdev.FileSystem\Expand-Path $OutputFile
 
         # inform user about the output destination
-        Write-Verbose "Exporting bookmarks to: $outputFilePath"
+        Microsoft.PowerShell.Utility\Write-Verbose "Exporting bookmarks to: $outputFilePath"
     }
 
     process {
@@ -81,23 +81,23 @@ function Export-BrowserBookmarks {
         # set appropriate flag based on selected browser type
         if ($Chrome) {
             $bookmarksArguments["Chrome"] = $true
-            Write-Verbose "Exporting Chrome bookmarks"
+            Microsoft.PowerShell.Utility\Write-Verbose "Exporting Chrome bookmarks"
         }
         if ($Edge) {
             $bookmarksArguments["Edge"] = $true
-            Write-Verbose "Exporting Edge bookmarks"
+            Microsoft.PowerShell.Utility\Write-Verbose "Exporting Edge bookmarks"
         }
         if ($Firefox) {
             $bookmarksArguments["Firefox"] = $true
-            Write-Verbose "Exporting Firefox bookmarks"
+            Microsoft.PowerShell.Utility\Write-Verbose "Exporting Firefox bookmarks"
         }
 
         # retrieve bookmarks and save them as formatted json to the output file
-        Get-BrowserBookmark @bookmarksArguments |
-        ConvertTo-Json -Depth 100 |
-        Set-Content -Path $outputFilePath -Force
+        GenXdev.Webbrowser\Get-BrowserBookmark @bookmarksArguments |
+        Microsoft.PowerShell.Utility\ConvertTo-Json -Depth 100 |
+        Microsoft.PowerShell.Management\Set-Content -Path $outputFilePath -Force
 
-        Write-Verbose "Bookmarks exported successfully"
+        Microsoft.PowerShell.Utility\Write-Verbose "Bookmarks exported successfully"
     }
 
     end {

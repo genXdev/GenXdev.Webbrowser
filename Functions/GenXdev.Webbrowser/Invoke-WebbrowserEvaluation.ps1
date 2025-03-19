@@ -223,7 +223,7 @@ function Invoke-WebbrowserEvaluation {
         if (($null -eq $Page) -or ($null -eq $ByReference)) {
 
             try {
-                $reference = Get-ChromiumSessionReference
+                $reference = GenXdev.Webbrowser\Get-ChromiumSessionReference
                 $Page = $Global:chromeController
             }
             catch {
@@ -232,9 +232,9 @@ function Invoke-WebbrowserEvaluation {
                 }
 
                 # attempt auto-selection of browser tab
-                Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge | Out-Null
+                GenXdev.Webbrowser\Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge | Microsoft.PowerShell.Core\Out-Null
                 $Page = $Global:chromeController
-                $reference = Get-ChromiumSessionReference
+                $reference = GenXdev.Webbrowser\Get-ChromiumSessionReference
             }
         }
         else {
@@ -248,7 +248,7 @@ function Invoke-WebbrowserEvaluation {
     }
 
     Process {
-        Write-Verbose "Processing JavaScript evaluation request..."
+        Microsoft.PowerShell.Utility\Write-Verbose "Processing JavaScript evaluation request..."
 
         # Define the custom JavaScript for Visibility API events and CSS overrides
         $visibilityScript = @"
@@ -262,7 +262,7 @@ document.documentElement.style.setProperty('--default-color-scheme', 'dark');
 "@
 
         # Subscribe to the FrameNavigated event to inject the custom JavaScript
-        $null = Register-ObjectEvent -InputObject $page -EventName FrameNavigated -Action {
+        $null = Microsoft.PowerShell.Utility\Register-ObjectEvent -InputObject $page -EventName FrameNavigated -Action {
             $null = $page.EvaluateAsync($visibilityScript).Wait()
             $null = $page.EvaluateAsync($cssOverrideScript).Wait()
         }
@@ -271,7 +271,7 @@ document.documentElement.style.setProperty('--default-color-scheme', 'dark');
         foreach ($js in $Scripts) {
 
             try {
-                Set-Variable -Name "Data" -Value $reference.data -Scope Global
+                Microsoft.PowerShell.Utility\Set-Variable -Name "Data" -Value $reference.data -Scope Global
 
                 # is it a file reference?
                 if (($js -is [IO.FileInfo]) -or (($js -is [System.String]) -and [IO.File]::Exists($js))) {
@@ -306,8 +306,8 @@ document.documentElement.style.setProperty('--default-color-scheme', 'dark');
                         ) -and $uri.IsWellFormedOriginalString() -and $uri.Scheme -like "http*";
 
                         if ($IsUri) {
-                            Write-Verbose "is Uri"
-                            $httpResult = Invoke-WebRequest -Uri $Js
+                            Microsoft.PowerShell.Utility\Write-Verbose "is Uri"
+                            $httpResult = Microsoft.PowerShell.Utility\Invoke-WebRequest -Uri $Js
 
                             if ($httpResult.StatusCode -eq 200) {
 
@@ -332,7 +332,7 @@ document.documentElement.style.setProperty('--default-color-scheme', 'dark');
                                     let scriptLoaded = false;
                                     let loaded = () => {  };
 
-                                    scriptTag.innerHTML = $(($httpResult.Content | ConvertTo-Json));
+                                    scriptTag.innerHTML = $(($httpResult.Content | Microsoft.PowerShell.Utility\ConvertTo-Json));
                                     scriptTag.setAttribute('type', '$type');
                                     scriptTag.setAttribute('data-hash', '$ScriptHash');
                                     let head = document.getElementsByTagName('head')[0];
@@ -358,10 +358,10 @@ document.documentElement.style.setProperty('--default-color-scheme', 'dark');
                     $js = "debugger;`r`n$js"
                 }
 
-                Write-Verbose "Processing: `r`n$($js.Trim())"
+                Microsoft.PowerShell.Utility\Write-Verbose "Processing: `r`n$($js.Trim())"
 
                 # convert data object to json, and then again to make it a json string
-                $json = ($reference.data | ConvertTo-Json -Compress -Depth 100 | ConvertTo-Json -Compress -Depth 100);
+                $json = ($reference.data | Microsoft.PowerShell.Utility\ConvertTo-Json -Compress -Depth 100 | Microsoft.PowerShell.Utility\ConvertTo-Json -Compress -Depth 100);
 
                 # init result
                 $result = $null;
@@ -443,7 +443,7 @@ document.documentElement.style.setProperty('--default-color-scheme', 'dark');
                             }
                         })()
 
-                        " | ConvertTo-Json -Compress -Depth 100));
+                        " | Microsoft.PowerShell.Utility\ConvertTo-Json -Compress -Depth 100));
                     }
                     catch(e) {
 
@@ -471,11 +471,11 @@ document.documentElement.style.setProperty('--default-color-scheme', 'dark');
 
                         continue;
                     }
-                    $result = ($result | ConvertFrom-Json);
+                    $result = ($result | Microsoft.PowerShell.Utility\ConvertFrom-Json);
 
                     if ($null -ne $result) {
 
-                        Write-Verbose "Got results: [$($result.getType())] $($result | ConvertTo-Json -Compress -Depth 100)"
+                        Microsoft.PowerShell.Utility\Write-Verbose "Got results: [$($result.getType())] $($result | Microsoft.PowerShell.Utility\ConvertTo-Json -Compress -Depth 100)"
                     }
 
                     # all good?
@@ -496,22 +496,22 @@ document.documentElement.style.setProperty('--default-color-scheme', 'dark');
 
                             # enumerate properties
                             $result.data |
-                            Get-Member -ErrorAction SilentlyContinue |
-                            Where-Object -Property MemberType -Like *Property* |
-                            ForEach-Object -ErrorAction SilentlyContinue {
+                            Microsoft.PowerShell.Utility\Get-Member -ErrorAction SilentlyContinue |
+                            Microsoft.PowerShell.Core\Where-Object -Property MemberType -Like *Property* |
+                            Microsoft.PowerShell.Core\ForEach-Object -ErrorAction SilentlyContinue {
 
                                 # set in a case-sensitive manner
                                 $reference.data."$($PSItem.Name)" = $result.data."$($PSItem.Name)"
                             }
 
-                            Set-Variable -Name "Data" -Value ($reference.data) -Scope Global
+                            Microsoft.PowerShell.Utility\Set-Variable -Name "Data" -Value ($reference.data) -Scope Global
                         }
 
                         $pollCount++;
 
                         if (($null -ne $result.returnValues) -and ($result.returnValues.Length -gt 0)) {
 
-                            $result.returnValues | Write-Output
+                            $result.returnValues | Microsoft.PowerShell.Utility\Write-Output
                             $result.returnValues = @();
                         }
                         $result.returnValues = @();
@@ -532,7 +532,7 @@ document.documentElement.style.setProperty('--default-color-scheme', 'dark');
 
                 if ($null -ne $result.returnValue) {
 
-                    Write-Output $result.returnValue;
+                    Microsoft.PowerShell.Utility\Write-Output $result.returnValue;
                 }
             }
             Catch {

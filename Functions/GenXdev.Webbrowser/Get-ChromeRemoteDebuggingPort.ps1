@@ -44,23 +44,23 @@ function Get-ChromeRemoteDebuggingPort {
             # attempt to parse the global port value
             if ([int]::TryParse($Global:ChromeDebugPort, [ref] $port)) {
 
-                Write-Verbose `
+                Microsoft.PowerShell.Utility\Write-Verbose `
                     -Message "Using configured Chrome debug port: $port"
             }
             else {
 
-                Write-Verbose `
+                Microsoft.PowerShell.Utility\Write-Verbose `
                     -Message "Invalid port config, using default port: $port"
             }
         }
         else {
 
-            Write-Verbose `
+            Microsoft.PowerShell.Utility\Write-Verbose `
                 -Message "No custom port configured, using default port: $port"
         }
 
         # ensure the port is available in global scope
-        $null = Set-Variable `
+        $null = Microsoft.PowerShell.Utility\Set-Variable `
             -Name ChromeDebugPort `
             -Value $port `
             -Scope Global

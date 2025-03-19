@@ -51,10 +51,10 @@ function Unprotect-WebbrowserTab {
 
     begin {
 
-        Write-Verbose "Initializing browser tab control sequence..."
+        Microsoft.PowerShell.Utility\Write-Verbose "Initializing browser tab control sequence..."
 
         # get reference to powershell window for manipulation
-        $pwshW = Get-PowershellMainWindow
+        $pwshW = GenXdev.Windows\Get-PowershellMainWindow
     }
 
     process {
@@ -63,27 +63,27 @@ function Unprotect-WebbrowserTab {
 
             Clear-Host
 
-            Write-Verbose "Prompting user to select a browser tab..."
-            Write-Host "Select to which browser tab you want to send commands to"
+            Microsoft.PowerShell.Utility\Write-Verbose "Prompting user to select a browser tab..."
+            Microsoft.PowerShell.Utility\Write-Host "Select to which browser tab you want to send commands to"
 
             # attempt to get list of available browser tabs
-            $null = Select-WebbrowserTab -Force:$Force
+            $null = GenXdev.Webbrowser\Select-WebbrowserTab -Force:$Force
 
             if ($Global:ChromeSessions.Length -eq 0) {
 
-                Write-Host "No browser tabs are open"
+                Microsoft.PowerShell.Utility\Write-Host "No browser tabs are open"
                 return
             }
 
             # get valid tab selection from user
             $tabNumber = 0
             do {
-                $tabNumber = Read-Host "Enter the number of the tab you want to control"
+                $tabNumber = Microsoft.PowerShell.Utility\Read-Host "Enter the number of the tab you want to control"
                 $tabNumber = $tabNumber -as [int]
                 $tabCount = $Global:ChromeSessions.Length
 
                 if ($tabNumber -lt 0 -or $tabNumber -gt $tabCount - 1) {
-                    Write-Host ("Invalid tab number. Please enter a number " +
+                    Microsoft.PowerShell.Utility\Write-Host ("Invalid tab number. Please enter a number " +
                         "between 0 and $($tabCount-1)")
                     continue
                 }
@@ -91,12 +91,12 @@ function Unprotect-WebbrowserTab {
             } while ($true)
 
             # activate the selected browser tab
-            Select-WebbrowserTab $tabNumber
+            GenXdev.Webbrowser\Select-WebbrowserTab $tabNumber
         }
 
         if (-not $Global:chromeController) {
 
-            Write-Host "No ChromeController object found"
+            Microsoft.PowerShell.Utility\Write-Host "No ChromeController object found"
             return
         }
 
@@ -105,32 +105,32 @@ function Unprotect-WebbrowserTab {
             $null = $pwshW.Maximize()
         }
         catch {
-            Write-Verbose "Failed to maximize PowerShell window: $_"
+            Microsoft.PowerShell.Utility\Write-Verbose "Failed to maximize PowerShell window: $_"
         }
 
         # create background job for keyboard input
-        $null = Start-Job {
+        $null = Microsoft.PowerShell.Core\Start-Job {
 
             # send keyboard sequence to expose chrome controller object
-            $null = Send-Key `
+            $null = GenXdev.Windows\Send-Key `
                 "{Escape}", "Clear-Host", "{Enter}", "`$ChromeController", ".",
             "^( )", "y" `
                 -DelayMilliSeconds 500
 
             # allow time for commands to complete
-            $null = Start-Sleep 3
+            $null = Microsoft.PowerShell.Utility\Start-Sleep 3
         }
 
         try {
             # attempt to bring powershell window to front
-            $null = Get-PowershellMainWindow | ForEach-Object {
+            $null = GenXdev.Windows\Get-PowershellMainWindow | Microsoft.PowerShell.Core\ForEach-Object {
 
                 $null = $_.setForeground()
-                $null = Set-ForegroundWindow $_.handle
+                $null = GenXdev.Windows\Set-ForegroundWindow $_.handle
             }
         }
         catch {
-            Write-Verbose "Failed to set PowerShell window focus: $_"
+            Microsoft.PowerShell.Utility\Write-Verbose "Failed to set PowerShell window focus: $_"
         }
     }
 

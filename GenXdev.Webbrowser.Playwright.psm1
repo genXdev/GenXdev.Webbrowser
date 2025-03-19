@@ -1,4 +1,3 @@
-. "$PSScriptRoot\Functions\GenXdev.Webbrowser.Playwright\_AssureTypes.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser.Playwright\Close-PlaywrightDriver.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser.Playwright\Connect-PlaywrightViaDebuggingPort.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser.Playwright\Get-PlaywrightDriver.ps1"

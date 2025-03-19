@@ -45,26 +45,26 @@ function Show-WebsiteInAllBrowsers {
 
     begin {
         # log the start of the operation with the target url
-        Write-Verbose "Starting browser mosaic layout for URL: $Url"
+        Microsoft.PowerShell.Utility\Write-Verbose "Starting browser mosaic layout for URL: $Url"
     }
 
     process {
 
         # initialize chrome in the top-left quadrant of the screen
-        Write-Verbose "Launching Chrome in top-left quadrant"
-        $null = Open-Webbrowser -Chrome -Left -Top -Url $Url
+        Microsoft.PowerShell.Utility\Write-Verbose "Launching Chrome in top-left quadrant"
+        $null = GenXdev.Webbrowser\Open-Webbrowser -Chrome -Left -Top -Url $Url
 
         # initialize edge in the bottom-left quadrant of the screen
-        Write-Verbose "Launching Edge in bottom-left quadrant"
-        $null = Open-Webbrowser -Edge -Left -Bottom -Url $Url
+        Microsoft.PowerShell.Utility\Write-Verbose "Launching Edge in bottom-left quadrant"
+        $null = GenXdev.Webbrowser\Open-Webbrowser -Edge -Left -Bottom -Url $Url
 
         # initialize firefox in the top-right quadrant of the screen
-        Write-Verbose "Launching Firefox in top-right quadrant"
-        $null = Open-Webbrowser -Firefox -Right -Top -Url $Url
+        Microsoft.PowerShell.Utility\Write-Verbose "Launching Firefox in top-right quadrant"
+        $null = GenXdev.Webbrowser\Open-Webbrowser -Firefox -Right -Top -Url $Url
 
         # initialize private window in the bottom-right quadrant of the screen
-        Write-Verbose "Launching Private window in bottom-right quadrant"
-        $null = Open-Webbrowser -Private -Right -Bottom -Url $Url
+        Microsoft.PowerShell.Utility\Write-Verbose "Launching Private window in bottom-right quadrant"
+        $null = GenXdev.Webbrowser\Open-Webbrowser -Private -Right -Bottom -Url $Url
     }
 
     end {
