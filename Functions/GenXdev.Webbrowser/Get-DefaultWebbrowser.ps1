@@ -57,7 +57,8 @@ function Get-DefaultWebbrowser {
         Microsoft.PowerShell.Utility\Write-Verbose "URL handler ID: $urlHandlerId"
     }
 
-    process {
+
+process {
 
         Microsoft.PowerShell.Utility\Write-Verbose "Scanning installed browsers in registry"
 

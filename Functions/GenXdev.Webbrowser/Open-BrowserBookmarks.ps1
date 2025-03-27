@@ -320,7 +320,8 @@ function Open-BrowserBookmarks {
         if ($OpenInFirefox) { $invocationParams["Firefox"] = $true }
     }
 
-    process {
+
+process {
 
         Microsoft.PowerShell.Utility\Write-Verbose ("Searching bookmarks with criteria: " + ($Queries -join ", "))
 

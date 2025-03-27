@@ -35,7 +35,8 @@ function Resume-WebbrowserTabVideo {
         $null = GenXdev.Webbrowser\Select-WebbrowserTab -Name "*youtube*"
     }
 
-    process {
+
+process {
 
         # verify that a youtube tab was successfully found and selected
         if ($null -eq $Global:chromeSession) {

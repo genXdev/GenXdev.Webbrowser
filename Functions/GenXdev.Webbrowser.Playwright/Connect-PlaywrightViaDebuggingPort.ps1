@@ -43,7 +43,8 @@ function Connect-PlaywrightViaDebuggingPort {
         Microsoft.PowerShell.Utility\Write-Verbose "Attempting to connect to browser at: $WsEndpoint"
     }
 
-    process {
+
+process {
         try {
             # create new playwright instance
             Microsoft.PowerShell.Utility\Write-Verbose "Creating Playwright instance"

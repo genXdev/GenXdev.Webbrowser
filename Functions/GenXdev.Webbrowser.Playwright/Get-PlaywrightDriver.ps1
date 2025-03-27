@@ -223,7 +223,8 @@ function Get-PlaywrightDriver {
         Microsoft.PowerShell.Utility\Write-Verbose "Using browser reference key: $referenceKey"
     }
 
-    process {
+
+process {
 
         # handle websocket connection mode first
         if ($PSCmdlet.ParameterSetName -eq 'WebSocket') {

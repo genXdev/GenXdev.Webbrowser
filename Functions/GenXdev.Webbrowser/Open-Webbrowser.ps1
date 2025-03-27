@@ -541,7 +541,8 @@ function Open-Webbrowser {
         }
     }
 
-    process {
+
+process {
 
         function enforceMinimumDelays($browser) {
 
@@ -883,7 +884,8 @@ function Open-Webbrowser {
                 $process = Microsoft.PowerShell.Management\Start-Process -FilePath ($browser.Path) -ArgumentList $argumentList -PassThru
 
                 # wait a little
-                $process.WaitForExit(200) | Microsoft.PowerShell.Core\Out-Null;
+                $null = $process.WaitForExit(200)
+                $null = [System.Threading.Thread]::Sleep(200)
             }
 
             ###############################################################################

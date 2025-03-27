@@ -54,7 +54,8 @@ function Stop-WebbrowserVideos {
         }
     }
 
-    process {
+
+process {
         # iterate through each browser session and pause videos
         $Global:chromeSessions | Microsoft.PowerShell.Core\ForEach-Object {
 

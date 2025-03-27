@@ -107,7 +107,8 @@ function Close-Webbrowser {
         Microsoft.PowerShell.Utility\Write-Verbose "Default browser: $($defaultBrowser.Name)"
     }
 
-    process {
+
+process {
 
         function Close-BrowserInstance {
             param (

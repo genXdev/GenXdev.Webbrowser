@@ -57,7 +57,8 @@ function Unprotect-WebbrowserTab {
         $pwshW = GenXdev.Windows\Get-PowershellMainWindow
     }
 
-    process {
+
+process {
 
         if (-not $UseCurrent) {
 
@@ -113,9 +114,10 @@ function Unprotect-WebbrowserTab {
 
             # send keyboard sequence to expose chrome controller object
             $null = GenXdev.Windows\Send-Key `
-                "{Escape}", "Clear-Host", "{Enter}", "`$ChromeController", ".",
+                "{ESCAPE}", "Clear-Host", "{ENTER}", "`$ChromeController", ".",
             "^( )", "y" `
-                -DelayMilliSeconds 500
+                -DelayMilliSeconds 500 `
+                 -WindowHandle ((GenXdev.Windows\Get-PowershellMainWindow).Handle)
 
             # allow time for commands to complete
             $null = Microsoft.PowerShell.Utility\Start-Sleep 3

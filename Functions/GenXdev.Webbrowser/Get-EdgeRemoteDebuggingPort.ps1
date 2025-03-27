@@ -32,7 +32,8 @@ function Get-EdgeRemoteDebuggingPort {
         Microsoft.PowerShell.Utility\Write-Verbose "Starting Get-EdgeRemoteDebuggingPort"
     }
 
-    process {
+
+process {
         # set default edge debugging port
         [int] $port = 9223
 

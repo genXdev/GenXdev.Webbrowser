@@ -36,7 +36,8 @@ function Get-ChromeRemoteDebuggingPort {
         [int] $port = 9222
     }
 
-    process {
+
+process {
 
         # check if a custom port is configured in the global scope
         if ($Global:ChromeDebugPort) {

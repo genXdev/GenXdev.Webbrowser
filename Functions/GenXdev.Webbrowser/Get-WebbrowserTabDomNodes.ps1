@@ -158,7 +158,8 @@ for await (let result of traverseNodes(document, 0)) {
 "@
     }
 
-    process {
+
+process {
 
         # log the operation for debugging purposes
         Microsoft.PowerShell.Utility\Write-Verbose "Executing query '$QuerySelector' with modifier script:`n$ModifyScript"

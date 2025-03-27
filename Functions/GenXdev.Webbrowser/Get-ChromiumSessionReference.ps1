@@ -43,7 +43,8 @@ function Get-ChromiumSessionReference {
         }
     }
 
-    process {
+
+process {
 
         # ensure chrome session exists and is of correct type
         if (($null -eq $Global:chromeSession) -or

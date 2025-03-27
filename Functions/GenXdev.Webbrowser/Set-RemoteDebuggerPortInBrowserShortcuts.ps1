@@ -33,7 +33,8 @@ function Set-RemoteDebuggerPortInBrowserShortcuts {
         Microsoft.PowerShell.Utility\Write-Verbose "Created WScript.Shell COM object for shortcut management"
     }
 
-    process {
+
+process {
 
         ########################################################################
         <#

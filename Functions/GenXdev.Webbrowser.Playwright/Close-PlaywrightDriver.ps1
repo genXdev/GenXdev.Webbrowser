@@ -59,7 +59,8 @@ function Close-PlaywrightDriver {
 
     }
 
-    process {
+
+process {
 
         # normalize the reference key to handle null/empty cases
         Microsoft.PowerShell.Utility\Write-Verbose "Processing browser closure for key: $ReferenceKey"

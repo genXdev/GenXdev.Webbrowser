@@ -122,7 +122,8 @@ function Select-WebbrowserTab {
         Microsoft.PowerShell.Utility\Write-Verbose "Using browser debugging port: $debugPort"
     }
 
-    process {
+
+process {
 
         # helper function to display available browser tabs
         function Show-TabList {

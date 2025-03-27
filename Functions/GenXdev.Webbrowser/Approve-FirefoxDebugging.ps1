@@ -43,7 +43,8 @@ function Approve-FirefoxDebugging {
         )
     }
 
-    process {
+
+process {
 
         try {
             # locate all firefox preference files recursively

@@ -105,7 +105,8 @@ function Find-BrowserBookmark {
             -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable -Scope Local -Name * -ErrorAction SilentlyContinue)
     }
 
-    process {
+
+process {
 
         # retrieve all bookmarks from selected browsers
         Microsoft.PowerShell.Utility\Write-Verbose "Fetching bookmarks from selected browsers"

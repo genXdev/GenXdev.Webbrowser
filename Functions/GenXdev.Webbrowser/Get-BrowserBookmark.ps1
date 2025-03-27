@@ -93,7 +93,8 @@ function Get-BrowserBookmark {
         }
     }
 
-    process {
+
+process {
 
         # helper function to parse Chromium-based browser bookmarks
         function Get-ChromiumBookmarks {

@@ -79,7 +79,8 @@ function Set-WebbrowserTabLocation {
         }
     }
 
-    process {
+
+process {
 
         if ($PSCmdlet.ShouldProcess($Url, "Navigate to URL")) {
 

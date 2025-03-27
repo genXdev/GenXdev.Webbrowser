@@ -34,7 +34,8 @@ function Update-PlaywrightDriverCache {
         Microsoft.PowerShell.Utility\Write-Verbose "Starting Playwright browser cache maintenance"
     }
 
-    process {
+
+process {
 
         try {
             # iterate through all browser instances and remove stale ones

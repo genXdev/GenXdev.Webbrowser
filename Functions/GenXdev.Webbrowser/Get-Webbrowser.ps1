@@ -56,7 +56,8 @@ function Get-Webbrowser {
         Microsoft.PowerShell.Utility\Select-Object -ExpandProperty ProgId
     }
 
-    process {
+
+process {
 
         # enumerate all browser entries in the Windows registry
         Microsoft.PowerShell.Utility\Write-Verbose "Enumerating installed browsers from registry"

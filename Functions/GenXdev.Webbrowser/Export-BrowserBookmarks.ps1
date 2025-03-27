@@ -73,7 +73,8 @@ function Export-BrowserBookmarks {
         Microsoft.PowerShell.Utility\Write-Verbose "Exporting bookmarks to: $outputFilePath"
     }
 
-    process {
+
+process {
 
         # initialize empty hashtable for browser selection parameters
         $bookmarksArguments = @{}

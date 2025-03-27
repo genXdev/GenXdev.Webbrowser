@@ -247,7 +247,8 @@ function Invoke-WebbrowserEvaluation {
         }
     }
 
-    Process {
+
+process {
         Microsoft.PowerShell.Utility\Write-Verbose "Processing JavaScript evaluation request..."
 
         # Define the custom JavaScript for Visibility API events and CSS overrides

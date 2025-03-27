@@ -42,7 +42,8 @@ function Get-PlaywrightProfileDirectory {
         Microsoft.PowerShell.Utility\Write-Verbose "Base profile directory: $baseDir"
     }
 
-    process {
+
+process {
 
         # generate the specific browser profile directory path
         $browserDir = Microsoft.PowerShell.Management\Join-Path -Path $baseDir -ChildPath $BrowserType

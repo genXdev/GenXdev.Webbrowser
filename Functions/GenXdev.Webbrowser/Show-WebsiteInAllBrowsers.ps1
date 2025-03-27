@@ -48,7 +48,8 @@ function Show-WebsiteInAllBrowsers {
         Microsoft.PowerShell.Utility\Write-Verbose "Starting browser mosaic layout for URL: $Url"
     }
 
-    process {
+
+process {
 
         # initialize chrome in the top-left quadrant of the screen
         Microsoft.PowerShell.Utility\Write-Verbose "Launching Chrome in top-left quadrant"

@@ -94,7 +94,8 @@ function Import-BrowserBookmarks {
         Microsoft.PowerShell.Utility\Write-Verbose "Found installed browsers: $($installedBrowsers.Name)"
     }
 
-    process {
+
+process {
 
         # load bookmarks from either the collection or input file
         $importedBookmarks = if ($Bookmarks) {

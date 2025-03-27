@@ -54,7 +54,8 @@ function Close-WebbrowserTab {
         }
     }
 
-    process {
+
+process {
 
         # log the tab information before closing
         Microsoft.PowerShell.Utility\Write-Verbose ("Closing browser tab: '$($Global:chromeSession.title)' " +

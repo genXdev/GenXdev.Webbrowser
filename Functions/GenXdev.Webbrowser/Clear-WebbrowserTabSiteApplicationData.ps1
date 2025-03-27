@@ -66,7 +66,8 @@ function Clear-WebbrowserTabSiteApplicationData {
             "cleared!')%7D)()`"") | Microsoft.PowerShell.Utility\ConvertFrom-Json
     }
 
-    process {
+
+process {
 
         Microsoft.PowerShell.Utility\Write-Verbose "Adding URL parameter to execute JavaScript in browser"
 

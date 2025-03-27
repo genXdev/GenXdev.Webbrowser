@@ -45,7 +45,8 @@ function Get-ChromiumRemoteDebuggingPort {
                 else { $defaultBrowser.Name }))
     }
 
-    process {
+
+process {
 
         if ($Chrome) {
             # return chrome debugging port

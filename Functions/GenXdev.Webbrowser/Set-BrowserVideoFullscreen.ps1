@@ -32,7 +32,8 @@ function Set-BrowserVideoFullscreen {
         Microsoft.PowerShell.Utility\Write-Verbose "Prepared JavaScript code for video fullscreen manipulation"
     }
 
-    process {
+
+process {
 
         # check if we should proceed with the operation
         if ($PSCmdlet.ShouldProcess("browser video", "Set to fullscreen mode")) {
