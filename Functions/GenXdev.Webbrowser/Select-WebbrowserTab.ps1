@@ -100,6 +100,8 @@ function Select-WebbrowserTab {
     )
 
     begin {
+        $sessions = $Global:chromeSessions ? $Global:chromeSessions : @()
+
         # determine debugging port based on browser selection or reference
         $debugPort = if ($null -ne $ByReference) {
             $ByReference.webSocketDebuggerUrl -replace "ws://localhost:(\d+)/.*", '$1'
@@ -171,61 +173,67 @@ process {
         if (($null -eq $ByReference -and $Id -lt 0) -or
             ![string]::IsNullOrWhiteSpace($Name)) {
 
-            Microsoft.PowerShell.Utility\Write-Verbose "Retrieving list of available browser tabs"
+                Microsoft.PowerShell.Utility\Write-Verbose "Retrieving list of available browser tabs"
+                try {
+                    # get all page tabs from browser
+                    $sessions = @(
+                        (Microsoft.PowerShell.Utility\Invoke-WebRequest -Uri "http://localhost:$debugPort/json").Content |
+                        Microsoft.PowerShell.Utility\ConvertFrom-Json |
+                        Microsoft.PowerShell.Core\Where-Object -Property "type" -EQ "page"
+                    )
+                    $Global:chromeSessions = $sessions
+                }
+                catch {
+                    if ($Force -and ($null -eq $ByReference)) {
 
-            try {
-                # get all page tabs from browser
-                $sessions = @(
-                    (Microsoft.PowerShell.Utility\Invoke-WebRequest -Uri "http://localhost:$debugPort/json").Content |
-                    Microsoft.PowerShell.Utility\ConvertFrom-Json |
-                    Microsoft.PowerShell.Core\Where-Object -Property "type" -EQ "page" |
-                    Microsoft.PowerShell.Core\Where-Object -Property "url" -Match "^https?://"
-                )
-            }
-            catch {
-                if ($Force -and ($null -eq $ByReference)) {
+                        # force browser restart if requested
+                        $null = GenXdev.Webbrowser\Close-Webbrowser -Chrome:$Chrome -Edge:$Edge -Force -Chromium
 
-                    # force browser restart if requested
-                    $null = GenXdev.Webbrowser\Close-Webbrowser -Chrome:$Chrome -Edge:$Edge -Force -Chromium
+                        $invocationArguments = GenXdev.Helpers\Copy-IdenticalParamValues `
+                            -BoundParameters $PSBoundParameters `
+                            -FunctionName "GenXdev.Webbrowser\Open-Webbrowser" `
+                            -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable -Scope Local -Name * `
+                                -ErrorAction SilentlyContinue)
 
-                    $invocationArguments = GenXdev.Helpers\Copy-IdenticalParamValues `
-                        -BoundParameters $PSBoundParameters `
-                        -FunctionName "GenXdev.Webbrowser\Open-Webbrowser" `
-                        -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable -Scope Local -Name * `
-                            -ErrorAction SilentlyContinue)
+                        if (-not [string]::IsNullOrWhiteSpace($Name)) {
+                            $invocationArguments.Url = $Name
+                        }
 
-                    if (-not [string]::IsNullOrWhiteSpace($Name)) {
-                        $invocationArguments.Url = $Name
+                        $invocationArguments.Force = $true
+                        $invocationArguments.Chromium = $true
+
+                        $null = GenXdev.Webbrowser\Open-Webbrowser @invocationArguments
+
+                        $invocationArguments = GenXdev.Helpers\Copy-IdenticalParamValues `
+                            -BoundParameters $PSBoundParameters `
+                            -FunctionName "GenXdev.Webbrowser\Select-WebbrowserTab" `
+                            -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable -Scope Local -Name * `
+                                -ErrorAction SilentlyContinue)
+
+                        $invocationArguments.Force = $false
+                    }
+                    else {
+
+                        return "No browser available with open debugging port, use -Force to restart"
                     }
 
-                    $invocationArguments.Force = $true
-                    $invocationArguments.Chromium = $true
-
-                    $null = GenXdev.Webbrowser\Open-Webbrowser @invocationArguments
-
-                    $invocationArguments = GenXdev.Helpers\Copy-IdenticalParamValues `
-                        -BoundParameters $PSBoundParameters `
-                        -FunctionName "GenXdev.Webbrowser\Select-WebbrowserTab" `
-                        -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable -Scope Local -Name * `
-                            -ErrorAction SilentlyContinue)
-
-                    $invocationArguments.Force = $false
+                    # reset global state
+                    $Global:chromeSessions = @()
+                    $Global:chromeController = $null
+                    $Global:chrome = $null
+                    $Global:chromeSession = $null
+                    return
                 }
-                else {
-
-                    return "No browser available with open debugging port, use -Force to restart"
-                }
-
-                # reset global state
-                $Global:chromeSessions = @()
-                $Global:chromeController = $null
-                $Global:chrome = $null
-                $Global:chromeSession = $null
-                return
-            }
 
             $Global:chromeSessions = $sessions
             Microsoft.PowerShell.Utility\Write-Verbose "Found $($sessions.Count) browser tabs"
+
+            # Ensure we have at least one session
+            if ($sessions.Count -eq 0) {
+                Microsoft.PowerShell.Utility\Write-Warning "No browser sessions found"
+                $Global:chromeSession = $null
+                return "No browser sessions available"
+            }
 
             # find matching session based on criteria
             $sessionId = 0
@@ -244,9 +252,13 @@ process {
 
             # preserve session data when switching tabs
             $origId = $Global:chromeSession ? $Global:chromeSession.id : $null;
-            $origData = $Global:chromeSession ? $Global:chromeSession.data : $null;
+            $origData = $Global:chromeSession ? $Global:chromeSession.data : $null;            $Global:chromeSession = $sessions[$sessionId]
 
-            $Global:chromeSession = $sessions[$sessionId]
+            # Validate that we have a valid session
+            if ($null -eq $Global:chromeSession) {
+                Microsoft.PowerShell.Utility\Write-Warning "No valid session found at index $sessionId"
+                return "No valid browser session available"
+            }
 
             $newId = $Global:chromeSession ? $Global:chromeSession.id : $null;
             $newData = $Global:chromeSession ? $Global:chromeSession.data : $null;
@@ -255,8 +267,11 @@ process {
                 Microsoft.PowerShell.Utility\Write-Verbose "Selected tab: $($sessions[$sessionId].url)"
             }
             else {
-                Microsoft.PowerShell.Utility\Add-Member -InputObject $Global:chromeSession `
-                    -MemberType NoteProperty -Name "data" -Value $origData -Force
+                # Only add member if session is not null
+                if ($null -ne $Global:chromeSession) {
+                    Microsoft.PowerShell.Utility\Add-Member -InputObject $Global:chromeSession `
+                        -MemberType NoteProperty -Name "data" -Value $origData -Force
+                }
                 Microsoft.PowerShell.Utility\Write-Verbose "Selected tab: $($sessions[$sessionId].url) (unchanged)"
             }
 
@@ -286,15 +301,12 @@ process {
             if ($null -eq $ByReference) {
 
                 # handle selection by ID
-                $sessions = $Global:chromeSessions
-
-                # refresh sessions if ID out of range
+                $sessions = $Global:chromeSessions                # refresh sessions if ID out of range
                 if ($Id -ge $sessions.Count) {
                     $sessions = @((Microsoft.PowerShell.Utility\Invoke-WebRequest `
                                 -Uri "http://localhost:$debugPort/json").Content |
                         Microsoft.PowerShell.Utility\ConvertFrom-Json |
-                        Microsoft.PowerShell.Core\Where-Object -Property "type" -EQ "page" |
-                        Microsoft.PowerShell.Core\Where-Object -Property "url" -Match "^https?://")
+                        Microsoft.PowerShell.Core\Where-Object -Property "type" -EQ "page")
                     $Global:chromeSessions = $sessions
                     Microsoft.PowerShell.Utility\Write-Verbose "Refreshed sessions, found $($sessions.Count)"
 
@@ -312,15 +324,12 @@ process {
                     if ($info.targetInfo.targetId -eq $Global:chromeSession.id) {
                         $PSItem
                     }
-                } | Microsoft.PowerShell.Utility\Select-Object -First 1;
-
-                # refresh session list
+                } | Microsoft.PowerShell.Utility\Select-Object -First 1;                # refresh session list
                 try {
                     $sessions = @((Microsoft.PowerShell.Utility\Invoke-WebRequest `
                                 -Uri "http://localhost:$debugPort/json").Content |
                         Microsoft.PowerShell.Utility\ConvertFrom-Json |
-                        Microsoft.PowerShell.Core\Where-Object -Property "type" -EQ "page" |
-                        Microsoft.PowerShell.Core\Where-Object -Property "url" -Match "^https?://")
+                        Microsoft.PowerShell.Core\Where-Object -Property "type" -EQ "page")
                     $Global:chromeSessions = $sessions
                 }
                 catch {

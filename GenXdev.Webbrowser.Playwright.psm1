@@ -1,6 +1,6 @@
-. "$PSScriptRoot\Functions\GenXdev.Webbrowser.Playwright\AssureTypes.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser.Playwright\Close-PlaywrightDriver.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser.Playwright\Connect-PlaywrightViaDebuggingPort.ps1"
+. "$PSScriptRoot\Functions\GenXdev.Webbrowser.Playwright\EnsureTypes.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser.Playwright\Get-PlaywrightDriver.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser.Playwright\Get-PlaywrightProfileDirectory.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser.Playwright\Resume-WebbrowserTabVideo.ps1"

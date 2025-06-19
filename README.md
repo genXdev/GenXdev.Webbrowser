@@ -212,9 +212,9 @@ Update-Module
 ### GenXdev.Webbrowser.Playwright</hr>
 | Command&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | aliases&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Description |
 | --- | --- | --- |
-| [AssureTypes](#AssureTypes) |  |  |
 | [Close-PlaywrightDriver](#Close-PlaywrightDriver) |  | Closes a Playwright browser instance and removes it from the global cache. |
 | [Connect-PlaywrightViaDebuggingPort](#Connect-PlaywrightViaDebuggingPort) |  | Connects to an existing browser instance via debugging port. |
+| [EnsureTypes](#EnsureTypes) |  |  |
 | [Get-PlaywrightDriver](#Get-PlaywrightDriver) |  | Creates or retrieves a configured Playwright browser instance. |
 | [Get-PlaywrightProfileDirectory](#Get-PlaywrightProfileDirectory) |  | Gets the Playwright browser profile directory for persistent sessions. |
 | [Resume-WebbrowserTabVideo](#Resume-WebbrowserTabVideo) |  | Resumes video playback in a YouTube browser tab. |
@@ -2805,4 +2805,133 @@ RELATED LINKS
  
 
 &nbsp;<hr/>
-###	GenXdev.Webbrowser.Playwright<hr/>
+###	GenXdev.Webbrowser.Playwright<hr/> 
+NAME
+    Close-PlaywrightDriver
+    
+SYNOPSIS
+    Closes a Playwright browser instance and removes it from the global cache.
+    
+    
+SYNTAX
+    Close-PlaywrightDriver [[-BrowserType] <String>] [[-ReferenceKey] <String>] [<CommonParameters>]
+    
+    
+DESCRIPTION
+    This function safely closes a previously opened Playwright browser instance and
+    removes its reference from the global browser dictionary. The function handles
+    cleanup of browser resources and provides error handling for graceful shutdown.
+    
+
+PARAMETERS
+    -BrowserType <String>
+        Specifies the type of browser instance to close (Chromium, Firefox, or Webkit).
+        If not specified, defaults to Chromium.
+        
+        Required?                    false
+        Position?                    1
+        Default value                Chromium
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+        
+    -ReferenceKey <String>
+        The unique identifier used to retrieve the browser instance from the global
+        cache. If not specified, defaults to "Default".
+        
+        Required?                    false
+        Position?                    2
+        Default value                Default
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+        
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters (https://go.microsoft.com/fwlink/?LinkID=113216). 
+    
+INPUTS
+    
+OUTPUTS
+    
+    -------------------------- EXAMPLE 1 --------------------------
+    
+    PS > Close-PlaywrightDriver -BrowserType Chromium -ReferenceKey "MainBrowser"
+    Closes a specific Chromium browser instance identified by "MainBrowser"
+    
+    
+    
+    
+    
+    
+    -------------------------- EXAMPLE 2 --------------------------
+    
+    PS > Close-PlaywrightDriver Chrome
+    Closes the default Chromium browser instance using position parameters
+    
+    
+    
+    
+    
+    
+    
+RELATED LINKS 
+
+<br/><hr/><hr/><br/>
+ 
+NAME
+    Connect-PlaywrightViaDebuggingPort
+    
+SYNOPSIS
+    Connects to an existing browser instance via debugging port.
+    
+    
+SYNTAX
+    Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String> [<CommonParameters>]
+    
+    
+DESCRIPTION
+    Establishes a connection to a running Chromium-based browser instance using the
+    WebSocket debugger URL. Creates a Playwright instance and connects over CDP
+    (Chrome DevTools Protocol). The connected browser instance is stored in a global
+    dictionary for later reference.
+    
+
+PARAMETERS
+    -WsEndpoint <String>
+        The WebSocket URL for connecting to the browser's debugging port. This URL
+        typically follows the format 'ws://hostname:port/devtools/browser/<id>'.
+        
+        Required?                    true
+        Position?                    1
+        Default value                
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+        
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see
+        about_CommonParameters (https://go.microsoft.com/fwlink/?LinkID=113216). 
+    
+INPUTS
+    
+OUTPUTS
+    
+    -------------------------- EXAMPLE 1 --------------------------
+    
+    PS > Connect-PlaywrightViaDebuggingPort `
+        -WsEndpoint "ws://localhost:9222/devtools/browser/abc123"
+    
+    
+    
+    
+    
+    
+    
+RELATED LINKS 
+
+<br/><hr/><hr/><br/>
