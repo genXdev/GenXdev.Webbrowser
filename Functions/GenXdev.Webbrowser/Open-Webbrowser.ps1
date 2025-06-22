@@ -122,7 +122,6 @@ function Open-Webbrowser {
 
     param(
         ###############################################################################
-
         [parameter(
             Mandatory = $false,
             Position = 0,
