@@ -443,8 +443,8 @@ function Open-Webbrowser {
 
         if ($HavePositioning -or $FullScreen) {
 
-            $WidthProvided = ($Width -ge 0) -and ($Width -is [int]);
-            $heightProvided = ($Height -ge 0) -and ($Height -is [int]);
+            $WidthProvided = ($Width -gt 0) -and ($Width -is [int]);
+            $heightProvided = ($Height -gt 0) -and ($Height -is [int]);
 
             # '-Width' parameter not supplied?
             if ($WidthProvided -eq $false) {
@@ -962,12 +962,12 @@ process {
                 # if maximized, restore window style
                 if (-not $FullScreen) {
 
-                    $null = $window[0].Show() | Microsoft.PowerShell.Core\Out-Null
-                    $null = $window[0].Restore() | Microsoft.PowerShell.Core\Out-Null;
+                    $null = $window[0].Show()
+                    $null = $window[0].Restore()
                 }
 
                 # move it to it's place
-                $null = $window[0].Move($X, $Y, $Width, $Height)  | Microsoft.PowerShell.Core\Out-Null
+                $null = $window[0].Move($X, $Y, $Width, $Height)
             }
 
             Microsoft.PowerShell.Utility\Start-Sleep 2 | Microsoft.PowerShell.Core\Out-Null
