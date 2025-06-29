@@ -1,5 +1,4 @@
-###############################################################################
-
+################################################################################
 <#
 .SYNOPSIS
 Opens one or more webbrowser instances.
@@ -10,24 +9,6 @@ switches to control window position, size, and browser-specific features.
 
 .PARAMETER Url
 The URL or URLs to open in the browser. Can be provided via pipeline.
-
-.PARAMETER Private
-Opens in incognito/private browsing mode.
-
-.PARAMETER Edge
-Opens URLs in Microsoft Edge.
-
-.PARAMETER Chrome
-Opens URLs in Google Chrome.
-
-.PARAMETER Chromium
-Opens URLs in Microsoft Edge or Google Chrome, depending on default browser.
-
-.PARAMETER Firefox
-Opens URLs in Firefox.
-
-.PARAMETER All
-Opens URLs in all registered modern browsers.
 
 .PARAMETER Monitor
 The monitor to use (0=default, -1=discard, -2=configured secondary).
@@ -46,6 +27,30 @@ Initial X position of browser window.
 
 .PARAMETER Y
 Initial Y position of browser window.
+
+.PARAMETER AcceptLang
+Sets browser accept-lang HTTP header.
+
+.PARAMETER Private
+Opens in incognito/private browsing mode.
+
+.PARAMETER Force
+Force enable debugging port, stopping existing browsers if needed.
+
+.PARAMETER Edge
+Opens URLs in Microsoft Edge.
+
+.PARAMETER Chrome
+Opens URLs in Google Chrome.
+
+.PARAMETER Chromium
+Opens URLs in Microsoft Edge or Google Chrome, depending on default browser.
+
+.PARAMETER Firefox
+Opens URLs in Firefox.
+
+.PARAMETER All
+Opens URLs in all registered modern browsers.
 
 .PARAMETER Left
 Places browser window on left side of screen.
@@ -68,8 +73,8 @@ Hides browser controls.
 .PARAMETER NoBrowserExtensions
 Prevents loading of browser extensions.
 
-.PARAMETER AcceptLang
-Sets browser accept-lang HTTP header.
+.PARAMETER DisablePopupBlocker
+Disable the popup blocker.
 
 .PARAMETER RestoreFocus
 Restores PowerShell window focus after opening browser.
@@ -79,9 +84,6 @@ Creates new browser window instead of reusing existing one.
 
 .PARAMETER PassThru
 Returns browser process object.
-
-.PARAMETER Force
-Forces debugging port enabled, stopping existing browser processes if needed.
 
 .EXAMPLE
 
@@ -133,17 +135,79 @@ function Open-Webbrowser {
         [string[]] $Url,
 
         ###############################################################################
+        [Alias("m", "mon")]
+        [Parameter(
+            Mandatory = $false,
+            Position = 1,
+            HelpMessage = ("The monitor to use, 0 = default, -1 is discard, " +
+                "-2 = Configured secondary monitor, defaults to " +
+                "`Global:DefaultSecondaryMonitor or 2 if not found")
+        )]
+        [int] $Monitor = -2,
+
+        ###############################################################################
+        [Alias("fs", "f")]
+        [Parameter(
+            Mandatory = $false,
+            Position = 2,
+            HelpMessage = "Opens in fullscreen mode"
+        )]
+        [switch] $FullScreen,
+
+        ###############################################################################
+        [Parameter(
+            Mandatory = $false,
+            Position = 3,
+            HelpMessage = "The initial width of the webbrowser window"
+        )]
+        [int] $Width = -1,
+
+        ###############################################################################
+        [Parameter(
+            Mandatory = $false,
+            Position = 4,
+            HelpMessage = "The initial height of the webbrowser window"
+        )]
+        [int] $Height = -1,
+
+        ###############################################################################
+        [Parameter(
+            Mandatory = $false,
+            Position = 5,
+            HelpMessage = "The initial X position of the webbrowser window"
+        )]
+        [int] $X = -999999,
+
+        ###############################################################################
+        [Parameter(
+            Mandatory = $false,
+            Position = 6,
+            HelpMessage = "The initial Y position of the webbrowser window"
+        )]
+        [int] $Y = -999999,
+
+        ###############################################################################
+        [Alias("lang", "locale")]
+        [Parameter(
+            Mandatory = $false,
+            Position = 7,
+            HelpMessage = "Set the browser accept-lang http header"
+        )]
+        [string] $AcceptLang = $null,
+
+        ###############################################################################
+        [Alias("incognito", "inprivate")]
         [Parameter(
             Mandatory = $false,
             HelpMessage = "Opens in incognito/private browsing mode"
         )]
-        [Alias("incognito", "inprivate")]
         [switch] $Private,
 
         ###############################################################################
         [Parameter(
             Mandatory = $false,
-            HelpMessage = "Force enable debugging port, stopping existing browsers if needed"
+            HelpMessage = ("Force enable debugging port, stopping existing " +
+                "browsers if needed")
         )]
         [switch] $Force,
 
@@ -167,7 +231,8 @@ function Open-Webbrowser {
         [Alias("c")]
         [Parameter(
             Mandatory = $false,
-            HelpMessage = "Opens in Microsoft Edge or Google Chrome, depending on what the default browser is"
+            HelpMessage = ("Opens in Microsoft Edge or Google Chrome, depending " +
+                "on what the default browser is")
         )]
         [switch] $Chromium,
 
@@ -185,50 +250,6 @@ function Open-Webbrowser {
             HelpMessage = "Opens in all registered modern browsers"
         )]
         [switch] $All,
-
-        ###############################################################################
-        [Alias("m", "mon")]
-        [Parameter(
-            Mandatory = $false,
-            HelpMessage = "The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to `Global:DefaultSecondaryMonitor or 2 if not found"
-        )]
-        [int] $Monitor = -2,
-
-        ###############################################################################
-        [Alias("fs", "f")]
-        [Parameter(
-            Mandatory = $false,
-            HelpMessage = "Opens in fullscreen mode"
-        )]
-        [switch] $FullScreen,
-
-        ###############################################################################
-        [Parameter(
-            Mandatory = $false,
-            HelpMessage = "The initial width of the webbrowser window"
-        )]
-        [int] $Width = -1,
-
-        ###############################################################################
-        [Parameter(
-            Mandatory = $false,
-            HelpMessage = "The initial height of the webbrowser window"
-        )]
-        [int] $Height = -1,
-
-        ###############################################################################
-        [Parameter(
-            Mandatory = $false,
-            HelpMessage = "The initial X position of the webbrowser window"
-        )]
-        [int] $X = -999999,
-
-        ###############################################################################
-        [Parameter(
-            Mandatory = $false,
-            HelpMessage = "The initial Y position of the webbrowser window"
-        )]
-        [int] $Y = -999999,
 
         ###############################################################################
         [Parameter(
@@ -290,14 +311,6 @@ function Open-Webbrowser {
         [switch] $DisablePopupBlocker,
 
         ###############################################################################
-        [Alias("lang", "locale")]
-        [Parameter(
-            Mandatory = $false,
-            HelpMessage = "Set the browser accept-lang http header"
-        )]
-        [string] $AcceptLang = $null,
-
-        ###############################################################################
         [Alias("bg")]
         [Parameter(
             Mandatory = $false,
@@ -309,350 +322,471 @@ function Open-Webbrowser {
         [Alias("nw", "new")]
         [Parameter(
             Mandatory = $false,
-            HelpMessage = "Don't re-use existing browser window, instead, create a new one"
+            HelpMessage = ("Don't re-use existing browser window, instead, " +
+                "create a new one")
         )]
         [switch] $NewWindow,
 
         ###############################################################################
         [Parameter(
             Mandatory = $false,
-            HelpMessage = "Returns a [System.Diagnostics.Process] object of the browserprocess"
+            HelpMessage = ("Returns a [System.Diagnostics.Process] object of " +
+                "the browserprocess")
         )]
         [switch] $PassThru
     )
 
     begin {
-        $AllScreens = @([WpfScreenHelper.Screen]::AllScreens | Microsoft.PowerShell.Core\ForEach-Object { $PSItem });
 
-        Microsoft.PowerShell.Utility\Write-Verbose "Open-Webbrowser monitor = $Monitor, Urls=$($Url | Microsoft.PowerShell.Utility\ConvertTo-Json)"
+        # get all available screens/monitors on the system
+        $allScreens = @([WpfScreenHelper.Screen]::AllScreens |
+            Microsoft.PowerShell.Core\ForEach-Object { $PSItem })
 
-        [bool] $UrlSpecified = $true;
+        # output diagnostic information about the function call
+        Microsoft.PowerShell.Utility\Write-Verbose ("Open-Webbrowser monitor = $Monitor, " +
+            "urls=$($Url | Microsoft.PowerShell.Utility\ConvertTo-Json)")
 
-        # what if no url is specified?
+        # track if url parameter was explicitly provided by user
+        [bool] $urlSpecified = $true
+
+        # check if no url was specified by the user
         if (($null -eq $Url) -or ($Url.Length -lt 1)) {
 
-            $UrlSpecified = $false;
+            $urlSpecified = $false
 
-            # show the help page from github
+            # show the default help page from github when no url provided
             $Url = @("https://powershell.genxdev.net/")
         }
         else {
 
-            $Url = $($Url | Microsoft.PowerShell.Core\ForEach-Object {
+            # process and normalize each url provided
+            $Url = $($Url |
+                Microsoft.PowerShell.Core\ForEach-Object {
 
-                    $NewUrl = $PSItem.Trim(" `"'".ToCharArray());
-                    $filePath = $NewUrl
+                    # clean up url by trimming quotes and spaces
+                    $newUrl = $PSItem.Trim(" `"'".ToCharArray())
+                    $filePath = $newUrl
+
                     try {
-                        $filePath = (GenXdev.FileSystem\Expand-Path $NewUrl);
+                        # try to expand the path in case it's a relative file path
+                        $filePath = (GenXdev.FileSystem\Expand-Path $newUrl)
                     }
                     catch {
-
+                        # ignore expansion errors for urls that aren't file paths
                     }
 
+                    # check if the url refers to an existing local file
                     if ([IO.File]::Exists($filePath)) {
 
-                        $NewUrl = "file://$([Uri]::EscapeUriString($filePath.Replace("\", "/")))"
+                        # convert local file path to file:// url format
+                        $newUrl = ("file://" +
+                            [Uri]::EscapeUriString($filePath.Replace("\", "/")))
                     }
 
-                    $NewUrl
+                    $newUrl
                 }
-            );
+            )
         }
 
-        # reference powershell main window
-        $PowerShellWindow = GenXdev.Windows\Get-PowershellMainWindow
+        # get reference to the powershell main window for focus restoration
+        $powerShellWindow = GenXdev.Windows\Get-PowershellMainWindow
 
-        # get a list of all available/installed modern webbrowsers
-        $Browsers = GenXdev.Webbrowser\Get-Webbrowser
+        # retrieve list of all available/installed modern webbrowsers
+        $browsers = GenXdev.Webbrowser\Get-Webbrowser
 
-        # get the configured default webbrowser
-        $DefaultBrowser = GenXdev.Webbrowser\Get-DefaultWebbrowser
+        # get the system's configured default webbrowser
+        $defaultBrowser = GenXdev.Webbrowser\Get-DefaultWebbrowser
 
-        # reference the main monitor
-        $Screen = [WpfScreenHelper.Screen]::PrimaryScreen;
-        $AllScreens = @([WpfScreenHelper.Screen]::AllScreens | Microsoft.PowerShell.Core\ForEach-Object { $PSItem });
+        # set primary monitor as the initial screen reference
+        $screen = [WpfScreenHelper.Screen]::PrimaryScreen
+        $allScreens = @([WpfScreenHelper.Screen]::AllScreens |
+            Microsoft.PowerShell.Core\ForEach-Object { $PSItem })
 
-        # reference the requested monitor
+        # determine which monitor to use based on monitor parameter
         if ($Monitor -eq 0) {
 
-            Microsoft.PowerShell.Utility\Write-Verbose "Choosing primary monitor, because default monitor requested using -Monitor 0"
+            Microsoft.PowerShell.Utility\Write-Verbose ("Choosing primary monitor, " +
+                "because default monitor requested using -Monitor 0")
         }
         else {
-            if ($Monitor -eq -2 -and $Global:DefaultSecondaryMonitor -is [int] -and $Global:DefaultSecondaryMonitor -ge 0) {
+            # check if secondary monitor was requested and global variable is set
+            if ($Monitor -eq -2 -and $Global:DefaultSecondaryMonitor -is [int] -and
+                $Global:DefaultSecondaryMonitor -ge 0) {
 
-                Microsoft.PowerShell.Utility\Write-Verbose "Picking monitor #$((($Global:DefaultSecondaryMonitor-1) % $AllScreens.Length)) as secondary (requested with -monitor -2) set by `$Global:DefaultSecondaryMonitor"
-                $Screen = $AllScreens[($Global:DefaultSecondaryMonitor - 1) % $AllScreens.Length];
+                Microsoft.PowerShell.Utility\Write-Verbose ("Picking monitor " +
+                    "#$((($Global:DefaultSecondaryMonitor-1) % $allScreens.Length)) " +
+                    "as secondary (requested with -monitor -2) set by " +
+                    "`$Global:DefaultSecondaryMonitor")
+                $screen = $allScreens[($Global:DefaultSecondaryMonitor - 1) %
+                    $allScreens.Length]
             }
-            elseif ($Monitor -eq -2 -and (-not ($Global:DefaultSecondaryMonitor -is [int] -and $Global:DefaultSecondaryMonitor -ge 0)) -and ((GenXdev.Windows\Get-MonitorCount) -gt 1)) {
+            # check if secondary monitor requested but no global variable set
+            elseif ($Monitor -eq -2 -and
+                (-not ($Global:DefaultSecondaryMonitor -is [int] -and
+                        $Global:DefaultSecondaryMonitor -ge 0)) -and
+                ((GenXdev.Windows\Get-MonitorCount) -gt 1)) {
 
-                Microsoft.PowerShell.Utility\Write-Verbose "Picking monitor #1 as default secondary (requested with -monitor -2), because `$Global:DefaultSecondaryMonitor not set"
-                $Screen = $AllScreens[1];
+                Microsoft.PowerShell.Utility\Write-Verbose ("Picking monitor #1 " +
+                    "as default secondary (requested with -monitor -2), because " +
+                    "`$Global:DefaultSecondaryMonitor not set")
+                $screen = $allScreens[1]
             }
+            # check if specific monitor number was requested
             elseif ($Monitor -ge 1) {
 
-                Microsoft.PowerShell.Utility\Write-Verbose "Picking monitor #$(($Monitor - 1) % $AllScreens.Length) as requested by the -Monitor parameter"
-                $Screen = $AllScreens[($Monitor - 1) % $AllScreens.Length]
+                Microsoft.PowerShell.Utility\Write-Verbose ("Picking monitor " +
+                    "#$(($Monitor - 1) % $allScreens.Length) as requested by " +
+                    "the -Monitor parameter")
+                $screen = $allScreens[($Monitor - 1) % $allScreens.Length]
             }
             else {
 
-                Microsoft.PowerShell.Utility\Write-Verbose "Picking monitor #1 (same as PowerShell), because no monitor specified"
-                $Screen = [WpfScreenHelper.Screen]::FromPoint(@{X = $PowerShellWindow[0].Position().X; Y = $PowerShellWindow[0].Position().Y });
+                Microsoft.PowerShell.Utility\Write-Verbose ("Picking monitor #1 " +
+                    "(same as PowerShell), because no monitor specified")
+                $screen = [WpfScreenHelper.Screen]::FromPoint(@{
+                        X = $powerShellWindow[0].Position().X
+                        Y = $powerShellWindow[0].Position().Y
+                    })
             }
         }
-        # remember
-        [bool] $HavePositioning = ($Monitor -ge 0 -or $Monitor -eq -2) -or ($Left -or $Right -or $Top -or $Bottom -or $Centered -or (($X -is [int]) -and ($X -gt -999999)) -or (($Y -is [int]) -and ($Y -gt -999999))) -and -not $FullScreen;
 
-        # init window position
-        # '-X' parameter not supplied?
+        # determine if any window positioning parameters were provided
+        [bool] $havePositioning = (($Monitor -ge 0 -or $Monitor -eq -2) -or
+            ($Left -or $Right -or $Top -or $Bottom -or $Centered -or
+                (($X -is [int]) -and ($X -gt -999999)) -or
+                (($Y -is [int]) -and ($Y -gt -999999)))) -and -not $FullScreen
+
+        # initialize window x position based on parameters or screen defaults
         if (($X -le -999999) -or ($X -isnot [int])) {
 
-            $X = $Screen.WorkingArea.X;
+            $X = $screen.WorkingArea.X
         }
         else {
 
+            # adjust x position relative to selected monitor if monitor specified
             if ($Monitor -ge 0) {
 
-                $X = $Screen.WorkingArea.X + $X;
+                $X = $screen.WorkingArea.X + $X
             }
         }
 
-        # '-Y' parameter not supplied?
+        # initialize window y position based on parameters or screen defaults
         if (($Y -le -999999) -or ($Y -isnot [int])) {
 
-            $Y = $Screen.WorkingArea.Y;
+            $Y = $screen.WorkingArea.Y
         }
         else {
 
+            # adjust y position relative to selected monitor if monitor specified
             if ($Monitor -ge 0) {
 
-                $Y = $Screen.WorkingArea.Y + $Y;
+                $Y = $screen.WorkingArea.Y + $Y
             }
         }
 
-        $State = @{
+        # create state object to track browser window positioning and processes
+        $state = @{
             existingWindow    = $false
             hadVisibleBrowser = $false
             Browser           = $null
-            IsDefaultBrowser  = ((-not $All) -and ((-not $Chromium) -or ($DefaultBrowser.Name -like "*chrome*") -or ($DefaultBrowser.Name -like "*edge*")) -and ((-not $Chrome) -or ($DefaultBrowser.Name -like "*chrome*")) -and ((-not $Edge) -or ($DefaultBrowser.Name -like "*edge*")) -and ((-not $Firefox) -or ($DefaultBrowser.Name -like "*firefox*")))
+            IsDefaultBrowser  = ((-not $All) -and
+                ((-not $Chromium) -or ($defaultBrowser.Name -like "*chrome*") -or
+                    ($defaultBrowser.Name -like "*edge*")) -and
+                ((-not $Chrome) -or ($defaultBrowser.Name -like "*chrome*")) -and
+                ((-not $Edge) -or ($defaultBrowser.Name -like "*edge*")) -and
+                ((-not $Firefox) -or ($defaultBrowser.Name -like "*firefox*")))
             FirstProcess      = $null
             PositioningDone   = $false
             BrowserWindow     = $null
-        };
+        }
 
-        $UseStartProcess = (-not ($HavePositioning -or $FullScreen)) -and $State.IsDefaultBrowser
+        # determine if we can use simple start-process instead of complex positioning
+        $useStartProcess = (-not ($havePositioning -or $FullScreen)) -and
+        $state.IsDefaultBrowser
 
-        if ($HavePositioning -or $FullScreen) {
+        # configure window dimensions and positioning if positioning is required
+        if ($havePositioning -or $FullScreen) {
 
-            $WidthProvided = ($Width -gt 0) -and ($Width -is [int]);
-            $heightProvided = ($Height -gt 0) -and ($Height -is [int]);
+            # check if width parameter was explicitly provided
+            $widthProvided = ($Width -gt 0) -and ($Width -is [int])
 
-            # '-Width' parameter not supplied?
-            if ($WidthProvided -eq $false) {
+            # check if height parameter was explicitly provided
+            $heightProvided = ($Height -gt 0) -and ($Height -is [int])
 
-                $Width = $Screen.WorkingArea.Width;
+            # set default width if not provided by user
+            if ($widthProvided -eq $false) {
+
+                $Width = $screen.WorkingArea.Width
             }
 
-            # '-Height' parameter not supplied?
-            if ($HeightProvided -eq $false) {
+            # set default height if not provided by user
+            if ($heightProvided -eq $false) {
 
-                $Height = $Screen.WorkingArea.Height;
+                $Height = $screen.WorkingArea.Height
             }
 
-            # setup exact window position and size
+            # configure window position and size for left side placement
             if ($Left -eq $true) {
 
-                $X = $Screen.WorkingArea.X;
+                $X = $screen.WorkingArea.X
 
-                if ($WidthProvided -eq $false) {
+                # use half screen width if width not explicitly provided
+                if ($widthProvided -eq $false) {
 
-                    $Width = [Math]::Min($Screen.WorkingArea.Width / 2, $Width);
+                    $Width = [Math]::Min($screen.WorkingArea.Width / 2, $Width)
                 }
-                if ($HeightProvided -eq $false) {
 
-                    $Height = [Math]::Min($Screen.WorkingArea.Height, $Height);
+                # use full screen height if height not explicitly provided
+                if ($heightProvided -eq $false) {
+
+                    $Height = [Math]::Min($screen.WorkingArea.Height, $Height)
                 }
-                $Y = $Screen.WorkingArea.Y;
+                $Y = $screen.WorkingArea.Y
 
-                return;
+                return
             }
 
+            # configure window position and size for right side placement
             if ($Right -eq $true) {
 
-                if ($WidthProvided -eq $false) {
+                # use half screen width if width not explicitly provided
+                if ($widthProvided -eq $false) {
 
-                    $Width = [Math]::Min($Screen.WorkingArea.Width / 2, $Width);
+                    $Width = [Math]::Min($screen.WorkingArea.Width / 2, $Width)
                 }
 
-                $X = $Screen.WorkingArea.X + $Screen.WorkingArea.Width - $Width;
-                $Y = $Screen.WorkingArea.Y + [Math]::Round(($screen.WorkingArea.Height - $Height) / 2, 0);
-                if ($HeightProvided -eq $false) {
+                # position window on right side of screen
+                $X = $screen.WorkingArea.X + $screen.WorkingArea.Width - $Width
+                $Y = ($screen.WorkingArea.Y +
+                    [Math]::Round(($screen.WorkingArea.Height - $Height) / 2, 0))
 
-                    $Height = [Math]::Min($Screen.WorkingArea.Height, $Height);
+                # use full screen height if height not explicitly provided
+                if ($heightProvided -eq $false) {
+
+                    $Height = [Math]::Min($screen.WorkingArea.Height, $Height)
                 }
-                $Y = $Screen.WorkingArea.Y;
-                return;
+                $Y = $screen.WorkingArea.Y
+                return
             }
 
+            # configure window position and size for top placement
             if ($Top -eq $true) {
 
-                $Y = $Screen.WorkingArea.Y;
+                $Y = $screen.WorkingArea.Y
 
-                if ($HeightProvided -eq $false) {
+                # use half screen height if height not explicitly provided
+                if ($heightProvided -eq $false) {
 
-                    $Height = [Math]::Min($Screen.WorkingArea.Height / 2, $Height);
-                    $X = $Screen.WorkingArea.X;
+                    $Height = [Math]::Min($screen.WorkingArea.Height / 2, $Height)
+                    $X = $screen.WorkingArea.X
                 }
-                $Width = $Screen.WorkingArea.Width;
-                $X = $Screen.WorkingArea.X;
-                return;
+                $Width = $screen.WorkingArea.Width
+                $X = $screen.WorkingArea.X
+                return
             }
 
+            # configure window position and size for bottom placement
             if ($Bottom -eq $true) {
 
-                if ($HeightProvided -eq $false) {
+                # use half screen height if height not explicitly provided
+                if ($heightProvided -eq $false) {
 
-                    $Height = [Math]::Min($Screen.WorkingArea.Height / 2, $Height);
+                    $Height = [Math]::Min($screen.WorkingArea.Height / 2, $Height)
                 }
 
-                $Width = $Screen.WorkingArea.Width;
-                $Y = $Screen.WorkingArea.Y + $Screen.WorkingArea.Height - $Height;
-                $X = $Screen.WorkingArea.X;
-                return;
+                $Width = $screen.WorkingArea.Width
+
+                # position window at bottom of screen
+                $Y = $screen.WorkingArea.Y + $screen.WorkingArea.Height - $Height
+                $X = $screen.WorkingArea.X
+                return
             }
 
+            # configure window position and size for centered placement
             if ($Centered -eq $true) {
 
-                if ($HeightProvided -eq $false) {
+                # use 80% of screen height if height not explicitly provided
+                if ($heightProvided -eq $false) {
 
-                    $Height = [Math]::Round([Math]::Min($Screen.WorkingArea.Height * 0.8, $Height), 0);
+                    $Height = [Math]::Round([Math]::Min(
+                            $screen.WorkingArea.Height * 0.8, $Height), 0)
                 }
 
-                if ($WidthProvided -eq $false) {
+                # use 80% of screen width if width not explicitly provided
+                if ($widthProvided -eq $false) {
 
-                    $Width = [Math]::Round([Math]::Min($Screen.WorkingArea.Width * 0.8, $Width), 0);
+                    $Width = [Math]::Round([Math]::Min(
+                            $screen.WorkingArea.Width * 0.8, $Width), 0)
                 }
 
-                $X = $Screen.WorkingArea.X + [Math]::Round(($screen.WorkingArea.Width - $Width) / 2, 0);
-                $Y = $Screen.WorkingArea.Y + [Math]::Round(($screen.WorkingArea.Height - $Height) / 2, 0);
+                # center window on screen
+                $X = ($screen.WorkingArea.X +
+                    [Math]::Round(($screen.WorkingArea.Width - $Width) / 2, 0))
+                $Y = ($screen.WorkingArea.Y +
+                    [Math]::Round(($screen.WorkingArea.Height - $Height) / 2, 0))
 
-                return;
+                return
             }
         }
     }
 
+    ###########################################################################
+    process {
 
-process {
+        ###########################################################################
+        <#
+        .SYNOPSIS
+        Ensures minimum delay between browser window close and open operations.
 
+        .DESCRIPTION
+        This helper function prevents timing issues when repositioning browser
+        windows by enforcing a minimum delay since the last browser close.
+
+        .PARAMETER browser
+        The browser object to check timing delays for.
+        #>
         function enforceMinimumDelays($browser) {
 
-            if ($HavePositioning -eq $false) {
+            # skip delay enforcement if no positioning is required
+            if ($havePositioning -eq $false) {
 
-                return;
+                return
             }
 
-            $last = (Microsoft.PowerShell.Utility\Get-Variable -Scope Global -Name "_LastClose$($Browser.Name)" -ErrorAction SilentlyContinue);
+            # get the last close time for this specific browser
+            $last = (Microsoft.PowerShell.Utility\Get-Variable -Scope Global `
+                    -Name "_LastClose$($browser.Name)" -ErrorAction SilentlyContinue)
 
+            # check if we have a valid last close timestamp
             if (($null -ne $last) -and ($last.Value -is [DateTime])) {
 
-                $now = [DateTime]::UtcNow;
+                $now = [DateTime]::UtcNow
 
+                # enforce minimum 1 second delay since last close
                 if ($now - $last.Value -lt [System.TimeSpan]::FromSeconds(1)) {
 
-                    [System.Threading.Thread]::Sleep(200) | Microsoft.PowerShell.Core\Out-Null
+                    $null = [System.Threading.Thread]::Sleep(200)
                 }
             }
         }
 
-        function constructArgumentList($browser, $CurrentUrl, $State) {
+        ###########################################################################
+        <#
+        .SYNOPSIS
+        Constructs browser-specific command line arguments.
 
-            # initialize an empty argument list for the webbrowser commandline
-            $ArgumentList = @();
+        .DESCRIPTION
+        Builds the appropriate command line argument list based on the browser
+        type and user-specified parameters for launching the browser process.
 
-            ###############################################################################
+        .PARAMETER browser
+        The browser object containing executable path and type information.
 
+        .PARAMETER currentUrl
+        The URL to open in the browser.
+
+        .PARAMETER state
+        The state object tracking browser window positioning and process info.
+        #>
+        function constructArgumentList($browser, $currentUrl, $state) {
+
+            # initialize empty argument list for browser command line
+            $argumentList = @()
+
+            ###################################################################
+
+            # handle firefox-specific command line arguments
             if ($browser.Name -like "*Firefox*") {
 
-                # set default commandline parameters
-                $ArgumentList = @();
+                # set default firefox command line parameters
+                $argumentList = @()
 
-                if (($Width -is [int]) -and ($Width -gt 0) -and ($Height -is [int]) -and ($Height -gt 0)) {
+                # add window size parameters if both width and height specified
+                if (($Width -is [int]) -and ($Width -gt 0) -and
+                    ($Height -is [int]) -and ($Height -gt 0)) {
 
-                    $ArgumentList = $ArgumentList + @("-width", $Width, "-height", $Height)
+                    $argumentList = $argumentList + @("-width", $Width,
+                        "-height", $Height)
                 }
 
-                # '-RestoreFocus' parameter supplied'?
+                # set foreground mode unless restore focus is requested
                 if ($RestoreFocus -ne $true) {
 
-                    # set commandline argument
-                    $ArgumentList = $ArgumentList + @("-foreground")
+                    # set firefox to foreground on startup
+                    $argumentList = $argumentList + @("-foreground")
                 }
 
-                # '-NoBrowserExtensions' parameter supplied?
+                # disable browser extensions if requested
                 if ($NoBrowserExtensions -eq $true) {
 
-                    $ArgumentList = $ArgumentList + @("-safe-mode");
+                    $argumentList = $argumentList + @("-safe-mode")
                 }
 
-                # '-DisablePopupBlocker' parameter supplied?
+                # disable popup blocker if requested
                 if ($DisablePopupBlocker -eq $true) {
 
-                    $ArgumentList = $ArgumentList + @("-disable-popup-blocking");
+                    $argumentList = $argumentList + @("-disable-popup-blocking")
                 }
 
-                # '-AcceptLang' parameter supplied?
+                # set accept language header if provided
                 if ($null -ne $AcceptLang) {
 
-                    $ArgumentList = $ArgumentList + @("--lang", $AcceptLang);
+                    $argumentList = $argumentList + @("--lang", $AcceptLang)
                 }
 
-                # '-Private' parameter supplied'?
+                # handle private browsing mode for firefox
                 if ($Private -eq $true) {
 
-                    # set commandline arguments
-                    $ArgumentList = $ArgumentList + @("-private-window", $CurrentUrl)
+                    # open url in firefox private window
+                    $argumentList = $argumentList + @("-private-window",
+                        $currentUrl)
                 }
                 else {
 
-                    # '-ApplicationMode' parameter supplied?
+                    # handle application mode for firefox
                     if ($ApplicationMode -eq $true) {
 
-                        Microsoft.PowerShell.Utility\Write-Warning "Firefox does not support -ApplicationMode at this time"
+                        Microsoft.PowerShell.Utility\Write-Warning ("Firefox " +
+                            "does not support -ApplicationMode at this time")
 
                         GenXdev.Webbrowser\Approve-FirefoxDebugging
 
-                        # set commandline argument
-                        $ArgumentList = $ArgumentList + @("--ssb", $CurrentUrl)
+                        # use single site browser mode for firefox app mode
+                        $argumentList = $argumentList + @("--ssb", $currentUrl)
                     }
                     else {
 
-                        # '-NewWindow' parameter supplied'?
-                        if ((-not $State.PositioningDone) -and ($NewWindow -eq $true)) {
+                        # handle new window creation for firefox
+                        if ((-not $state.PositioningDone) -and
+                            ($NewWindow -eq $true)) {
 
-                            # set commandline argument
-                            $ArgumentList = $ArgumentList + @("--new-window", $CurrentUrl)
+                            # create new firefox window with url
+                            $argumentList = $argumentList + @("--new-window",
+                                $currentUrl)
                         }
                         else {
 
-                            # set commandline argument
-                            $ArgumentList = $ArgumentList + @("-url", $CurrentUrl)
+                            # open url in existing or new firefox tab
+                            $argumentList = $argumentList + @("-url", $currentUrl)
                         }
                     }
                 }
             }
             else {
-                ###############################################################################
+                ###############################################################
 
-                if ($browser.Name -like "*Edge*" -or $browser.Name -like "*Chrome*") {
+                # handle chromium-based browsers (edge and chrome)
+                if ($browser.Name -like "*Edge*" -or
+                    $browser.Name -like "*Chrome*") {
 
-                    # get the right debugging tcp port for this browser
-                    $port = GenXdev.Webbrowser\Get-ChromiumRemoteDebuggingPort -Chrome:$Chrome -Edge:$Edge
+                    # get the appropriate debugging port for this browser type
+                    $port = GenXdev.Webbrowser\Get-ChromiumRemoteDebuggingPort `
+                        -Chrome:$Chrome -Edge:$Edge
 
-                    # set default commandline parameters
-                    # https://peter.sh/experiments/chromium-command-line-switches/
-                    # https://stackoverflow.com/questions/51563287/how-to-make-chrome-always-launch-with-remote-debugging-port-flag
-                    $ArgumentList = $ArgumentList + @(
+                    # set default chromium command line parameters
+                    # reference: https://peter.sh/experiments/chromium-command-line-switches/
+                    $argumentList = $argumentList + @(
                         "--disable-infobars",
-                        # "--enable-automation",
                         "--hide-crash-restore-bubble",
                         "--no-first-run",
                         "--disable-session-crashed-bubble",
@@ -663,507 +797,634 @@ process {
                         "--remote-debugging-port=$port"
                     )
 
-                    if (($Width -is [int]) -and ($Width -gt 0) -and ($Height -is [int]) -and ($Height -gt 0)) {
+                    # add window size if both dimensions are specified
+                    if (($Width -is [int]) -and ($Width -gt 0) -and
+                        ($Height -is [int]) -and ($Height -gt 0)) {
 
-                        $ArgumentList = $ArgumentList + @("--window-size=$Width,$Height");
+                        $argumentList = $argumentList + @("--window-size=$Width,$Height")
                     }
 
-                    $ArgumentList = $ArgumentList + @("--window-position=$X,$Y");
+                    # set initial window position
+                    $argumentList = $argumentList + @("--window-position=$X,$Y")
 
-                    # '-NoBrowserExtensions' parameter supplied?
+                    # disable browser extensions if requested
                     if ($NoBrowserExtensions -eq $true) {
 
-                        $ArgumentList = $ArgumentList + @("--disable-extensions");
+                        $argumentList = $argumentList + @("--disable-extensions")
                     }
 
-                    # disable popup blocker
+                    # disable popup blocker if requested
                     if ($DisablePopupBlocker -eq $true) {
 
-                        $ArgumentList = $ArgumentList + @("--disable-popup-blocking");
+                        $argumentList = $argumentList + @("--disable-popup-blocking")
                     }
 
-                    # '-AcceptLang' parameter supplied?
+                    # set accept language header if provided
                     if ($null -ne $AcceptLang) {
 
-                        $ArgumentList = $ArgumentList + @("--accept-lang=$AcceptLang");
+                        $argumentList = $argumentList + @("--accept-lang=$AcceptLang")
                     }
 
-                    # '-Private' parameter supplied'?
+                    # handle private browsing mode for chromium browsers
                     if ($Private -eq $true) {
 
-                        # force new window
-                        $NewWindow = $true;
+                        # force new window for private mode
+                        $NewWindow = $true
 
+                        # set appropriate private browsing flag
                         if ($browser.Name -like "*Edge*") {
 
-                            # set commandline argument
-                            $ArgumentList = $ArgumentList + @("-InPrivate")
+                            # use edge inprivate mode
+                            $argumentList = $argumentList + @("-InPrivate")
                         }
                         else {
-                            # set commandline argument
-                            $ArgumentList = $ArgumentList + @("--incognito")
+                            # use chrome incognito mode
+                            $argumentList = $argumentList + @("--incognito")
                         }
                     }
 
-                    # '-NewWindow' parameter supplied'?
-                    if ((-not $State.PositioningDone) -and ($NewWindow -eq $true)) {
+                    # force new window creation if requested and not positioned yet
+                    if ((-not $state.PositioningDone) -and ($NewWindow -eq $true)) {
 
-                        # set commandline argument
-                        $ArgumentList = $ArgumentList + @("--new-window") + @("--force-launch-browser");
+                        # force creation of new browser window
+                        $argumentList = $argumentList + @("--new-window") +
+                        @("--force-launch-browser")
                     }
 
-                    # '-Fullscreen' parameter supplied'?
-                    $ArgumentList = $ArgumentList + @("--start-maximized")
-                    #hier
-                    # if ($FullScreen -eq $true) {
+                    # set window to start maximized by default
+                    $argumentList = $argumentList + @("--start-maximized")
 
-                    #     # set commandline argument
-                    #     $ArgumentList = $ArgumentList + @("--start-fullscreen")
-                    # }
-                    # else {
-                    #     $ArgumentList = $ArgumentList + @("--start-maximized")
-                    # }
-
-                    # '-ApplicationMode' parameter supplied?
+                    # handle application mode for chromium browsers
                     if ($ApplicationMode -eq $true) {
 
-                        $ArgumentList = $ArgumentList + @("--app=$CurrentUrl");
+                        # run browser in application mode with specific url
+                        $argumentList = $argumentList + @("--app=$currentUrl")
                     }
                     else {
-                        # Add Url to commandline arguments
-                        $ArgumentList = $ArgumentList + @($CurrentUrl)
+                        # add url to standard command line arguments
+                        $argumentList = $argumentList + @($currentUrl)
                     }
                 }
                 else {
-                    ###############################################################################
+                    ###########################################################
 
-                    # Default browser
+                    # handle default/other browsers
                     if ($Private -eq $true) {
 
-                        return;
+                        # private mode not supported for default browser
+                        return
                     }
 
-                    # Add Url to commandline arguments
-                    $ArgumentList = @($CurrentUrl);
+                    # add url as only argument for default browser
+                    $argumentList = @($currentUrl)
                 }
             }
 
-            $ArgumentList
+            $argumentList
         }
 
-        function findProcess($browser, $process, $State) {
+        ###########################################################################
+        <#
+        .SYNOPSIS
+        Finds and returns the browser process and main window.
 
-            $State.existingWindow = $false;
+        .DESCRIPTION
+        Locates the browser process after launch and gets a reference to its
+        main window handle for positioning and management operations.
+
+        .PARAMETER browser
+        The browser object containing executable information.
+
+        .PARAMETER process
+        The initial process object from browser launch.
+
+        .PARAMETER state
+        The state object tracking browser window and process information.
+        #>
+        function findProcess($browser, $process, $state) {
+
+            # initialize window tracking variables
+            $state.existingWindow = $false
             $window = @()
+
+            # retry loop to find the browser process and window
             do {
 
                 try {
-                    # did it only signal an already existing webbrowser instance, to create a new tab,
-                    # and did it then exit?
-                    # if (($null -eq $process) -or ($process.HasExited)) {
+                    # wait briefly for process to initialize
+                    $null = [System.Threading.Thread]::Sleep(100)
 
-                    [System.Threading.Thread]::Sleep(100) | Microsoft.PowerShell.Core\Out-Null;
-
-                    # find the process
-                    $processesNew = @(Microsoft.PowerShell.Management\Get-Process ([IO.Path]::GetFileNameWithoutExtension($browser.Path)) -ErrorAction SilentlyContinue |
-                        Microsoft.PowerShell.Core\Where-Object -Property Path -EQ $browser.Path |
-                        Microsoft.PowerShell.Core\Where-Object -Property MainWindowHandle -NE 0 |
-                        Microsoft.PowerShell.Utility\Sort-Object { $PSItem.StartTime } -Descending |
+                    # find the most recent browser process with main window
+                    $processesNew = @(Microsoft.PowerShell.Management\Get-Process `
+                            ([IO.Path]::GetFileNameWithoutExtension($browser.Path)) `
+                            -ErrorAction SilentlyContinue |
+                        Microsoft.PowerShell.Core\Where-Object -Property Path `
+                            -EQ $browser.Path |
+                        Microsoft.PowerShell.Core\Where-Object -Property MainWindowHandle `
+                            -NE 0 |
+                        Microsoft.PowerShell.Utility\Sort-Object `
+                        { $PSItem.StartTime } -Descending |
                         Microsoft.PowerShell.Utility\Select-Object -First 1)
 
-                    # not found?
+                    # check if no process was found
                     if (($processesNew.Length -eq 0) -or ($null -eq $processesNew[0])) {
 
-                        Microsoft.PowerShell.Utility\Write-Verbose "No process found, retrying.."
-                        $window = @();
+                        Microsoft.PowerShell.Utility\Write-Verbose ("No process " +
+                            "found, retrying..")
+                        $window = @()
 
-                        [System.Threading.Thread]::Sleep(80) | Microsoft.PowerShell.Core\Out-Null;
+                        $null = [System.Threading.Thread]::Sleep(80)
                     }
                     else {
 
                         Microsoft.PowerShell.Utility\Write-Verbose "Found new process"
 
-                        # get window helper utility for the mainwindow of the process
-                        $State.existingWindow = $State.hadVisibleBrowser;
-                        $process = $processesNew[0];
-                        $window = [GenXdev.Helpers.WindowObj]::GetMainWindow($process, 1, 80);
-                        break;
+                        # get window helper utility for main window of process
+                        $state.existingWindow = $state.hadVisibleBrowser
+                        $process = $processesNew[0]
+                        $window = [GenXdev.Helpers.WindowObj]::GetMainWindow($process,
+                            1, 80)
+                        break
                     }
-                    # }
-                    # else {
-
-                    #     Write-Verbose "Process still running"
-                    #     # get window helper utility for the mainwindow of the process
-                    #     $window = [GenXdev.Helpers.WindowObj]::GetMainWindow($process, 1, 80);
-                    #     break;
-                    # }
                 }
                 catch {
-                    Microsoft.PowerShell.Utility\Write-Verbose "Error: $($_.Exception.Message)"
+                    Microsoft.PowerShell.Utility\Write-Verbose ("Error: " +
+                        "$($_.Exception.Message)")
                     $window = @()
-                    [System.Threading.Thread]::Sleep(100) | Microsoft.PowerShell.Core\Out-Null
+                    $null = [System.Threading.Thread]::Sleep(100)
                 }
-            } while (($i++ -lt 50) -and ($window.length -le 0));
+            } while (($i++ -lt 50) -and ($window.length -le 0))
 
+            # return process and window information
             @{
                 Process = $process
                 Window  = $window
             }
         }
 
-        function open($browser, $CurrentUrl, $State) {
+        ###########################################################################
+        <#
+        .SYNOPSIS
+        Opens a browser with the specified URL and configuration.
+
+        .DESCRIPTION
+        Launches a browser process with the provided URL and handles window
+        positioning, process management, and browser-specific configurations.
+
+        .PARAMETER browser
+        The browser object containing executable path and type information.
+
+        .PARAMETER currentUrl
+        The URL to open in the browser.
+
+        .PARAMETER state
+        The state object tracking browser positioning and process information.
+        #>
+        function open($browser, $currentUrl, $state) {
 
             Microsoft.PowerShell.Utility\Write-Verbose "open()"
 
-            $State.IsDefaultBrowser = $browser -eq $DefaultBrowser
+            # determine if this browser is the system default
+            $state.IsDefaultBrowser = $browser -eq $defaultBrowser
 
+            # enforce timing delays for proper window positioning
             enforceMinimumDelays $browser
-            ###############################################################################
 
-            $StartBrowser = $true;
-            $State.hadVisibleBrowser = $false;
-            $process = $null;
+            # initialize browser launch variables
+            $startBrowser = $true
+            $state.hadVisibleBrowser = $false
+            $process = $null
 
-            # find any existing  process
-            $prcBefore = @(Microsoft.PowerShell.Management\Get-Process ([IO.Path]::GetFileNameWithoutExtension($browser.Path)) -ErrorAction SilentlyContinue) |
-            Microsoft.PowerShell.Core\Where-Object -Property Path -EQ $browser.Path |
-            Microsoft.PowerShell.Core\Where-Object -Property MainWindowHandle -NE 0 |
-            Microsoft.PowerShell.Utility\Sort-Object { $PSItem.StartTime } -Descending |
-            Microsoft.PowerShell.Utility\Select-Object -First 1
+            # find any existing browser process with main window
+            $prcBefore = @(Microsoft.PowerShell.Management\Get-Process `
+                    ([IO.Path]::GetFileNameWithoutExtension($browser.Path)) `
+                    -ErrorAction SilentlyContinue) |
+                Microsoft.PowerShell.Core\Where-Object -Property Path -EQ $browser.Path |
+                Microsoft.PowerShell.Core\Where-Object -Property MainWindowHandle -NE 0 |
+                Microsoft.PowerShell.Utility\Sort-Object { $PSItem.StartTime } -Descending |
+                Microsoft.PowerShell.Utility\Select-Object -First 1
 
-            #found?
-            if ($State.PositioningDone -or (($prcBefore.Length -ge 1) -and ($null -ne $prcBefore[0]))) {
+            # check if existing browser window was found
+            if ($state.PositioningDone -or (($prcBefore.Length -ge 1) -and
+                    ($null -ne $prcBefore[0]))) {
 
-                Microsoft.PowerShell.Utility\Write-Verbose "Found existing webbrowser window"
-                $State.hadVisibleBrowser = $true;
+                Microsoft.PowerShell.Utility\Write-Verbose ("Found existing " +
+                    "webbrowser window")
+                $state.hadVisibleBrowser = $true
             }
 
-            # no url specified?
-            if ((-not $NewWindow) -and (-not ($HavePositioning -or $FullScreen)) -and (-not $UrlSpecified)) {
+            # determine if we should skip launching new browser process
+            if ((-not $NewWindow) -and
+                (-not ($havePositioning -or $FullScreen)) -and
+                (-not $urlSpecified)) {
 
-                if ($State.hadVisibleBrowser) {
+                if ($state.hadVisibleBrowser) {
 
-                    Microsoft.PowerShell.Utility\Write-Verbose "No url specified, found existing webbrowser window"
-                    $StartBrowser = $false;
-                    $process = if ($State.FirstProcess) { $State.FirstProcess } else { $prcBefore[0] }
+                    Microsoft.PowerShell.Utility\Write-Verbose ("No url specified, " +
+                        "found existing webbrowser window")
+                    $startBrowser = $false
+                    $process = if ($state.FirstProcess) {
+                        $state.FirstProcess
+                    } else {
+                        $prcBefore[0]
+                    }
                 }
             }
 
-            if ($StartBrowser) {
+            # launch new browser process if needed
+            if ($startBrowser) {
 
+                # handle force parameter to ensure debug port availability
                 if ($Force) {
 
                     try {
-                        $a = GenXdev.Webbrowser\Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge
+                        # try to get existing browser tabs with debug port
+                        $a = GenXdev.Webbrowser\Select-WebbrowserTab `
+                            -Chrome:$Chrome -Edge:$Edge
                     }
                     catch {
                         $a = @()
                     }
 
+                    # close all browser instances if no debug port found
                     if ($a.length -eq 0 -or ($a -is [string])) {
 
-                        Microsoft.PowerShell.Utility\Write-Verbose "No browser with open debugger port found, closing all browser instances and starting a new one"
-                        Microsoft.PowerShell.Management\Get-Process -Name ([IO.Path]::GetFileNameWithoutExtension($Browser.Path)) -ErrorAction SilentlyContinue | Microsoft.PowerShell.Management\Stop-Process -Force -ErrorAction SilentlyContinue | Microsoft.PowerShell.Core\Out-Null
+                        Microsoft.PowerShell.Utility\Write-Verbose ("No browser " +
+                            "with open debugger port found, closing all browser " +
+                            "instances and starting a new one")
+                        $null = Microsoft.PowerShell.Management\Get-Process `
+                            -Name ([IO.Path]::GetFileNameWithoutExtension($browser.Path)) `
+                            -ErrorAction SilentlyContinue |
+                            Microsoft.PowerShell.Management\Stop-Process -Force `
+                            -ErrorAction SilentlyContinue
                     }
                 }
 
-                $currentProcesses = @((Microsoft.PowerShell.Management\Get-Process -Name ([IO.Path]::GetFileNameWithoutExtension($Browser.Path)) -ErrorAction SilentlyContinue))
+                # check if any browser processes currently exist
+                $currentProcesses = @((Microsoft.PowerShell.Management\Get-Process `
+                        -Name ([IO.Path]::GetFileNameWithoutExtension($browser.Path)) `
+                        -ErrorAction SilentlyContinue))
                 if ($currentProcesses.Count -eq 0) {
 
-                    $NewWindow = $false;
+                    $NewWindow = $false
                 }
 
-                # get the browser dependend argument list
-                $ArgumentList = constructArgumentList $browser $CurrentUrl $State
+                # get browser-specific command line arguments
+                $argumentList = constructArgumentList $browser $currentUrl $state
 
-                # log
-                Microsoft.PowerShell.Utility\Write-Verbose "$($browser.Name) --> $($ArgumentList | Microsoft.PowerShell.Utility\ConvertTo-Json)"
+                # output verbose information about browser launch
+                Microsoft.PowerShell.Utility\Write-Verbose ("$($browser.Name) --> " +
+                    "$($argumentList | Microsoft.PowerShell.Utility\ConvertTo-Json)")
 
-                # start process
-                $process = Microsoft.PowerShell.Management\Start-Process -FilePath ($browser.Path) -ArgumentList $argumentList -PassThru
+                # start the browser process with constructed arguments
+                $process = Microsoft.PowerShell.Management\Start-Process `
+                    -FilePath ($browser.Path) -ArgumentList $argumentList -PassThru
 
-                # wait a little
+                # wait briefly for process to initialize
                 $null = $process.WaitForExit(200)
                 $null = [System.Threading.Thread]::Sleep(200)
             }
 
-            ###############################################################################
-
+            # validate that we have a valid process
             if ($null -eq $process) {
 
-                Microsoft.PowerShell.Utility\Write-Warning "Could not start browser $($browser.Name)"
-                return;
+                Microsoft.PowerShell.Utility\Write-Warning ("Could not start " +
+                    "browser $($browser.Name)")
+                return
             }
 
-            ###############################################################################
+            # skip positioning if not needed or already done
+            if ((-not $PassThru) -and
+                ((-not ($havePositioning -or ($FullScreen -and
+                            -not $state.PositioningDone))) -or $state.PositioningDone)) {
 
-            # nothing to do anymore? then don't waste time on positioning the window
-            if ((-not $PassThru) -and ((-not ($HavePositioning -or ($FullScreen -and -not $state.PositioningDone))) -or $State.PositioningDone)) {
-
-                Microsoft.PowerShell.Utility\Write-Verbose "No positioning required, done.."
-                return;
+                Microsoft.PowerShell.Utility\Write-Verbose ("No positioning " +
+                    "required, done..")
+                return
             }
 
-            ###############################################################################
-
+            # return process object if passthru requested
             if ($PassThru) {
 
-                if (($State.PositioningDone -or ((-not $FullScreen) -and (-not $HavePositioning))) -and ($null -ne $State.FirstProcess) -and (-not $State.FirstProcess.HasExited) -and ($State.FirstProcess.MainWindowHandle -ne 0)) {
+                # return first process if positioning done and process available
+                if (($state.PositioningDone -or
+                        ((-not $FullScreen) -and (-not $havePositioning))) -and
+                    ($null -ne $state.FirstProcess) -and
+                    (-not $state.FirstProcess.HasExited) -and
+                    ($state.FirstProcess.MainWindowHandle -ne 0)) {
 
-                    Microsoft.PowerShell.Utility\Write-Verbose "Returning first process"
-                    Microsoft.PowerShell.Utility\Write-Output $State.FirstProcess
-                    return;
+                    Microsoft.PowerShell.Utility\Write-Verbose ("Returning " +
+                        "first process")
+                    Microsoft.PowerShell.Utility\Write-Output $state.FirstProcess
+                    return
                 }
 
-                if (($null -ne $process) -and (-not $process.HasExited) -and ($process.MainWindowHandle -ne 0)) {
+                # return current process if valid and has window
+                if (($null -ne $process) -and (-not $process.HasExited) -and
+                    ($process.MainWindowHandle -ne 0)) {
 
                     Microsoft.PowerShell.Utility\Write-Verbose "Returning process"
                     Microsoft.PowerShell.Utility\Write-Output $process
 
-                    if (-not $HavePositioning) {
+                    if (-not $havePositioning) {
 
-                        return;
+                        return
                     }
                 }
             }
 
-            # allow the browser to start-up, and update process handle if needed
+            # allow browser startup time and update process handle if needed
             enforceMinimumDelays $browser
-            $browserFound = findProcess $browser $process $State
+            $browserFound = findProcess $browser $process $state
             $process = $browserFound.Process
             $window = $browserFound.Window
 
+            # return process after lookup if passthru requested
             if (($PassThru -eq $true) -and ($null -ne $process)) {
 
-                Microsoft.PowerShell.Utility\Write-Verbose "Returning process after process lookup"
+                Microsoft.PowerShell.Utility\Write-Verbose ("Returning process " +
+                    "after process lookup")
                 Microsoft.PowerShell.Utility\Write-Output $process
             }
 
-            if ((-not ($HavePositioning -or ($FullScreen -and -not $state.PositioningDone))) -or $State.PositioningDone) {
+            # skip positioning if not required or already completed
+            if ((-not ($havePositioning -or ($FullScreen -and
+                        -not $state.PositioningDone))) -or $state.PositioningDone) {
 
-                Microsoft.PowerShell.Utility\Write-Verbose "No positioning required, done.."
-                return;
+                Microsoft.PowerShell.Utility\Write-Verbose ("No positioning " +
+                    "required, done..")
+                return
             }
 
-            ###############################################################################
-            $State.PositioningDone = $true;
-            $State.FirstProcess = $process;
-            ###############################################################################
+            # mark positioning as completed and store first process
+            $state.PositioningDone = $true
+            $state.FirstProcess = $process
 
-            # have a handle to the mainwindow of the browser?
+            # position browser window if we have a valid window handle
             if ($window.Length -eq 1) {
 
-                ###############################################################################
-                $State.BrowserWindow = $window[0];
-                ###############################################################################
+                # store browser window reference for later use
+                $state.BrowserWindow = $window[0]
 
-                Microsoft.PowerShell.Utility\Write-Verbose "Restoring and positioning browser window"
+                Microsoft.PowerShell.Utility\Write-Verbose ("Restoring and " +
+                    "positioning browser window")
 
-                # if maximized, restore window style
+                # restore window if not in fullscreen mode
                 if (-not $FullScreen) {
 
                     $null = $window[0].Show()
                     $null = $window[0].Restore()
                 }
 
-                # move it to it's place
+                # move and resize window to specified position and dimensions
                 $null = $window[0].Move($X, $Y, $Width, $Height)
             }
 
-            Microsoft.PowerShell.Utility\Start-Sleep 2 | Microsoft.PowerShell.Core\Out-Null
+            # wait for window positioning to complete
+            Microsoft.PowerShell.Utility\Start-Sleep 2
         }
 
-        ###############################################################################
-        $index = -1;
+        # initialize url processing index counter
+        $index = -1
         try {
-            # start processing the Urls that we need to open
-            foreach ($CurrentUrl in $Url) {
+            # iterate through each url that needs to be opened
+            foreach ($currentUrl in $Url) {
 
                 $index++
-                Microsoft.PowerShell.Utility\Write-Verbose "Opening $CurrentUrl"
+                Microsoft.PowerShell.Utility\Write-Verbose "Opening $currentUrl"
 
-                if ($UseStartProcess -or (($index -gt 0) -and ($State.IsDefaultBrowser))) {
+                # use simple start-process for default browser without positioning
+                if ($useStartProcess -or (($index -gt 0) -and
+                        ($state.IsDefaultBrowser))) {
 
                     Microsoft.PowerShell.Utility\Write-Verbose "Start-Process"
 
-                    # open default browser
-                    $process = Microsoft.PowerShell.Management\Start-Process $CurrentUrl -PassThru
+                    # launch default browser with simple start-process method
+                    $process = Microsoft.PowerShell.Management\Start-Process $currentUrl `
+                        -PassThru
 
-                    # need to return a process and this is the first non-positioning webbrowser launch?
-                    if ($PassThru -and $UseStartProcess -and ($index -eq 0)) {
+                    # return process if passthru requested for first launch
+                    if ($PassThru -and $useStartProcess -and ($index -eq 0)) {
 
-                        $browserFound = findProcess $DefaultBrowser $process $State
+                        $browserFound = findProcess $defaultBrowser $process $state
 
                         $process = $browserFound.Process
                         $window = $browserFound.Window
 
-                        Microsoft.PowerShell.Utility\Write-Verbose "Returning process after Start-Process"
+                        Microsoft.PowerShell.Utility\Write-Verbose ("Returning " +
+                            "process after Start-Process")
                         Microsoft.PowerShell.Utility\Write-Output $process
                     }
 
-                    continue;
+                    continue
                 }
 
-                # '-All' parameter was supplied?
+                # handle opening url in all available browsers
                 if ($All -eq $true) {
 
-                    # open for all browsers
-                    $Browsers | Microsoft.PowerShell.Core\ForEach-Object { open $PSItem $CurrentUrl }
+                    # open current url in all installed browsers
+                    $browsers |
+                        Microsoft.PowerShell.Core\ForEach-Object {
+                            open $PSItem $currentUrl $state
+                        }
 
-                    continue;
+                    continue
                 }
-                # '-Chrome' parameter supplied?
+                # handle chrome-specific browser selection
                 elseif ($Chrome -eq $true) {
 
-                    # enumerate all browsers
-                    $Browsers | Microsoft.PowerShell.Core\ForEach-Object {
+                    # find and open chrome browser instances
+                    $browsers |
+                        Microsoft.PowerShell.Core\ForEach-Object {
 
-                        # found chrome?
-                        if ($PSItem.Name -like "*Chrome*") {
+                            # check if this is a chrome browser
+                            if ($PSItem.Name -like "*Chrome*") {
 
-                            # open it
-                            open $PSItem $CurrentUrl $State
+                                # open url in chrome
+                                open $PSItem $currentUrl $state
+                            }
                         }
-                    }
                 }
-                # '-Edge' parameter supplied?
+                # handle edge-specific browser selection
                 elseif ($Edge -eq $true) {
 
-                    # enumerate all browsers
-                    $Browsers | Microsoft.PowerShell.Core\ForEach-Object {
+                    # find and open edge browser instances
+                    $browsers |
+                        Microsoft.PowerShell.Core\ForEach-Object {
 
-                        # found Edge?
-                        if ($PSItem.Name -like "*Edge*") {
+                            # check if this is an edge browser
+                            if ($PSItem.Name -like "*Edge*") {
 
-                            # open it
-                            open $PSItem $CurrentUrl $State
+                                # open url in edge
+                                open $PSItem $currentUrl $state
+                            }
                         }
-                    }
-                }                # '-Chromium' parameter was supplied
+                }
+                # handle chromium-based browser preference (edge or chrome)
                 elseif ($Chromium -eq $true) {
 
-                    # default browser already chrome or edge?
-                    if (($DefaultBrowser.Name -like "*Chrome*") -or ($DefaultBrowser.Name -like "*Edge*")) {
+                    # check if default browser is already chromium-based
+                    if (($defaultBrowser.Name -like "*Chrome*") -or
+                        ($defaultBrowser.Name -like "*Edge*")) {
 
-                        # open default browser
-                        open $DefaultBrowser $CurrentUrl $State
-                        continue;
+                        # use default browser since it's already chromium-based
+                        open $defaultBrowser $currentUrl $state
+                        continue
                     }
 
-                    # enumerate all browsers
-                    $Browsers | Microsoft.PowerShell.Utility\Sort-Object { $PSItem.Name } -Descending | Microsoft.PowerShell.Core\ForEach-Object {
+                    # find available chromium-based browsers
+                    $browsers |
+                        Microsoft.PowerShell.Utility\Sort-Object { $PSItem.Name } `
+                        -Descending |
+                        Microsoft.PowerShell.Core\ForEach-Object {
 
-                        # found edge or chrome?
-                        if (($PSItem.Name -like "*Chrome*") -or ($PSItem.Name -like "*Edge*")) {
+                            # check if this is a chromium-based browser
+                            if (($PSItem.Name -like "*Chrome*") -or
+                                ($PSItem.Name -like "*Edge*")) {
 
-                            # open it
-                            open $PSItem $CurrentUrl $State
+                                # open url in chromium-based browser
+                                open $PSItem $currentUrl $state
+                            }
                         }
-                    }
                 }
 
-                # '-Firefox' parameter supplied?
+                # handle firefox-specific browser selection
                 if ($Firefox -eq $true) {
 
-                    # enumerate all browsers
-                    $Browsers | Microsoft.PowerShell.Core\ForEach-Object {
+                    # find and open firefox browser instances
+                    $browsers |
+                        Microsoft.PowerShell.Core\ForEach-Object {
 
-                        # found Firefox?
-                        if ($PSItem.Name -like "*Firefox*") {
+                            # check if this is a firefox browser
+                            if ($PSItem.Name -like "*Firefox*") {
 
-                            # open it
-                            open $PSItem $CurrentUrl $State
+                                # open url in firefox
+                                open $PSItem $currentUrl $state
+                            }
                         }
-                    }
                 }
 
-                # no specific browser requested?
-                if (($Chromium -ne $true) -and ($Chrome -ne $true) -and ($Edge -ne $true) -and ($Firefox -ne $true)) {
+                # use default browser when no specific browser requested
+                if (($Chromium -ne $true) -and ($Chrome -ne $true) -and
+                    ($Edge -ne $true) -and ($Firefox -ne $true)) {
 
-                    # open default browser
-                    open $DefaultBrowser $CurrentUrl $State
+                    # open url in system default browser
+                    open $defaultBrowser $currentUrl $state
                 }
             }
         }
         finally {
 
-            # needs to be set fullscreen?
+            # handle fullscreen mode activation after all urls processed
             if ($FullScreen -eq $true) {
 
                 Microsoft.PowerShell.Utility\Write-Verbose "Setting fullscreen"
 
-                if ($null -ne $State.BrowserWindow) {
+                # use browser window reference if available
+                if ($null -ne $state.BrowserWindow) {
 
-                    Microsoft.PowerShell.Utility\Write-Verbose "Changing focus to browser window"
+                    Microsoft.PowerShell.Utility\Write-Verbose ("Changing focus " +
+                        "to browser window")
 
-                    try { $State.BrowserWindow.Maximize() | Microsoft.PowerShell.Core\Out-Null; $State.BrowserWindow.SetForeground() | Microsoft.PowerShell.Core\Out-Null }
-                    catch { }
-                    $tt = 0;
+                    try {
+                        $null = $state.BrowserWindow.Maximize()
+                        $null = $state.BrowserWindow.SetForeground()
+                    }
+                    catch {
+                        # ignore window manipulation errors
+                    }
+                    $tt = 0
                     $focusedWindowProcess = GenXdev.Windows\Get-CurrentFocusedProcess
-                    while (($tt++ -lt 20) -and (
-                        ($null -eq $focusedWindowProcess) -or
-                        ($focusedWindowProcess.MainWindowHandle -ne $State.BrowserWindow.Handle))) {
 
-                        Microsoft.PowerShell.Utility\Write-Verbose "have browser window, sleeping 500ms"
-                        [System.Threading.Thread]::Sleep(500) | Microsoft.PowerShell.Core\Out-Null
+                    # wait for browser window to receive focus
+                    while (($tt++ -lt 20) -and
+                        (($null -eq $focusedWindowProcess) -or
+                            ($focusedWindowProcess.MainWindowHandle -ne
+                                $state.BrowserWindow.Handle))) {
 
-                        try { $State.BrowserWindow.Maximize() | Microsoft.PowerShell.Core\Out-Null; $State.BrowserWindow.SetForeground() | Microsoft.PowerShell.Core\Out-Null }
-                        catch { }
-                        GenXdev.Windows\Set-ForegroundWindow ($State.BrowserWindow.Handle) | Microsoft.PowerShell.Core\Out-Null
+                        Microsoft.PowerShell.Utility\Write-Verbose ("have browser " +
+                            "window, sleeping 500ms")
+                        $null = [System.Threading.Thread]::Sleep(500)
+
+                        try {
+                            $null = $state.BrowserWindow.Maximize()
+                            $null = $state.BrowserWindow.SetForeground()
+                        }
+                        catch {
+                            # ignore window manipulation errors
+                        }
+                        $null = GenXdev.Windows\Set-ForegroundWindow `
+                            ($state.BrowserWindow.Handle)
 
                         $focusedWindowProcess = GenXdev.Windows\Get-CurrentFocusedProcess
                     }
                 }
                 else {
-                    Microsoft.PowerShell.Utility\Write-Verbose "Setting fullscreen without having reference to browser window"
-                    $tt = 0;
+                    Microsoft.PowerShell.Utility\Write-Verbose ("Setting " +
+                        "fullscreen without having reference to browser window")
+                    $tt = 0
                     $focusedWindowProcess = GenXdev.Windows\Get-CurrentFocusedProcess
                     $powershellWindow = GenXdev.Windows\Get-PowershellMainWindow
-                    while (($tt++ -lt 20) -and (
-                        ($null -eq $focusedWindowProcess) -or ($null -eq $PowerShellWindow) -or
-                        ($focusedWindowProcess.MainWindowHandle -ne $PowerShellWindow.Handle))) {
-                        Microsoft.PowerShell.Utility\Write-Verbose "no browser window, sleeping 500ms"
-                        [System.Threading.Thread]::Sleep(500) | Microsoft.PowerShell.Core\Out-Null
+
+                    # wait for powershell window focus before sending f11
+                    while (($tt++ -lt 20) -and
+                        (($null -eq $focusedWindowProcess) -or
+                            ($null -eq $powerShellWindow) -or
+                            ($focusedWindowProcess.MainWindowHandle -ne
+                                $powerShellWindow.Handle))) {
+                        Microsoft.PowerShell.Utility\Write-Verbose ("no browser " +
+                            "window, sleeping 500ms")
+                        $null = [System.Threading.Thread]::Sleep(500)
 
                         $focusedWindowProcess = GenXdev.Windows\Get-CurrentFocusedProcess
                         $powershellWindow = GenXdev.Windows\Get-PowershellMainWindow
                     }
                 }
 
-                if ((GenXdev.Windows\Get-CurrentFocusedProcess).MainWindowHandle -ne (GenXdev.Windows\Get-PowershellMainWindow).Handle) {
+                # send f11 key to activate fullscreen if browser has focus
+                if ((GenXdev.Windows\Get-CurrentFocusedProcess).MainWindowHandle -ne
+                    (GenXdev.Windows\Get-PowershellMainWindow).Handle) {
                     try {
 
-                        # send F11
-                        $helper = Microsoft.PowerShell.Utility\New-Object -ComObject WScript.Shell;
-                        $null = $helper.sendKeys("{F11}");
+                        # create com object to send f11 key press
+                        $helper = Microsoft.PowerShell.Utility\New-Object `
+                            -ComObject WScript.Shell
+                        $null = $helper.sendKeys("{F11}")
                         Microsoft.PowerShell.Utility\Write-Verbose "Sending F11"
-                        [System.Threading.Thread]::Sleep(500) | Microsoft.PowerShell.Core\Out-Null
+                        $null = [System.Threading.Thread]::Sleep(500)
                     }
                     catch {
-
+                        # ignore key sending errors
                     }
                 }
             }
         }
     }
+    ###########################################################################
 
     end {
 
+        # restore powershell window focus if requested
         if ($RestoreFocus) {
 
-            # restore it
-            $PowerShellWindow = GenXdev.Windows\Get-PowershellMainWindow
+            # get reference to powershell main window
+            $powerShellWindow = GenXdev.Windows\Get-PowershellMainWindow
 
-            if ($null -ne $PowerShellWindow) {
+            # restore focus to powershell window if it exists
+            if ($null -ne $powerShellWindow) {
 
-                # wait a little
-                [System.Threading.Thread]::Sleep(500) | Microsoft.PowerShell.Core\Out-Null
+                # wait briefly before restoring focus
+                $null = [System.Threading.Thread]::Sleep(500)
 
-                $null = $PowerShellWindow.Show() | Microsoft.PowerShell.Core\Out-Null;
-                $null = $PowerShellWindow.SetForeground() | Microsoft.PowerShell.Core\Out-Null;
+                # show and bring powershell window to foreground
+                $null = $powerShellWindow.Show()
+                $null = $powerShellWindow.SetForeground()
 
-                GenXdev.Windows\Set-ForegroundWindow ($PowerShellWindow.Handle) | Microsoft.PowerShell.Core\Out-Null;
+                # ensure powershell window receives focus
+                $null = GenXdev.Windows\Set-ForegroundWindow `
+                    ($powerShellWindow.Handle)
             }
         }
     }
 }
+################################################################################

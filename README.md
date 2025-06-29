@@ -2055,7 +2055,7 @@ SYNOPSIS
     
     
 SYNTAX
-    Open-Webbrowser [[-Url] <String[]>] [-Private] [-Force] [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Monitor <Int32>] [-FullScreen] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-DisablePopupBlocker] [-AcceptLang <String>] [-RestoreFocus] [-NewWindow] [-PassThru] [<CommonParameters>]
+    Open-Webbrowser [[-Url] <String[]>] [[-Monitor] <Int32>] [[-FullScreen]] [[-Width] <Int32>] [[-Height] <Int32>] [[-X] <Int32>] [[-Y] <Int32>] [[-AcceptLang] <String>] [-Private] [-Force] [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-DisablePopupBlocker] [-RestoreFocus] [-NewWindow] [-PassThru] [<CommonParameters>]
     
     
 DESCRIPTION
@@ -2074,6 +2074,76 @@ PARAMETERS
         Aliases                      
         Accept wildcard characters?  false
         
+    -Monitor <Int32>
+        The monitor to use (0=default, -1=discard, -2=configured secondary).
+        
+        Required?                    false
+        Position?                    2
+        Default value                -2
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+        
+    -FullScreen [<SwitchParameter>]
+        Opens browser in fullscreen mode.
+        
+        Required?                    false
+        Position?                    3
+        Default value                False
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+        
+    -Width <Int32>
+        Initial width of browser window.
+        
+        Required?                    false
+        Position?                    4
+        Default value                -1
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+        
+    -Height <Int32>
+        Initial height of browser window.
+        
+        Required?                    false
+        Position?                    5
+        Default value                -1
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+        
+    -X <Int32>
+        Initial X position of browser window.
+        
+        Required?                    false
+        Position?                    6
+        Default value                -999999
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+        
+    -Y <Int32>
+        Initial Y position of browser window.
+        
+        Required?                    false
+        Position?                    7
+        Default value                -999999
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+        
+    -AcceptLang <String>
+        Sets browser accept-lang HTTP header.
+        
+        Required?                    false
+        Position?                    8
+        Default value                
+        Accept pipeline input?       false
+        Aliases                      
+        Accept wildcard characters?  false
+        
     -Private [<SwitchParameter>]
         Opens in incognito/private browsing mode.
         
@@ -2085,7 +2155,7 @@ PARAMETERS
         Accept wildcard characters?  false
         
     -Force [<SwitchParameter>]
-        Forces debugging port enabled, stopping existing browser processes if needed.
+        Force enable debugging port, stopping existing browsers if needed.
         
         Required?                    false
         Position?                    named
@@ -2140,66 +2210,6 @@ PARAMETERS
         Required?                    false
         Position?                    named
         Default value                False
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-        
-    -Monitor <Int32>
-        The monitor to use (0=default, -1=discard, -2=configured secondary).
-        
-        Required?                    false
-        Position?                    named
-        Default value                -2
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-        
-    -FullScreen [<SwitchParameter>]
-        Opens browser in fullscreen mode.
-        
-        Required?                    false
-        Position?                    named
-        Default value                False
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-        
-    -Width <Int32>
-        Initial width of browser window.
-        
-        Required?                    false
-        Position?                    named
-        Default value                -1
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-        
-    -Height <Int32>
-        Initial height of browser window.
-        
-        Required?                    false
-        Position?                    named
-        Default value                -1
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-        
-    -X <Int32>
-        Initial X position of browser window.
-        
-        Required?                    false
-        Position?                    named
-        Default value                -999999
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-        
-    -Y <Int32>
-        Initial Y position of browser window.
-        
-        Required?                    false
-        Position?                    named
-        Default value                -999999
         Accept pipeline input?       false
         Aliases                      
         Accept wildcard characters?  false
@@ -2275,20 +2285,11 @@ PARAMETERS
         Accept wildcard characters?  false
         
     -DisablePopupBlocker [<SwitchParameter>]
+        Disable the popup blocker.
         
         Required?                    false
         Position?                    named
         Default value                False
-        Accept pipeline input?       false
-        Aliases                      
-        Accept wildcard characters?  false
-        
-    -AcceptLang <String>
-        Sets browser accept-lang HTTP header.
-        
-        Required?                    false
-        Position?                    named
-        Default value                
         Accept pipeline input?       false
         Aliases                      
         Accept wildcard characters?  false
