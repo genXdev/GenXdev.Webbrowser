@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Navigates the current webbrowser tab to a specified URL.
@@ -25,7 +25,7 @@ Set-WebbrowserTabLocation -Url "https://github.com/microsoft" -Edge
 
 .EXAMPLE
 "https://github.com/microsoft" | lt -ch
-#>
+        ###############################################################################>
 function Set-WebbrowserTabLocation {
 
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
@@ -93,4 +93,4 @@ process {
     end {
     }
 }
-################################################################################
+        ###############################################################################

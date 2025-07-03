@@ -1,9 +1,9 @@
-################################################################################
+        ###############################################################################
 using namespace System.Management.Automation
 using namespace System.Collections.Concurrent
 using namespace Microsoft.Playwright
 
-# suppress global variable warning as this is required for browser instance sharing
+        ###############################################################################suppress global variable warning as this is required for browser instance sharing
 [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute(
     "PSAvoidGlobalVars",
     "",
@@ -11,7 +11,7 @@ using namespace Microsoft.Playwright
 )]
 param()
 
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Creates or retrieves a configured Playwright browser instance.
@@ -73,13 +73,13 @@ Maintains browser profile between sessions.
 WebSocket URL for connecting to existing browser instance.
 
 .EXAMPLE
-# Launch visible Chrome browser at GitHub
+        ###############################################################################Launch visible Chrome browser at GitHub
 Get-PlaywrightDriver -BrowserType Chromium -Visible -Url "https://github.com"
 
 .EXAMPLE
-# Connect to existing browser via WebSocket
+        ###############################################################################Connect to existing browser via WebSocket
 Get-PlaywrightDriver -WsEndpoint "ws://localhost:9222"
-#>
+###############################################################################>
 function Get-PlaywrightDriver {
 
     [CmdletBinding(DefaultParameterSetName = 'Default')]
@@ -303,4 +303,4 @@ process {
     end {
     }
 }
-################################################################################
+        ###############################################################################

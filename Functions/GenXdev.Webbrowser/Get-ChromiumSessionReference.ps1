@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Gets a serializable reference to the current browser tab session.
@@ -13,14 +13,14 @@ The function validates the existence of an active chrome session and ensures
 the browser controller is still running before returning the session reference.
 
 .EXAMPLE
-# Get a reference to the current chrome tab session
+        ###############################################################################Get a reference to the current chrome tab session
 $sessionRef = Get-ChromiumSessionReference
 
 .EXAMPLE
-# Store the reference and use it later to reconnect
+        ###############################################################################Store the reference and use it later to reconnect
 $ref = Get-ChromiumSessionReference
 Select-WebbrowserTab -ByReference $ref
-#>
+        ###############################################################################>
 function Get-ChromiumSessionReference {
 
     [CmdletBinding()]
@@ -78,4 +78,4 @@ process {
     end {
     }
 }
-################################################################################
+        ###############################################################################

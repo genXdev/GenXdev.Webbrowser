@@ -1,4 +1,4 @@
-################################################################################
+        ###############################################################################
 using namespace System.Management.Automation
 using namespace System.Collections.Concurrent
 using namespace Microsoft.Playwright
@@ -16,9 +16,9 @@ ensures the cache remains healthy.
 The concurrent dictionary containing browser instances to maintain.
 
 .EXAMPLE
-# Clean up disconnected browser instances from the cache
+        ###############################################################################Clean up disconnected browser instances from the cache
 Update-PlaywrightDriverCache -BrowserDictionary $browserDictionary
-#>
+        ###############################################################################>
 function Update-PlaywrightDriverCache {
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -72,4 +72,4 @@ process {
         Microsoft.PowerShell.Utility\Write-Verbose "Completed browser cache maintenance"
     }
 }
-################################################################################
+        ###############################################################################

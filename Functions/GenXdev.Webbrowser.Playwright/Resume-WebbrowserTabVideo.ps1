@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Resumes video playback in a YouTube browser tab.
@@ -18,7 +18,7 @@ wbvideoplay
 .NOTES
 Requires an active Chrome browser session with at least one YouTube tab open.
 The function will throw an error if no YouTube tab is found.
-#>
+###############################################################################>
 function Resume-WebbrowserTabVideo {
 
     [CmdletBinding()]
@@ -55,4 +55,4 @@ process {
     end {
     }
 }
-################################################################################
+        ###############################################################################

@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Returns the configured default web browser for the current user.
@@ -10,11 +10,11 @@ icon path, and executable path. The function checks both user preferences and
 system-wide browser registrations to determine the default browser.
 
 .EXAMPLE
-# Get detailed information about the default browser
+        ###############################################################################Get detailed information about the default browser
 Get-DefaultWebbrowser | Format-List
 
 .EXAMPLE
-# Launch the default browser with a specific URL
+        ###############################################################################Launch the default browser with a specific URL
 $browser = Get-DefaultWebbrowser
 & $browser.Path https://www.github.com/
 
@@ -23,7 +23,7 @@ System.Collections.Hashtable with keys: Name, Description, Icon, Path
 
 .NOTES
 Requires Windows 10 or later operating system
-#>
+        ###############################################################################>
 function Get-DefaultWebbrowser {
 
     [CmdletBinding()]
@@ -100,4 +100,4 @@ process {
     end {
     }
 }
-################################################################################
+        ###############################################################################

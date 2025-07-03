@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Opens one or more webbrowser instances.
@@ -115,7 +115,7 @@ SET    : -Monitor -1
 AND    : DO NOT use any of these switches: -X, -Y, -Left, -Right, -Top, -Bottom or -RestoreFocus
 
 For browsers that are not installed on the system, no actions may be performed or errors occur - at all.
-#>
+        ###############################################################################>
 function Open-Webbrowser {
 
     [CmdletBinding()]
@@ -454,7 +454,12 @@ function Open-Webbrowser {
         [bool] $havePositioning = (($Monitor -ge 0 -or $Monitor -eq -2) -or
             ($Left -or $Right -or $Top -or $Bottom -or $Centered -or
                 (($X -is [int]) -and ($X -gt -999999)) -or
-                (($Y -is [int]) -and ($Y -gt -999999)))) -and -not $FullScreen
+                (($Y -is [int]) -and ($Y -gt -999999)))) -and -not $FullScreen;
+
+        if ($havePositioning -and $Monitor -eq -1) {
+
+            $Monitor = 0;
+        }
 
         # initialize window x position based on parameters or screen defaults
         if (($X -le -999999) -or ($X -isnot [int])) {
@@ -502,7 +507,7 @@ function Open-Webbrowser {
 
         # determine if we can use simple start-process instead of complex positioning
         $useStartProcess = (-not ($havePositioning -or $FullScreen)) -and
-        $state.IsDefaultBrowser
+        $state.IsDefaultBrowser -and ($Monitor -eq -1) -and (-not $NewWindow)
 
         # configure window dimensions and positioning if positioning is required
         if ($havePositioning -or $FullScreen) {
@@ -1427,4 +1432,4 @@ function Open-Webbrowser {
         }
     }
 }
-################################################################################
+        ###############################################################################

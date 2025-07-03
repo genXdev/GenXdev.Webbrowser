@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Queries and manipulates DOM nodes in the active browser tab using CSS selectors.
@@ -21,13 +21,13 @@ function with parameters:
 - modifyScript: The script being executed
 
 .EXAMPLE
-# Get HTML of all header divs
+        ###############################################################################Get HTML of all header divs
 Get-WebbrowserTabDomNodes -QuerySelector "div.header"
 
 .EXAMPLE
-# Pause all videos on the page
+        ###############################################################################Pause all videos on the page
 wl "video" "e.pause()"
-#>
+        ###############################################################################>
 function Get-WebbrowserTabDomNodes {
 
     [CmdletBinding()]
@@ -176,4 +176,4 @@ process {
     end {
     }
 }
-################################################################################
+        ###############################################################################

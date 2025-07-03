@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Opens a URL in multiple browsers simultaneously in a mosaic layout.
@@ -23,7 +23,7 @@ Opens github.com in four different browsers arranged in a mosaic layout.
 .EXAMPLE
 "https://www.github.com" | Show-UrlInAllBrowsers
 Uses the function's alias and pipeline input to achieve the same result.
-#>
+        ###############################################################################>
 function Show-WebsiteInAllBrowsers {
 
     [CmdletBinding()]
@@ -71,4 +71,4 @@ process {
     end {
     }
 }
-################################################################################
+        ###############################################################################

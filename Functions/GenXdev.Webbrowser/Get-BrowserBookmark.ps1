@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Returns all bookmarks from installed web browsers.
@@ -25,7 +25,7 @@ Returns Edge bookmarks formatted as a table showing name, URL and folder.
 .EXAMPLE
 gbm -Chrome | Where-Object URL -like "*github*"
 Returns Chrome bookmarks filtered to only show GitHub-related URLs.
-#>
+        ###############################################################################>
 function Get-BrowserBookmark {
 
     [CmdletBinding(DefaultParameterSetName = 'Default')]
@@ -297,4 +297,4 @@ process {
     end {
     }
 }
-################################################################################
+        ###############################################################################

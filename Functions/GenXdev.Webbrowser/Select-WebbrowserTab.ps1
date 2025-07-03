@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Selects a browser tab for automation in Chrome or Edge.
@@ -34,7 +34,7 @@ Selects tab ID 3 in Chrome browser, forcing restart if needed.
 .EXAMPLE
 st -Name "github.com" -e
 Selects first tab containing "github.com" in Edge browser using alias.
-#>
+        ###############################################################################>
 function Select-WebbrowserTab {
 
     [CmdletBinding(DefaultParameterSetName = "ById")]
@@ -374,4 +374,4 @@ process {
     end {
     }
 }
-################################################################################
+        ###############################################################################

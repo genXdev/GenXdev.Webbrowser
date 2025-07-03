@@ -1,4 +1,4 @@
-################################################################################
+        ###############################################################################
 
 <#
 .SYNOPSIS
@@ -40,7 +40,7 @@ $bookmarks = @(
 )
 Import-BrowserBookmarks -Bookmarks $bookmarks -Chrome
 Imports a collection of bookmarks into Google Chrome.
-#>
+        ###############################################################################>
 function Import-BrowserBookmarks {
 
     [CmdletBinding(DefaultParameterSetName = 'Default', SupportsShouldProcess)]
@@ -180,7 +180,7 @@ process {
     }
 }
 
-# helper function to write bookmarks to browser's bookmark file
+        ###############################################################################helper function to write bookmarks to browser's bookmark file
 function Write-Bookmarks {
     [CmdletBinding(SupportsShouldProcess)]
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
@@ -273,4 +273,4 @@ function Write-Bookmarks {
         $bookmarksContent | Microsoft.PowerShell.Utility\ConvertTo-Json -Depth 100 | Microsoft.PowerShell.Management\Set-Content -Path $BookmarksFilePath
     }
 }
-################################################################################
+        ###############################################################################

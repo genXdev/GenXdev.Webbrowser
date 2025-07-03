@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Configures Firefox's debugging and standalone app mode features.
@@ -14,7 +14,7 @@ Approve-FirefoxDebugging
 
 Enables remote debugging and SSB features across all Firefox profiles found in
 the current user's AppData directory.
-#>
+        ###############################################################################>
 function Approve-FirefoxDebugging {
 
     [CmdletBinding()]
@@ -83,4 +83,4 @@ process {
     end {
     }
 }
-################################################################################
+        ###############################################################################

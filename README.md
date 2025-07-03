@@ -266,6 +266,7 @@ OUTPUTS
     
     Enables remote debugging and SSB features across all Firefox profiles found in
     the current user's AppData directory.
+            ##############################################################################
     
     
     
@@ -342,6 +343,7 @@ OUTPUTS
     
     PS > clearsitedata -Chrome
     Clears all browser storage data in the current Chrome tab using the alias.
+    ##############################################################################
     
     
     
@@ -446,7 +448,7 @@ OUTPUTS
     -------------------------- EXAMPLE 1 --------------------------
     
     PS > Close-Webbrowser -Chrome -Firefox -IncludeBackgroundProcesses
-    # Closes all Chrome and Firefox instances including background processes
+            ###############################################################################Closes all Chrome and Firefox instances including background processes
     
     
     
@@ -456,7 +458,8 @@ OUTPUTS
     -------------------------- EXAMPLE 2 --------------------------
     
     PS > wbc -a -bg
-    # Closes all browser instances including background processes using aliases
+            ###############################################################################Closes all browser instances including background processes using aliases
+            ##############################################################################
     
     
     
@@ -528,6 +531,7 @@ OUTPUTS
     
     PS > ct
     Uses the alias to close the currently active browser tab
+            ##############################################################################
     
     
     
@@ -621,6 +625,7 @@ OUTPUTS
     -------------------------- EXAMPLE 2 --------------------------
     
     PS > Export-BrowserBookmarks "C:\MyBookmarks.json" -Chrome
+            ##############################################################################
     
     
     
@@ -727,7 +732,7 @@ OUTPUTS
     -------------------------- EXAMPLE 1 --------------------------
     
     PS > Find-BrowserBookmark -Query "github" -Edge -Chrome -Count 10
-    # Searches Edge and Chrome bookmarks for "github", returns first 10 URLs
+            ###############################################################################Searches Edge and Chrome bookmarks for "github", returns first 10 URLs
     
     
     
@@ -737,7 +742,8 @@ OUTPUTS
     -------------------------- EXAMPLE 2 --------------------------
     
     PS > bookmarks powershell -e -ff -PassThru
-    # Searches Edge and Firefox bookmarks for "powershell", returns full objects
+            ###############################################################################Searches Edge and Firefox bookmarks for "powershell", returns full objects
+            ##############################################################################
     
     
     
@@ -826,6 +832,7 @@ OUTPUTS
     
     PS > gbm -Chrome | Where-Object URL -like "*github*"
     Returns Chrome bookmarks filtered to only show GitHub-related URLs.
+            ##############################################################################
     
     
     
@@ -883,6 +890,7 @@ OUTPUTS
     
     PS > $port = Get-ChromePort
     Write-Host "Chrome debug port: $port"
+            ##############################################################################
     
     
     
@@ -945,7 +953,7 @@ OUTPUTS
     
     -------------------------- EXAMPLE 1 --------------------------
     
-    PS > # Get debugging port using full command name
+    PS > ###############################################################################Get debugging port using full command name
     Get-ChromiumRemoteDebuggingPort
     
     
@@ -955,8 +963,9 @@ OUTPUTS
     
     -------------------------- EXAMPLE 2 --------------------------
     
-    PS > # Get debugging port using alias
+    PS > ###############################################################################Get debugging port using alias
     Get-BrowserDebugPort
+    ##############################################################################
     
     
     
@@ -1004,7 +1013,7 @@ OUTPUTS
     
     -------------------------- EXAMPLE 1 --------------------------
     
-    PS > # Get a reference to the current chrome tab session
+    PS > ###############################################################################Get a reference to the current chrome tab session
     $sessionRef = Get-ChromiumSessionReference
     
     
@@ -1014,9 +1023,10 @@ OUTPUTS
     
     -------------------------- EXAMPLE 2 --------------------------
     
-    PS > # Store the reference and use it later to reconnect
+    PS > ###############################################################################Store the reference and use it later to reconnect
     $ref = Get-ChromiumSessionReference
     Select-WebbrowserTab -ByReference $ref
+    ##############################################################################
     
     
     
@@ -1063,10 +1073,11 @@ NOTES
     
     
         Requires Windows 10 or later operating system
+                ##############################################################################
     
     -------------------------- EXAMPLE 1 --------------------------
     
-    PS > # Get detailed information about the default browser
+    PS > ###############################################################################Get detailed information about the default browser
     Get-DefaultWebbrowser | Format-List
     
     
@@ -1076,7 +1087,7 @@ NOTES
     
     -------------------------- EXAMPLE 2 --------------------------
     
-    PS > # Launch the default browser with a specific URL
+    PS > ###############################################################################Launch the default browser with a specific URL
     $browser = Get-DefaultWebbrowser
     & $browser.Path https://www.github.com/
     
@@ -1127,6 +1138,7 @@ NOTES
     
         The function ensures $Global:EdgeDebugPort is always set to the returned value
         for consistency across the session.
+                ##############################################################################
     
     -------------------------- EXAMPLE 1 --------------------------
     
@@ -1184,6 +1196,7 @@ NOTES
     
     
         Requires Windows 10 or later Operating System
+                ##############################################################################
     
     -------------------------- EXAMPLE 1 --------------------------
     
@@ -1196,7 +1209,7 @@ NOTES
     
     -------------------------- EXAMPLE 2 --------------------------
     
-    PS > # Get just the default browser
+    PS > ###############################################################################Get just the default browser
     Get-Webbrowser | Where-Object { $_.IsDefaultBrowser }
     
     
@@ -1310,7 +1323,7 @@ OUTPUTS
     
     -------------------------- EXAMPLE 1 --------------------------
     
-    PS > # Get HTML of all header divs
+    PS > ###############################################################################Get HTML of all header divs
     Get-WebbrowserTabDomNodes -QuerySelector "div.header"
     
     
@@ -1320,8 +1333,9 @@ OUTPUTS
     
     -------------------------- EXAMPLE 2 --------------------------
     
-    PS > # Pause all videos on the page
+    PS > ###############################################################################Pause all videos on the page
     wl "video" "e.pause()"
+    ##############################################################################
     
     
     
@@ -1456,6 +1470,7 @@ OUTPUTS
     )
     Import-BrowserBookmarks -Bookmarks $bookmarks -Chrome
     Imports a collection of bookmarks into Google Chrome.
+            ##############################################################################
     
     
     
@@ -1570,10 +1585,11 @@ NOTES
     
     
         Requires the Windows 10+ Operating System
+                ##############################################################################
     
     -------------------------- EXAMPLE 1 --------------------------
     
-    PS > # Execute simple JavaScript
+    PS > ###############################################################################Execute simple JavaScript
     Invoke-WebbrowserEvaluation "document.title = 'hello world'"
     
     
@@ -1585,7 +1601,7 @@ NOTES
     
     PS>
     
-    # Synchronizing data
+    ###############################################################################Synchronizing data
     Select-WebbrowserTab -Force;
     $Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
     
@@ -1608,7 +1624,7 @@ NOTES
     
     PS>
     
-    # Support for promises
+    ###############################################################################Support for promises
     Select-WebbrowserTab -Force;
     Invoke-WebbrowserEvaluation "
         let myList = [];
@@ -1631,10 +1647,10 @@ NOTES
     
     PS>
     
-    # Support for promises and more
+    ###############################################################################Support for promises and more
     
-    # this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
-    # beware, not all websites use indexedDb, it could return an empty set
+            ###############################################################################this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
+            ###############################################################################beware, not all websites use indexedDb, it could return an empty set
     
     Select-WebbrowserTab -Force;
     Set-WebbrowserTabLocation "https://www.youtube.com/"
@@ -1698,7 +1714,7 @@ NOTES
     
     PS>
     
-    # Support for yielded pipeline results
+    ###############################################################################Support for yielded pipeline results
     Select-WebbrowserTab -Force;
     Invoke-WebbrowserEvaluation "
     
@@ -2036,6 +2052,7 @@ OUTPUTS
     -------------------------- EXAMPLE 2 --------------------------
     
     PS > sites gh -e -och -c 5
+            ##############################################################################
     
     
     
@@ -2348,6 +2365,7 @@ NOTES
         AND    : DO NOT use any of these switches: -X, -Y, -Left, -Right, -Top, -Bottom or -RestoreFocus
         
         For browsers that are not installed on the system, no actions may be performed or errors occur - at all.
+                ##############################################################################
     
     -------------------------- EXAMPLE 1 --------------------------
     
@@ -2486,6 +2504,7 @@ OUTPUTS
     
     PS > st -Name "github.com" -e
     Selects first tab containing "github.com" in Edge browser using alias.
+            ##############################################################################
     
     
     
@@ -2547,6 +2566,7 @@ OUTPUTS
     -------------------------- EXAMPLE 1 --------------------------
     
     PS > Set-BrowserVideoFullscreen
+            ##############################################################################
     
     
     
@@ -2614,6 +2634,7 @@ NOTES
     
     
         Requires administrative access to modify system shortcuts.
+                ##############################################################################
     
     -------------------------- EXAMPLE 1 --------------------------
     
@@ -2725,6 +2746,7 @@ OUTPUTS
     -------------------------- EXAMPLE 2 --------------------------
     
     PS > "https://github.com/microsoft" | lt -ch
+            ##############################################################################
     
     
     
@@ -2793,6 +2815,7 @@ OUTPUTS
     
     PS > "https://www.github.com" | Show-UrlInAllBrowsers
     Uses the function's alias and pipeline input to achieve the same result.
+            ##############################################################################
     
     
     
@@ -2871,6 +2894,7 @@ OUTPUTS
     
     PS > Close-PlaywrightDriver Chrome
     Closes the default Chromium browser instance using position parameters
+    ##############################################################################
     
     
     
@@ -2926,6 +2950,7 @@ OUTPUTS
     
     PS > Connect-PlaywrightViaDebuggingPort `
         -WsEndpoint "ws://localhost:9222/devtools/browser/abc123"
+    ##############################################################################
     
     
     

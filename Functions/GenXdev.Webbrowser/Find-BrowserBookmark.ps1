@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Finds bookmarks from one or more web browsers.
@@ -32,12 +32,12 @@ object contains Name, URL, and Folder properties.
 
 .EXAMPLE
 Find-BrowserBookmark -Query "github" -Edge -Chrome -Count 10
-# Searches Edge and Chrome bookmarks for "github", returns first 10 URLs
+        ###############################################################################Searches Edge and Chrome bookmarks for "github", returns first 10 URLs
 
 .EXAMPLE
 bookmarks powershell -e -ff -PassThru
-# Searches Edge and Firefox bookmarks for "powershell", returns full objects
-#>
+        ###############################################################################Searches Edge and Firefox bookmarks for "powershell", returns full objects
+        ###############################################################################>
 function Find-BrowserBookmark {
 
     [CmdletBinding(DefaultParameterSetName = 'Default')]
@@ -155,4 +155,4 @@ process {
     end {
     }
 }
-################################################################################
+        ###############################################################################

@@ -1,4 +1,4 @@
-################################################################################
+        ###############################################################################
 using namespace System.Management.Automation
 using namespace System.Collections.Concurrent
 using namespace Microsoft.Playwright
@@ -27,7 +27,7 @@ Closes a specific Chromium browser instance identified by "MainBrowser"
 .EXAMPLE
 Close-PlaywrightDriver Chrome
 Closes the default Chromium browser instance using position parameters
-#>
+###############################################################################>
 function Close-PlaywrightDriver {
 
     [CmdletBinding()]
@@ -96,4 +96,4 @@ process {
     end {
     }
 }
-################################################################################
+        ###############################################################################

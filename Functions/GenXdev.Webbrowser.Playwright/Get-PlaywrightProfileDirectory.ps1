@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Gets the Playwright browser profile directory for persistent sessions.
@@ -19,7 +19,7 @@ Creates or returns path: %LocalAppData%\GenXdev.Powershell\Playwright.profiles\C
 .EXAMPLE
 Get-PlaywrightProfileDirectory Firefox
 Creates or returns Firefox profile directory using positional parameter.
-#>
+        ###############################################################################>
 function Get-PlaywrightProfileDirectory {
 
     [CmdletBinding()]
@@ -65,4 +65,4 @@ process {
     end {
     }
 }
-################################################################################
+        ###############################################################################

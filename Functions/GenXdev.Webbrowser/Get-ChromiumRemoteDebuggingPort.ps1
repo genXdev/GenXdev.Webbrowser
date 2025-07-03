@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Returns the remote debugging port for the system's default Chromium browser.
@@ -13,13 +13,13 @@ returns the Chrome debugging port. Otherwise returns the Edge debugging port
 [int] The remote debugging port number for the detected browser.
 
 .EXAMPLE
-# Get debugging port using full command name
+        ###############################################################################Get debugging port using full command name
 Get-ChromiumRemoteDebuggingPort
 
 .EXAMPLE
-# Get debugging port using alias
+        ###############################################################################Get debugging port using alias
 Get-BrowserDebugPort
-#>
+        ###############################################################################>
 function Get-ChromiumRemoteDebuggingPort {
 
     [CmdletBinding()]
@@ -81,4 +81,4 @@ process {
     end {
     }
 }
-################################################################################
+        ###############################################################################

@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Returns the configured remote debugging port for Google Chrome.
@@ -20,7 +20,7 @@ Write-Host "Chrome debug port: $port"
 .EXAMPLE
 $port = Get-ChromePort
 Write-Host "Chrome debug port: $port"
-#>
+        ###############################################################################>
 function Get-ChromeRemoteDebuggingPort {
 
     [CmdletBinding()]
@@ -72,4 +72,4 @@ process {
         return $port
     }
 }
-################################################################################
+        ###############################################################################

@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Clears all browser storage data for the current tab in Edge or Chrome.
@@ -26,7 +26,7 @@ Clears all browser storage data in the current Edge tab.
 .EXAMPLE
 clearsitedata -Chrome
 Clears all browser storage data in the current Chrome tab using the alias.
-#>
+###############################################################################>
 function Clear-WebbrowserTabSiteApplicationData {
 
     [CmdletBinding()]
@@ -83,4 +83,4 @@ process {
     end {
     }
 }
-################################################################################
+        ###############################################################################

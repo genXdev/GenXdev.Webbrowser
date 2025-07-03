@@ -1,4 +1,4 @@
-################################################################################
+        ###############################################################################
 
 <#
 .SYNOPSIS
@@ -32,12 +32,12 @@ Browser page object for execution when using ByReference mode.
 Session reference object when using ByReference mode.
 
 .EXAMPLE
-# Execute simple JavaScript
+        ###############################################################################Execute simple JavaScript
 Invoke-WebbrowserEvaluation "document.title = 'hello world'"
 .EXAMPLE
 PS>
 
-# Synchronizing data
+        ###############################################################################Synchronizing data
 Select-WebbrowserTab -Force;
 $Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
 
@@ -55,7 +55,7 @@ Write-Host "
 .EXAMPLE
 PS>
 
-# Support for promises
+        ###############################################################################Support for promises
 Select-WebbrowserTab -Force;
 Invoke-WebbrowserEvaluation "
     let myList = [];
@@ -73,10 +73,10 @@ Invoke-WebbrowserEvaluation "
 .EXAMPLE
 PS>
 
-# Support for promises and more
+        ###############################################################################Support for promises and more
 
-# this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
-# beware, not all websites use indexedDb, it could return an empty set
+        ###############################################################################this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
+        ###############################################################################beware, not all websites use indexedDb, it could return an empty set
 
 Select-WebbrowserTab -Force;
 Set-WebbrowserTabLocation "https://www.youtube.com/"
@@ -136,7 +136,7 @@ $AllIndexedDbData | Out-Host
 .EXAMPLE
 PS>
 
-# Support for yielded pipeline results
+        ###############################################################################Support for yielded pipeline results
 Select-WebbrowserTab -Force;
 Invoke-WebbrowserEvaluation "
 
@@ -153,7 +153,7 @@ PS> Get-ChildItem *.js | Invoke-WebbrowserEvaluation -Edge
 PS> ls *.js | et -e
 .NOTES
 Requires the Windows 10+ Operating System
-#>
+        ###############################################################################>
 function Invoke-WebbrowserEvaluation {
 
     [CmdletBinding()]
@@ -550,4 +550,4 @@ document.documentElement.style.setProperty('--default-color-scheme', 'dark');
 
     }
 }
-################################################################################
+        ###############################################################################

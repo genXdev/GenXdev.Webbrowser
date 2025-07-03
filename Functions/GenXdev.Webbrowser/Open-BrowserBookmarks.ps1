@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Opens browser bookmarks that match specified search criteria.
@@ -91,7 +91,7 @@ Open-BrowserBookmarks -Queries "github" -Edge -OpenInChrome -Count 5
 
 .EXAMPLE
 sites gh -e -och -c 5
-#>
+        ###############################################################################>
 function Open-BrowserBookmarks {
 
     [CmdletBinding(DefaultParameterSetName = 'Default')]
@@ -354,4 +354,4 @@ process {
     end {
     }
 }
-################################################################################
+        ###############################################################################

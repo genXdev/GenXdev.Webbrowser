@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Returns a collection of installed modern web browsers.
@@ -22,12 +22,12 @@ Returns an array of hashtables containing browser details:
 Get-Webbrowser | Select-Object Name, Description | Format-Table
 
 .EXAMPLE
-# Get just the default browser
+        ###############################################################################Get just the default browser
 Get-Webbrowser | Where-Object { $_.IsDefaultBrowser }
 
 .NOTES
 Requires Windows 10 or later Operating System
-#>
+        ###############################################################################>
 function Get-Webbrowser {
 
     [CmdletBinding()]
@@ -102,4 +102,4 @@ process {
     end {
     }
 }
-################################################################################
+        ###############################################################################

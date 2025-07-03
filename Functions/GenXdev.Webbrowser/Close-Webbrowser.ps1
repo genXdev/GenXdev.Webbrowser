@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Closes one or more webbrowser instances selectively.
@@ -28,12 +28,12 @@ Also closes background processes and tasks for the selected browsers.
 
 .EXAMPLE
 Close-Webbrowser -Chrome -Firefox -IncludeBackgroundProcesses
-# Closes all Chrome and Firefox instances including background processes
+        ###############################################################################Closes all Chrome and Firefox instances including background processes
 
 .EXAMPLE
 wbc -a -bg
-# Closes all browser instances including background processes using aliases
-#>
+        ###############################################################################Closes all browser instances including background processes using aliases
+        ###############################################################################>
 function Close-Webbrowser {
 
     [CmdletBinding(DefaultParameterSetName = 'Specific')]
@@ -228,4 +228,4 @@ process {
     end {
     }
 }
-################################################################################
+        ###############################################################################

@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Updates browser shortcuts to enable remote debugging ports.
@@ -20,7 +20,7 @@ Updates all Chrome and Edge shortcuts with their respective debugging ports.
 
 .NOTES
 Requires administrative access to modify system shortcuts.
-#>
+        ###############################################################################>
 function Set-RemoteDebuggerPortInBrowserShortcuts {
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -180,4 +180,4 @@ process {
     end {
     }
 }
-################################################################################
+        ###############################################################################

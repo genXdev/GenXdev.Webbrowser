@@ -1,9 +1,9 @@
-################################################################################
+        ###############################################################################
 using namespace System.Management.Automation
 using namespace System.Collections.Concurrent
 using namespace Microsoft.Playwright
 
-################################################################################
+###############################################################################
 <#
 .SYNOPSIS
 Connects to an existing browser instance via debugging port.
@@ -21,7 +21,7 @@ typically follows the format 'ws://hostname:port/devtools/browser/<id>'.
 .EXAMPLE
 Connect-PlaywrightViaDebuggingPort `
     -WsEndpoint "ws://localhost:9222/devtools/browser/abc123"
-#>
+###############################################################################>
 function Connect-PlaywrightViaDebuggingPort {
 
     [CmdletBinding()]
@@ -69,4 +69,4 @@ process {
     end {
     }
 }
-################################################################################
+        ###############################################################################
