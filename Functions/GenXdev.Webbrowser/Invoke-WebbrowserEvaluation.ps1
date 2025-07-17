@@ -1,4 +1,4 @@
-        ###############################################################################
+﻿###############################################################################
 
 <#
 .SYNOPSIS
@@ -32,12 +32,12 @@ Browser page object for execution when using ByReference mode.
 Session reference object when using ByReference mode.
 
 .EXAMPLE
-        ###############################################################################Execute simple JavaScript
+Execute simple JavaScript
 Invoke-WebbrowserEvaluation "document.title = 'hello world'"
 .EXAMPLE
 PS>
 
-        ###############################################################################Synchronizing data
+Synchronizing data
 Select-WebbrowserTab -Force;
 $Global:Data = @{ files= (Get-ChildItem *.* -file | % FullName)};
 
@@ -55,7 +55,7 @@ Write-Host "
 .EXAMPLE
 PS>
 
-        ###############################################################################Support for promises
+Support for promises
 Select-WebbrowserTab -Force;
 Invoke-WebbrowserEvaluation "
     let myList = [];
@@ -73,10 +73,10 @@ Invoke-WebbrowserEvaluation "
 .EXAMPLE
 PS>
 
-        ###############################################################################Support for promises and more
+Support for promises and more
 
-        ###############################################################################this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
-        ###############################################################################beware, not all websites use indexedDb, it could return an empty set
+this function returns all rows of all tables/datastores of all databases of indexedDb in the selected tab
+beware, not all websites use indexedDb, it could return an empty set
 
 Select-WebbrowserTab -Force;
 Set-WebbrowserTabLocation "https://www.youtube.com/"
@@ -136,7 +136,7 @@ $AllIndexedDbData | Out-Host
 .EXAMPLE
 PS>
 
-        ###############################################################################Support for yielded pipeline results
+Support for yielded pipeline results
 Select-WebbrowserTab -Force;
 Invoke-WebbrowserEvaluation "
 
@@ -153,21 +153,21 @@ PS> Get-ChildItem *.js | Invoke-WebbrowserEvaluation -Edge
 PS> ls *.js | et -e
 .NOTES
 Requires the Windows 10+ Operating System
-        ###############################################################################>
+#>
 function Invoke-WebbrowserEvaluation {
 
     [CmdletBinding()]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
-    [Alias("Eval", "et")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '')]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '')]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
+    [Alias('Eval', 'et')]
 
     param(
         ###############################################################################
         [Parameter(
             Position = 0,
             Mandatory = $false,
-            HelpMessage = "JavaScript code, file path or URL to execute",
+            HelpMessage = 'JavaScript code, file path or URL to execute',
             ValueFromPipeline,
             ValueFromPipelineByPropertyName)
         ]
@@ -176,7 +176,7 @@ function Invoke-WebbrowserEvaluation {
         ###############################################################################
         [Parameter(
             Mandatory = $false,
-            HelpMessage = "Break in browser debugger before executing",
+            HelpMessage = 'Break in browser debugger before executing',
             ValueFromPipeline = $false)
         ]
         [switch] $Inspect,
@@ -184,32 +184,32 @@ function Invoke-WebbrowserEvaluation {
         [Parameter(
             Mandatory = $false,
             ValueFromPipeline = $false,
-            HelpMessage = "Prevent automatic tab selection"
+            HelpMessage = 'Prevent automatic tab selection'
         )]
         [switch] $NoAutoSelectTab,
         ###############################################################################
-        [Alias("e")]
+        [Alias('e')]
         [parameter(
             Mandatory = $false,
-            HelpMessage = "Use Microsoft Edge browser"
+            HelpMessage = 'Use Microsoft Edge browser'
         )]
         [switch] $Edge,
         ###############################################################################
-        [Alias("ch")]
+        [Alias('ch')]
         [parameter(
             Mandatory = $false,
-            HelpMessage = "Use Google Chrome browser"
+            HelpMessage = 'Use Google Chrome browser'
         )]
         [switch] $Chrome,
         ###############################################################################
         [Parameter(
-            HelpMessage = "Browser page object reference",
+            HelpMessage = 'Browser page object reference',
             ValueFromPipeline = $false
         )]
         [object] $Page,
         ###############################################################################
         [Parameter(
-            HelpMessage = "Browser session reference object",
+            HelpMessage = 'Browser session reference object',
             ValueFromPipeline = $false
         )]
         [PSCustomObject] $ByReference
@@ -243,36 +243,44 @@ function Invoke-WebbrowserEvaluation {
 
         # validate browser context
         if (($null -eq $Page) -or ($null -eq $reference)) {
-            throw "No browser tab selected"
+            throw 'No browser tab selected'
         }
-    }
-
-
-process {
-        Microsoft.PowerShell.Utility\Write-Verbose "Processing JavaScript evaluation request..."
 
         # Define the custom JavaScript for Visibility API events and CSS overrides
-        $visibilityScript = @"
+        $visibilityScript = @'
 document.addEventListener('visibilitychange', function() {
     console.log('Visibility changed to: ' + document.visibilityState);
 });
-"@
+'@
 
-        $cssOverrideScript = @"
+        $cssOverrideScript = @'
 document.documentElement.style.setProperty('--default-color-scheme', 'dark');
-"@
+'@
 
         # Subscribe to the FrameNavigated event to inject the custom JavaScript
         $null = Microsoft.PowerShell.Utility\Register-ObjectEvent -InputObject $page -EventName FrameNavigated -Action {
             $null = $page.EvaluateAsync($visibilityScript).Wait()
             $null = $page.EvaluateAsync($cssOverrideScript).Wait()
         }
+    }
+
+
+    process {
+        Microsoft.PowerShell.Utility\Write-Verbose 'Processing JavaScript evaluation request...'
+
 
         # enumerate provided scripts
         foreach ($js in $Scripts) {
 
             try {
-                Microsoft.PowerShell.Utility\Set-Variable -Name "Data" -Value $reference.data -Scope Global
+
+                if ($js -is [System.IO.FileInfo]) {
+
+                    # make it a string
+                    $js = $js.FullName;
+                }
+
+                Microsoft.PowerShell.Utility\Set-Variable -Name 'Data' -Value $reference.data -Scope Global
 
                 # is it a file reference?
                 if (($js -is [IO.FileInfo]) -or (($js -is [System.String]) -and [IO.File]::Exists($js))) {
@@ -300,23 +308,23 @@ document.documentElement.style.setProperty('--default-color-scheme', 'dark');
                         [Uri] $uri = $null;
                         $isUri = (
 
-                            [Uri]::TryCreate("$js", "absolute", [ref] $uri) -or (
-                                $js.ToLowerInvariant().StartsWith("www.") -and
-                                [Uri]::TryCreate("http://$js", "absolute", [ref] $uri)
+                            [Uri]::TryCreate("$js", 'absolute', [ref] $uri) -or (
+                                $js.ToLowerInvariant().StartsWith('www.') -and
+                                [Uri]::TryCreate("http://$js", 'absolute', [ref] $uri)
                             )
-                        ) -and $uri.IsWellFormedOriginalString() -and $uri.Scheme -like "http*";
+                        ) -and $uri.IsWellFormedOriginalString() -and $uri.Scheme -like 'http*';
 
                         if ($IsUri) {
-                            Microsoft.PowerShell.Utility\Write-Verbose "is Uri"
+                            Microsoft.PowerShell.Utility\Write-Verbose 'is Uri'
                             $httpResult = Microsoft.PowerShell.Utility\Invoke-WebRequest -Uri $Js
 
                             if ($httpResult.StatusCode -eq 200) {
 
-                                $type = "text/javascript";
+                                $type = 'text/javascript';
 
                                 if ($httpResult.Content -Match "[`r`n\s`t;,]import ") {
 
-                                    $type = "module";
+                                    $type = 'module';
                                 }
                                 $ScriptHash = [GenXdev.Helpers.Hash]::FormatBytesAsHexString(
                                     [GenXdev.Helpers.Hash]::GetSha256BytesOfString($httpResult.Content));
@@ -483,7 +491,7 @@ document.documentElement.style.setProperty('--default-color-scheme', 'dark');
                     if ($result -is [PSCustomObject]) {
 
                         # there was an exception thrown?
-                        if ($result.subtype -eq "error") {
+                        if ($result.subtype -eq 'error') {
 
                             # re-throw
                             throw $result;
@@ -497,15 +505,15 @@ document.documentElement.style.setProperty('--default-color-scheme', 'dark');
 
                             # enumerate properties
                             $result.data |
-                            Microsoft.PowerShell.Utility\Get-Member -ErrorAction SilentlyContinue |
-                            Microsoft.PowerShell.Core\Where-Object -Property MemberType -Like *Property* |
-                            Microsoft.PowerShell.Core\ForEach-Object -ErrorAction SilentlyContinue {
+                                Microsoft.PowerShell.Utility\Get-Member -ErrorAction SilentlyContinue |
+                                Microsoft.PowerShell.Core\Where-Object -Property MemberType -Like *Property* |
+                                Microsoft.PowerShell.Core\ForEach-Object -ErrorAction SilentlyContinue {
 
-                                # set in a case-sensitive manner
-                                $reference.data."$($PSItem.Name)" = $result.data."$($PSItem.Name)"
-                            }
+                                    # set in a case-sensitive manner
+                                    $reference.data."$($PSItem.Name)" = $result.data."$($PSItem.Name)"
+                                }
 
-                            Microsoft.PowerShell.Utility\Set-Variable -Name "Data" -Value ($reference.data) -Scope Global
+                            Microsoft.PowerShell.Utility\Set-Variable -Name 'Data' -Value ($reference.data) -Scope Global
                         }
 
                         $pollCount++;
@@ -528,7 +536,7 @@ document.documentElement.style.setProperty('--default-color-scheme', 'dark');
                         throw $result.returnValue;
                     }
 
-                    throw "An unknown script parsing error occured";
+                    throw 'An unknown script parsing error occured';
                 }
 
                 if ($null -ne $result.returnValue) {
@@ -550,4 +558,3 @@ document.documentElement.style.setProperty('--default-color-scheme', 'dark');
 
     }
 }
-        ###############################################################################

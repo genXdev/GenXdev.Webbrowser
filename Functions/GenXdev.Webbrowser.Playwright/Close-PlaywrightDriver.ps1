@@ -1,4 +1,4 @@
-        ###############################################################################
+###############################################################################
 using namespace System.Management.Automation
 using namespace System.Collections.Concurrent
 using namespace Microsoft.Playwright
@@ -31,51 +31,51 @@ Closes the default Chromium browser instance using position parameters
 function Close-PlaywrightDriver {
 
     [CmdletBinding()]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '')]
     param (
         ########################################################################
         [Parameter(
             Position = 0,
             Mandatory = $false,
-            HelpMessage = "The type of browser to close"
+            HelpMessage = 'The type of browser to close'
         )]
-        [ValidateSet("Chromium", "Firefox", "Webkit")]
-        [string]$BrowserType = "Chromium",
+        [ValidateSet('Chromium', 'Firefox', 'Webkit')]
+        [string]$BrowserType = 'Chromium',
         ########################################################################
         [Parameter(
             Position = 1,
             Mandatory = $false,
-            HelpMessage = "The unique key identifying the browser instance"
+            HelpMessage = 'The unique key identifying the browser instance'
         )]
         [ValidateNotNullOrEmpty()]
-        [string]$ReferenceKey = "Default"
+        [string]$ReferenceKey = 'Default'
         ########################################################################
     )
 
     begin {
         # ensure the browser cache dictionary is initialized
-        Microsoft.PowerShell.Utility\Write-Verbose "Initializing browser cache dictionary"
+        Microsoft.PowerShell.Utility\Write-Verbose 'Initializing browser cache dictionary'
         GenXdev.Webbrowser\Update-PlaywrightDriverCache
 
     }
 
 
-process {
+    process {
 
         # normalize the reference key to handle null/empty cases
         Microsoft.PowerShell.Utility\Write-Verbose "Processing browser closure for key: $ReferenceKey"
         $referenceKey = [string]::IsNullOrWhiteSpace($ReferenceKey) ?
-        "Default" : $ReferenceKey
+        'Default' : $ReferenceKey
 
         # attempt to retrieve the browser instance from cache
-        Microsoft.PowerShell.Utility\Write-Verbose "Attempting to retrieve browser instance from cache"
+        Microsoft.PowerShell.Utility\Write-Verbose 'Attempting to retrieve browser instance from cache'
         $browser = $null
         if ($Global:GenXdevPlaywrightBrowserDictionary.TryGetValue(
                 $referenceKey, [ref]$browser)) {
 
             try {
                 # close the browser instance asynchronously
-                Microsoft.PowerShell.Utility\Write-Verbose "Closing browser instance..."
+                Microsoft.PowerShell.Utility\Write-Verbose 'Closing browser instance...'
                 $null = $browser.CloseAsync().Wait()
             }
             catch {
@@ -83,7 +83,7 @@ process {
             }
             finally {
                 # remove the browser reference from the global dictionary
-                Microsoft.PowerShell.Utility\Write-Verbose "Removing browser reference from cache"
+                Microsoft.PowerShell.Utility\Write-Verbose 'Removing browser reference from cache'
                 $null = $Global:GenXdevPlaywrightBrowserDictionary.TryRemove(
                     $referenceKey, [ref]$browser)
             }
@@ -96,4 +96,3 @@ process {
     end {
     }
 }
-        ###############################################################################

@@ -1,4 +1,4 @@
-###############################################################################
+﻿###############################################################################
 <#
 .SYNOPSIS
 Configures Firefox's debugging and standalone app mode features.
@@ -14,7 +14,7 @@ Approve-FirefoxDebugging
 
 Enables remote debugging and SSB features across all Firefox profiles found in
 the current user's AppData directory.
-        ###############################################################################>
+#>
 function Approve-FirefoxDebugging {
 
     [CmdletBinding()]
@@ -23,7 +23,7 @@ function Approve-FirefoxDebugging {
 
     begin {
         # construct the path to firefox profiles using environment variables
-        $profilesPath = Microsoft.PowerShell.Management\Join-Path -Path $env:APPDATA -ChildPath "Mozilla\Firefox\Profiles"
+        $profilesPath = Microsoft.PowerShell.Management\Join-Path -Path $env:APPDATA -ChildPath 'Mozilla\Firefox\Profiles'
         Microsoft.PowerShell.Utility\Write-Verbose "Searching for Firefox profiles in: $profilesPath"
 
         # define new preferences to be added to firefox configuration
@@ -44,12 +44,12 @@ function Approve-FirefoxDebugging {
     }
 
 
-process {
+    process {
 
         try {
             # locate all firefox preference files recursively
             $prefFiles = Microsoft.PowerShell.Management\Get-ChildItem -Path $profilesPath `
-                -Filter "prefs.js" `
+                -Filter 'prefs.js' `
                 -File `
                 -Recurse `
                 -ErrorAction SilentlyContinue
@@ -83,4 +83,3 @@ process {
     end {
     }
 }
-        ###############################################################################

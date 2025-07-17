@@ -1,4 +1,4 @@
-###############################################################################
+﻿###############################################################################
 <#
 .SYNOPSIS
 Returns the remote debugging port for the system's default Chromium browser.
@@ -13,13 +13,13 @@ returns the Chrome debugging port. Otherwise returns the Edge debugging port
 [int] The remote debugging port number for the detected browser.
 
 .EXAMPLE
-        ###############################################################################Get debugging port using full command name
+Get debugging port using full command name
 Get-ChromiumRemoteDebuggingPort
 
 .EXAMPLE
-        ###############################################################################Get debugging port using alias
+Get debugging port using alias
 Get-BrowserDebugPort
-        ###############################################################################>
+#>
 function Get-ChromiumRemoteDebuggingPort {
 
     [CmdletBinding()]
@@ -34,46 +34,46 @@ function Get-ChromiumRemoteDebuggingPort {
 
     begin {
         # verbose output to indicate start of browser detection
-        Microsoft.PowerShell.Utility\Write-Verbose "Starting detection of default Chromium browser type"
+        Microsoft.PowerShell.Utility\Write-Verbose 'Starting detection of default Chromium browser type'
 
         # get the system's default browser information
         $defaultBrowser = GenXdev.Webbrowser\Get-DefaultWebbrowser
 
         # log the detected default browser name
-        Microsoft.PowerShell.Utility\Write-Verbose ("Default browser detected: {0}" -f `
+        Microsoft.PowerShell.Utility\Write-Verbose ('Default browser detected: {0}' -f `
             $(if ($null -eq $defaultBrowser) { 'None' }
                 else { $defaultBrowser.Name }))
     }
 
 
-process {
+    process {
 
         if ($Chrome) {
             # return chrome debugging port
-            Microsoft.PowerShell.Utility\Write-Verbose "Using Chrome debugging port"
+            Microsoft.PowerShell.Utility\Write-Verbose 'Using Chrome debugging port'
             GenXdev.Webbrowser\Get-ChromeRemoteDebuggingPort
             return;
         }
 
         if ($Edge) {
             # return edge debugging port
-            Microsoft.PowerShell.Utility\Write-Verbose "Using Edge debugging port"
+            Microsoft.PowerShell.Utility\Write-Verbose 'Using Edge debugging port'
             GenXdev.Webbrowser\Get-EdgeRemoteDebuggingPort
             return;
         }
 
         # determine and return appropriate debugging port based on browser
         if (($null -ne $defaultBrowser) -and
-            ($defaultBrowser.Name -like "*Chrome*")) {
+            ($defaultBrowser.Name -like '*Chrome*')) {
 
             # chrome is default - return chrome debugging port
-            Microsoft.PowerShell.Utility\Write-Verbose "Using Chrome debugging port"
+            Microsoft.PowerShell.Utility\Write-Verbose 'Using Chrome debugging port'
             GenXdev.Webbrowser\Get-ChromeRemoteDebuggingPort
         }
         else {
 
             # edge is default or no browser - return edge debugging port
-            Microsoft.PowerShell.Utility\Write-Verbose "Using Edge debugging port"
+            Microsoft.PowerShell.Utility\Write-Verbose 'Using Edge debugging port'
             GenXdev.Webbrowser\Get-EdgeRemoteDebuggingPort
         }
     }
@@ -81,4 +81,3 @@ process {
     end {
     }
 }
-        ###############################################################################

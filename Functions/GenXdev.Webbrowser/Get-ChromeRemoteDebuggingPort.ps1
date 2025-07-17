@@ -1,4 +1,4 @@
-###############################################################################
+﻿###############################################################################
 <#
 .SYNOPSIS
 Returns the configured remote debugging port for Google Chrome.
@@ -20,13 +20,13 @@ Write-Host "Chrome debug port: $port"
 .EXAMPLE
 $port = Get-ChromePort
 Write-Host "Chrome debug port: $port"
-        ###############################################################################>
+#>
 function Get-ChromeRemoteDebuggingPort {
 
     [CmdletBinding()]
     [OutputType([System.Int32])]
-    [Alias("Get-ChromePort")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
+    [Alias('Get-ChromePort')]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '')]
 
     param()
 
@@ -37,7 +37,7 @@ function Get-ChromeRemoteDebuggingPort {
     }
 
 
-process {
+    process {
 
         # check if a custom port is configured in the global scope
         if ($Global:ChromeDebugPort) {
@@ -72,4 +72,3 @@ process {
         return $port
     }
 }
-        ###############################################################################

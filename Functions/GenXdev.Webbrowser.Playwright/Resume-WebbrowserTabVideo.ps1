@@ -1,4 +1,4 @@
-###############################################################################
+﻿###############################################################################
 <#
 .SYNOPSIS
 Resumes video playback in a YouTube browser tab.
@@ -22,8 +22,8 @@ The function will throw an error if no YouTube tab is found.
 function Resume-WebbrowserTabVideo {
 
     [CmdletBinding()]
-    [Alias("wbvideoplay")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
+    [Alias('wbvideoplay')]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '')]
     param (
         ########################################################################
     )
@@ -31,28 +31,27 @@ function Resume-WebbrowserTabVideo {
     begin {
 
         # search for a youtube tab in the current browser session
-        Microsoft.PowerShell.Utility\Write-Verbose "Attempting to locate an active YouTube tab..."
-        $null = GenXdev.Webbrowser\Select-WebbrowserTab -Name "*youtube*"
+        Microsoft.PowerShell.Utility\Write-Verbose 'Attempting to locate an active YouTube tab...'
+        $null = GenXdev.Webbrowser\Select-WebbrowserTab -Name '*youtube*'
     }
 
 
-process {
+    process {
 
         # verify that a youtube tab was successfully found and selected
         if ($null -eq $Global:chromeSession) {
 
-            throw "No YouTube tab found in current browser session"
+            throw 'No YouTube tab found in current browser session'
         }
 
-        Microsoft.PowerShell.Utility\Write-Verbose "YouTube tab found - initiating video playback..."
+        Microsoft.PowerShell.Utility\Write-Verbose 'YouTube tab found - initiating video playback...'
 
         # execute the play() method on all video elements in the current page
-        $null = GenXdev.Webbrowser\Get-WebbrowserTabDomNodes "video" "e.play()"
+        $null = GenXdev.Webbrowser\Get-WebbrowserTabDomNodes 'video' 'e.play()'
 
-        Microsoft.PowerShell.Utility\Write-Verbose "Video playback successfully resumed"
+        Microsoft.PowerShell.Utility\Write-Verbose 'Video playback successfully resumed'
     }
 
     end {
     }
 }
-        ###############################################################################

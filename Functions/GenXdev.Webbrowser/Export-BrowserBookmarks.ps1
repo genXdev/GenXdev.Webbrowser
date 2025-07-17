@@ -1,4 +1,4 @@
-###############################################################################
+﻿###############################################################################
 <#
 .SYNOPSIS
 Exports browser bookmarks to a JSON file.
@@ -27,39 +27,39 @@ Export-BrowserBookmarks -OutputFile "C:\MyBookmarks.json" -Edge
 
 .EXAMPLE
 Export-BrowserBookmarks "C:\MyBookmarks.json" -Chrome
-        ###############################################################################>
+#>
 function Export-BrowserBookmarks {
 
     [CmdletBinding()]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '')]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '')]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
     param (
         ########################################################################
         [Parameter(
             Mandatory = $true,
             Position = 0,
-            HelpMessage = "Path to the JSON file where bookmarks will be saved"
+            HelpMessage = 'Path to the JSON file where bookmarks will be saved'
         )]
         [ValidateNotNullOrEmpty()]
         [string]$OutputFile,
         ########################################################################
         [Parameter(
             Mandatory = $false,
-            HelpMessage = "Export bookmarks from Google Chrome"
+            HelpMessage = 'Export bookmarks from Google Chrome'
         )]
         [switch]$Chrome,
         ########################################################################
         [Parameter(
             Mandatory = $false,
-            HelpMessage = "Export bookmarks from Microsoft Edge"
+            HelpMessage = 'Export bookmarks from Microsoft Edge'
         )]
         [switch]$Edge,
         ########################################################################
         [Parameter(
             Mandatory = $false,
             ParameterSetName = 'Firefox',
-            HelpMessage = "Export bookmarks from Mozilla Firefox"
+            HelpMessage = 'Export bookmarks from Mozilla Firefox'
         )]
         [switch]$Firefox
         ########################################################################
@@ -74,34 +74,33 @@ function Export-BrowserBookmarks {
     }
 
 
-process {
+    process {
 
         # initialize empty hashtable for browser selection parameters
         $bookmarksArguments = @{}
 
         # set appropriate flag based on selected browser type
         if ($Chrome) {
-            $bookmarksArguments["Chrome"] = $true
-            Microsoft.PowerShell.Utility\Write-Verbose "Exporting Chrome bookmarks"
+            $bookmarksArguments['Chrome'] = $true
+            Microsoft.PowerShell.Utility\Write-Verbose 'Exporting Chrome bookmarks'
         }
         if ($Edge) {
-            $bookmarksArguments["Edge"] = $true
-            Microsoft.PowerShell.Utility\Write-Verbose "Exporting Edge bookmarks"
+            $bookmarksArguments['Edge'] = $true
+            Microsoft.PowerShell.Utility\Write-Verbose 'Exporting Edge bookmarks'
         }
         if ($Firefox) {
-            $bookmarksArguments["Firefox"] = $true
-            Microsoft.PowerShell.Utility\Write-Verbose "Exporting Firefox bookmarks"
+            $bookmarksArguments['Firefox'] = $true
+            Microsoft.PowerShell.Utility\Write-Verbose 'Exporting Firefox bookmarks'
         }
 
         # retrieve bookmarks and save them as formatted json to the output file
         GenXdev.Webbrowser\Get-BrowserBookmark @bookmarksArguments |
-        Microsoft.PowerShell.Utility\ConvertTo-Json -Depth 100 |
-        Microsoft.PowerShell.Management\Set-Content -Path $outputFilePath -Force
+            Microsoft.PowerShell.Utility\ConvertTo-Json -Depth 100 |
+            Microsoft.PowerShell.Management\Set-Content -Path $outputFilePath -Force
 
-        Microsoft.PowerShell.Utility\Write-Verbose "Bookmarks exported successfully"
+        Microsoft.PowerShell.Utility\Write-Verbose 'Bookmarks exported successfully'
     }
 
     end {
     }
 }
-        ###############################################################################

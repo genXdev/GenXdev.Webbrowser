@@ -1,4 +1,4 @@
-        ###############################################################################
+﻿###############################################################################
 
 <#
 .SYNOPSIS
@@ -40,18 +40,18 @@ $bookmarks = @(
 )
 Import-BrowserBookmarks -Bookmarks $bookmarks -Chrome
 Imports a collection of bookmarks into Google Chrome.
-        ###############################################################################>
+#>
 function Import-BrowserBookmarks {
 
     [CmdletBinding(DefaultParameterSetName = 'Default', SupportsShouldProcess)]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '')]
     param (
         ########################################################################
         [Parameter(
             Mandatory = $false,
             Position = 0,
             ParameterSetName = 'FromFile',
-            HelpMessage = "Path to CSV file with bookmarks to import"
+            HelpMessage = 'Path to CSV file with bookmarks to import'
         )]
         [string]$InputFile,
         ########################################################################
@@ -59,25 +59,25 @@ function Import-BrowserBookmarks {
             Mandatory = $false,
             Position = 0,
             ParameterSetName = 'FromCollection',
-            HelpMessage = "Collection of bookmarks to import"
+            HelpMessage = 'Collection of bookmarks to import'
         )]
         [array]$Bookmarks,
         ########################################################################
         [Parameter(
             Mandatory = $false,
-            HelpMessage = "Import into Google Chrome"
+            HelpMessage = 'Import into Google Chrome'
         )]
         [switch]$Chrome,
         ########################################################################
         [Parameter(
             Mandatory = $false,
-            HelpMessage = "Import into Microsoft Edge"
+            HelpMessage = 'Import into Microsoft Edge'
         )]
         [switch]$Edge,
         ########################################################################
         [Parameter(
             Mandatory = $false,
-            HelpMessage = "Import into Firefox (not supported)"
+            HelpMessage = 'Import into Firefox (not supported)'
         )]
         [switch]$Firefox
         ########################################################################
@@ -95,7 +95,7 @@ function Import-BrowserBookmarks {
     }
 
 
-process {
+    process {
 
         # load bookmarks from either the collection or input file
         $importedBookmarks = if ($Bookmarks) {
@@ -107,7 +107,7 @@ process {
             Microsoft.PowerShell.Utility\Import-Csv -Path (GenXdev.FileSystem\Expand-Path $InputFile)
         }
         else {
-            Microsoft.PowerShell.Utility\Write-Host "Please provide either an InputFile or Bookmarks collection."
+            Microsoft.PowerShell.Utility\Write-Host 'Please provide either an InputFile or Bookmarks collection.'
             return
         }
 
@@ -126,7 +126,7 @@ process {
                 $Firefox = $true
             }
             else {
-                Microsoft.PowerShell.Utility\Write-Host "Default browser is not Edge, Chrome, or Firefox."
+                Microsoft.PowerShell.Utility\Write-Host 'Default browser is not Edge, Chrome, or Firefox.'
                 return
             }
         }
@@ -134,17 +134,17 @@ process {
         # handle import for each supported browser
         if ($Edge) {
             $browser = $installedBrowsers |
-            Microsoft.PowerShell.Core\Where-Object { $PSItem.Name -like '*Edge*' }
+                Microsoft.PowerShell.Core\Where-Object { $PSItem.Name -like '*Edge*' }
 
             if (-not $browser) {
-                Microsoft.PowerShell.Utility\Write-Host "Microsoft Edge is not installed."
+                Microsoft.PowerShell.Utility\Write-Host 'Microsoft Edge is not installed.'
                 return
             }
 
             $bookmarksFilePath = Microsoft.PowerShell.Management\Join-Path -Path $env:LOCALAPPDATA `
                 -ChildPath 'Microsoft\Edge\User Data\Default\Bookmarks'
 
-            if ($PSCmdlet.ShouldProcess($bookmarksFilePath, "Import bookmarks to Microsoft Edge")) {
+            if ($PSCmdlet.ShouldProcess($bookmarksFilePath, 'Import bookmarks to Microsoft Edge')) {
                 Microsoft.PowerShell.Utility\Write-Verbose "Writing bookmarks to Edge at: $bookmarksFilePath"
                 GenXdev.Webbrowser\Write-Bookmarks -BookmarksFilePath $bookmarksFilePath `
                     -BookmarksToWrite $importedBookmarks
@@ -152,27 +152,27 @@ process {
         }
         elseif ($Chrome) {
             $browser = $installedBrowsers |
-            Microsoft.PowerShell.Core\Where-Object { $PSItem.Name -like '*Chrome*' }
+                Microsoft.PowerShell.Core\Where-Object { $PSItem.Name -like '*Chrome*' }
 
             if (-not $browser) {
-                Microsoft.PowerShell.Utility\Write-Host "Google Chrome is not installed."
+                Microsoft.PowerShell.Utility\Write-Host 'Google Chrome is not installed.'
                 return
             }
 
             $bookmarksFilePath = Microsoft.PowerShell.Management\Join-Path -Path $env:LOCALAPPLOAD `
                 -ChildPath 'Google\Chrome\User Data\Default\Bookmarks'
 
-            if ($PSCmdlet.ShouldProcess($bookmarksFilePath, "Import bookmarks to Google Chrome")) {
+            if ($PSCmdlet.ShouldProcess($bookmarksFilePath, 'Import bookmarks to Google Chrome')) {
                 Microsoft.PowerShell.Utility\Write-Verbose "Writing bookmarks to Chrome at: $bookmarksFilePath"
                 GenXdev.Webbrowser\Write-Bookmarks -BookmarksFilePath $bookmarksFilePath `
                     -BookmarksToWrite $importedBookmarks
             }
         }
         elseif ($Firefox) {
-            Microsoft.PowerShell.Utility\Write-Host "Firefox import not supported"
+            Microsoft.PowerShell.Utility\Write-Host 'Firefox import not supported'
         }
         else {
-            Microsoft.PowerShell.Utility\Write-Host "Please specify -Chrome, -Edge, or -Firefox switch."
+            Microsoft.PowerShell.Utility\Write-Host 'Please specify -Chrome, -Edge, or -Firefox switch.'
         }
     }
 
@@ -180,10 +180,10 @@ process {
     }
 }
 
-        ###############################################################################helper function to write bookmarks to browser's bookmark file
+###############################################################################helper function to write bookmarks to browser's bookmark file
 function Write-Bookmarks {
     [CmdletBinding(SupportsShouldProcess)]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '')]
     param (
         [Parameter(Mandatory)]
         [string]$BookmarksFilePath,
@@ -215,7 +215,7 @@ function Write-Bookmarks {
             )) { continue }
 
         $newBookmark = @{
-            type          = "url"
+            type          = 'url'
             name          = $bookmark.Name
             url           = $bookmark.URL
             date_added    = if ($bookmark.DateAdded) {
@@ -269,8 +269,7 @@ function Write-Bookmarks {
     }
 
     # Only write file if changes were made and approved
-    if ($changes -and $PSCmdlet.ShouldProcess($BookmarksFilePath, "Save bookmarks file")) {
+    if ($changes -and $PSCmdlet.ShouldProcess($BookmarksFilePath, 'Save bookmarks file')) {
         $bookmarksContent | Microsoft.PowerShell.Utility\ConvertTo-Json -Depth 100 | Microsoft.PowerShell.Management\Set-Content -Path $BookmarksFilePath
     }
 }
-        ###############################################################################

@@ -1,4 +1,4 @@
-###############################################################################
+﻿###############################################################################
 <#
 .SYNOPSIS
 Returns all bookmarks from installed web browsers.
@@ -25,19 +25,19 @@ Returns Edge bookmarks formatted as a table showing name, URL and folder.
 .EXAMPLE
 gbm -Chrome | Where-Object URL -like "*github*"
 Returns Chrome bookmarks filtered to only show GitHub-related URLs.
-        ###############################################################################>
+#>
 function Get-BrowserBookmark {
 
     [CmdletBinding(DefaultParameterSetName = 'Default')]
 
     [OutputType([System.Object[]])]
-    [Alias("gbm")]
+    [Alias('gbm')]
     param (
         ########################################################################
         [Parameter(
             Mandatory = $false,
             Position = 0,
-            HelpMessage = "Returns bookmarks from Google Chrome"
+            HelpMessage = 'Returns bookmarks from Google Chrome'
         )]
         [switch] $Chrome,
 
@@ -45,7 +45,7 @@ function Get-BrowserBookmark {
         [Parameter(
             Mandatory = $false,
             Position = 1,
-            HelpMessage = "Returns bookmarks from Microsoft Edge"
+            HelpMessage = 'Returns bookmarks from Microsoft Edge'
         )]
         [switch] $Edge,
 
@@ -54,7 +54,7 @@ function Get-BrowserBookmark {
             Mandatory = $false,
             ParameterSetName = 'Firefox',
             Position = 2,
-            HelpMessage = "Returns bookmarks from Mozilla Firefox"
+            HelpMessage = 'Returns bookmarks from Mozilla Firefox'
         )]
         [switch] $Firefox
     )
@@ -65,7 +65,7 @@ function Get-BrowserBookmark {
             Microsoft.PowerShell.Core\Import-Module GenXdev.FileSystem
         }
 
-        Microsoft.PowerShell.Utility\Write-Verbose "Getting installed browsers..."
+        Microsoft.PowerShell.Utility\Write-Verbose 'Getting installed browsers...'
 
         # get list of installed browsers for validation
         $Script:installedBrowsers = GenXdev.Webbrowser\Get-Webbrowser
@@ -73,7 +73,7 @@ function Get-BrowserBookmark {
         # if no specific browser selected, use system default
         if (-not $Edge -and -not $Chrome -and -not $Firefox) {
 
-            Microsoft.PowerShell.Utility\Write-Verbose "No browser specified, detecting default browser..."
+            Microsoft.PowerShell.Utility\Write-Verbose 'No browser specified, detecting default browser...'
             $defaultBrowser = GenXdev.Webbrowser\Get-DefaultWebbrowser
 
             # set appropriate switch based on default browser
@@ -87,23 +87,23 @@ function Get-BrowserBookmark {
                 $Firefox = $true
             }
             else {
-                Microsoft.PowerShell.Utility\Write-Warning "Default browser is not Edge, Chrome, or Firefox."
+                Microsoft.PowerShell.Utility\Write-Warning 'Default browser is not Edge, Chrome, or Firefox.'
                 return
             }
         }
     }
 
 
-process {
+    process {
 
         # helper function to parse Chromium-based browser bookmarks
         function Get-ChromiumBookmarks {
 
             [CmdletBinding()]
             [OutputType([System.Object[]])]
-            [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
-            [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
-            [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseOutputTypeCorrectly", "")]
+            [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '')]
+            [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '')]
+            [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseOutputTypeCorrectly', '')]
             param (
                 [string] $bookmarksFilePath,
                 [string] $rootFolderName,
@@ -117,7 +117,7 @@ process {
 
             # read bookmarks json file
             $bookmarksContent = Microsoft.PowerShell.Management\Get-Content -Path $bookmarksFilePath -Raw |
-            Microsoft.PowerShell.Utility\ConvertFrom-Json
+                Microsoft.PowerShell.Utility\ConvertFrom-Json
 
             $bookmarks = [System.Collections.Generic.List[object]]::new()
 
@@ -125,15 +125,15 @@ process {
             function ParseBookmarkFolder {
                 param (
                     [pscustomobject] $folder,
-                    [string] $parentFolder = ""
+                    [string] $parentFolder = ''
                 )
 
                 foreach ($item in $folder.children) {
-                    if ($item.type -eq "folder") {
+                    if ($item.type -eq 'folder') {
                         ParseBookmarkFolder -Folder $item `
-                            -ParentFolder ($parentFolder + "\" + $item.name)
+                            -ParentFolder ($parentFolder + '\' + $item.name)
                     }
-                    elseif ($item.type -eq "url") {
+                    elseif ($item.type -eq 'url') {
                         $null = $bookmarks.Add([pscustomobject]@{
                                 Name          = $item.name
                                 URL           = $item.url
@@ -184,7 +184,7 @@ process {
             }
 
             $connectionString = "Data Source=$placesFilePath;Version=3;"
-            $query = @"
+            $query = @'
                 SELECT
                     b.title,
                     p.url,
@@ -195,7 +195,7 @@ process {
                 JOIN moz_places p ON b.fk = p.id
                 LEFT JOIN moz_bookmarks f ON b.parent = f.id
                 WHERE b.type = 1
-"@
+'@
 
             $bookmarks = @()
 
@@ -209,11 +209,11 @@ process {
 
                 while ($reader.Read()) {
                     $bookmarks += [pscustomobject]@{
-                        Name          = $reader["title"]
-                        URL           = $reader["url"]
-                        Folder        = $reader["Folder"]
-                        DateAdded     = [DateTime]::FromFileTimeUtc($reader["dateAdded"])
-                        DateModified  = [DateTime]::FromFileTimeUtc($reader["lastModified"])
+                        Name          = $reader['title']
+                        URL           = $reader['url']
+                        Folder        = $reader['Folder']
+                        DateAdded     = [DateTime]::FromFileTimeUtc($reader['dateAdded'])
+                        DateModified  = [DateTime]::FromFileTimeUtc($reader['lastModified'])
                         BrowserSource = $browserName
                     }
                 }
@@ -228,15 +228,15 @@ process {
             return $bookmarks
         }
 
-        Microsoft.PowerShell.Utility\Write-Verbose "Processing browser selection..."
+        Microsoft.PowerShell.Utility\Write-Verbose 'Processing browser selection...'
 
         if ($Edge) {
             # validate Edge installation
             $browser = $Script:installedBrowsers |
-            Microsoft.PowerShell.Core\Where-Object { $PSItem.Name -like '*Edge*' }
+                Microsoft.PowerShell.Core\Where-Object { $PSItem.Name -like '*Edge*' }
 
             if (-not $browser) {
-                Microsoft.PowerShell.Utility\Write-Warning "Microsoft Edge is not installed."
+                Microsoft.PowerShell.Utility\Write-Warning 'Microsoft Edge is not installed.'
                 return
             }
 
@@ -258,7 +258,7 @@ process {
             # validate Chrome installation
             $browser = $Script:installedBrowsers | Microsoft.PowerShell.Core\Where-Object { $PSItem.Name -like '*Chrome*' }
             if (-not $browser) {
-                Microsoft.PowerShell.Utility\Write-Host "Google Chrome is not installed."
+                Microsoft.PowerShell.Utility\Write-Host 'Google Chrome is not installed.'
                 return
             }
             # construct path to Chrome bookmarks file
@@ -271,7 +271,7 @@ process {
             # validate Firefox installation
             $browser = $Script:installedBrowsers | Microsoft.PowerShell.Core\Where-Object { $PSItem.Name -like '*Firefox*' }
             if (-not $browser) {
-                Microsoft.PowerShell.Utility\Write-Host "Mozilla Firefox is not installed."
+                Microsoft.PowerShell.Utility\Write-Host 'Mozilla Firefox is not installed.'
                 return
             }
             # find Firefox profile folder
@@ -297,4 +297,3 @@ process {
     end {
     }
 }
-        ###############################################################################

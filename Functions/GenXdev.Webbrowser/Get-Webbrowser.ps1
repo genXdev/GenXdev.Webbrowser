@@ -1,4 +1,4 @@
-###############################################################################
+﻿###############################################################################
 <#
 .SYNOPSIS
 Returns a collection of installed modern web browsers.
@@ -22,12 +22,12 @@ Returns an array of hashtables containing browser details:
 Get-Webbrowser | Select-Object Name, Description | Format-Table
 
 .EXAMPLE
-        ###############################################################################Get just the default browser
+Get just the default browser
 Get-Webbrowser | Where-Object { $_.IsDefaultBrowser }
 
 .NOTES
 Requires Windows 10 or later Operating System
-        ###############################################################################>
+#>
 function Get-Webbrowser {
 
     [CmdletBinding()]
@@ -50,56 +50,55 @@ function Get-Webbrowser {
         }
 
         # get the user's default handler for https URLs from registry settings
-        Microsoft.PowerShell.Utility\Write-Verbose "Retrieving default browser URL handler ID from registry"
+        Microsoft.PowerShell.Utility\Write-Verbose 'Retrieving default browser URL handler ID from registry'
         $urlHandlerId = Microsoft.PowerShell.Management\Get-ItemProperty `
-            "HKCU:\SOFTWARE\Microsoft\Windows\Shell\Associations\UrlAssociations\https\UserChoice" |
-        Microsoft.PowerShell.Utility\Select-Object -ExpandProperty ProgId
+            'HKCU:\SOFTWARE\Microsoft\Windows\Shell\Associations\UrlAssociations\https\UserChoice' |
+            Microsoft.PowerShell.Utility\Select-Object -ExpandProperty ProgId
     }
 
 
-process {
+    process {
 
         # enumerate all browser entries in the Windows registry
-        Microsoft.PowerShell.Utility\Write-Verbose "Enumerating installed browsers from registry"
-        Microsoft.PowerShell.Management\Get-ChildItem "HKLM:\SOFTWARE\WOW6432Node\Clients\StartMenuInternet" |
-        Microsoft.PowerShell.Core\ForEach-Object {
+        Microsoft.PowerShell.Utility\Write-Verbose 'Enumerating installed browsers from registry'
+        Microsoft.PowerShell.Management\Get-ChildItem 'HKLM:\SOFTWARE\WOW6432Node\Clients\StartMenuInternet' |
+            Microsoft.PowerShell.Core\ForEach-Object {
 
-            # construct the full registry path for the current browser
-            $browserRoot = "HKLM:\SOFTWARE\WOW6432Node\Clients\StartMenuInternet\" +
-            "$($PSItem.PSChildName)"
+                # construct the full registry path for the current browser
+                $browserRoot = 'HKLM:\SOFTWARE\WOW6432Node\Clients\StartMenuInternet\' +
+                "$($PSItem.PSChildName)"
 
-            # verify browser has required capabilities and command info
-            if ((Microsoft.PowerShell.Management\Test-Path "$browserRoot\shell\open\command") -and
+                # verify browser has required capabilities and command info
+                if ((Microsoft.PowerShell.Management\Test-Path "$browserRoot\shell\open\command") -and
                     (Microsoft.PowerShell.Management\Test-Path "$browserRoot\Capabilities")) {
 
-                Microsoft.PowerShell.Utility\Write-Verbose "Processing browser details at: $browserRoot"
+                    Microsoft.PowerShell.Utility\Write-Verbose "Processing browser details at: $browserRoot"
 
-                # get browser capabilities metadata from registry
-                $capabilities = Microsoft.PowerShell.Management\Get-ItemProperty "$browserRoot\Capabilities"
+                    # get browser capabilities metadata from registry
+                    $capabilities = Microsoft.PowerShell.Management\Get-ItemProperty "$browserRoot\Capabilities"
 
-                # extract the browser executable path, removing quotes
-                $browserPath = Microsoft.PowerShell.Management\Get-ItemProperty "$browserRoot\shell\open\command" |
-                Microsoft.PowerShell.Utility\Select-Object -ExpandProperty "(default)" |
-                Microsoft.PowerShell.Core\ForEach-Object { $_.Trim('"') }
+                    # extract the browser executable path, removing quotes
+                    $browserPath = Microsoft.PowerShell.Management\Get-ItemProperty "$browserRoot\shell\open\command" |
+                        Microsoft.PowerShell.Utility\Select-Object -ExpandProperty '(default)' |
+                        Microsoft.PowerShell.Core\ForEach-Object { $_.Trim('"') }
 
-                # determine if this browser is set as the system default
-                $isDefault = (Microsoft.PowerShell.Management\Test-Path "$browserRoot\Capabilities\URLAssociations") -and
+                        # determine if this browser is set as the system default
+                        $isDefault = (Microsoft.PowerShell.Management\Test-Path "$browserRoot\Capabilities\URLAssociations") -and
                         ((Microsoft.PowerShell.Management\Get-ItemProperty "$browserRoot\Capabilities\URLAssociations" |
-                    Microsoft.PowerShell.Utility\Select-Object -ExpandProperty https) -eq $urlHandlerId)
+                                Microsoft.PowerShell.Utility\Select-Object -ExpandProperty https) -eq $urlHandlerId)
 
-                # return a hashtable with the browser's details
-                @{
-                    Name             = $capabilities.ApplicationName
-                    Description      = $capabilities.ApplicationDescription
-                    Icon             = $capabilities.ApplicationIcon
-                    Path             = $browserPath
-                    IsDefaultBrowser = $isDefault
-                }
-            }
-        }
+                            # return a hashtable with the browser's details
+                            @{
+                                Name             = $capabilities.ApplicationName
+                                Description      = $capabilities.ApplicationDescription
+                                Icon             = $capabilities.ApplicationIcon
+                                Path             = $browserPath
+                                IsDefaultBrowser = $isDefault
+                            }
+                        }
+                    }
     }
 
     end {
     }
 }
-        ###############################################################################

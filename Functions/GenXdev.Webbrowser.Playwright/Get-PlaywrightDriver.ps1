@@ -1,13 +1,13 @@
-        ###############################################################################
+###############################################################################
 using namespace System.Management.Automation
 using namespace System.Collections.Concurrent
 using namespace Microsoft.Playwright
 
-        ###############################################################################suppress global variable warning as this is required for browser instance sharing
+###############################################################################suppress global variable warning as this is required for browser instance sharing
 [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-    "PSAvoidGlobalVars",
-    "",
-    Justification = "Required for maintaining browser state across sessions"
+    'PSAvoidGlobalVars',
+    '',
+    Justification = 'Required for maintaining browser state across sessions'
 )]
 param()
 
@@ -73,130 +73,130 @@ Maintains browser profile between sessions.
 WebSocket URL for connecting to existing browser instance.
 
 .EXAMPLE
-        ###############################################################################Launch visible Chrome browser at GitHub
+Launch visible Chrome browser at GitHub
 Get-PlaywrightDriver -BrowserType Chromium -Visible -Url "https://github.com"
 
 .EXAMPLE
-        ###############################################################################Connect to existing browser via WebSocket
+Connect to existing browser via WebSocket
 Get-PlaywrightDriver -WsEndpoint "ws://localhost:9222"
 ###############################################################################>
 function Get-PlaywrightDriver {
 
     [CmdletBinding(DefaultParameterSetName = 'Default')]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '')]
     param (
         ########################################################################
         [Parameter(
             Position = 0,
             ParameterSetName = 'Default',
-            HelpMessage = "Browser engine to use (Chromium/Firefox/Webkit)"
+            HelpMessage = 'Browser engine to use (Chromium/Firefox/Webkit)'
         )]
-        [ValidateSet("Chromium", "Firefox", "Webkit")]
-        [string]$BrowserType = "Chromium",
+        [ValidateSet('Chromium', 'Firefox', 'Webkit')]
+        [string]$BrowserType = 'Chromium',
 
         ########################################################################
         [Parameter(
             Position = 1,
             ParameterSetName = 'Default',
-            HelpMessage = "Unique identifier for the browser instance"
+            HelpMessage = 'Unique identifier for the browser instance'
         )]
-        [string]$ReferenceKey = "Default",
+        [string]$ReferenceKey = 'Default',
 
         ########################################################################
         [Parameter(
             ParameterSetName = 'Default',
-            HelpMessage = "Shows the browser window instead of running headless"
+            HelpMessage = 'Shows the browser window instead of running headless'
         )]
         [switch]$Visible,
 
         ########################################################################
         [Parameter(
             ParameterSetName = 'Default',
-            HelpMessage = "Initial URL to navigate to after launching"
+            HelpMessage = 'Initial URL to navigate to after launching'
         )]
         [string]$Url,
 
         ########################################################################
         [Parameter(
             ParameterSetName = 'Default',
-            HelpMessage = "Target monitor number for the browser window"
+            HelpMessage = 'Target monitor number for the browser window'
         )]
         [int]$Monitor = -2,
 
         ########################################################################
         [Parameter(
             ParameterSetName = 'Default',
-            HelpMessage = "Browser window width in pixels"
+            HelpMessage = 'Browser window width in pixels'
         )]
         [int]$Width = -1,
 
         ########################################################################
         [Parameter(
             ParameterSetName = 'Default',
-            HelpMessage = "Browser window height in pixels"
+            HelpMessage = 'Browser window height in pixels'
         )]
         [int]$Height = -1,
 
         ########################################################################
         [Parameter(
             ParameterSetName = 'Default',
-            HelpMessage = "Horizontal position of browser window"
+            HelpMessage = 'Horizontal position of browser window'
         )]
         [int]$X = -999999,
 
         ########################################################################
         [Parameter(
             ParameterSetName = 'Default',
-            HelpMessage = "Vertical position of browser window"
+            HelpMessage = 'Vertical position of browser window'
         )]
         [int]$Y = -999999,
 
         ########################################################################
         [Parameter(
             ParameterSetName = 'Default',
-            HelpMessage = "Align browser window to the left of the screen"
+            HelpMessage = 'Align browser window to the left of the screen'
         )]
         [switch]$Left,
 
         ########################################################################
         [Parameter(
             ParameterSetName = 'Default',
-            HelpMessage = "Align browser window to the right of the screen"
+            HelpMessage = 'Align browser window to the right of the screen'
         )]
         [switch]$Right,
 
         ########################################################################
         [Parameter(
             ParameterSetName = 'Default',
-            HelpMessage = "Align browser window to the top of the screen"
+            HelpMessage = 'Align browser window to the top of the screen'
         )]
         [switch]$Top,
 
         ########################################################################
         [Parameter(
             ParameterSetName = 'Default',
-            HelpMessage = "Align browser window to the bottom of the screen"
+            HelpMessage = 'Align browser window to the bottom of the screen'
         )]
         [switch]$Bottom,
 
         ########################################################################
         [Parameter(
             ParameterSetName = 'Default',
-            HelpMessage = "Center the browser window on screen"
+            HelpMessage = 'Center the browser window on screen'
         )]
         [switch]$Centered,
 
         ########################################################################
         [Parameter(
             ParameterSetName = 'Default',
-            HelpMessage = "Launch browser in fullscreen mode"
+            HelpMessage = 'Launch browser in fullscreen mode'
         )]
         [switch]$FullScreen,
 
         ########################################################################
         [Parameter(
             ParameterSetName = 'Default',
-            HelpMessage = "Maintain browser state between sessions"
+            HelpMessage = 'Maintain browser state between sessions'
         )]
         [switch]$PersistBrowserState,
 
@@ -204,7 +204,7 @@ function Get-PlaywrightDriver {
         [Parameter(
             ParameterSetName = 'WebSocket',
             Mandatory = $true,
-            HelpMessage = "WebSocket URL for connecting to existing browser instance"
+            HelpMessage = 'WebSocket URL for connecting to existing browser instance'
         )]
         [string]$WsEndpoint
     )
@@ -218,18 +218,18 @@ function Get-PlaywrightDriver {
 
         # normalize reference key for consistency
         $referenceKey = [string]::IsNullOrWhiteSpace($ReferenceKey) ? `
-            "Default" : $ReferenceKey
+            'Default' : $ReferenceKey
 
         Microsoft.PowerShell.Utility\Write-Verbose "Using browser reference key: $referenceKey"
     }
 
 
-process {
+    process {
 
         # handle websocket connection mode first
         if ($PSCmdlet.ParameterSetName -eq 'WebSocket') {
 
-            Microsoft.PowerShell.Utility\Write-Verbose "Connecting to existing browser via WebSocket"
+            Microsoft.PowerShell.Utility\Write-Verbose 'Connecting to existing browser via WebSocket'
             return GenXdev.Webbrowser\Connect-PlaywrightViaDebuggingPort -WsEndpoint $WsEndpoint
         }
 
@@ -238,7 +238,7 @@ process {
         if (-not $Global:GenXdevPlaywrightBrowserDictionary.TryGetValue(
                 $referenceKey, [ref]$browser)) {
 
-            Microsoft.PowerShell.Utility\Write-Verbose "Creating new browser instance"
+            Microsoft.PowerShell.Utility\Write-Verbose 'Creating new browser instance'
 
             # configure browser launch options
             $launchOptions = @{
@@ -269,9 +269,9 @@ process {
 
                 # launch browser based on type
                 $browser = switch ($BrowserType) {
-                    "Chromium" { $pw.Chromium.LaunchAsync($launchOptions).Result }
-                    "Firefox" { $pw.Firefox.LaunchAsync($launchOptions).Result }
-                    "Webkit" { $pw.Webkit.LaunchAsync($launchOptions).Result }
+                    'Chromium' { $pw.Chromium.LaunchAsync($launchOptions).Result }
+                    'Firefox' { $pw.Firefox.LaunchAsync($launchOptions).Result }
+                    'Webkit' { $pw.Webkit.LaunchAsync($launchOptions).Result }
                 }
 
                 # store browser instance for reuse
@@ -285,7 +285,7 @@ process {
         }
 
         if ($X -ne -999999 -or $Y -ne -999999) {
-            Microsoft.PowerShell.Utility\Write-Warning "Window positioning not yet supported in Playwright"
+            Microsoft.PowerShell.Utility\Write-Warning 'Window positioning not yet supported in Playwright'
         }
 
         # handle initial navigation if URL specified
@@ -303,4 +303,3 @@ process {
     end {
     }
 }
-        ###############################################################################

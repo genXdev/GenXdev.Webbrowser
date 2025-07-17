@@ -1,4 +1,4 @@
-        ###############################################################################
+﻿###############################################################################
 using namespace System.Management.Automation
 using namespace System.Collections.Concurrent
 using namespace Microsoft.Playwright
@@ -16,9 +16,9 @@ ensures the cache remains healthy.
 The concurrent dictionary containing browser instances to maintain.
 
 .EXAMPLE
-        ###############################################################################Clean up disconnected browser instances from the cache
+Clean up disconnected browser instances from the cache
 Update-PlaywrightDriverCache -BrowserDictionary $browserDictionary
-        ###############################################################################>
+#>
 function Update-PlaywrightDriverCache {
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -31,35 +31,35 @@ function Update-PlaywrightDriverCache {
     begin {
 
         # log the start of cache cleanup operation
-        Microsoft.PowerShell.Utility\Write-Verbose "Starting Playwright browser cache maintenance"
+        Microsoft.PowerShell.Utility\Write-Verbose 'Starting Playwright browser cache maintenance'
     }
 
 
-process {
+    process {
 
         try {
             # iterate through all browser instances and remove stale ones
             $BrowserDictionary.GetEnumerator() |
-            Microsoft.PowerShell.Core\ForEach-Object {
+                Microsoft.PowerShell.Core\ForEach-Object {
 
-                # output verbose info about current instance being checked
-                Microsoft.PowerShell.Utility\Write-Verbose "Checking browser instance: $($_.Key)"
+                    # output verbose info about current instance being checked
+                    Microsoft.PowerShell.Utility\Write-Verbose "Checking browser instance: $($_.Key)"
 
-                # check if browser instance is null or disconnected
-                if ($null -eq $_.Value -or -not $_.Value.IsConnected) {
+                    # check if browser instance is null or disconnected
+                    if ($null -eq $_.Value -or -not $_.Value.IsConnected) {
 
-                    if ($PSCmdlet.ShouldProcess(
-                            "Browser instance $($_.Key)",
-                            "Remove inactive browser instance")) {
+                        if ($PSCmdlet.ShouldProcess(
+                                "Browser instance $($_.Key)",
+                                'Remove inactive browser instance')) {
 
-                        Microsoft.PowerShell.Utility\Write-Verbose "Removing instance: $($_.Key)"
-                        $null = $BrowserDictionary.TryRemove(
-                            $_.Key,
-                            [ref]$null
-                        )
+                            Microsoft.PowerShell.Utility\Write-Verbose "Removing instance: $($_.Key)"
+                            $null = $BrowserDictionary.TryRemove(
+                                $_.Key,
+                                [ref]$null
+                            )
+                        }
                     }
                 }
-            }
         }
         catch {
             Microsoft.PowerShell.Utility\Write-Error "Failed to update browser cache: $_"
@@ -69,7 +69,6 @@ process {
 
     end {
 
-        Microsoft.PowerShell.Utility\Write-Verbose "Completed browser cache maintenance"
+        Microsoft.PowerShell.Utility\Write-Verbose 'Completed browser cache maintenance'
     }
 }
-        ###############################################################################

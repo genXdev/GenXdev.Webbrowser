@@ -1,4 +1,4 @@
-###############################################################################
+﻿###############################################################################
 <#
 .SYNOPSIS
 Navigates the current webbrowser tab to a specified URL.
@@ -25,15 +25,15 @@ Set-WebbrowserTabLocation -Url "https://github.com/microsoft" -Edge
 
 .EXAMPLE
 "https://github.com/microsoft" | lt -ch
-        ###############################################################################>
+#>
 function Set-WebbrowserTabLocation {
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '')]
     [CmdletBinding(
         SupportsShouldProcess = $true,
         DefaultParameterSetName = 'Default'
     )]
-    [Alias("lt", "Nav")]
+    [Alias('lt', 'Nav')]
 
     param(
         ########################################################################
@@ -42,7 +42,7 @@ function Set-WebbrowserTabLocation {
             Position = 0,
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true,
-            HelpMessage = "The URL to navigate to"
+            HelpMessage = 'The URL to navigate to'
         )]
         [ValidateNotNullOrEmpty()]
         [string] $Url,
@@ -50,17 +50,17 @@ function Set-WebbrowserTabLocation {
         [Parameter(
             Mandatory = $false,
             ParameterSetName = 'Edge',
-            HelpMessage = "Navigate using Microsoft Edge browser"
+            HelpMessage = 'Navigate using Microsoft Edge browser'
         )]
-        [Alias("e")]
+        [Alias('e')]
         [switch] $Edge,
         ########################################################################
         [Parameter(
             Mandatory = $false,
             ParameterSetName = 'Chrome',
-            HelpMessage = "Navigate using Google Chrome browser"
+            HelpMessage = 'Navigate using Google Chrome browser'
         )]
-        [Alias("ch")]
+        [Alias('ch')]
         [switch] $Chrome
         ########################################################################
     )
@@ -69,20 +69,20 @@ function Set-WebbrowserTabLocation {
 
         # attempt to connect to an existing browser session before proceeding
         try {
-            Microsoft.PowerShell.Utility\Write-Verbose "Attempting to connect to existing browser session"
+            Microsoft.PowerShell.Utility\Write-Verbose 'Attempting to connect to existing browser session'
             $null = GenXdev.Webbrowser\Get-ChromiumSessionReference -Chrome:$Chrome -Edge:$Edge
         }
         catch {
             # if no active session found, select the most recently used tab
-            Microsoft.PowerShell.Utility\Write-Verbose "No active session found, selecting last used tab"
+            Microsoft.PowerShell.Utility\Write-Verbose 'No active session found, selecting last used tab'
             $null = GenXdev.Webbrowser\Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge
         }
     }
 
 
-process {
+    process {
 
-        if ($PSCmdlet.ShouldProcess($Url, "Navigate to URL")) {
+        if ($PSCmdlet.ShouldProcess($Url, 'Navigate to URL')) {
 
             Microsoft.PowerShell.Utility\Write-Verbose "Navigating to URL: $Url"
             $null = $Global:chromeController.GotoAsync($Url)
@@ -93,4 +93,3 @@ process {
     end {
     }
 }
-        ###############################################################################

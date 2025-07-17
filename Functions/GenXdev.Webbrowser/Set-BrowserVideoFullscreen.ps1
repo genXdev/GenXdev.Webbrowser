@@ -1,4 +1,4 @@
-###############################################################################
+﻿###############################################################################
 <#
 .SYNOPSIS
 Maximizes the first video element found in the current browser tab.
@@ -11,11 +11,11 @@ experience.
 
 .EXAMPLE
 Set-BrowserVideoFullscreen
-        ###############################################################################>
+#>
 function Set-BrowserVideoFullscreen {
 
     [CmdletBinding(SupportsShouldProcess)]
-    [Alias("fsvideo")]
+    [Alias('fsvideo')]
     param()
 
     begin {
@@ -25,20 +25,20 @@ function Set-BrowserVideoFullscreen {
             "window.video = document.getElementsByTagName('video')[0];" +
             "video.setAttribute('style','position:fixed;left:0;top:0;bottom:0;" +
             "right:0;z-index:10000;width:100vw;height:100vh');" +
-            "document.body.appendChild(video);" +
+            'document.body.appendChild(video);' +
             "document.body.setAttribute('style', 'overflow:hidden');"
         ) -join ''
 
-        Microsoft.PowerShell.Utility\Write-Verbose "Prepared JavaScript code for video fullscreen manipulation"
+        Microsoft.PowerShell.Utility\Write-Verbose 'Prepared JavaScript code for video fullscreen manipulation'
     }
 
 
-process {
+    process {
 
         # check if we should proceed with the operation
-        if ($PSCmdlet.ShouldProcess("browser video", "Set to fullscreen mode")) {
+        if ($PSCmdlet.ShouldProcess('browser video', 'Set to fullscreen mode')) {
 
-            Microsoft.PowerShell.Utility\Write-Verbose "Executing JavaScript to maximize video element"
+            Microsoft.PowerShell.Utility\Write-Verbose 'Executing JavaScript to maximize video element'
             GenXdev.Webbrowser\Invoke-WebbrowserEvaluation $script
         }
     }
@@ -46,4 +46,3 @@ process {
     end {
     }
 }
-        ###############################################################################

@@ -1,4 +1,4 @@
-###############################################################################
+﻿###############################################################################
 <#
 .SYNOPSIS
 Closes the currently selected webbrowser tab.
@@ -15,28 +15,28 @@ Closes the currently active browser tab
 .EXAMPLE
 ct
 Uses the alias to close the currently active browser tab
-        ###############################################################################>
+#>
 function Close-WebbrowserTab {
 
     [CmdletBinding()]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
-    [Alias("ct", "CloseTab")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '')]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '')]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
+    [Alias('ct', 'CloseTab')]
     param(
         ########################################################################
         [Parameter(
             Mandatory = $false,
-            HelpMessage = "Navigate using Microsoft Edge browser"
+            HelpMessage = 'Navigate using Microsoft Edge browser'
         )]
-        [Alias("e")]
+        [Alias('e')]
         [switch] $Edge,
         ########################################################################
         [Parameter(
             Mandatory = $false,
-            HelpMessage = "Navigate using Google Chrome browser"
+            HelpMessage = 'Navigate using Google Chrome browser'
         )]
-        [Alias("ch")]
+        [Alias('ch')]
         [switch] $Chrome
         ########################################################################
     )
@@ -45,17 +45,17 @@ function Close-WebbrowserTab {
         # attempt to get reference to existing chrome session
         # if this fails, we'll try to select the last used tab
         try {
-            Microsoft.PowerShell.Utility\Write-Verbose "Attempting to locate active browser session"
+            Microsoft.PowerShell.Utility\Write-Verbose 'Attempting to locate active browser session'
             $null = GenXdev.Webbrowser\Get-ChromiumSessionReference -Chrome:$Chrome -Edge:$Edge
         }
         catch {
-            Microsoft.PowerShell.Utility\Write-Verbose "No active session found, selecting last used tab"
+            Microsoft.PowerShell.Utility\Write-Verbose 'No active session found, selecting last used tab'
             $null = GenXdev.Webbrowser\Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge
         }
     }
 
 
-process {
+    process {
 
         # log the tab information before closing
         Microsoft.PowerShell.Utility\Write-Verbose ("Closing browser tab: '$($Global:chromeSession.title)' " +
@@ -69,4 +69,3 @@ process {
     end {
     }
 }
-        ###############################################################################

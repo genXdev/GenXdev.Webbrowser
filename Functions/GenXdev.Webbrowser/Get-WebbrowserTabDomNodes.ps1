@@ -1,4 +1,4 @@
-###############################################################################
+﻿###############################################################################
 <#
 .SYNOPSIS
 Queries and manipulates DOM nodes in the active browser tab using CSS selectors.
@@ -21,58 +21,57 @@ function with parameters:
 - modifyScript: The script being executed
 
 .EXAMPLE
-        ###############################################################################Get HTML of all header divs
+Get HTML of all header divs
 Get-WebbrowserTabDomNodes -QuerySelector "div.header"
 
 .EXAMPLE
-        ###############################################################################Pause all videos on the page
+Pause all videos on the page
 wl "video" "e.pause()"
-        ###############################################################################>
+#>
 function Get-WebbrowserTabDomNodes {
 
     [CmdletBinding()]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
-    [Alias("wl")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '')]
+    [Alias('wl')]
     param(
         #######################################################################
         [parameter(
             Mandatory = $true,
             Position = 0,
-            HelpMessage = "The query selector string or array of strings to use for selecting DOM nodes"
+            HelpMessage = 'The query selector string or array of strings to use for selecting DOM nodes'
         )]
-        [ValidateNotNullOrEmpty()]
         [string[]] $QuerySelector,
         #######################################################################
         [parameter(
             Mandatory = $false,
             Position = 1,
             ValueFromRemainingArguments = $false,
-            HelpMessage = "The script to modify the output of the query selector"
+            HelpMessage = "The script to modify the output of the query selector, e.g. e.outerHTML or e.outerHTML='hello world'"
         )]
-        [string] $ModifyScript = "",
+        [string] $ModifyScript = '',
         #######################################################################
-        [Alias("e")]
+        [Alias('e')]
         [parameter(
             Mandatory = $false,
-            HelpMessage = "Use Microsoft Edge browser"
+            HelpMessage = 'Use Microsoft Edge browser'
         )]
         [switch] $Edge,
         ###############################################################################
-        [Alias("ch")]
+        [Alias('ch')]
         [parameter(
             Mandatory = $false,
-            HelpMessage = "Use Google Chrome browser"
+            HelpMessage = 'Use Google Chrome browser'
         )]
         [switch] $Chrome,
         ###############################################################################
         [Parameter(
-            HelpMessage = "Browser page object reference",
+            HelpMessage = 'Browser page object reference',
             ValueFromPipeline = $false
         )]
         [object] $Page,
         ###############################################################################
         [Parameter(
-            HelpMessage = "Browser session reference object",
+            HelpMessage = 'Browser session reference object',
             ValueFromPipeline = $false
         )]
         [PSCustomObject] $ByReference,
@@ -80,7 +79,7 @@ function Get-WebbrowserTabDomNodes {
         [Parameter(
             Mandatory = $false,
             ValueFromPipeline = $false,
-            HelpMessage = "Prevent automatic tab selection"
+            HelpMessage = 'Prevent automatic tab selection'
         )]
         [switch] $NoAutoSelectTab
         ###############################################################################
@@ -89,12 +88,12 @@ function Get-WebbrowserTabDomNodes {
     begin {
         # convert input parameters to json to prevent script injection attacks
         $jsonModifyScript = $ModifyScript |
-        Microsoft.PowerShell.Utility\ConvertTo-Json -Compress -Depth 100 |
-        Microsoft.PowerShell.Utility\ConvertTo-Json -Compress
+            Microsoft.PowerShell.Utility\ConvertTo-Json -Compress -Depth 100 |
+            Microsoft.PowerShell.Utility\ConvertTo-Json -Compress
 
         $jsonQuerySelector = @($QuerySelector) |
-        Microsoft.PowerShell.Utility\ConvertTo-Json -Compress -Depth 100 |
-        Microsoft.PowerShell.Utility\ConvertTo-Json -Compress
+            Microsoft.PowerShell.Utility\ConvertTo-Json -Compress -Depth 100 |
+            Microsoft.PowerShell.Utility\ConvertTo-Json -Compress
 
         # javascript that will be executed in the browser context
         # it handles both simple HTML extraction and custom modifications
@@ -159,7 +158,7 @@ for await (let result of traverseNodes(document, 0)) {
     }
 
 
-process {
+    process {
 
         # log the operation for debugging purposes
         Microsoft.PowerShell.Utility\Write-Verbose "Executing query '$QuerySelector' with modifier script:`n$ModifyScript"
@@ -167,7 +166,7 @@ process {
         # execute the javascript in browser and return results
         $invocationParams = GenXdev.Helpers\Copy-IdenticalParamValues `
             -BoundParameters $PSBoundParameters `
-            -FunctionName "GenXdev.Webbrowser\Invoke-WebbrowserEvaluation"
+            -FunctionName 'GenXdev.Webbrowser\Invoke-WebbrowserEvaluation'
 
         $invocationParams.Scripts = $browserScript
         GenXdev.Webbrowser\Invoke-WebbrowserEvaluation @invocationParams
@@ -176,4 +175,3 @@ process {
     end {
     }
 }
-        ###############################################################################

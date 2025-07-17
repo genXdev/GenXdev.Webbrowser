@@ -1,4 +1,4 @@
-        ###############################################################################
+﻿###############################################################################
 using namespace System.Management.Automation
 using namespace System.Collections.Concurrent
 using namespace Microsoft.Playwright
@@ -25,13 +25,13 @@ Connect-PlaywrightViaDebuggingPort `
 function Connect-PlaywrightViaDebuggingPort {
 
     [CmdletBinding()]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '')]
     param(
         ########################################################################
         [Parameter(
             Mandatory = $true,
             Position = 0,
-            HelpMessage = "WebSocket URL for browser debugging connection"
+            HelpMessage = 'WebSocket URL for browser debugging connection'
         )]
         [ValidateNotNullOrEmpty()]
         [string]$WsEndpoint
@@ -44,18 +44,18 @@ function Connect-PlaywrightViaDebuggingPort {
     }
 
 
-process {
+    process {
         try {
             # create new playwright instance
-            Microsoft.PowerShell.Utility\Write-Verbose "Creating Playwright instance"
+            Microsoft.PowerShell.Utility\Write-Verbose 'Creating Playwright instance'
             $playwright = [Microsoft.Playwright.Playwright]::CreateAsync().Result
 
             # connect to browser using CDP protocol
-            Microsoft.PowerShell.Utility\Write-Verbose "Connecting to browser via CDP"
+            Microsoft.PowerShell.Utility\Write-Verbose 'Connecting to browser via CDP'
             $browser = $playwright.Chromium.ConnectOverCDPAsync($WsEndpoint).Result
 
             # store browser instance for module-wide access
-            Microsoft.PowerShell.Utility\Write-Verbose "Storing browser instance in global dictionary"
+            Microsoft.PowerShell.Utility\Write-Verbose 'Storing browser instance in global dictionary'
             $Global:GenXdevPlaywrightBrowserDictionary[$WsEndpoint] = $browser
 
             return $browser
@@ -69,4 +69,3 @@ process {
     end {
     }
 }
-        ###############################################################################

@@ -1,4 +1,4 @@
-###############################################################################
+﻿###############################################################################
 <#
 .SYNOPSIS
 Returns the configured remote debugging port for Microsoft Edge browser.
@@ -20,26 +20,26 @@ Returns the configured debug port (default 9223 if not configured)
 .NOTES
 The function ensures $Global:EdgeDebugPort is always set to the returned value
 for consistency across the session.
-        ###############################################################################>
+#>
 function Get-EdgeRemoteDebuggingPort {
 
     [CmdletBinding()]
     [OutputType([int])]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '')]
     param()
 
     begin {
-        Microsoft.PowerShell.Utility\Write-Verbose "Starting Get-EdgeRemoteDebuggingPort"
+        Microsoft.PowerShell.Utility\Write-Verbose 'Starting Get-EdgeRemoteDebuggingPort'
     }
 
 
-process {
+    process {
         # set default edge debugging port
         [int] $port = 9223
 
         # check if user has configured a custom port in global scope
         if ($Global:EdgeDebugPort) {
-            Microsoft.PowerShell.Utility\Write-Verbose "Found global EdgeDebugPort configuration"
+            Microsoft.PowerShell.Utility\Write-Verbose 'Found global EdgeDebugPort configuration'
 
             # attempt to parse the configured port value, keeping default if invalid
             if ([int]::TryParse($Global:EdgeDebugPort, [ref] $port)) {
@@ -64,7 +64,6 @@ process {
     }
 
     end {
-        Microsoft.PowerShell.Utility\Write-Verbose "Completed Get-EdgeRemoteDebuggingPort"
+        Microsoft.PowerShell.Utility\Write-Verbose 'Completed Get-EdgeRemoteDebuggingPort'
     }
 }
-        ###############################################################################

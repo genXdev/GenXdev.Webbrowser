@@ -1,4 +1,4 @@
-###############################################################################
+﻿###############################################################################
 <#
 .SYNOPSIS
 Gets the Playwright browser profile directory for persistent sessions.
@@ -19,7 +19,7 @@ Creates or returns path: %LocalAppData%\GenXdev.Powershell\Playwright.profiles\C
 .EXAMPLE
 Get-PlaywrightProfileDirectory Firefox
 Creates or returns Firefox profile directory using positional parameter.
-        ###############################################################################>
+#>
 function Get-PlaywrightProfileDirectory {
 
     [CmdletBinding()]
@@ -27,23 +27,23 @@ function Get-PlaywrightProfileDirectory {
         ########################################################################
         [Parameter(
             Position = 0,
-            HelpMessage = "The browser type (Chromium, Firefox, or Webkit)"
+            HelpMessage = 'The browser type (Chromium, Firefox, or Webkit)'
         )]
-        [ValidateSet("Chromium", "Firefox", "Webkit")]
-        [string]$BrowserType = "Chromium"
+        [ValidateSet('Chromium', 'Firefox', 'Webkit')]
+        [string]$BrowserType = 'Chromium'
         ########################################################################
     )
 
     begin {
         # construct the base directory path for all browser profiles
         $baseDir = Microsoft.PowerShell.Management\Join-Path -Path $env:LOCALAPPDATA `
-            -ChildPath "GenXdev.Powershell\Playwright.profiles\"
+            -ChildPath 'GenXdev.Powershell\Playwright.profiles\'
 
         Microsoft.PowerShell.Utility\Write-Verbose "Base profile directory: $baseDir"
     }
 
 
-process {
+    process {
 
         # generate the specific browser profile directory path
         $browserDir = Microsoft.PowerShell.Management\Join-Path -Path $baseDir -ChildPath $BrowserType
@@ -65,4 +65,3 @@ process {
     end {
     }
 }
-        ###############################################################################

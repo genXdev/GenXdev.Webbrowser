@@ -1,4 +1,4 @@
-###############################################################################
+﻿###############################################################################
 <#
 .SYNOPSIS
 Takes control of a selected web browser tab for interactive manipulation.
@@ -22,69 +22,68 @@ Unprotect-WebbrowserTab -UseCurrent
 
 .EXAMPLE
 wbctrl -Force
-        ###############################################################################>
+#>
 function Unprotect-WebbrowserTab {
 
-    [CmdletBinding(DefaultParameterSetName = "Default")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidGlobalVars", "")]
-    [Alias("wbctrl")]
+    [CmdletBinding(DefaultParameterSetName = 'Default')]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidGlobalVars', '')]
+    [Alias('wbctrl')]
     param(
         ########################################################################
         [Parameter(
             Mandatory = $false,
             Position = 0,
-            ParameterSetName = "Default",
-            HelpMessage = "Use current tab instead of selecting a new one"
+            ParameterSetName = 'Default',
+            HelpMessage = 'Use current tab instead of selecting a new one'
         )]
-        [Alias("current")]
+        [Alias('current')]
         [switch] $UseCurrent,
         ########################################################################
         [Parameter(
             Mandatory = $false,
             Position = 1,
-            ParameterSetName = "Default",
-            HelpMessage = "Restart browser if no debugging server detected"
+            ParameterSetName = 'Default',
+            HelpMessage = 'Restart browser if no debugging server detected'
         )]
         [switch] $Force
-        ########################################################################
     )
 
     begin {
 
-        Microsoft.PowerShell.Utility\Write-Verbose "Initializing browser tab control sequence..."
+        Microsoft.PowerShell.Utility\Write-Verbose 'Initializing browser tab control sequence...'
 
         # get reference to powershell window for manipulation
         $pwshW = GenXdev.Windows\Get-PowershellMainWindow
     }
 
 
-process {
+    process {
 
         if (-not $UseCurrent) {
 
             Clear-Host
 
-            Microsoft.PowerShell.Utility\Write-Verbose "Prompting user to select a browser tab..."
-            Microsoft.PowerShell.Utility\Write-Host "Select to which browser tab you want to send commands to"
+            Microsoft.PowerShell.Utility\Write-Verbose 'Prompting user to select a browser tab...'
+            Microsoft.PowerShell.Utility\Write-Host 'Select to which browser tab you want to send commands to'
 
             # attempt to get list of available browser tabs
             $null = GenXdev.Webbrowser\Select-WebbrowserTab -Force:$Force
 
             if ($Global:ChromeSessions.Length -eq 0) {
 
-                Microsoft.PowerShell.Utility\Write-Host "No browser tabs are open"
+                Microsoft.PowerShell.Utility\Write-Host 'No browser tabs are open'
                 return
             }
 
             # get valid tab selection from user
             $tabNumber = 0
             do {
-                $tabNumber = Microsoft.PowerShell.Utility\Read-Host "Enter the number of the tab you want to control"
+                $tabNumber = Microsoft.PowerShell.Utility\Read-Host 'Enter the number of the tab you want to control'
                 $tabNumber = $tabNumber -as [int]
                 $tabCount = $Global:ChromeSessions.Length
 
                 if ($tabNumber -lt 0 -or $tabNumber -gt $tabCount - 1) {
-                    Microsoft.PowerShell.Utility\Write-Host ("Invalid tab number. Please enter a number " +
+                    Microsoft.PowerShell.Utility\Write-Host ('Invalid tab number. Please enter a number ' +
                         "between 0 and $($tabCount-1)")
                     continue
                 }
@@ -97,7 +96,7 @@ process {
 
         if (-not $Global:chromeController) {
 
-            Microsoft.PowerShell.Utility\Write-Host "No ChromeController object found"
+            Microsoft.PowerShell.Utility\Write-Host 'No ChromeController object found'
             return
         }
 
@@ -114,10 +113,10 @@ process {
 
             # send keyboard sequence to expose chrome controller object
             $null = GenXdev.Windows\Send-Key `
-                "{ESCAPE}", "Clear-Host", "{ENTER}", "`$ChromeController", ".",
-            "^( )", "y" `
-                -DelayMilliSeconds 500 `
-                 -WindowHandle ((GenXdev.Windows\Get-PowershellMainWindow).Handle)
+                '{ESCAPE}', 'Clear-Host', '{ENTER}', "`$ChromeController", '.',
+            '^( )', 'y' `
+                -SendKeyDelayMilliSeconds 500 `
+                -WindowHandle ((GenXdev.Windows\Get-PowershellMainWindow).Handle)
 
             # allow time for commands to complete
             $null = Microsoft.PowerShell.Utility\Start-Sleep 3
@@ -139,5 +138,4 @@ process {
     end {
     }
 }
-        ###############################################################################
-        ###############################################################################
+###############################################################################
