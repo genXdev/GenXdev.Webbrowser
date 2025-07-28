@@ -206,44 +206,44 @@ Update-Module
 
 # Cmdlet Index
 ### GenXdev.Webbrowser<hr/>
+### GenXdev.Webbrowser
 | Command | Aliases | Description |
 | --- | --- | --- |
-| [Approve-FirefoxDebugging](#approve-firefoxdebugging) |  | Configures Firefox's debugging and standalone app mode features. |
+| [Approve-FirefoxDebugging](#approve-firefoxdebugging) | &nbsp; | Configures Firefox's debugging and standalone app mode features. |
 | [Clear-WebbrowserTabSiteApplicationData](#clear-webbrowsertabsiteapplicationdata) | clearsitedata | Clears all browser storage data for the current tab in Edge or Chrome. |
 | [Close-Webbrowser](#close-webbrowser) | wbc | Closes one or more webbrowser instances selectively. |
 | [Close-WebbrowserTab](#close-webbrowsertab) | ct, closetab | Closes the currently selected webbrowser tab. |
-| [Export-BrowserBookmarks](#export-browserbookmarks) |  | Exports browser bookmarks to a JSON file. |
+| [Export-BrowserBookmarks](#export-browserbookmarks) | &nbsp; | Exports browser bookmarks to a JSON file. |
 | [Find-BrowserBookmark](#find-browserbookmark) | bookmarks | Finds bookmarks from one or more web browsers. |
 | [Get-BrowserBookmark](#get-browserbookmark) | gbm | Returns all bookmarks from installed web browsers. |
 | [Get-ChromeRemoteDebuggingPort](#get-chromeremotedebuggingport) | get-chromeport | Returns the configured remote debugging port for Google Chrome. |
 | [Get-ChromiumRemoteDebuggingPort](#get-chromiumremotedebuggingport) | get-browserdebugport | Returns the remote debugging port for the system's default Chromium browser. |
-| [Get-ChromiumSessionReference](#get-chromiumsessionreference) |  | Gets a serializable reference to the current browser tab session. |
-| [Get-DefaultWebbrowser](#get-defaultwebbrowser) |  | Returns the configured default web browser for the current user. |
-| [Get-EdgeRemoteDebuggingPort](#get-edgeremotedebuggingport) |  | Returns the configured remote debugging port for Microsoft Edge browser. |
-| [Get-Webbrowser](#get-webbrowser) |  | Returns a collection of installed modern web browsers. |
+| [Get-ChromiumSessionReference](#get-chromiumsessionreference) | &nbsp; | Gets a serializable reference to the current browser tab session. |
+| [Get-DefaultWebbrowser](#get-defaultwebbrowser) | &nbsp; | Returns the configured default web browser for the current user. |
+| [Get-EdgeRemoteDebuggingPort](#get-edgeremotedebuggingport) | &nbsp; | Returns the configured remote debugging port for Microsoft Edge browser. |
+| [Get-Webbrowser](#get-webbrowser) | &nbsp; | Returns a collection of installed modern web browsers. |
 | [Get-WebbrowserTabDomNodes](#get-webbrowsertabdomnodes) | wl | Queries and manipulates DOM nodes in the active browser tab using CSS selectors. |
-| [Import-BrowserBookmarks](#import-browserbookmarks) |  | Imports bookmarks from a file or collection into a web browser. |
+| [Import-BrowserBookmarks](#import-browserbookmarks) | &nbsp; | Imports bookmarks from a file or collection into a web browser. |
 | [Invoke-WebbrowserEvaluation](#invoke-webbrowserevaluation) | eval, et | Executes JavaScript code in a selected web browser tab. |
 | [Open-BrowserBookmarks](#open-browserbookmarks) | sites | Opens browser bookmarks that match specified search criteria. |
 | [Open-Webbrowser](#open-webbrowser) | wb | Opens URLs in one or more browser windows with optional positioning and styling. |
 | [Select-WebbrowserTab](#select-webbrowsertab) | st, select-browsertab | Selects a browser tab for automation in Chrome or Edge. |
 | [Set-BrowserVideoFullscreen](#set-browservideofullscreen) | fsvideo | Maximizes the first video element found in the current browser tab. |
-| [Set-RemoteDebuggerPortInBrowserShortcuts](#set-remotedebuggerportinbrowsershortcuts) |  | Updates browser shortcuts to enable remote debugging ports. |
+| [Set-RemoteDebuggerPortInBrowserShortcuts](#set-remotedebuggerportinbrowsershortcuts) | &nbsp; | Updates browser shortcuts to enable remote debugging ports. |
 | [Set-WebbrowserTabLocation](#set-webbrowsertablocation) | lt, nav | Navigates the current webbrowser tab to a specified URL. |
 | [Show-WebsiteInAllBrowsers](#show-websiteinallbrowsers) | show-urlinallbrowsers | Opens a URL in multiple browsers simultaneously in a mosaic layout. |
 
 ### GenXdev.Webbrowser.Playwright
 | Command | Aliases | Description |
 | --- | --- | --- |
-
-| [Close-PlaywrightDriver](#close-playwrightdriver) |  | Closes a Playwright browser instance and removes it from the global cache. |
-| [Connect-PlaywrightViaDebuggingPort](#connect-playwrightviadebuggingport) |  | Connects to an existing browser instance via debugging port. |
-| [Get-PlaywrightDriver](#get-playwrightdriver) |  | Creates or retrieves a configured Playwright browser instance. |
-| [Get-PlaywrightProfileDirectory](#get-playwrightprofiledirectory) |  | Gets the Playwright browser profile directory for persistent sessions. |
-| [Resume-WebbrowserTabVideo](#resume-webbrowsertabvideo) |  | Resumes video playback in a YouTube browser tab. |
+| [Close-PlaywrightDriver](#close-playwrightdriver) | &nbsp; | Closes a Playwright browser instance and removes it from the global cache. |
+| [Connect-PlaywrightViaDebuggingPort](#connect-playwrightviadebuggingport) | &nbsp; | Connects to an existing browser instance via debugging port. |
+| [Get-PlaywrightDriver](#get-playwrightdriver) | &nbsp; | Creates or retrieves a configured Playwright browser instance. |
+| [Get-PlaywrightProfileDirectory](#get-playwrightprofiledirectory) | &nbsp; | Gets the Playwright browser profile directory for persistent sessions. |
+| [Resume-WebbrowserTabVideo](#resume-webbrowsertabvideo) | &nbsp; | Resumes video playback in a YouTube browser tab. |
 | [Stop-WebbrowserVideos](#stop-webbrowservideos) | wbsst | Pauses video playback in all active browser sessions. |
 | [Unprotect-WebbrowserTab](#unprotect-webbrowsertab) | wbctrl | Takes control of a selected web browser tab for interactive manipulation. |
-| [Update-PlaywrightDriverCache](#update-playwrightdrivercache) |  | Maintains the Playwright browser instance cache by removing stale entries. |
+| [Update-PlaywrightDriverCache](#update-playwrightdrivercache) | &nbsp; | Maintains the Playwright browser instance cache by removing stale entries. |
 
 <br/><hr/><hr/><br/>
 
