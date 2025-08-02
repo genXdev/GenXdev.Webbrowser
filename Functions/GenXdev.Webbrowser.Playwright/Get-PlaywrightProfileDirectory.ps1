@@ -51,7 +51,7 @@ function Get-PlaywrightProfileDirectory {
         Microsoft.PowerShell.Utility\Write-Verbose "Browser profile directory: $browserDir"
 
         # ensure the profile directory exists
-        if (-not (Microsoft.PowerShell.Management\Test-Path -Path $browserDir)) {
+        if (-not (Microsoft.PowerShell.Management\Test-Path -LiteralPath $browserDir)) {
 
             Microsoft.PowerShell.Utility\Write-Verbose "Creating new profile directory for $BrowserType"
             $null = Microsoft.PowerShell.Management\New-Item -ItemType Directory -Path $browserDir -Force

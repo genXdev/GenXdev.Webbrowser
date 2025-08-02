@@ -110,13 +110,13 @@ function Get-BrowserBookmark {
                 [string] $browserName
             )
 
-            if (-not (Microsoft.PowerShell.Management\Test-Path $bookmarksFilePath)) {
+            if (-not (Microsoft.PowerShell.Management\Test-Path -LiteralPath $bookmarksFilePath)) {
                 Microsoft.PowerShell.Utility\Write-Verbose "Bookmarks file not found: $bookmarksFilePath"
                 return @()
             }
 
             # read bookmarks json file
-            $bookmarksContent = Microsoft.PowerShell.Management\Get-Content -Path $bookmarksFilePath -Raw |
+            $bookmarksContent = Microsoft.PowerShell.Management\Get-Content -LiteralPath  $bookmarksFilePath -Raw |
                 Microsoft.PowerShell.Utility\ConvertFrom-Json
 
             $bookmarks = [System.Collections.Generic.List[object]]::new()
@@ -178,7 +178,7 @@ function Get-BrowserBookmark {
                 [string] $browserName
             )
 
-            if (-not (Microsoft.PowerShell.Management\Test-Path $placesFilePath)) {
+            if (-not (Microsoft.PowerShell.Management\Test-Path -LiteralPath $placesFilePath)) {
                 Microsoft.PowerShell.Utility\Write-Verbose "Firefox places.sqlite not found: $placesFilePath"
                 return @()
             }
@@ -276,7 +276,7 @@ function Get-BrowserBookmark {
             }
             # find Firefox profile folder
             $profileFolderPath = "$env:APPDATA\Mozilla\Firefox\Profiles"
-            $profileFolder = Microsoft.PowerShell.Management\Get-ChildItem -Path $profileFolderPath -Directory | Microsoft.PowerShell.Core\Where-Object { $PSItem.Name -match '\.default-release$' } | Microsoft.PowerShell.Utility\Select-Object -First 1
+            $profileFolder = Microsoft.PowerShell.Management\Get-ChildItem -LiteralPath  $profileFolderPath -Directory | Microsoft.PowerShell.Core\Where-Object { $PSItem.Name -match '\.default-release$' } | Microsoft.PowerShell.Utility\Select-Object -First 1
             if ($null -eq $profileFolder) {
                 Microsoft.PowerShell.Utility\Write-Host 'Firefox profile folder not found.'
                 return

@@ -118,7 +118,7 @@ function Set-RemoteDebuggerPortInBrowserShortcuts {
 
         # update chrome shortcuts
         $chromePaths | Microsoft.PowerShell.Core\ForEach-Object {
-            Microsoft.PowerShell.Management\Get-ChildItem $PSItem -File -Recurse -ErrorAction SilentlyContinue |
+            Microsoft.PowerShell.Management\Get-ChildItem -LiteralPath $PSItem -File -Recurse -ErrorAction SilentlyContinue |
                 Microsoft.PowerShell.Core\ForEach-Object {
 
                     if ($PSCmdlet.ShouldProcess(
@@ -155,7 +155,7 @@ function Set-RemoteDebuggerPortInBrowserShortcuts {
 
             # update edge shortcuts
             $edgePaths | Microsoft.PowerShell.Core\ForEach-Object {
-                Microsoft.PowerShell.Management\Get-ChildItem $PSItem -File -Recurse -ErrorAction SilentlyContinue |
+                Microsoft.PowerShell.Management\Get-ChildItem -LiteralPath $PSItem -File -Recurse -ErrorAction SilentlyContinue |
                     Microsoft.PowerShell.Core\ForEach-Object {
 
                         if ($PSCmdlet.ShouldProcess(

@@ -63,14 +63,14 @@ function Get-DefaultWebbrowser {
         Microsoft.PowerShell.Utility\Write-Verbose 'Scanning installed browsers in registry'
 
         # iterate through all registered browsers in the system
-        foreach ($browser in (Microsoft.PowerShell.Management\Get-ChildItem -Path $browserPath)) {
+        foreach ($browser in (Microsoft.PowerShell.Management\Get-ChildItem -LiteralPath $browserPath)) {
 
             # construct the full registry path for the current browser
             $browserRoot = Microsoft.PowerShell.Management\Join-Path $browserPath $browser.PSChildName
 
             # verify browser has required registry keys for URL handling
-            if ((Microsoft.PowerShell.Management\Test-Path "$browserRoot\shell\open\command") -and
-                (Microsoft.PowerShell.Management\Test-Path "$browserRoot\Capabilities\URLAssociations")) {
+            if ((Microsoft.PowerShell.Management\Test-Path -LiteralPath "$browserRoot\shell\open\command") -and
+                (Microsoft.PowerShell.Management\Test-Path -LiteralPath "$browserRoot\Capabilities\URLAssociations")) {
 
                 # get the HTTPS handler ID for this browser
                 $browserHandler = Microsoft.PowerShell.Management\Get-ItemProperty `

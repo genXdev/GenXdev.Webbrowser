@@ -48,8 +48,8 @@ function Approve-FirefoxDebugging {
 
         try {
             # locate all firefox preference files recursively
-            $prefFiles = Microsoft.PowerShell.Management\Get-ChildItem -Path $profilesPath `
-                -Filter 'prefs.js' `
+            $prefFiles = Microsoft.PowerShell.Management\Get-ChildItem -LiteralPath $profilesPath `
+                -Filter "prefs.js" `
                 -File `
                 -Recurse `
                 -ErrorAction SilentlyContinue

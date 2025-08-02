@@ -194,8 +194,8 @@ function Write-Bookmarks {
 
     if (-not ($Edge -or $Chrome)) { return }
 
-    $bookmarksContent = if (Microsoft.PowerShell.Management\Test-Path $BookmarksFilePath) {
-        Microsoft.PowerShell.Management\Get-Content -Path $BookmarksFilePath -Raw | Microsoft.PowerShell.Utility\ConvertFrom-Json
+    $bookmarksContent = if (Microsoft.PowerShell.Management\Test-Path -LiteralPath $BookmarksFilePath) {
+        Microsoft.PowerShell.Management\Get-Content -LiteralPath  $BookmarksFilePath -Raw | Microsoft.PowerShell.Utility\ConvertFrom-Json
     }
     else {
         @{
@@ -270,6 +270,6 @@ function Write-Bookmarks {
 
     # Only write file if changes were made and approved
     if ($changes -and $PSCmdlet.ShouldProcess($BookmarksFilePath, 'Save bookmarks file')) {
-        $bookmarksContent | Microsoft.PowerShell.Utility\ConvertTo-Json -Depth 100 | Microsoft.PowerShell.Management\Set-Content -Path $BookmarksFilePath
+        $bookmarksContent | Microsoft.PowerShell.Utility\ConvertTo-Json -Depth 100 | Microsoft.PowerShell.Management\Set-Content -LiteralPath $BookmarksFilePath
     }
 }

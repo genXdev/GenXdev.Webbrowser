@@ -96,7 +96,7 @@ function Export-BrowserBookmarks {
         # retrieve bookmarks and save them as formatted json to the output file
         GenXdev.Webbrowser\Get-BrowserBookmark @bookmarksArguments |
             Microsoft.PowerShell.Utility\ConvertTo-Json -Depth 100 |
-            Microsoft.PowerShell.Management\Set-Content -Path $outputFilePath -Force
+            Microsoft.PowerShell.Management\Set-Content -LiteralPath $outputFilePath -Force
 
         Microsoft.PowerShell.Utility\Write-Verbose 'Bookmarks exported successfully'
     }

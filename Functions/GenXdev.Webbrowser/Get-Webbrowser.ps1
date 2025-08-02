@@ -69,8 +69,8 @@ function Get-Webbrowser {
                 "$($PSItem.PSChildName)"
 
                 # verify browser has required capabilities and command info
-                if ((Microsoft.PowerShell.Management\Test-Path "$browserRoot\shell\open\command") -and
-                    (Microsoft.PowerShell.Management\Test-Path "$browserRoot\Capabilities")) {
+                if ((Microsoft.PowerShell.Management\Test-Path -LiteralPath "$browserRoot\shell\open\command") -and
+                    (Microsoft.PowerShell.Management\Test-Path -LiteralPath "$browserRoot\Capabilities")) {
 
                     Microsoft.PowerShell.Utility\Write-Verbose "Processing browser details at: $browserRoot"
 
@@ -83,7 +83,7 @@ function Get-Webbrowser {
                         Microsoft.PowerShell.Core\ForEach-Object { $_.Trim('"') }
 
                         # determine if this browser is set as the system default
-                        $isDefault = (Microsoft.PowerShell.Management\Test-Path "$browserRoot\Capabilities\URLAssociations") -and
+                        $isDefault = (Microsoft.PowerShell.Management\Test-Path -LiteralPath "$browserRoot\Capabilities\URLAssociations") -and
                         ((Microsoft.PowerShell.Management\Get-ItemProperty "$browserRoot\Capabilities\URLAssociations" |
                                 Microsoft.PowerShell.Utility\Select-Object -ExpandProperty https) -eq $urlHandlerId)
 
