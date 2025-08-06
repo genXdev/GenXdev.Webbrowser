@@ -461,7 +461,7 @@ function Open-BrowserBookmarks {
         # copy identical parameters between functions for passing to open-webbrowser
         $invocationParams = GenXdev.Helpers\Copy-IdenticalParamValues `
             -BoundParameters $PSBoundParameters `
-            -FunctionName 'GenXdev.Webbrowser' `
+            -FunctionName 'GenXdev.Webbrowser\Open-Webbrowser' `
             -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable `
                 -Scope Local `
                 -ErrorAction SilentlyContinue)
