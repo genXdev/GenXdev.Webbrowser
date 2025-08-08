@@ -232,9 +232,12 @@ function Invoke-WebbrowserEvaluation {
                 }
 
                 # attempt auto-selection of browser tab
-                GenXdev.Webbrowser\Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge | Microsoft.PowerShell.Core\Out-Null
-                $Page = $Global:chromeController
-                $reference = GenXdev.Webbrowser\Get-ChromiumSessionReference
+                try {
+                    GenXdev.Webbrowser\Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge | Microsoft.PowerShell.Core\Out-Null
+                    $Page = $Global:chromeController
+                    $reference = GenXdev.Webbrowser\Get-ChromiumSessionReference
+                }
+                catch {}
             }
         }
         else {
@@ -243,7 +246,8 @@ function Invoke-WebbrowserEvaluation {
 
         # validate browser context
         if (($null -eq $Page) -or ($null -eq $reference)) {
-            throw 'No browser tab selected'
+
+            throw 'No browser tab selected, use Select-WebbrowserTab to select a tab first.'
         }
 
         # Define the custom JavaScript for Visibility API events and CSS overrides
@@ -267,7 +271,6 @@ document.documentElement.style.setProperty('--default-color-scheme', 'dark');
 
     process {
         Microsoft.PowerShell.Utility\Write-Verbose 'Processing JavaScript evaluation request...'
-
 
         # enumerate provided scripts
         foreach ($js in $Scripts) {

@@ -12,6 +12,9 @@ validation of the URL and ensures proper page loading through async operations.
 The target URL for navigation. Accepts pipeline input and must be a valid URL
 string. This parameter is required.
 
+.PARAMETER NoAutoSelectTab
+Prevents automatic tab selection if no tab is currently selected.
+
 .PARAMETER Edge
 Switch parameter to specifically target Microsoft Edge browser. Cannot be used
 together with -Chrome parameter.
@@ -19,6 +22,12 @@ together with -Chrome parameter.
 .PARAMETER Chrome
 Switch parameter to specifically target Google Chrome browser. Cannot be used
 together with -Edge parameter.
+
+.PARAMETER Page
+Browser page object for execution when using ByReference mode.
+
+.PARAMETER ByReference
+Session reference object when using ByReference mode.
 
 .EXAMPLE
 Set-WebbrowserTabLocation -Url "https://github.com/microsoft" -Edge
@@ -49,6 +58,13 @@ function Set-WebbrowserTabLocation {
         ########################################################################
         [Parameter(
             Mandatory = $false,
+            ValueFromPipeline = $false,
+            HelpMessage = 'Prevent automatic tab selection'
+        )]
+        [switch] $NoAutoSelectTab,
+        ########################################################################
+        [Parameter(
+            Mandatory = $false,
             ParameterSetName = 'Edge',
             HelpMessage = 'Navigate using Microsoft Edge browser'
         )]
@@ -61,21 +77,54 @@ function Set-WebbrowserTabLocation {
             HelpMessage = 'Navigate using Google Chrome browser'
         )]
         [Alias('ch')]
-        [switch] $Chrome
-        ########################################################################
+        [switch] $Chrome,
+        ###############################################################################
+        [Parameter(
+            HelpMessage = 'Browser page object reference',
+            ValueFromPipeline = $false
+        )]
+        [object] $Page,
+        ###############################################################################
+        [Parameter(
+            HelpMessage = 'Browser session reference object',
+            ValueFromPipeline = $false
+        )]
+        [PSCustomObject] $ByReference
     )
 
     begin {
+        # initialize reference tracking
+        $reference = $null
 
-        # attempt to connect to an existing browser session before proceeding
-        try {
-            Microsoft.PowerShell.Utility\Write-Verbose 'Attempting to connect to existing browser session'
-            $null = GenXdev.Webbrowser\Get-ChromiumSessionReference -Chrome:$Chrome -Edge:$Edge
+        # handle reference initialization
+        if (($null -eq $Page) -or ($null -eq $ByReference)) {
+
+            try {
+                $reference = GenXdev.Webbrowser\Get-ChromiumSessionReference
+                $Page = $Global:chromeController
+            }
+            catch {
+                if ($NoAutoSelectTab -eq $true) {
+                    throw $PSItem.Exception
+                }
+
+                # attempt auto-selection of browser tab
+                 try {
+                    GenXdev.Webbrowser\Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge | Microsoft.PowerShell.Core\Out-Null
+                    $Page = $Global:chromeController
+                    $reference = GenXdev.Webbrowser\Get-ChromiumSessionReference
+                }
+                catch {}
+            }
         }
-        catch {
-            # if no active session found, select the most recently used tab
-            Microsoft.PowerShell.Utility\Write-Verbose 'No active session found, selecting last used tab'
-            $null = GenXdev.Webbrowser\Select-WebbrowserTab -Chrome:$Chrome -Edge:$Edge
+        else {
+            $reference = $ByReference
+        }
+
+        # validate browser context
+        if (($null -eq $Page) -or ($null -eq $reference)) {
+
+            throw 'No browser tab selected, use Select-WebbrowserTab to select a tab first.'
         }
     }
 
@@ -85,8 +134,8 @@ function Set-WebbrowserTabLocation {
         if ($PSCmdlet.ShouldProcess($Url, 'Navigate to URL')) {
 
             Microsoft.PowerShell.Utility\Write-Verbose "Navigating to URL: $Url"
-            $null = $Global:chromeController.GotoAsync($Url)
-            $null = $Global:chromeController.WaitForNavigationAsync().Result
+            $null = $Page.GotoAsync($Url)
+            $null = $Page.WaitForNavigationAsync().Result
         }
     }
 

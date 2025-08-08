@@ -2445,9 +2445,9 @@ Set-RemoteDebuggerPortInBrowserShortcuts [-WhatIf] [-Confirm] [<CommonParameters
 
 ### SYNTAX 
 ````PowerShell 
-Set-WebbrowserTabLocation [-Url] <String> [-WhatIf] [-Confirm] [<CommonParameters>]  
-   Set-WebbrowserTabLocation [-Url] <String> [-Edge] [-WhatIf] [-Confirm] [<CommonParameters>]  
-   Set-WebbrowserTabLocation [-Url] <String> [-Chrome] [-WhatIf] [-Confirm] [<CommonParameters>] 
+Set-WebbrowserTabLocation [-Url] <String> [-NoAutoSelectTab] [-Page <Object>] [-ByReference <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]  
+   Set-WebbrowserTabLocation [-Url] <String> [-NoAutoSelectTab] [-Edge] [-Page <Object>] [-ByReference <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]  
+   Set-WebbrowserTabLocation [-Url] <String> [-NoAutoSelectTab] [-Chrome] [-Page <Object>] [-ByReference <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>] 
 ```` 
 
 ### DESCRIPTION 
@@ -2465,6 +2465,14 @@ Set-WebbrowserTabLocation [-Url] <String> [-WhatIf] [-Confirm] [<CommonParameter
         Accept pipeline input?       true (ByValue, ByPropertyName)  
         Aliases                        
         Accept wildcard characters?  false  
+    -NoAutoSelectTab [<SwitchParameter>]  
+        Prevents automatic tab selection if no tab is currently selected.  
+        Required?                    false  
+        Position?                    named  
+        Default value                False  
+        Accept pipeline input?       false  
+        Aliases                        
+        Accept wildcard characters?  false  
     -Edge [<SwitchParameter>]  
         Switch parameter to specifically target Microsoft Edge browser. Cannot be used  
         together with -Chrome parameter.  
@@ -2480,6 +2488,22 @@ Set-WebbrowserTabLocation [-Url] <String> [-WhatIf] [-Confirm] [<CommonParameter
         Required?                    false  
         Position?                    named  
         Default value                False  
+        Accept pipeline input?       false  
+        Aliases                        
+        Accept wildcard characters?  false  
+    -Page <Object>  
+        Browser page object for execution when using ByReference mode.  
+        Required?                    false  
+        Position?                    named  
+        Default value                  
+        Accept pipeline input?       false  
+        Aliases                        
+        Accept wildcard characters?  false  
+    -ByReference <PSObject>  
+        Session reference object when using ByReference mode.  
+        Required?                    false  
+        Position?                    named  
+        Default value                  
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
