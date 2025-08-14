@@ -166,6 +166,7 @@ function Select-WebbrowserTab {
             ParameterSetName = 'ByName',
             HelpMessage = 'Selects first tab containing this name in URL'
         )]
+        [Alias('Pattern')]
         [ValidateNotNullOrEmpty()]
         [SupportsWildcards()]
         [string] $Name,

@@ -579,7 +579,9 @@ function Open-Webbrowser {
                 Microsoft.PowerShell.Core\ForEach-Object {
 
                     $PSItem
-                })
+                });
+
+        if ($SideBySide) { $Monitor = -1 }
 
         # determine which monitor to use based on monitor parameter
         if ($Monitor -eq 0) {
@@ -626,6 +628,10 @@ function Open-Webbrowser {
                             X = $powerShellWindow[0].Position().X
                             Y = $powerShellWindow[0].Position().Y
                         })
+                    if ($SideBySide) {
+
+                        $Monitor = [WpfScreenHelper.Screen]::AllScreens.indexOf($screen) + 1
+                    }
                 }
                 catch {
                     $screen = [WpfScreenHelper.Screen]::PrimaryScreen
@@ -635,14 +641,14 @@ function Open-Webbrowser {
 
         # determine if any window positioning parameters were provided
         [bool] $havePositioning = (($Monitor -ge 0 -or $Monitor -eq -2) -or
-            ($Left -or $Right -or $Top -or $Bottom -or $Centered -or
+            ($Left -or $Right -or $Top -or $Bottom -or $Centered -or $SideBySide -or $Maximize -or $FullScreen -or
                 (($X -is [int]) -and ($X -gt -999999)) -or
-                (($Y -is [int]) -and ($Y -gt -999999)))) -and -not $FullScreen
+                (($Y -is [int]) -and ($Y -gt -999999))))
 
-        if ($havePositioning -and $Monitor -eq -1) {
+        # if ($havePositioning -and $Monitor -eq -1) {
 
-            $Monitor = 0
-        }
+        #     $Monitor = 0
+        # }
 
         # initialize window x position based on parameters or screen defaults
         if (($X -le -999999) -or ($X -isnot [int])) {
@@ -1312,7 +1318,7 @@ function Open-Webbrowser {
             # skip positioning if not needed or already done
             if ((-not $PassThru) -and
                 ((-not ($havePositioning -or ($FullScreen -and
-                            -not $state.PositioningDone))) -or $state.PositioningDone)) {
+                  -not $state.PositioningDone))) -or $state.PositioningDone)) {
 
                 sendKeysIfSpecified $window
 
@@ -1367,7 +1373,7 @@ function Open-Webbrowser {
 
             # skip positioning if not required or already completed
             if ((-not ($havePositioning -or ($FullScreen -and
-                            -not $state.PositioningDone))) -or $state.PositioningDone) {
+                 (-not $state.PositioningDone)))) -or $state.PositioningDone) {
                 sendKeysIfSpecified $window
 
                 Microsoft.PowerShell.Utility\Write-Verbose ('No positioning ' +
@@ -1387,9 +1393,12 @@ function Open-Webbrowser {
 
                 $params.WindowHelper = $window[0]
                 $params.Monitor = $Monitor
+
                 if ($params.ContainsKey('KeysToSend')) {
+
                     $null = $params.Remove('KeysToSend')
                 }
+
                 $null = GenXdev.Windows\Set-WindowPosition @params
             }
 
