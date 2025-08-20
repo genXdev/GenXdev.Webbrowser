@@ -11,6 +11,7 @@ if ($major -ne 10) {
 }
 
 
+
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser\Approve-FirefoxDebugging.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser\Clear-WebbrowserTabSiteApplicationData.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser\Close-Webbrowser.ps1"
