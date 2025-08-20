@@ -60,6 +60,9 @@ function Get-BrowserBookmark {
     )
 
     begin {
+        # load SQLite client assembly
+        GenXdev.Helpers\EnsureNuGetAssembly -PackageKey 'System.Data.Sqlite'
+        
         # ensure filesystem module is loaded for path handling
         if (-not (Microsoft.PowerShell.Core\Get-Command -Name GenXdev.FileSystem\Expand-Path -ErrorAction SilentlyContinue)) {
             Microsoft.PowerShell.Core\Import-Module GenXdev.FileSystem
