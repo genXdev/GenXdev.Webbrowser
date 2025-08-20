@@ -309,7 +309,6 @@ function Show-WebsiteInAllBrowsers {
         )]
         [Alias('allowpopups')]
         [switch] $DisablePopupBlocker,
-        ########################################################################
         ###############################################################################
         [Parameter(
             Mandatory = $false,
@@ -330,7 +329,7 @@ function Show-WebsiteInAllBrowsers {
             Mandatory = $false,
             HelpMessage = 'Focus the browser window after opening'
         )]
-        [Alias('fw','focus')]
+        [Alias('fw', 'focus')]
         [switch] $FocusWindow,
         ########################################################################
         [Parameter(
@@ -352,7 +351,6 @@ function Show-WebsiteInAllBrowsers {
                 'see documentation for cmdlet GenXdev.Windows\Send-Key')
         )]
         [string[]] $KeysToSend,
-        ########################################################################
         ###############################################################################
         [Alias('Escape')]
         [Parameter(
@@ -360,7 +358,6 @@ function Show-WebsiteInAllBrowsers {
             HelpMessage = 'Escape control characters when sending keys'
         )]
         [switch] $SendKeyEscape,
-        ########################################################################
         ###############################################################################
         [Alias('HoldKeyboardFocus')]
         [Parameter(
@@ -369,7 +366,6 @@ function Show-WebsiteInAllBrowsers {
                 'after sending keys')
         )]
         [switch] $SendKeyHoldKeyboardFocus,
-        ########################################################################
         ###############################################################################
         [Alias('UseShiftEnter')]
         [Parameter(
@@ -378,7 +374,6 @@ function Show-WebsiteInAllBrowsers {
                 'line breaks')
         )]
         [switch] $SendKeyUseShiftEnter,
-        ########################################################################
         ###############################################################################
         [Alias('DelayMilliSeconds')]
         [Parameter(

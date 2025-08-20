@@ -15,7 +15,7 @@
 
 ## MIT License
 
-```text
+````text
 MIT License
 
 Copyright (c) 2025 GenXdev
@@ -67,7 +67,7 @@ SOFTWARE.
        Set-Variable -Name DefaultSecondaryMonitor -Value 3 -Scope Global
 
 ### EXAMPLE
-````PowerShell
+```PowerShell
 -------------------------- EXAMPLE 1 --------------------------
 PS C:\> Invoke-WebbrowserEvaluation "document.title = 'hello world'"
 
@@ -190,25 +190,24 @@ PS C:\> Get-ChildItem *.js | Invoke-WebbrowserEvaluation -Edge
 -------------------------- EXAMPLE 7 --------------------------
 
 PS C:\> ls *.js | et -e
-````
+```
 ### DEPENDENCIES
 [![WinOS - Windows-10 or later](https://img.shields.io/badge/WinOS-Windows--10--10.0.19041--SP0-brightgreen)](https://www.microsoft.com/en-us/windows/get-windows-10)  [![GenXdev.Data](https://img.shields.io/powershellgallery/v/GenXdev.Data.svg?style=flat-square&label=GenXdev.Data)](https://www.powershellgallery.com/packages/GenXdev.Data/) [![GenXdev.Helpers](https://img.shields.io/powershellgallery/v/GenXdev.Helpers.svg?style=flat-square&label=GenXdev.Helpers)](https://www.powershellgallery.com/packages/GenXdev.Helpers/) [![GenXdev.FileSystem](https://img.shields.io/powershellgallery/v/GenXdev.FileSystem.svg?style=flat-square&label=GenXdev.FileSystem)](https://www.powershellgallery.com/packages/GenXdev.FileSystem/) [![GenXdev.Windows](https://img.shields.io/powershellgallery/v/GenXdev.Windows.svg?style=flat-square&label=GenXdev.Windows)](https://www.powershellgallery.com/packages/GenXdev.Windows/)
 ### INSTALLATION
-````PowerShell
+```PowerShell
 Install-Module "GenXdev.Webbrowser"
 Import-Module "GenXdev.Webbrowser"
-````
+```
 ### UPDATE
-````PowerShell
+```PowerShell
 Update-Module
-````
-<br/><hr/><hr/><br/>
+```
+<br/><hr/><br/>
 
 # Cmdlet Index
-### GenXdev.Webbrowser<hr/>
 ### GenXdev.Webbrowser
 | Command | Aliases | Description |
-| --- | --- | --- |
+| :--- | :--- | :--- |
 | [Approve-FirefoxDebugging](#approve-firefoxdebugging) | &nbsp; | Configures Firefox's debugging and standalone app mode features. |
 | [Clear-WebbrowserTabSiteApplicationData](#clear-webbrowsertabsiteapplicationdata) | clearsitedata | Clears all browser storage data for the current tab in Edge or Chrome. |
 | [Close-Webbrowser](#close-webbrowser) | wbc | Closes one or more webbrowser instances selectively. |
@@ -235,14 +234,14 @@ Update-Module
 
 ### GenXdev.Webbrowser.Playwright
 | Command | Aliases | Description |
-| --- | --- | --- |
+| :--- | :--- | :--- |
 | [Connect-PlaywrightViaDebuggingPort](#connect-playwrightviadebuggingport) | &nbsp; | Connects to an existing browser instance via debugging port. |
 | [Get-PlaywrightProfileDirectory](#get-playwrightprofiledirectory) | &nbsp; | Gets the Playwright browser profile directory for persistent sessions. |
 | [Resume-WebbrowserTabVideo](#resume-webbrowsertabvideo) | wbvideoplay | Resumes video playback in a YouTube browser tab. |
 | [Stop-WebbrowserVideos](#stop-webbrowservideos) | ssst, wbsst, wbvideostop | Pauses video playback in all active browser sessions. |
 | [Unprotect-WebbrowserTab](#unprotect-webbrowsertab) | wbctrl | Takes control of a selected web browser tab for interactive manipulation. |
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
 
 
 # Cmdlets
@@ -251,7 +250,7 @@ Update-Module
 ###	GenXdev.Webbrowser<hr/> 
 
 ##	Approve-FirefoxDebugging 
-````PowerShell 
+```PowerShell 
 
    Approve-FirefoxDebugging  
 ```` 
@@ -260,7 +259,7 @@ Update-Module
     Configures Firefox's debugging and standalone app mode features.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Approve-FirefoxDebugging [<CommonParameters>] 
 ```` 
 
@@ -277,11 +276,11 @@ Approve-FirefoxDebugging [<CommonParameters>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Clear-WebbrowserTabSiteApplicationData 
-````PowerShell 
+```PowerShell 
 
    Clear-WebbrowserTabSiteApplicationData --> clearsitedata  
 ```` 
@@ -290,7 +289,7 @@ Approve-FirefoxDebugging [<CommonParameters>]
     Clears all browser storage data for the current tab in Edge or Chrome.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Clear-WebbrowserTabSiteApplicationData [-Edge] [-Chrome] [<CommonParameters>] 
 ```` 
 
@@ -327,11 +326,11 @@ Clear-WebbrowserTabSiteApplicationData [-Edge] [-Chrome] [<CommonParameters>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Close-Webbrowser 
-````PowerShell 
+```PowerShell 
 
    Close-Webbrowser                     --> wbc  
 ```` 
@@ -340,7 +339,7 @@ Clear-WebbrowserTabSiteApplicationData [-Edge] [-Chrome] [<CommonParameters>]
     Closes one or more webbrowser instances selectively.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Close-Webbrowser [[-Edge]] [[-Chrome]] [[-Chromium]] [[-Firefox]] [[-IncludeBackgroundProcesses]] [<CommonParameters>]  
    Close-Webbrowser [[-All]] [[-IncludeBackgroundProcesses]] [<CommonParameters>] 
 ```` 
@@ -405,11 +404,11 @@ Close-Webbrowser [[-Edge]] [[-Chrome]] [[-Chromium]] [[-Firefox]] [[-IncludeBack
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Close-WebbrowserTab 
-````PowerShell 
+```PowerShell 
 
    Close-WebbrowserTab                  --> CloseTab, ct  
 ```` 
@@ -418,7 +417,7 @@ Close-Webbrowser [[-Edge]] [[-Chrome]] [[-Chromium]] [[-Firefox]] [[-IncludeBack
     Closes the currently selected webbrowser tab.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Close-WebbrowserTab [-Edge] [-Chrome] [<CommonParameters>] 
 ```` 
 
@@ -448,11 +447,11 @@ Close-WebbrowserTab [-Edge] [-Chrome] [<CommonParameters>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Export-BrowserBookmarks 
-````PowerShell 
+```PowerShell 
 
    Export-BrowserBookmarks  
 ```` 
@@ -461,7 +460,7 @@ Close-WebbrowserTab [-Edge] [-Chrome] [<CommonParameters>]
     Exports browser bookmarks to a JSON file.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Export-BrowserBookmarks [-OutputFile] <String> [-Chrome] [-Edge] [-Firefox] [<CommonParameters>] 
 ```` 
 
@@ -511,11 +510,11 @@ Export-BrowserBookmarks [-OutputFile] <String> [-Chrome] [-Edge] [-Firefox] [<Co
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Find-BrowserBookmark 
-````PowerShell 
+```PowerShell 
 
    Find-BrowserBookmark                 --> bookmarks  
 ```` 
@@ -524,7 +523,7 @@ Export-BrowserBookmarks [-OutputFile] <String> [-Chrome] [-Edge] [-Firefox] [<Co
     Finds bookmarks from one or more web browsers.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Find-BrowserBookmark [[-Queries] <String[]>] [-Edge] [-Chrome] [-Firefox] [-Count <Int32>] [-PassThru] [<CommonParameters>] 
 ```` 
 
@@ -592,11 +591,11 @@ Find-BrowserBookmark [[-Queries] <String[]>] [-Edge] [-Chrome] [-Firefox] [-Coun
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Get-BrowserBookmark 
-````PowerShell 
+```PowerShell 
 
    Get-BrowserBookmark                  --> gbm  
 ```` 
@@ -605,7 +604,7 @@ Find-BrowserBookmark [[-Queries] <String[]>] [-Edge] [-Chrome] [-Firefox] [-Coun
     Returns all bookmarks from installed web browsers.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Get-BrowserBookmark [[-Chrome]] [[-Edge]] [<CommonParameters>]  
    Get-BrowserBookmark [[-Chrome]] [[-Edge]] [[-Firefox]] [<CommonParameters>] 
 ```` 
@@ -647,11 +646,11 @@ Get-BrowserBookmark [[-Chrome]] [[-Edge]] [<CommonParameters>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Get-ChromeRemoteDebuggingPort 
-````PowerShell 
+```PowerShell 
 
    Get-ChromeRemoteDebuggingPort        --> Get-ChromePort  
 ```` 
@@ -660,7 +659,7 @@ Get-BrowserBookmark [[-Chrome]] [[-Edge]] [<CommonParameters>]
     Returns the configured remote debugging port for Google Chrome.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Get-ChromeRemoteDebuggingPort [<CommonParameters>] 
 ```` 
 
@@ -677,11 +676,11 @@ Get-ChromeRemoteDebuggingPort [<CommonParameters>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Get-ChromiumRemoteDebuggingPort 
-````PowerShell 
+```PowerShell 
 
    Get-ChromiumRemoteDebuggingPort      --> Get-BrowserDebugPort  
 ```` 
@@ -690,7 +689,7 @@ Get-ChromeRemoteDebuggingPort [<CommonParameters>]
     Returns the remote debugging port for the system's default Chromium browser.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Get-ChromiumRemoteDebuggingPort [-Chrome] [-Edge] [<CommonParameters>] 
 ```` 
 
@@ -721,11 +720,11 @@ Get-ChromiumRemoteDebuggingPort [-Chrome] [-Edge] [<CommonParameters>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Get-ChromiumSessionReference 
-````PowerShell 
+```PowerShell 
 
    Get-ChromiumSessionReference  
 ```` 
@@ -734,7 +733,7 @@ Get-ChromiumRemoteDebuggingPort [-Chrome] [-Edge] [<CommonParameters>]
     Gets a serializable reference to the current browser tab session.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Get-ChromiumSessionReference [<CommonParameters>] 
 ```` 
 
@@ -753,11 +752,11 @@ Get-ChromiumSessionReference [<CommonParameters>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Get-DefaultWebbrowser 
-````PowerShell 
+```PowerShell 
 
    Get-DefaultWebbrowser  
 ```` 
@@ -766,7 +765,7 @@ Get-ChromiumSessionReference [<CommonParameters>]
     Returns the configured default web browser for the current user.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Get-DefaultWebbrowser [<CommonParameters>] 
 ```` 
 
@@ -784,7 +783,7 @@ Get-DefaultWebbrowser [<CommonParameters>]
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
 ### NOTES 
-````PowerShell 
+```PowerShell 
 
        Requires Windows 10 or later operating system  
    -------------------------- EXAMPLE 1 --------------------------  
@@ -796,11 +795,11 @@ Get-DefaultWebbrowser [<CommonParameters>]
    & $browser.Path https://www.github.com/  
 ```` 
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Get-EdgeRemoteDebuggingPort 
-````PowerShell 
+```PowerShell 
 
    Get-EdgeRemoteDebuggingPort  
 ```` 
@@ -809,7 +808,7 @@ Get-DefaultWebbrowser [<CommonParameters>]
     Returns the configured remote debugging port for Microsoft Edge browser.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Get-EdgeRemoteDebuggingPort [<CommonParameters>] 
 ```` 
 
@@ -827,7 +826,7 @@ Get-EdgeRemoteDebuggingPort [<CommonParameters>]
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
 ### NOTES 
-````PowerShell 
+```PowerShell 
 
        The function ensures $Global:EdgeDebugPort is always set to the returned value  
        for consistency across the session.  
@@ -836,11 +835,11 @@ Get-EdgeRemoteDebuggingPort [<CommonParameters>]
    Returns the configured debug port (default 9223 if not configured)  
 ```` 
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Get-Webbrowser 
-````PowerShell 
+```PowerShell 
 
    Get-Webbrowser  
 ```` 
@@ -849,7 +848,7 @@ Get-EdgeRemoteDebuggingPort [<CommonParameters>]
     Returns a collection of installed modern web browsers.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Get-Webbrowser [<CommonParameters>] 
 ```` 
 
@@ -867,7 +866,7 @@ Get-Webbrowser [<CommonParameters>]
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
 ### NOTES 
-````PowerShell 
+```PowerShell 
 
        Requires Windows 10 or later Operating System  
    -------------------------- EXAMPLE 1 --------------------------  
@@ -877,11 +876,11 @@ Get-Webbrowser [<CommonParameters>]
    Get-Webbrowser | Where-Object { $_.IsDefaultBrowser }  
 ```` 
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Get-WebbrowserTabDomNodes 
-````PowerShell 
+```PowerShell 
 
    Get-WebbrowserTabDomNodes            --> wl  
 ```` 
@@ -890,7 +889,7 @@ Get-Webbrowser [<CommonParameters>]
     Queries and manipulates DOM nodes in the active browser tab using CSS selectors.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Get-WebbrowserTabDomNodes [-QuerySelector] <String[]> [[-ModifyScript] <String>] [-Edge] [-Chrome] [-Page <Object>] [-ByReference <PSObject>] [-NoAutoSelectTab] [<CommonParameters>] 
 ```` 
 
@@ -963,11 +962,11 @@ Get-WebbrowserTabDomNodes [-QuerySelector] <String[]> [[-ModifyScript] <String>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Import-BrowserBookmarks 
-````PowerShell 
+```PowerShell 
 
    Import-BrowserBookmarks  
 ```` 
@@ -976,7 +975,7 @@ Get-WebbrowserTabDomNodes [-QuerySelector] <String[]> [[-ModifyScript] <String>]
     Imports bookmarks from a file or collection into a web browser.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Import-BrowserBookmarks [-Chrome] [-Edge] [-Firefox] [-WhatIf] [-Confirm] [<CommonParameters>]  
    Import-BrowserBookmarks [[-InputFile] <String>] [-Chrome] [-Edge] [-Firefox] [-WhatIf] [-Confirm] [<CommonParameters>]  
    Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome] [-Edge] [-Firefox] [-WhatIf] [-Confirm] [<CommonParameters>] 
@@ -1050,11 +1049,11 @@ Import-BrowserBookmarks [-Chrome] [-Edge] [-Firefox] [-WhatIf] [-Confirm] [<Comm
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Invoke-WebbrowserEvaluation 
-````PowerShell 
+```PowerShell 
 
    Invoke-WebbrowserEvaluation          --> et, Eval  
 ```` 
@@ -1063,7 +1062,7 @@ Import-BrowserBookmarks [-Chrome] [-Edge] [-Firefox] [-WhatIf] [-Confirm] [<Comm
     Executes JavaScript code in a selected web browser tab.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-NoAutoSelectTab] [-Edge] [-Chrome] [-Page <Object>] [-ByReference <PSObject>] [<CommonParameters>] 
 ```` 
 
@@ -1137,7 +1136,7 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-NoAutoSelectTab
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
 ### NOTES 
-````PowerShell 
+```PowerShell 
 
        Requires the Windows 10+ Operating System  
    -------------------------- EXAMPLE 1 --------------------------  
@@ -1235,11 +1234,11 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-NoAutoSelectTab
    PS>ls *.js | et -e  
 ```` 
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Open-BrowserBookmarks 
-````PowerShell 
+```PowerShell 
 
    Open-BrowserBookmarks                --> sites  
 ```` 
@@ -1248,7 +1247,7 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-NoAutoSelectTab
     Opens browser bookmarks that match specified search criteria.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Open-BrowserBookmarks [[-Queries] <String[]>] [[-Count] <Int32>] [-Edge] [-Chrome] [-Firefox] [-Monitor <Int32>] [-Private] [-Force] [-FullScreen] [-ShowWindow] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-AcceptLang <String>] [-KeysToSend <String[]>] [-FocusWindow] [-SetForeground] [-Maximize] [-RestoreFocus] [-NewWindow] [-Chromium] [-All] [-DisablePopupBlocker] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus] [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds <Int32>] [-NoBorders] [-SideBySide] [-SessionOnly] [-ClearSession] [-SkipSession] [<CommonParameters>] 
 ```` 
 
@@ -1586,11 +1585,11 @@ Open-BrowserBookmarks [[-Queries] <String[]>] [[-Count] <Int32>] [-Edge] [-Chrom
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Open-Webbrowser 
-````PowerShell 
+```PowerShell 
 
    Open-Webbrowser                      --> wb  
 ```` 
@@ -1599,7 +1598,7 @@ Open-BrowserBookmarks [[-Queries] <String[]>] [[-Count] <Int32>] [-Edge] [-Chrom
     Opens URLs in one or more browser windows with optional positioning and styling.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Open-Webbrowser [[-Url] <String[]>] [[-Monitor] <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-AcceptLang <String>] [-Force] [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen] [-Private] [-ApplicationMode] [-NoBrowserExtensions] [-DisablePopupBlocker] [-NewWindow] [-FocusWindow] [-SetForeground] [-Maximize] [-PassThru] [-NoBorders] [-RestoreFocus] [-SideBySide] [-KeysToSend <String[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus] [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds <Int32>] [-SessionOnly] [-ClearSession] [-SkipSession] [<CommonParameters>] 
 ```` 
 
@@ -1964,7 +1963,7 @@ Open-Webbrowser [[-Url] <String[]>] [[-Monitor] <Int32>] [-Width <Int32>] [-Heig
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
 ### NOTES 
-````PowerShell 
+```PowerShell 
 
        Requires Windows 10+ Operating System.  
        This cmdlet is designed for interactive use and performs window manipulation  
@@ -1999,11 +1998,11 @@ Open-Webbrowser [[-Url] <String[]>] [[-Monitor] <Int32>] [-Width <Int32>] [-Heig
    Opens a web application in app mode without browser controls.  
 ```` 
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Select-WebbrowserTab 
-````PowerShell 
+```PowerShell 
 
    Select-WebbrowserTab                 --> Select-BrowserTab, st  
 ```` 
@@ -2012,7 +2011,7 @@ Open-Webbrowser [[-Url] <String[]>] [[-Monitor] <Int32>] [-Width <Int32>] [-Heig
     Selects a browser tab for automation in Chrome or Edge.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Select-WebbrowserTab [[-Id] <Int32>] [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-AcceptLang <String>] [-FullScreen] [-Private] [-Chromium] [-Firefox] [-All] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-DisablePopupBlocker] [-RestoreFocus] [-NewWindow] [-FocusWindow] [-SetForeground] [-Maximize] [-KeysToSend <String[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus] [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds <Int32>] [-Edge] [-Chrome] [-Force] [<CommonParameters>]  
    Select-WebbrowserTab [-Name] <String> [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-AcceptLang <String>] [-FullScreen] [-Private] [-Chromium] [-Firefox] [-All] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-DisablePopupBlocker] [-RestoreFocus] [-NewWindow] [-FocusWindow] [-SetForeground] [-Maximize] [-KeysToSend <String[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus] [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds <Int32>] [-Edge] [-Chrome] [-Force] [<CommonParameters>]  
    Select-WebbrowserTab -ByReference <PSObject> [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-AcceptLang <String>] [-FullScreen] [-Private] [-Chromium] [-Firefox] [-All] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-DisablePopupBlocker] [-RestoreFocus] [-NewWindow] [-FocusWindow] [-SetForeground] [-Maximize] [-KeysToSend <String[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus] [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds <Int32>] [-Edge] [-Chrome] [-Force] [<CommonParameters>] 
@@ -2327,11 +2326,11 @@ Select-WebbrowserTab [[-Id] <Int32>] [-Monitor <Int32>] [-Width <Int32>] [-Heigh
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Set-BrowserVideoFullscreen 
-````PowerShell 
+```PowerShell 
 
    Set-BrowserVideoFullscreen           --> fsvideo  
 ```` 
@@ -2340,7 +2339,7 @@ Select-WebbrowserTab [[-Id] <Int32>] [-Monitor <Int32>] [-Width <Int32>] [-Heigh
     Maximizes the first video element found in the current browser tab.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Set-BrowserVideoFullscreen [-WhatIf] [-Confirm] [<CommonParameters>] 
 ```` 
 
@@ -2371,11 +2370,11 @@ Set-BrowserVideoFullscreen [-WhatIf] [-Confirm] [<CommonParameters>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Set-RemoteDebuggerPortInBrowserShortcuts 
-````PowerShell 
+```PowerShell 
 
    Set-RemoteDebuggerPortInBrowserShortcuts  
 ```` 
@@ -2384,7 +2383,7 @@ Set-BrowserVideoFullscreen [-WhatIf] [-Confirm] [<CommonParameters>]
     Updates browser shortcuts to enable remote debugging ports.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Set-RemoteDebuggerPortInBrowserShortcuts [-WhatIf] [-Confirm] [<CommonParameters>] 
 ```` 
 
@@ -2420,7 +2419,7 @@ Set-RemoteDebuggerPortInBrowserShortcuts [-WhatIf] [-Confirm] [<CommonParameters
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
 ### NOTES 
-````PowerShell 
+```PowerShell 
 
        Requires administrative access to modify system shortcuts.  
    -------------------------- EXAMPLE 1 --------------------------  
@@ -2428,11 +2427,11 @@ Set-RemoteDebuggerPortInBrowserShortcuts [-WhatIf] [-Confirm] [<CommonParameters
    Updates all Chrome and Edge shortcuts with their respective debugging ports.  
 ```` 
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Set-WebbrowserTabLocation 
-````PowerShell 
+```PowerShell 
 
    Set-WebbrowserTabLocation            --> lt, Nav  
 ```` 
@@ -2441,7 +2440,7 @@ Set-RemoteDebuggerPortInBrowserShortcuts [-WhatIf] [-Confirm] [<CommonParameters
     Navigates the current webbrowser tab to a specified URL.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Set-WebbrowserTabLocation [-Url] <String> [-NoAutoSelectTab] [-Page <Object>] [-ByReference <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]  
    Set-WebbrowserTabLocation [-Url] <String> [-NoAutoSelectTab] [-Edge] [-Page <Object>] [-ByReference <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]  
    Set-WebbrowserTabLocation [-Url] <String> [-NoAutoSelectTab] [-Chrome] [-Page <Object>] [-ByReference <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>] 
@@ -2524,11 +2523,11 @@ Set-WebbrowserTabLocation [-Url] <String> [-NoAutoSelectTab] [-Page <Object>] [-
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Show-WebsiteInAllBrowsers 
-````PowerShell 
+```PowerShell 
 
    Show-WebsiteInAllBrowsers            --> Show-UrlInAllBrowsers  
 ```` 
@@ -2537,7 +2536,7 @@ Set-WebbrowserTabLocation [-Url] <String> [-NoAutoSelectTab] [-Page <Object>] [-
     Opens a URL in multiple browsers simultaneously in a mosaic layout.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Show-WebsiteInAllBrowsers [-Url] <String> [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-AcceptLang <String>] [-FullScreen] [-Private] [-Force] [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-DisablePopupBlocker] [-RestoreFocus] [-NewWindow] [-FocusWindow] [-SetForeground] [-Maximize] [-KeysToSend <String[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus] [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds <Int32>] [-NoBorders] [-SideBySide] [-SessionOnly] [-ClearSession] [-SkipSession] [<CommonParameters>] 
 ```` 
 
@@ -2879,14 +2878,14 @@ Show-WebsiteInAllBrowsers [-Url] <String> [-Monitor <Int32>] [-Width <Int32>] [-
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 &nbsp;<hr/>
 ###	GenXdev.Webbrowser.Playwright<hr/> 
 
 ##	Connect-PlaywrightViaDebuggingPort 
-````PowerShell 
+```PowerShell 
 
    Connect-PlaywrightViaDebuggingPort  
 ```` 
@@ -2895,7 +2894,7 @@ Show-WebsiteInAllBrowsers [-Url] <String> [-Monitor <Int32>] [-Width <Int32>] [-
     Connects to an existing browser instance via debugging port.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String> [<CommonParameters>] 
 ```` 
 
@@ -2921,11 +2920,11 @@ Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String> [<CommonParameters>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Get-PlaywrightProfileDirectory 
-````PowerShell 
+```PowerShell 
 
    Get-PlaywrightProfileDirectory  
 ```` 
@@ -2934,7 +2933,7 @@ Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String> [<CommonParameters>]
     Gets the Playwright browser profile directory for persistent sessions.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Get-PlaywrightProfileDirectory [[-BrowserType] <String>] [<CommonParameters>] 
 ```` 
 
@@ -2959,11 +2958,11 @@ Get-PlaywrightProfileDirectory [[-BrowserType] <String>] [<CommonParameters>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Resume-WebbrowserTabVideo 
-````PowerShell 
+```PowerShell 
 
    Resume-WebbrowserTabVideo            --> wbvideoplay  
 ```` 
@@ -2972,7 +2971,7 @@ Get-PlaywrightProfileDirectory [[-BrowserType] <String>] [<CommonParameters>]
     Resumes video playback in a YouTube browser tab.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Resume-WebbrowserTabVideo [<CommonParameters>] 
 ```` 
 
@@ -2990,7 +2989,7 @@ Resume-WebbrowserTabVideo [<CommonParameters>]
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
 ### NOTES 
-````PowerShell 
+```PowerShell 
 
        Requires an active Chrome browser session with at least one YouTube tab open.  
        The function will throw an error if no YouTube tab is found.  
@@ -3001,11 +3000,11 @@ Resume-WebbrowserTabVideo [<CommonParameters>]
    PS C:\> wbvideoplay  
 ```` 
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Stop-WebbrowserVideos 
-````PowerShell 
+```PowerShell 
 
    Stop-WebbrowserVideos                --> ssst, wbsst, wbvideostop  
 ```` 
@@ -3014,7 +3013,7 @@ Resume-WebbrowserTabVideo [<CommonParameters>]
     Pauses video playback in all active browser sessions.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Stop-WebbrowserVideos [-Edge] [-Chrome] [-WhatIf] [-Confirm] [<CommonParameters>] 
 ```` 
 
@@ -3058,11 +3057,11 @@ Stop-WebbrowserVideos [-Edge] [-Chrome] [-WhatIf] [-Confirm] [<CommonParameters>
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Unprotect-WebbrowserTab 
-````PowerShell 
+```PowerShell 
 
    Unprotect-WebbrowserTab              --> wbctrl  
 ```` 
@@ -3071,7 +3070,7 @@ Stop-WebbrowserVideos [-Edge] [-Chrome] [-WhatIf] [-Confirm] [<CommonParameters>
     Takes control of a selected web browser tab for interactive manipulation.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Unprotect-WebbrowserTab [[-UseCurrent]] [[-Force]] [<CommonParameters>] 
 ```` 
 
@@ -3106,14 +3105,14 @@ Unprotect-WebbrowserTab [[-UseCurrent]] [[-Force]] [<CommonParameters>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 &nbsp;<hr/>
 ###	GenXdev.Webbrowser<hr/> 
 
 ##	Approve-FirefoxDebugging 
-````PowerShell 
+```PowerShell 
 
    Approve-FirefoxDebugging  
 ```` 
@@ -3122,7 +3121,7 @@ Unprotect-WebbrowserTab [[-UseCurrent]] [[-Force]] [<CommonParameters>]
     Configures Firefox's debugging and standalone app mode features.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Approve-FirefoxDebugging [<CommonParameters>] 
 ```` 
 
@@ -3139,11 +3138,11 @@ Approve-FirefoxDebugging [<CommonParameters>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Clear-WebbrowserTabSiteApplicationData 
-````PowerShell 
+```PowerShell 
 
    Clear-WebbrowserTabSiteApplicationData --> clearsitedata  
 ```` 
@@ -3152,7 +3151,7 @@ Approve-FirefoxDebugging [<CommonParameters>]
     Clears all browser storage data for the current tab in Edge or Chrome.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Clear-WebbrowserTabSiteApplicationData [-Edge] [-Chrome] [<CommonParameters>] 
 ```` 
 
@@ -3189,11 +3188,11 @@ Clear-WebbrowserTabSiteApplicationData [-Edge] [-Chrome] [<CommonParameters>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Close-Webbrowser 
-````PowerShell 
+```PowerShell 
 
    Close-Webbrowser                     --> wbc  
 ```` 
@@ -3202,7 +3201,7 @@ Clear-WebbrowserTabSiteApplicationData [-Edge] [-Chrome] [<CommonParameters>]
     Closes one or more webbrowser instances selectively.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Close-Webbrowser [[-Edge]] [[-Chrome]] [[-Chromium]] [[-Firefox]] [[-IncludeBackgroundProcesses]] [<CommonParameters>]  
    Close-Webbrowser [[-All]] [[-IncludeBackgroundProcesses]] [<CommonParameters>] 
 ```` 
@@ -3267,11 +3266,11 @@ Close-Webbrowser [[-Edge]] [[-Chrome]] [[-Chromium]] [[-Firefox]] [[-IncludeBack
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Close-WebbrowserTab 
-````PowerShell 
+```PowerShell 
 
    Close-WebbrowserTab                  --> CloseTab, ct  
 ```` 
@@ -3280,7 +3279,7 @@ Close-Webbrowser [[-Edge]] [[-Chrome]] [[-Chromium]] [[-Firefox]] [[-IncludeBack
     Closes the currently selected webbrowser tab.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Close-WebbrowserTab [-Edge] [-Chrome] [<CommonParameters>] 
 ```` 
 
@@ -3310,11 +3309,11 @@ Close-WebbrowserTab [-Edge] [-Chrome] [<CommonParameters>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Export-BrowserBookmarks 
-````PowerShell 
+```PowerShell 
 
    Export-BrowserBookmarks  
 ```` 
@@ -3323,7 +3322,7 @@ Close-WebbrowserTab [-Edge] [-Chrome] [<CommonParameters>]
     Exports browser bookmarks to a JSON file.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Export-BrowserBookmarks [-OutputFile] <String> [-Chrome] [-Edge] [-Firefox] [<CommonParameters>] 
 ```` 
 
@@ -3373,11 +3372,11 @@ Export-BrowserBookmarks [-OutputFile] <String> [-Chrome] [-Edge] [-Firefox] [<Co
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Find-BrowserBookmark 
-````PowerShell 
+```PowerShell 
 
    Find-BrowserBookmark                 --> bookmarks  
 ```` 
@@ -3386,7 +3385,7 @@ Export-BrowserBookmarks [-OutputFile] <String> [-Chrome] [-Edge] [-Firefox] [<Co
     Finds bookmarks from one or more web browsers.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Find-BrowserBookmark [[-Queries] <String[]>] [-Edge] [-Chrome] [-Firefox] [-Count <Int32>] [-PassThru] [<CommonParameters>] 
 ```` 
 
@@ -3454,11 +3453,11 @@ Find-BrowserBookmark [[-Queries] <String[]>] [-Edge] [-Chrome] [-Firefox] [-Coun
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Get-BrowserBookmark 
-````PowerShell 
+```PowerShell 
 
    Get-BrowserBookmark                  --> gbm  
 ```` 
@@ -3467,7 +3466,7 @@ Find-BrowserBookmark [[-Queries] <String[]>] [-Edge] [-Chrome] [-Firefox] [-Coun
     Returns all bookmarks from installed web browsers.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Get-BrowserBookmark [[-Chrome]] [[-Edge]] [<CommonParameters>]  
    Get-BrowserBookmark [[-Chrome]] [[-Edge]] [[-Firefox]] [<CommonParameters>] 
 ```` 
@@ -3509,11 +3508,11 @@ Get-BrowserBookmark [[-Chrome]] [[-Edge]] [<CommonParameters>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Get-ChromeRemoteDebuggingPort 
-````PowerShell 
+```PowerShell 
 
    Get-ChromeRemoteDebuggingPort        --> Get-ChromePort  
 ```` 
@@ -3522,7 +3521,7 @@ Get-BrowserBookmark [[-Chrome]] [[-Edge]] [<CommonParameters>]
     Returns the configured remote debugging port for Google Chrome.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Get-ChromeRemoteDebuggingPort [<CommonParameters>] 
 ```` 
 
@@ -3539,11 +3538,11 @@ Get-ChromeRemoteDebuggingPort [<CommonParameters>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Get-ChromiumRemoteDebuggingPort 
-````PowerShell 
+```PowerShell 
 
    Get-ChromiumRemoteDebuggingPort      --> Get-BrowserDebugPort  
 ```` 
@@ -3552,7 +3551,7 @@ Get-ChromeRemoteDebuggingPort [<CommonParameters>]
     Returns the remote debugging port for the system's default Chromium browser.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Get-ChromiumRemoteDebuggingPort [-Chrome] [-Edge] [<CommonParameters>] 
 ```` 
 
@@ -3583,11 +3582,11 @@ Get-ChromiumRemoteDebuggingPort [-Chrome] [-Edge] [<CommonParameters>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Get-ChromiumSessionReference 
-````PowerShell 
+```PowerShell 
 
    Get-ChromiumSessionReference  
 ```` 
@@ -3596,7 +3595,7 @@ Get-ChromiumRemoteDebuggingPort [-Chrome] [-Edge] [<CommonParameters>]
     Gets a serializable reference to the current browser tab session.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Get-ChromiumSessionReference [<CommonParameters>] 
 ```` 
 
@@ -3615,11 +3614,11 @@ Get-ChromiumSessionReference [<CommonParameters>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Get-DefaultWebbrowser 
-````PowerShell 
+```PowerShell 
 
    Get-DefaultWebbrowser  
 ```` 
@@ -3628,7 +3627,7 @@ Get-ChromiumSessionReference [<CommonParameters>]
     Returns the configured default web browser for the current user.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Get-DefaultWebbrowser [<CommonParameters>] 
 ```` 
 
@@ -3646,7 +3645,7 @@ Get-DefaultWebbrowser [<CommonParameters>]
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
 ### NOTES 
-````PowerShell 
+```PowerShell 
 
        Requires Windows 10 or later operating system  
    -------------------------- EXAMPLE 1 --------------------------  
@@ -3658,11 +3657,11 @@ Get-DefaultWebbrowser [<CommonParameters>]
    & $browser.Path https://www.github.com/  
 ```` 
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Get-EdgeRemoteDebuggingPort 
-````PowerShell 
+```PowerShell 
 
    Get-EdgeRemoteDebuggingPort  
 ```` 
@@ -3671,7 +3670,7 @@ Get-DefaultWebbrowser [<CommonParameters>]
     Returns the configured remote debugging port for Microsoft Edge browser.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Get-EdgeRemoteDebuggingPort [<CommonParameters>] 
 ```` 
 
@@ -3689,7 +3688,7 @@ Get-EdgeRemoteDebuggingPort [<CommonParameters>]
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
 ### NOTES 
-````PowerShell 
+```PowerShell 
 
        The function ensures $Global:EdgeDebugPort is always set to the returned value  
        for consistency across the session.  
@@ -3698,11 +3697,11 @@ Get-EdgeRemoteDebuggingPort [<CommonParameters>]
    Returns the configured debug port (default 9223 if not configured)  
 ```` 
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Get-Webbrowser 
-````PowerShell 
+```PowerShell 
 
    Get-Webbrowser  
 ```` 
@@ -3711,7 +3710,7 @@ Get-EdgeRemoteDebuggingPort [<CommonParameters>]
     Returns a collection of installed modern web browsers.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Get-Webbrowser [<CommonParameters>] 
 ```` 
 
@@ -3729,7 +3728,7 @@ Get-Webbrowser [<CommonParameters>]
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
 ### NOTES 
-````PowerShell 
+```PowerShell 
 
        Requires Windows 10 or later Operating System  
    -------------------------- EXAMPLE 1 --------------------------  
@@ -3739,11 +3738,11 @@ Get-Webbrowser [<CommonParameters>]
    Get-Webbrowser | Where-Object { $_.IsDefaultBrowser }  
 ```` 
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Get-WebbrowserTabDomNodes 
-````PowerShell 
+```PowerShell 
 
    Get-WebbrowserTabDomNodes            --> wl  
 ```` 
@@ -3752,7 +3751,7 @@ Get-Webbrowser [<CommonParameters>]
     Queries and manipulates DOM nodes in the active browser tab using CSS selectors.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Get-WebbrowserTabDomNodes [-QuerySelector] <String[]> [[-ModifyScript] <String>] [-Edge] [-Chrome] [-Page <Object>] [-ByReference <PSObject>] [-NoAutoSelectTab] [<CommonParameters>] 
 ```` 
 
@@ -3825,11 +3824,11 @@ Get-WebbrowserTabDomNodes [-QuerySelector] <String[]> [[-ModifyScript] <String>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Import-BrowserBookmarks 
-````PowerShell 
+```PowerShell 
 
    Import-BrowserBookmarks  
 ```` 
@@ -3838,7 +3837,7 @@ Get-WebbrowserTabDomNodes [-QuerySelector] <String[]> [[-ModifyScript] <String>]
     Imports bookmarks from a file or collection into a web browser.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Import-BrowserBookmarks [-Chrome] [-Edge] [-Firefox] [-WhatIf] [-Confirm] [<CommonParameters>]  
    Import-BrowserBookmarks [[-InputFile] <String>] [-Chrome] [-Edge] [-Firefox] [-WhatIf] [-Confirm] [<CommonParameters>]  
    Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome] [-Edge] [-Firefox] [-WhatIf] [-Confirm] [<CommonParameters>] 
@@ -3912,11 +3911,11 @@ Import-BrowserBookmarks [-Chrome] [-Edge] [-Firefox] [-WhatIf] [-Confirm] [<Comm
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Invoke-WebbrowserEvaluation 
-````PowerShell 
+```PowerShell 
 
    Invoke-WebbrowserEvaluation          --> et, Eval  
 ```` 
@@ -3925,7 +3924,7 @@ Import-BrowserBookmarks [-Chrome] [-Edge] [-Firefox] [-WhatIf] [-Confirm] [<Comm
     Executes JavaScript code in a selected web browser tab.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-NoAutoSelectTab] [-Edge] [-Chrome] [-Page <Object>] [-ByReference <PSObject>] [<CommonParameters>] 
 ```` 
 
@@ -3999,7 +3998,7 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-NoAutoSelectTab
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
 ### NOTES 
-````PowerShell 
+```PowerShell 
 
        Requires the Windows 10+ Operating System  
    -------------------------- EXAMPLE 1 --------------------------  
@@ -4097,11 +4096,11 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-NoAutoSelectTab
    PS>ls *.js | et -e  
 ```` 
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Open-BrowserBookmarks 
-````PowerShell 
+```PowerShell 
 
    Open-BrowserBookmarks                --> sites  
 ```` 
@@ -4110,7 +4109,7 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-NoAutoSelectTab
     Opens browser bookmarks that match specified search criteria.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Open-BrowserBookmarks [[-Queries] <String[]>] [[-Count] <Int32>] [-Edge] [-Chrome] [-Firefox] [-Monitor <Int32>] [-Private] [-Force] [-FullScreen] [-ShowWindow] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-AcceptLang <String>] [-KeysToSend <String[]>] [-FocusWindow] [-SetForeground] [-Maximize] [-RestoreFocus] [-NewWindow] [-Chromium] [-All] [-DisablePopupBlocker] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus] [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds <Int32>] [-NoBorders] [-SideBySide] [-SessionOnly] [-ClearSession] [-SkipSession] [<CommonParameters>] 
 ```` 
 
@@ -4448,11 +4447,11 @@ Open-BrowserBookmarks [[-Queries] <String[]>] [[-Count] <Int32>] [-Edge] [-Chrom
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Open-Webbrowser 
-````PowerShell 
+```PowerShell 
 
    Open-Webbrowser                      --> wb  
 ```` 
@@ -4461,7 +4460,7 @@ Open-BrowserBookmarks [[-Queries] <String[]>] [[-Count] <Int32>] [-Edge] [-Chrom
     Opens URLs in one or more browser windows with optional positioning and styling.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Open-Webbrowser [[-Url] <String[]>] [[-Monitor] <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-AcceptLang <String>] [-Force] [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen] [-Private] [-ApplicationMode] [-NoBrowserExtensions] [-DisablePopupBlocker] [-NewWindow] [-FocusWindow] [-SetForeground] [-Maximize] [-PassThru] [-NoBorders] [-RestoreFocus] [-SideBySide] [-KeysToSend <String[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus] [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds <Int32>] [-SessionOnly] [-ClearSession] [-SkipSession] [<CommonParameters>] 
 ```` 
 
@@ -4826,7 +4825,7 @@ Open-Webbrowser [[-Url] <String[]>] [[-Monitor] <Int32>] [-Width <Int32>] [-Heig
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
 ### NOTES 
-````PowerShell 
+```PowerShell 
 
        Requires Windows 10+ Operating System.  
        This cmdlet is designed for interactive use and performs window manipulation  
@@ -4861,11 +4860,11 @@ Open-Webbrowser [[-Url] <String[]>] [[-Monitor] <Int32>] [-Width <Int32>] [-Heig
    Opens a web application in app mode without browser controls.  
 ```` 
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Select-WebbrowserTab 
-````PowerShell 
+```PowerShell 
 
    Select-WebbrowserTab                 --> Select-BrowserTab, st  
 ```` 
@@ -4874,7 +4873,7 @@ Open-Webbrowser [[-Url] <String[]>] [[-Monitor] <Int32>] [-Width <Int32>] [-Heig
     Selects a browser tab for automation in Chrome or Edge.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Select-WebbrowserTab [[-Id] <Int32>] [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-AcceptLang <String>] [-FullScreen] [-Private] [-Chromium] [-Firefox] [-All] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-DisablePopupBlocker] [-RestoreFocus] [-NewWindow] [-FocusWindow] [-SetForeground] [-Maximize] [-KeysToSend <String[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus] [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds <Int32>] [-Edge] [-Chrome] [-Force] [<CommonParameters>]  
    Select-WebbrowserTab [-Name] <String> [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-AcceptLang <String>] [-FullScreen] [-Private] [-Chromium] [-Firefox] [-All] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-DisablePopupBlocker] [-RestoreFocus] [-NewWindow] [-FocusWindow] [-SetForeground] [-Maximize] [-KeysToSend <String[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus] [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds <Int32>] [-Edge] [-Chrome] [-Force] [<CommonParameters>]  
    Select-WebbrowserTab -ByReference <PSObject> [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-AcceptLang <String>] [-FullScreen] [-Private] [-Chromium] [-Firefox] [-All] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-DisablePopupBlocker] [-RestoreFocus] [-NewWindow] [-FocusWindow] [-SetForeground] [-Maximize] [-KeysToSend <String[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus] [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds <Int32>] [-Edge] [-Chrome] [-Force] [<CommonParameters>] 
@@ -5189,11 +5188,11 @@ Select-WebbrowserTab [[-Id] <Int32>] [-Monitor <Int32>] [-Width <Int32>] [-Heigh
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Set-BrowserVideoFullscreen 
-````PowerShell 
+```PowerShell 
 
    Set-BrowserVideoFullscreen           --> fsvideo  
 ```` 
@@ -5202,7 +5201,7 @@ Select-WebbrowserTab [[-Id] <Int32>] [-Monitor <Int32>] [-Width <Int32>] [-Heigh
     Maximizes the first video element found in the current browser tab.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Set-BrowserVideoFullscreen [-WhatIf] [-Confirm] [<CommonParameters>] 
 ```` 
 
@@ -5233,11 +5232,11 @@ Set-BrowserVideoFullscreen [-WhatIf] [-Confirm] [<CommonParameters>]
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Set-RemoteDebuggerPortInBrowserShortcuts 
-````PowerShell 
+```PowerShell 
 
    Set-RemoteDebuggerPortInBrowserShortcuts  
 ```` 
@@ -5246,7 +5245,7 @@ Set-BrowserVideoFullscreen [-WhatIf] [-Confirm] [<CommonParameters>]
     Updates browser shortcuts to enable remote debugging ports.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Set-RemoteDebuggerPortInBrowserShortcuts [-WhatIf] [-Confirm] [<CommonParameters>] 
 ```` 
 
@@ -5282,7 +5281,7 @@ Set-RemoteDebuggerPortInBrowserShortcuts [-WhatIf] [-Confirm] [<CommonParameters
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
 ### NOTES 
-````PowerShell 
+```PowerShell 
 
        Requires administrative access to modify system shortcuts.  
    -------------------------- EXAMPLE 1 --------------------------  
@@ -5290,11 +5289,11 @@ Set-RemoteDebuggerPortInBrowserShortcuts [-WhatIf] [-Confirm] [<CommonParameters
    Updates all Chrome and Edge shortcuts with their respective debugging ports.  
 ```` 
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Set-WebbrowserTabLocation 
-````PowerShell 
+```PowerShell 
 
    Set-WebbrowserTabLocation            --> lt, Nav  
 ```` 
@@ -5303,7 +5302,7 @@ Set-RemoteDebuggerPortInBrowserShortcuts [-WhatIf] [-Confirm] [<CommonParameters
     Navigates the current webbrowser tab to a specified URL.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Set-WebbrowserTabLocation [-Url] <String> [-NoAutoSelectTab] [-Page <Object>] [-ByReference <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]  
    Set-WebbrowserTabLocation [-Url] <String> [-NoAutoSelectTab] [-Edge] [-Page <Object>] [-ByReference <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]  
    Set-WebbrowserTabLocation [-Url] <String> [-NoAutoSelectTab] [-Chrome] [-Page <Object>] [-ByReference <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>] 
@@ -5386,11 +5385,11 @@ Set-WebbrowserTabLocation [-Url] <String> [-NoAutoSelectTab] [-Page <Object>] [-
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 ##	Show-WebsiteInAllBrowsers 
-````PowerShell 
+```PowerShell 
 
    Show-WebsiteInAllBrowsers            --> Show-UrlInAllBrowsers  
 ```` 
@@ -5399,7 +5398,7 @@ Set-WebbrowserTabLocation [-Url] <String> [-NoAutoSelectTab] [-Page <Object>] [-
     Opens a URL in multiple browsers simultaneously in a mosaic layout.  
 
 ### SYNTAX 
-````PowerShell 
+```PowerShell 
 Show-WebsiteInAllBrowsers [-Url] <String> [-Monitor <Int32>] [-Width <Int32>] [-Height <Int32>] [-X <Int32>] [-Y <Int32>] [-AcceptLang <String>] [-FullScreen] [-Private] [-Force] [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-DisablePopupBlocker] [-RestoreFocus] [-NewWindow] [-FocusWindow] [-SetForeground] [-Maximize] [-KeysToSend <String[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus] [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds <Int32>] [-NoBorders] [-SideBySide] [-SessionOnly] [-ClearSession] [-SkipSession] [<CommonParameters>] 
 ```` 
 
@@ -5741,8 +5740,231 @@ Show-WebsiteInAllBrowsers [-Url] <String> [-Monitor <Int32>] [-Width <Int32>] [-
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
 
-<br/><hr/><hr/><br/>
+<br/><hr/><br/>
  
 
 &nbsp;<hr/>
-###	GenXdev.Webbrowser.Playwright<hr/>
+###	GenXdev.Webbrowser.Playwright<hr/> 
+
+##	Connect-PlaywrightViaDebuggingPort 
+```PowerShell 
+
+   Connect-PlaywrightViaDebuggingPort  
+```` 
+
+### SYNOPSIS 
+    Connects to an existing browser instance via debugging port.  
+
+### SYNTAX 
+```PowerShell 
+Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String> [<CommonParameters>] 
+```` 
+
+### DESCRIPTION 
+    Establishes a connection to a running Chromium-based browser instance using the  
+    WebSocket debugger URL. Creates a Playwright instance and connects over CDP  
+    (Chrome DevTools Protocol). The connected browser instance is stored in a global  
+    dictionary for later reference.  
+
+### PARAMETERS 
+    -WsEndpoint <String>  
+        The WebSocket URL for connecting to the browser's debugging port. This URL  
+        typically follows the format 'ws://hostname:port/devtools/browser/<id>'.  
+        Required?                    true  
+        Position?                    1  
+        Default value                  
+        Accept pipeline input?       false  
+        Aliases                        
+        Accept wildcard characters?  false  
+    <CommonParameters>  
+        This cmdlet supports the common parameters: Verbose, Debug,  
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+
+<br/><hr/><br/>
+ 
+
+##	Get-PlaywrightProfileDirectory 
+```PowerShell 
+
+   Get-PlaywrightProfileDirectory  
+```` 
+
+### SYNOPSIS 
+    Gets the Playwright browser profile directory for persistent sessions.  
+
+### SYNTAX 
+```PowerShell 
+Get-PlaywrightProfileDirectory [[-BrowserType] <String>] [<CommonParameters>] 
+```` 
+
+### DESCRIPTION 
+    Creates and manages browser profile directories for Playwright automated testing.  
+    Profiles are stored in LocalAppData under GenXdev.Powershell/Playwright.profiles.  
+    These profiles enable persistent sessions across browser automation runs.  
+
+### PARAMETERS 
+    -BrowserType <String>  
+        Specifies the browser type to create/get a profile directory for. Can be  
+        Chromium, Firefox, or Webkit. Defaults to Chromium if not specified.  
+        Required?                    false  
+        Position?                    1  
+        Default value                Chromium  
+        Accept pipeline input?       false  
+        Aliases                        
+        Accept wildcard characters?  false  
+    <CommonParameters>  
+        This cmdlet supports the common parameters: Verbose, Debug,  
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+
+<br/><hr/><br/>
+ 
+
+##	Resume-WebbrowserTabVideo 
+```PowerShell 
+
+   Resume-WebbrowserTabVideo            --> wbvideoplay  
+```` 
+
+### SYNOPSIS 
+    Resumes video playback in a YouTube browser tab.  
+
+### SYNTAX 
+```PowerShell 
+Resume-WebbrowserTabVideo [<CommonParameters>] 
+```` 
+
+### DESCRIPTION 
+    Finds the active YouTube browser tab and resumes video playback by executing the  
+    play() method on any video elements found in the page. If no YouTube tab is  
+    found, the function throws an error. This function is particularly useful for  
+    automating video playback control in browser sessions.  
+
+### PARAMETERS 
+    <CommonParameters>  
+        This cmdlet supports the common parameters: Verbose, Debug,  
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+
+### NOTES 
+```PowerShell 
+
+       Requires an active Chrome browser session with at least one YouTube tab open.  
+       The function will throw an error if no YouTube tab is found.  
+       ##############################################################################  
+   -------------------------- EXAMPLE 1 --------------------------  
+   PS C:\> Resume-WebbrowserTabVideo  
+   -------------------------- EXAMPLE 2 --------------------------  
+   PS C:\> wbvideoplay  
+```` 
+
+<br/><hr/><br/>
+ 
+
+##	Stop-WebbrowserVideos 
+```PowerShell 
+
+   Stop-WebbrowserVideos                --> ssst, wbsst, wbvideostop  
+```` 
+
+### SYNOPSIS 
+    Pauses video playback in all active browser sessions.  
+
+### SYNTAX 
+```PowerShell 
+Stop-WebbrowserVideos [-Edge] [-Chrome] [-WhatIf] [-Confirm] [<CommonParameters>] 
+```` 
+
+### DESCRIPTION 
+    Iterates through all active browser sessions and pauses any playing videos by  
+    executing JavaScript commands. The function maintains the original session state  
+    and handles errors gracefully.  
+
+### PARAMETERS 
+    -Edge [<SwitchParameter>]  
+        Required?                    false  
+        Position?                    named  
+        Default value                False  
+        Accept pipeline input?       false  
+        Aliases                        
+        Accept wildcard characters?  false  
+    -Chrome [<SwitchParameter>]  
+        Required?                    false  
+        Position?                    named  
+        Default value                False  
+        Accept pipeline input?       false  
+        Aliases                        
+        Accept wildcard characters?  false  
+    -WhatIf [<SwitchParameter>]  
+        Required?                    false  
+        Position?                    named  
+        Default value                  
+        Accept pipeline input?       false  
+        Aliases                        
+        Accept wildcard characters?  false  
+    -Confirm [<SwitchParameter>]  
+        Required?                    false  
+        Position?                    named  
+        Default value                  
+        Accept pipeline input?       false  
+        Aliases                        
+        Accept wildcard characters?  false  
+    <CommonParameters>  
+        This cmdlet supports the common parameters: Verbose, Debug,  
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+
+<br/><hr/><br/>
+ 
+
+##	Unprotect-WebbrowserTab 
+```PowerShell 
+
+   Unprotect-WebbrowserTab              --> wbctrl  
+```` 
+
+### SYNOPSIS 
+    Takes control of a selected web browser tab for interactive manipulation.  
+
+### SYNTAX 
+```PowerShell 
+Unprotect-WebbrowserTab [[-UseCurrent]] [[-Force]] [<CommonParameters>] 
+```` 
+
+### DESCRIPTION 
+    This function enables interactive control of a browser tab that was previously  
+    selected using Select-WebbrowserTab. It provides direct access to the Microsoft  
+    Playwright Page object's properties and methods, allowing for automated browser  
+    interaction.  
+
+### PARAMETERS 
+    -UseCurrent [<SwitchParameter>]  
+        When specified, uses the currently assigned browser tab instead of prompting to  
+        select a new one. This is useful for continuing work with the same tab.  
+        Required?                    false  
+        Position?                    1  
+        Default value                False  
+        Accept pipeline input?       false  
+        Aliases                        
+        Accept wildcard characters?  false  
+    -Force [<SwitchParameter>]  
+        Forces a browser restart by closing all tabs if no debugging server is detected.  
+        Use this when the browser connection is in an inconsistent state.  
+        Required?                    false  
+        Position?                    2  
+        Default value                False  
+        Accept pipeline input?       false  
+        Aliases                        
+        Accept wildcard characters?  false  
+    <CommonParameters>  
+        This cmdlet supports the common parameters: Verbose, Debug,  
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+
+<br/><hr/><br/>

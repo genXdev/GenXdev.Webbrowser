@@ -210,7 +210,6 @@ function Open-BrowserBookmarks {
                 'browsers if needed')
         )]
         [switch] $Force,
-
         ###############################################################################
         [Alias('fs', 'f')]
         [Parameter(
@@ -218,7 +217,6 @@ function Open-BrowserBookmarks {
             HelpMessage = 'Opens in fullscreen mode'
         )]
         [switch] $FullScreen,
-
         ###############################################################################
         [Alias('sw')]
         [Parameter(

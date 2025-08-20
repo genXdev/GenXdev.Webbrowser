@@ -1,7 +1,6 @@
-﻿###############################################################################
+###############################################################################
 using namespace System.Management.Automation
 using namespace System.Collections.Concurrent
-using namespace Microsoft.Playwright
 
 ###############################################################################
 <#
@@ -41,6 +40,12 @@ function Connect-PlaywrightViaDebuggingPort {
     begin {
         # log connection attempt for debugging purposes
         Microsoft.PowerShell.Utility\Write-Verbose "Attempting to connect to browser at: $WsEndpoint"
+
+        GenXdev.Helpers\EnsureNuGetAssembly -PackageKey 'Microsoft.Playwright'
+
+       $Global:GenXdevPlaywrightBrowserDictionary = $Global:GenXdevPlaywrightBrowserDictionary ?
+       $Global:GenXdevPlaywrightBrowserDictionary :
+       [System.Collections.Concurrent.ConcurrentDictionary[string, Microsoft.Playwright.IBrowser]]::new()
     }
 
 

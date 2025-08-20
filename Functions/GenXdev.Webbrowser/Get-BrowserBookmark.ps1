@@ -201,7 +201,7 @@ function Get-BrowserBookmark {
 
             try {
 
-                $connection = Microsoft.PowerShell.Utility\New-Object System.Data.SQLite.SQLiteConnection($connectionString)
+                $connection = Microsoft.PowerShell.Utility\New-Object System.Data.Sqlite.SQLiteConnection($connectionString)
                 $connection.Open()
                 $command = $connection.CreateCommand()
                 $command.CommandText = $query
