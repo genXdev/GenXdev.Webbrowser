@@ -548,6 +548,22 @@ function Select-WebbrowserTab {
                             -ErrorAction SilentlyContinue)
 
                     $invocationArguments.Force = $false
+
+                    # wait for browser to start up
+                    Microsoft.PowerShell.Utility\Write-Verbose 'Waiting for browser to start...'
+                    $null = Microsoft.PowerShell.Utility\Start-Sleep -Seconds 3
+
+                    # prepare parameters for recursive call, excluding problematic Id parameter
+                    $recursiveParams = @{}
+                    foreach ($key in $PSBoundParameters.Keys) {
+                        if ($key -ne 'Id' -and $key -ne 'Force') {
+                            $recursiveParams[$key] = $PSBoundParameters[$key]
+                        }
+                    }
+                    $recursiveParams['Force'] = $false
+
+                    # recursively call self to connect to the new browser
+                    return GenXdev.Webbrowser\Select-WebbrowserTab @recursiveParams
                 }
                 else {
 
@@ -622,14 +638,21 @@ function Select-WebbrowserTab {
 
                 $Global:chromeController = $Global:chrome.Browser.Contexts[0].Pages |
                     Microsoft.PowerShell.Core\ForEach-Object {
-                        $session = $Global:chrome.Browser.Contexts[0].NewCDPSessionAsync($PSItem).Result;
-                        $info = $session.sendAsync('Target.getTargetInfo').Result |
-                            Microsoft.PowerShell.Utility\ConvertFrom-Json
-                            if ($info.targetInfo.targetId -eq $Global:chromeSession.id) {
-                                $PSItem
+                        try {
+                            $session = $Global:chrome.Browser.Contexts[0].NewCDPSessionAsync($PSItem).Result;
+                            if ($null -ne $session) {
+                                $info = $session.sendAsync('Target.getTargetInfo').Result |
+                                    Microsoft.PowerShell.Utility\ConvertFrom-Json
+                                if ($info.targetInfo.targetId -eq $Global:chromeSession.id) {
+                                    $PSItem
+                                }
                             }
-                        } |
-                        Microsoft.PowerShell.Utility\Select-Object -First 1;
+                        }
+                        catch {
+                            Microsoft.PowerShell.Utility\Write-Verbose "Failed to create session for page: $($_.Exception.Message)"
+                        }
+                    } |
+                    Microsoft.PowerShell.Utility\Select-Object -First 1;
 
                 Microsoft.PowerShell.Utility\Write-Verbose "Connected to tab: $($sessions[$sessionId].url)"
             }
@@ -660,14 +683,21 @@ function Select-WebbrowserTab {
                 $Global:chromeSession = $sessions[$Id]
                 $Global:chromeController = $Global:chrome.Browser.Contexts[0].Pages |
                     Microsoft.PowerShell.Core\ForEach-Object {
-                        $session = $Global:chrome.Browser.Contexts[0].NewCDPSessionAsync($PSItem).Result;
-                        $info = $session.sendAsync('Target.getTargetInfo').Result |
-                            Microsoft.PowerShell.Utility\ConvertFrom-Json
-                            if ($info.targetInfo.targetId -eq $Global:chromeSession.id) {
-                                $PSItem
+                        try {
+                            $session = $Global:chrome.Browser.Contexts[0].NewCDPSessionAsync($PSItem).Result;
+                            if ($null -ne $session) {
+                                $info = $session.sendAsync('Target.getTargetInfo').Result |
+                                    Microsoft.PowerShell.Utility\ConvertFrom-Json
+                                if ($info.targetInfo.targetId -eq $Global:chromeSession.id) {
+                                    $PSItem
+                                }
                             }
-                        } |
-                        Microsoft.PowerShell.Utility\Select-Object -First 1;
+                        }
+                        catch {
+                            Microsoft.PowerShell.Utility\Write-Verbose "Failed to create session for page: $($_.Exception.Message)"
+                        }
+                    } |
+                    Microsoft.PowerShell.Utility\Select-Object -First 1;
 
                 # refresh session list
                 try {
@@ -691,14 +721,21 @@ function Select-WebbrowserTab {
             # connect to selected tab
             $Global:chromeController = $Global:chrome.Browser.Contexts[0].Pages |
                 Microsoft.PowerShell.Core\ForEach-Object {
-                    $session = $Global:chrome.Browser.Contexts[0].NewCDPSessionAsync($PSItem).Result;
-                    $info = $session.sendAsync('Target.getTargetInfo').Result |
-                        Microsoft.PowerShell.Utility\ConvertFrom-Json
-                        if ($info.targetInfo.targetId -eq $Global:chromeSession.id) {
-                            $PSItem
+                    try {
+                        $session = $Global:chrome.Browser.Contexts[0].NewCDPSessionAsync($PSItem).Result;
+                        if ($null -ne $session) {
+                            $info = $session.sendAsync('Target.getTargetInfo').Result |
+                                Microsoft.PowerShell.Utility\ConvertFrom-Json
+                            if ($info.targetInfo.targetId -eq $Global:chromeSession.id) {
+                                $PSItem
+                            }
                         }
-                    } |
-                    Microsoft.PowerShell.Utility\Select-Object -First 1;
+                    }
+                    catch {
+                        Microsoft.PowerShell.Utility\Write-Verbose "Failed to create session for page: $($_.Exception.Message)"
+                    }
+                } |
+                Microsoft.PowerShell.Utility\Select-Object -First 1;
 
             # verify tab still exists
             $found = $null -ne $Global:chromeController

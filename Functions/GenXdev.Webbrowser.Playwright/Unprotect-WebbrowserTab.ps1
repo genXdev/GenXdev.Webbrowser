@@ -67,7 +67,7 @@ function Unprotect-WebbrowserTab {
             Microsoft.PowerShell.Utility\Write-Host 'Select to which browser tab you want to send commands to'
 
             # attempt to get list of available browser tabs
-            $null = GenXdev.Webbrowser\Select-WebbrowserTab -Force:$Force
+            GenXdev.Webbrowser\Select-WebbrowserTab -Force:$Force
 
             if ($Global:ChromeSessions.Length -eq 0) {
 
