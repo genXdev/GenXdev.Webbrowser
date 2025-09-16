@@ -1,3 +1,31 @@
+<##############################################################################
+Part of PowerShell module : GenXdev.Webbrowser
+Original cmdlet filename  : Open-Webbrowser.ps1
+Original author           : René Vaessen / GenXdev
+Version                   : 1.264.2025
+################################################################################
+MIT License
+
+Copyright 2021-2025 GenXdev
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+################################################################################>
 ###############################################################################
 <#
 .SYNOPSIS
@@ -231,7 +259,7 @@ function Open-Webbrowser {
         )]
         [Alias('Value', 'Uri', 'FullName', 'Website', 'WebsiteUrl')]
         [string[]] $Url,
-        ########################################################################
+        #######################################################################
         [Parameter(
             Mandatory = $false,
             Position = 1,
@@ -275,7 +303,8 @@ function Open-Webbrowser {
         #######################################################################
         [Parameter(
             Mandatory = $false,
-            HelpMessage = 'Force enable debugging port, stopping existing browsers if needed'
+            HelpMessage = ('Force enable debugging port, stopping existing ' +
+                'browsers if needed')
         )]
         [switch] $Force,
         #######################################################################
@@ -414,7 +443,6 @@ function Open-Webbrowser {
         )]
         [Alias('pt')]
         [switch]$PassThru,
-
         #######################################################################
         [Parameter(
             Mandatory = $false,
@@ -432,7 +460,9 @@ function Open-Webbrowser {
         #######################################################################
         [Parameter(
             Mandatory = $false,
-            HelpMessage = 'Position browser window either fullscreen on different monitor than PowerShell, or side by side with PowerShell on the same monitor.'
+            HelpMessage = ('Position browser window either fullscreen on ' +
+                'different monitor than PowerShell, or side by side with ' +
+                'PowerShell on the same monitor')
         )]
         [Alias('sbs')]
         [switch] $SideBySide,
@@ -446,21 +476,24 @@ function Open-Webbrowser {
         #######################################################################
         [Parameter(
             Mandatory = $false,
-            HelpMessage = 'Escape control characters and modifiers when sending keys'
+            HelpMessage = ('Escape control characters and modifiers when ' +
+                'sending keys')
         )]
         [Alias('Escape')]
         [switch] $SendKeyEscape,
         #######################################################################
         [Parameter(
             Mandatory = $false,
-            HelpMessage = 'Hold keyboard focus on target window when sending keys'
+            HelpMessage = ('Hold keyboard focus on target window when ' +
+                'sending keys')
         )]
         [Alias('HoldKeyboardFocus')]
         [switch] $SendKeyHoldKeyboardFocus,
         #######################################################################
         [Parameter(
             Mandatory = $false,
-            HelpMessage = 'Use Shift+Enter instead of Enter when sending keys'
+            HelpMessage = ('Use Shift+Enter instead of Enter when ' +
+                'sending keys')
         )]
         [Alias('UseShiftEnter')]
         [switch] $SendKeyUseShiftEnter,
@@ -482,15 +515,15 @@ function Open-Webbrowser {
         #######################################################################
         [Parameter(
             Mandatory = $false,
-            HelpMessage = ('Clear alternative settings stored in session for AI ' +
-                'preferences')
+            HelpMessage = ('Clear alternative settings stored in session for ' +
+                'AI preferences')
         )]
         [switch] $ClearSession,
         #######################################################################
         [Parameter(
             Mandatory = $false,
-            HelpMessage = ('Store settings only in persistent preferences without ' +
-                'affecting session')
+            HelpMessage = ('Store settings only in persistent preferences ' +
+                'without affecting session')
         )]
         [Alias('FromPreferences')]
         [switch] $SkipSession
@@ -516,9 +549,8 @@ function Open-Webbrowser {
                 })
 
         # output diagnostic information about the function call
-        Microsoft.PowerShell.Utility\Write-Verbose ('Open-Webbrowser ' +
-            "monitor = $Monitor, urls=$($Url |
-            Microsoft.PowerShell.Utility\ConvertTo-Json)")
+        Microsoft.PowerShell.Utility\Write-Verbose ("Open-Webbrowser " +
+            "monitor = $Monitor, urls=$($Url |Microsoft.PowerShell.Utility\ConvertTo-Json)")
 
         # track if url parameter was explicitly provided by user
         [bool] $urlSpecified = $true
@@ -581,28 +613,100 @@ function Open-Webbrowser {
                     $PSItem
                 });
 
-        if ($SideBySide) { $Monitor = -1 }
+        Microsoft.PowerShell.Utility\Write-Verbose ("Found $($allScreens.Count) " +
+            "monitors available for window positioning")
+
+        # copy window positioning parameters for later use
+        $wpparams = GenXdev.Helpers\Copy-IdenticalParamValues `
+            -BoundParameters $wbParams `
+            -FunctionName 'GenXdev.Windows\Set-WindowPosition'
+
+        Microsoft.PowerShell.Utility\Write-Verbose ("Window positioning " +
+            "parameters copied: $($wpparams.Keys -join ', ')")
+
+        # set default positioning behavior when no positioning parameters provided
+        if ($wpparams.Keys.Count -eq 0 -and -not $SideBySide) {
+
+            Microsoft.PowerShell.Utility\Write-Verbose ("No window positioning " +
+                "parameters provided, using defaults: SetForeground=true, " +
+                "RestoreFocus=true, Maximize=$($Monitor -ne -1)")
+            $SetForeground = $true
+            $wpparams.SetForeground = $true
+            $RestoreFocus = $true
+            $wpparams.RestoreFocus = $true
+            $Maximize = $Monitor -ne -1
+            $wpparams.Maximize = $Maximize
+        }
+
+        # determine if side-by-side positioning should be forced
+        $ForcedSideBySide = ($Monitor -eq -2) -and (
+               ($allScreens.Count -lt 2)  -or
+               (-not ($Global:DefaultSecondaryMonitor -is [int] -and ($Global:DefaultSecondaryMonitor -gt 0)))
+        )
+
+        if ($ForcedSideBySide) {
+
+            Microsoft.PowerShell.Utility\Write-Verbose ("Forcing side-by-side " +
+                "positioning: insufficient monitors ($($allScreens.Count)) or " +
+                "invalid DefaultSecondaryMonitor " +
+                "($Global:DefaultSecondaryMonitor)")
+        }
+
+        # configure side-by-side positioning if requested or forced
+        if ($SideBySide -or $ForcedSideBySide) {
+
+            Microsoft.PowerShell.Utility\Write-Verbose ("Configuring " +
+                "side-by-side positioning - PowerShell monitor: " +
+                "$($powerShellWindow.GetCurrentMonitor()), " +
+                "Browser monitor: $($powerShellWindow.GetCurrentMonitor() + 1)")
+
+            $SideBySide = $true
+            $wpparams.SideBySide = $true
+            $Monitor = $powerShellWindow.GetCurrentMonitor() + 1
+            $wpparams.Monitor = $Monitor
+            $RestoreFocus = $true
+            $wpparams.RestoreFocus = $true
+            $Maximize = $false
+            $wpparams.Maximize = $false
+            $FullScreen = $false
+            $wpparams.FullScreen = $false
+
+            if ($KeysToSend.Count -eq 1 -and $KeysToSend[0] -in @('f', '{F11}')) {
+                $KeysToSend = @()
+                if ($wpparams.ContainsKey('KeysToSend')) {
+                    $null = $wpparams.Remove('KeysToSend')
+                }
+            }
+        }
 
         # determine which monitor to use based on monitor parameter
         if ($Monitor -eq 0) {
 
             Microsoft.PowerShell.Utility\Write-Verbose ('Choosing primary ' +
                 'monitor, because default monitor requested using -Monitor 0')
+            Microsoft.PowerShell.Utility\Write-Verbose ("Primary monitor " +
+                "working area: $($screen.WorkingArea.Width)x" +
+                "$($screen.WorkingArea.Height) at " +
+                "($($screen.WorkingArea.X),$($screen.WorkingArea.Y))")
         }
         else {
 
             # check if secondary monitor was requested and global variable is set
-            if ($Monitor -eq -2 -and $Global:DefaultSecondaryMonitor -is [int] -and
+            if ((-not $SideBySide) -and $Monitor -eq -2 -and $Global:DefaultSecondaryMonitor -is [int] -and
                 $Global:DefaultSecondaryMonitor -ge 0) {
 
+                $selectedIndex = ($Global:DefaultSecondaryMonitor - 1) % $allScreens.Length
                 Microsoft.PowerShell.Utility\Write-Verbose ('Picking monitor ' +
-                    "$((($Global:DefaultSecondaryMonitor-1) % $allScreens.Length)) " +
-                    'as secondary (requested with -monitor -2) set by ' +
-                    "`$Global:DefaultSecondaryMonitor")
-                $screen = $allScreens[($Global:DefaultSecondaryMonitor - 1) %
-                $allScreens.Length]
+                    "$selectedIndex as secondary (requested with -monitor -2) " +
+                    "set by `$Global:DefaultSecondaryMonitor=" +
+                    "$Global:DefaultSecondaryMonitor")
+                $screen = $allScreens[$selectedIndex]
+                Microsoft.PowerShell.Utility\Write-Verbose ("Selected monitor " +
+                    "working area: $($screen.WorkingArea.Width)x" +
+                    "$($screen.WorkingArea.Height) at " +
+                    "($($screen.WorkingArea.X),$($screen.WorkingArea.Y))")
             }
-            elseif ($Monitor -eq -2 -and
+            elseif ((-not $SideBySide) -and $Monitor -eq -2 -and
                 (-not ($Global:DefaultSecondaryMonitor -is [int] -and
                     $Global:DefaultSecondaryMonitor -ge 0)) -and
                 ((GenXdev.Windows\Get-MonitorCount) -gt 1)) {
@@ -611,14 +715,23 @@ function Open-Webbrowser {
                         '#1 as default secondary (requested with -monitor -2), ' +
                         "because `$Global:DefaultSecondaryMonitor not set"))
                 $screen = $allScreens[1]
+                Microsoft.PowerShell.Utility\Write-Verbose ("Secondary monitor " +
+                    "working area: $($screen.WorkingArea.Width)x" +
+                    "$($screen.WorkingArea.Height) at " +
+                    "($($screen.WorkingArea.X),$($screen.WorkingArea.Y))")
             }
             # check if specific monitor number was requested
-            elseif ($Monitor -ge 1) {
+            elseif ((-not $SideBySide) -and $Monitor -ge 1) {
 
+                $selectedIndex = ($Monitor - 1) % $allScreens.Length
                 Microsoft.PowerShell.Utility\Write-Verbose ('Picking monitor ' +
-                    "#$(($Monitor - 1) % $allScreens.Length) as requested by " +
-                    'the -Monitor parameter')
-                $screen = $allScreens[($Monitor - 1) % $allScreens.Length]
+                    "#$selectedIndex as requested by the -Monitor parameter " +
+                    "($Monitor)")
+                $screen = $allScreens[$selectedIndex]
+                Microsoft.PowerShell.Utility\Write-Verbose ("Requested monitor " +
+                    "working area: $($screen.WorkingArea.Width)x" +
+                    "$($screen.WorkingArea.Height) at " +
+                    "($($screen.WorkingArea.X),$($screen.WorkingArea.Y))")
             }
             else {
                 try {
@@ -631,10 +744,18 @@ function Open-Webbrowser {
                     if ($SideBySide) {
 
                         $Monitor = [WpfScreenHelper.Screen]::AllScreens.indexOf($screen) + 1
+                        Microsoft.PowerShell.Utility\Write-Verbose ("Side-by-side " +
+                            "mode: adjusted Monitor to $Monitor")
                     }
+                    Microsoft.PowerShell.Utility\Write-Verbose ("PowerShell " +
+                        "monitor working area: $($screen.WorkingArea.Width)x" +
+                        "$($screen.WorkingArea.Height) at " +
+                        "($($screen.WorkingArea.X),$($screen.WorkingArea.Y))")
                 }
                 catch {
                     $screen = [WpfScreenHelper.Screen]::PrimaryScreen
+                    Microsoft.PowerShell.Utility\Write-Verbose ("Failed to detect " +
+                        "PowerShell monitor, using primary monitor")
                 }
             }
         }
@@ -645,22 +766,32 @@ function Open-Webbrowser {
                 (($X -is [int]) -and ($X -gt -999999)) -or
                 (($Y -is [int]) -and ($Y -gt -999999))))
 
-        # if ($havePositioning -and $Monitor -eq -1) {
-
-        #     $Monitor = 0
-        # }
+        Microsoft.PowerShell.Utility\Write-Verbose ("Window positioning " +
+            "required: $havePositioning (Monitor=$Monitor, Left=$Left, " +
+            "Right=$Right, Top=$Top, Bottom=$Bottom, Centered=$Centered, " +
+            "SideBySide=$SideBySide, Maximize=$Maximize, FullScreen=$FullScreen, " +
+            "X=$X, Y=$Y)")
 
         # initialize window x position based on parameters or screen defaults
         if (($X -le -999999) -or ($X -isnot [int])) {
 
             $X = $screen.WorkingArea.X
+            Microsoft.PowerShell.Utility\Write-Verbose ("Using default X " +
+                "position: $X (screen working area left)")
         }
         else {
 
             # adjust x position relative to selected monitor if monitor specified
             if ($Monitor -ge 0) {
 
+                $originalX = $X
                 $X = $screen.WorkingArea.X + $X
+                Microsoft.PowerShell.Utility\Write-Verbose ("Adjusted X " +
+                    "position from $originalX to $X (relative to monitor)")
+            }
+            else {
+                Microsoft.PowerShell.Utility\Write-Verbose ("Using absolute X " +
+                    "position: $X")
             }
         }
 
@@ -668,13 +799,22 @@ function Open-Webbrowser {
         if (($Y -le -999999) -or ($Y -isnot [int])) {
 
             $Y = $screen.WorkingArea.Y
+            Microsoft.PowerShell.Utility\Write-Verbose ("Using default Y " +
+                "position: $Y (screen working area top)")
         }
         else {
 
             # adjust y position relative to selected monitor if monitor specified
             if ($Monitor -ge 0) {
 
+                $originalY = $Y
                 $Y = $screen.WorkingArea.Y + $Y
+                Microsoft.PowerShell.Utility\Write-Verbose ("Adjusted Y " +
+                    "position from $originalY to $Y (relative to monitor)")
+            }
+            else {
+                Microsoft.PowerShell.Utility\Write-Verbose ("Using absolute Y " +
+                    "position: $Y")
             }
         }
 
@@ -701,41 +841,59 @@ function Open-Webbrowser {
         # configure window dimensions and positioning if positioning is required
         if ($havePositioning -or $FullScreen) {
 
+            Microsoft.PowerShell.Utility\Write-Verbose ("Configuring window " +
+                "positioning - initial dimensions: ${Width}x${Height}")
+
             # check if width parameter was explicitly provided
             $widthProvided = ($Width -gt 0) -and ($Width -is [int])
 
             # check if height parameter was explicitly provided
             $heightProvided = ($Height -gt 0) -and ($Height -is [int])
 
+            Microsoft.PowerShell.Utility\Write-Verbose ("Width provided by " +
+                "user: $widthProvided, Height provided by user: $heightProvided")
+
             # set default width if not provided by user
             if ($widthProvided -eq $false) {
 
                 $Width = $screen.WorkingArea.Width
+                Microsoft.PowerShell.Utility\Write-Verbose ("Using default " +
+                    "width: $Width (full screen working area)")
             }
 
             # set default height if not provided by user
             if ($heightProvided -eq $false) {
 
                 $Height = $screen.WorkingArea.Height
+                Microsoft.PowerShell.Utility\Write-Verbose ("Using default " +
+                    "height: $Height (full screen working area)")
             }
 
             # configure window position and size for left side placement
             if ($Left -eq $true) {
 
+                Microsoft.PowerShell.Utility\Write-Verbose ("Configuring LEFT " +
+                    "side positioning")
                 $X = $screen.WorkingArea.X
 
                 # use half screen width if width not explicitly provided
                 if ($widthProvided -eq $false) {
 
                     $Width = [Math]::Min($screen.WorkingArea.Width / 2, $Width)
+                    Microsoft.PowerShell.Utility\Write-Verbose ("Left side: " +
+                        "using half width: $Width")
                 }
 
                 # use full screen height if height not explicitly provided
                 if ($heightProvided -eq $false) {
 
                     $Height = [Math]::Min($screen.WorkingArea.Height, $Height)
+                    Microsoft.PowerShell.Utility\Write-Verbose ("Left side: " +
+                        "using full height: $Height")
                 }
                 $Y = $screen.WorkingArea.Y
+                Microsoft.PowerShell.Utility\Write-Verbose ("Left side final " +
+                    "position: ${Width}x${Height} at ($X,$Y)")
             }
 
             # configure window position and size for right side placement
@@ -818,7 +976,7 @@ function Open-Webbrowser {
     ########################################################################
     process {
 
-        ####################################################################
+        #######################################################################
         <#
         .SYNOPSIS
         Ensures minimum delay between browser window close and open operations.
@@ -855,7 +1013,7 @@ function Open-Webbrowser {
             }
         }
 
-        ####################################################################
+        #######################################################################
         <#
         .SYNOPSIS
         Constructs browser-specific command line arguments.
@@ -1072,7 +1230,7 @@ function Open-Webbrowser {
             $argumentList
         }
 
-        ####################################################################
+        #######################################################################
         <#
         .SYNOPSIS
         Finds and returns the browser process and main window.
@@ -1151,7 +1309,7 @@ function Open-Webbrowser {
             }
         }
 
-        ####################################################################
+        #######################################################################
         <#
         .SYNOPSIS
         Sends keystrokes to the browser window if specified.
@@ -1167,7 +1325,7 @@ function Open-Webbrowser {
         function sendKeysIfSpecified($window) {
             # send keys if specified, after a delay to ensure window is ready
             if ($null -ne $KeysToSend -and ($KeysToSend.Count -gt 0)) {
-                Microsoft.PowerShell.Utility\Write-Verbose 'Sending keystrokes to browser window after 4 second delay'
+                Microsoft.PowerShell.Utility\Write-Verbose ('Sending keystrokes to browser window after 4 second delay')
                 Microsoft.PowerShell.Utility\Start-Sleep 6
 
                 # copy key sending parameters
@@ -1179,13 +1337,13 @@ function Open-Webbrowser {
                     $invocationParams.WindowHandle = $window[0].Handle
                 }
 
-                $null = GenXdev.Windows\Send-Key @invocationParams
+                $null = GenXdev.Windows\Send-Key @invocationParams -SendKeyHoldKeyboardFocus
 
                 Microsoft.PowerShell.Utility\Start-Sleep 1
             }
         }
 
-        ####################################################################
+        #######################################################################
         <#
         .SYNOPSIS
         Opens a browser with the specified URL and configuration.
@@ -1387,19 +1545,11 @@ function Open-Webbrowser {
 
             # position browser window if we have a valid window handle
             if ($window.Length -eq 1) {
-                $params = GenXdev.Helpers\Copy-IdenticalParamValues `
-                    -BoundParameters $wbParams `
-                    -FunctionName 'GenXdev.Windows\Set-WindowPosition'
-
-                $params.WindowHelper = $window[0]
-                $params.Monitor = $Monitor
-
-                if ($params.ContainsKey('KeysToSend')) {
-
-                    $null = $params.Remove('KeysToSend')
+                if ($wpparams.ContainsKey('KeysToSend')) {
+                    $null = $wpparams.Remove('KeysToSend')
                 }
-
-                $null = GenXdev.Windows\Set-WindowPosition @params
+                $null = GenXdev.Windows\Set-WindowPosition @wpparams `
+                    -WindowHelper:$window[0]
             }
 
             # wait for window positioning to complete
@@ -1548,8 +1698,8 @@ function Open-Webbrowser {
                         'to browser window')
 
                     try {
+                        $null = $state.BrowserWindow.Focus()
                         $null = $state.BrowserWindow.Maximize()
-                        $null = $state.BrowserWindow.SetForeground()
                     }
                     catch {
                         # ignore window manipulation errors
@@ -1568,8 +1718,9 @@ function Open-Webbrowser {
                         $null = [System.Threading.Thread]::Sleep(500)
 
                         try {
+
+                            $null = $state.BrowserWindow.Focus()
                             $null = $state.BrowserWindow.Maximize()
-                            $null = $state.BrowserWindow.SetForeground()
                         }
                         catch {
                             # ignore window manipulation errors
@@ -1629,23 +1780,7 @@ function Open-Webbrowser {
         # restore powershell window focus if requested
         if ($RestoreFocus) {
 
-            # get reference to powershell main window
-            $powerShellWindow = GenXdev.Windows\Get-PowershellMainWindow
-
-            # restore focus to powershell window if it exists
-            if ($null -ne $powerShellWindow) {
-
-                # wait briefly before restoring focus
-                $null = [System.Threading.Thread]::Sleep(500)
-
-                # show and bring powershell window to foreground
-                $null = $powerShellWindow.Show()
-                $null = $powerShellWindow.SetForeground()
-
-                # ensure powershell window receives focus
-                $null = GenXdev.Windows\Set-ForegroundWindow `
-                ($powerShellWindow.Handle)
-            }
+            GenXdev.Windows\Set-WindowPosition -SetForeground -FocusWindow
         }
     }
 }

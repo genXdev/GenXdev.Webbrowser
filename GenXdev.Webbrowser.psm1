@@ -30,6 +30,7 @@ if ($major -ne 10) {
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser\Invoke-WebbrowserEvaluation.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser\Open-BrowserBookmarks.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser\Open-Webbrowser.ps1"
+. "$PSScriptRoot\Functions\GenXdev.Webbrowser\Open-WebbrowserSideBySide.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser\Select-WebbrowserTab.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser\Set-BrowserVideoFullscreen.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser\Set-RemoteDebuggerPortInBrowserShortcuts.ps1"
