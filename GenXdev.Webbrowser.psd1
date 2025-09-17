@@ -12,7 +12,7 @@
 RootModule = 'GenXdev.Webbrowser.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.272.2025'
+ModuleVersion = '1.274.2025'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Core'
@@ -51,7 +51,7 @@ ClrVersion = '9.0.0.1'
 ProcessorArchitecture = 'Amd64'
 
 # Modules that must be imported into the global environment prior to importing this module
-RequiredModules = @(@{ModuleName = 'GenXdev.Windows'; ModuleVersion = '1.272.2025'; })
+RequiredModules = @(@{ModuleName = 'GenXdev.Windows'; ModuleVersion = '1.274.2025'; })
 
 # Assemblies that must be loaded prior to importing this module
 # RequiredAssemblies = @()
@@ -110,10 +110,10 @@ FileList = 'GenXdev.Webbrowser.Playwright.psm1', 'GenXdev.Webbrowser.psd1',
                'Functions\GenXdev.Webbrowser.Playwright\Connect-PlaywrightViaDebuggingPort.ps1', 
                'Functions\GenXdev.Webbrowser.Playwright\Get-PlaywrightProfileDirectory.ps1', 
                'Functions\GenXdev.Webbrowser.Playwright\Resume-WebbrowserTabVideo.ps1', 
-               'Functions\GenXdev.Webbrowser.Playwright\Stop-WebbrowserVideos.ps1', 
-               'Functions\GenXdev.Webbrowser.Playwright\Unprotect-WebbrowserTab.ps1', 
                'Functions\GenXdev.Webbrowser\Approve-FirefoxDebugging.ps1', 
+               'Functions\GenXdev.Webbrowser.Playwright\Stop-WebbrowserVideos.ps1', 
                'Functions\GenXdev.Webbrowser\Clear-WebbrowserTabSiteApplicationData.ps1', 
+               'Functions\GenXdev.Webbrowser.Playwright\Unprotect-WebbrowserTab.ps1', 
                'Functions\GenXdev.Webbrowser\Close-Webbrowser.ps1', 
                'Functions\GenXdev.Webbrowser\Close-WebbrowserTab.ps1', 
                'Functions\GenXdev.Webbrowser\Export-BrowserBookmarks.ps1', 
