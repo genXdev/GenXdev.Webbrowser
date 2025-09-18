@@ -1234,7 +1234,7 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-NoAutoSelectTab
 
 ### SYNTAX 
 ```PowerShell 
-Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count] <int>] [-Edge] [-Chrome] [-Firefox] [-Monitor <int>] [-Private] [-Force] [-FullScreen] [-ShowWindow] [-Width <int>] [-Height <int>] [-X <int>] [-Y <int>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-AcceptLang <string>] [-KeysToSend <string[]>] [-FocusWindow] [-SetForeground] [-Maximize] [-RestoreFocus] [-NewWindow] [-Chromium] [-All] [-DisablePopupBlocker] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus] [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds <int>] [-NoBorders] [-SideBySide] [-SessionOnly] [-ClearSession] [-SkipSession] [<CommonParameters>] 
+Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count] <int>] [-Edge] [-Chrome] [-Firefox] [-Monitor <int>] [-SideBySide] [-Private] [-Force] [-FullScreen] [-ShowWindow] [-Width <int>] [-Height <int>] [-X <int>] [-Y <int>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-AcceptLang <string>] [-KeysToSend <string[]>] [-FocusWindow] [-SetForeground] [-Minimize] [-Maximize] [-RestoreFocus] [-NewWindow] [-Chromium] [-All] [-DisablePopupBlocker] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus] [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds <int>] [-NoBorders] [-SessionOnly] [-ClearSession] [-SkipSession] [<CommonParameters>] 
 ```` 
 
 ### PARAMETERS 
@@ -1409,6 +1409,15 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count] <int>] [-Edge] [-Chrome]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+    -Minimize  
+        Minimize the window after positioning  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
     -Monitor <int>  
         The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor  
         Required?                    false  
@@ -1536,7 +1545,7 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count] <int>] [-Edge] [-Chrome]
         Dynamic?                     false  
         Accept wildcard characters?  false  
     -ShowWindow  
-        Show the browser window (not minimized or hidden)  
+        Show the browser window (not 1d or hidden)  
         Required?                    false  
         Position?                    Named  
         Accept pipeline input?       false  
@@ -1545,7 +1554,7 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count] <int>] [-Edge] [-Chrome]
         Dynamic?                     false  
         Accept wildcard characters?  false  
     -SideBySide  
-        Position browser window either fullscreen on different monitor than PowerShell, or side by side with PowerShell on the same monitor.  
+        Will either set the window fullscreen on a different monitor than Powershell, or side by side with Powershell on the same monitor  
         Required?                    false  
         Position?                    Named  
         Accept pipeline input?       false  
@@ -4393,7 +4402,7 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>] [-Inspect] [-NoAutoSelectTab
 
 ### SYNTAX 
 ```PowerShell 
-Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count] <int>] [-Edge] [-Chrome] [-Firefox] [-Monitor <int>] [-Private] [-Force] [-FullScreen] [-ShowWindow] [-Width <int>] [-Height <int>] [-X <int>] [-Y <int>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-AcceptLang <string>] [-KeysToSend <string[]>] [-FocusWindow] [-SetForeground] [-Maximize] [-RestoreFocus] [-NewWindow] [-Chromium] [-All] [-DisablePopupBlocker] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus] [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds <int>] [-NoBorders] [-SideBySide] [-SessionOnly] [-ClearSession] [-SkipSession] [<CommonParameters>] 
+Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count] <int>] [-Edge] [-Chrome] [-Firefox] [-Monitor <int>] [-SideBySide] [-Private] [-Force] [-FullScreen] [-ShowWindow] [-Width <int>] [-Height <int>] [-X <int>] [-Y <int>] [-Left] [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode] [-NoBrowserExtensions] [-AcceptLang <string>] [-KeysToSend <string[]>] [-FocusWindow] [-SetForeground] [-Minimize] [-Maximize] [-RestoreFocus] [-NewWindow] [-Chromium] [-All] [-DisablePopupBlocker] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus] [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds <int>] [-NoBorders] [-SessionOnly] [-ClearSession] [-SkipSession] [<CommonParameters>] 
 ```` 
 
 ### PARAMETERS 
@@ -4568,6 +4577,15 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count] <int>] [-Edge] [-Chrome]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+    -Minimize  
+        Minimize the window after positioning  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
     -Monitor <int>  
         The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor  
         Required?                    false  
@@ -4695,7 +4713,7 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count] <int>] [-Edge] [-Chrome]
         Dynamic?                     false  
         Accept wildcard characters?  false  
     -ShowWindow  
-        Show the browser window (not minimized or hidden)  
+        Show the browser window (not 1d or hidden)  
         Required?                    false  
         Position?                    Named  
         Accept pipeline input?       false  
@@ -4704,7 +4722,7 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count] <int>] [-Edge] [-Chrome]
         Dynamic?                     false  
         Accept wildcard characters?  false  
     -SideBySide  
-        Position browser window either fullscreen on different monitor than PowerShell, or side by side with PowerShell on the same monitor.  
+        Will either set the window fullscreen on a different monitor than Powershell, or side by side with Powershell on the same monitor  
         Required?                    false  
         Position?                    Named  
         Accept pipeline input?       false  

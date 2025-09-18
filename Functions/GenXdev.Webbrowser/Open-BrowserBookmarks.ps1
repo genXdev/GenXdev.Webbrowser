@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Open-BrowserBookmarks.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.274.2025
+Version                   : 1.276.2025
 ################################################################################
 MIT License
 
@@ -62,6 +62,10 @@ The monitor to use for window placement:
 - -1 = Discard positioning
 - -2 = Configured secondary monitor
 
+.PARAMETER SideBySide
+Will either set the window fullscreen on a different monitor than Powershell, or
+side by side with Powershell on the same monitor
+
 .PARAMETER Private
 Opens bookmarks in private/incognito browsing mode.
 
@@ -118,6 +122,9 @@ Set the browser window to foreground after opening.
 
 .PARAMETER Maximize
 Maximize the browser window after positioning.
+
+.PARAMETER Minimize
+Minimize the browser window after positioning.
 
 .PARAMETER RestoreFocus
 Restores PowerShell window focus after opening bookmarks.
@@ -222,7 +229,15 @@ function Open-BrowserBookmarks {
         )]
         [Alias('m', 'mon')]
         [int] $Monitor = -1,
-
+        #######################################################################
+        [parameter(
+            Mandatory = $false,
+            HelpMessage = ('Will either set the window fullscreen on a different ' +
+                'monitor than Powershell, or side by side with Powershell on the ' +
+                'same monitor')
+        )]
+        [Alias('sbs')]
+        [switch]$SideBySide,
         #######################################################################
         [Parameter(
             Mandatory = $false,
@@ -249,24 +264,21 @@ function Open-BrowserBookmarks {
         [Alias('sw')]
         [Parameter(
             Mandatory = $false,
-            HelpMessage = 'Show the browser window (not minimized or hidden)'
+            HelpMessage = 'Show the browser window (not 1d or hidden)'
         )]
         [switch] $ShowWindow,
-
         #######################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = 'The initial width of the webbrowser window'
         )]
         [int] $Width = -1,
-
         #######################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = 'The initial height of the webbrowser window'
         )]
         [int] $Height = -1,
-
         #######################################################################
         [Parameter(
             Mandatory = $false,
@@ -361,25 +373,25 @@ function Open-BrowserBookmarks {
         )]
         [Alias('fg')]
         [switch] $SetForeground,
-
+        ########################################################################
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = 'Minimize the window after positioning'
+        )]
+        [switch] $Minimize,
         ########################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = 'Maximize the window after positioning'
         )]
         [switch] $Maximize,
-
         #######################################################################
-
-        ###############################################################################
-
         [Parameter(
             Mandatory = $false,
             HelpMessage = 'Restore PowerShell window focus'
         )]
         [Alias('rf', 'bg')]
         [switch] $RestoreFocus,
-
         #######################################################################
         [Alias('nw', 'new')]
         [Parameter(
@@ -410,7 +422,6 @@ function Open-BrowserBookmarks {
         [Alias('allowpopups')]
         [switch] $DisablePopupBlocker,
         #######################################################################
-        ###############################################################################
         [Alias('Escape')]
         [Parameter(
             Mandatory = $false,
@@ -418,7 +429,6 @@ function Open-BrowserBookmarks {
         )]
         [switch] $SendKeyEscape,
         #######################################################################
-        ###############################################################################
         [Alias('HoldKeyboardFocus')]
         [Parameter(
             Mandatory = $false,
@@ -427,7 +437,6 @@ function Open-BrowserBookmarks {
         )]
         [switch] $SendKeyHoldKeyboardFocus,
         #######################################################################
-        ###############################################################################
         [Alias('UseShiftEnter')]
         [Parameter(
             Mandatory = $false,
@@ -435,7 +444,7 @@ function Open-BrowserBookmarks {
                 'line breaks')
         )]
         [switch] $SendKeyUseShiftEnter,
-        ###############################################################################
+        #######################################################################
         [Alias('DelayMilliSeconds')]
         [Parameter(
             Mandatory = $false,
@@ -449,26 +458,16 @@ function Open-BrowserBookmarks {
         )]
         [Alias('nb')]
         [switch] $NoBorders,
-
-        #######################################################################
-        [Parameter(
-            HelpMessage = 'Position browser window either fullscreen on different monitor than PowerShell, or side by side with PowerShell on the same monitor.'
-        )]
-        [Alias('sbs')]
-        [switch] $SideBySide,
-
         #######################################################################
         [Parameter(
             HelpMessage = 'Use alternative settings stored in session for AI preferences'
         )]
         [switch] $SessionOnly,
-
         #######################################################################
         [Parameter(
             HelpMessage = 'Clear alternative settings stored in session for AI preferences'
         )]
         [switch] $ClearSession,
-
         #######################################################################
         [Parameter(
             HelpMessage = 'Store settings only in persistent preferences without affecting session'
