@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Set-WebbrowserTabLocation.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.284.2025
+Version                   : 1.286.2025
 ################################################################################
 MIT License
 

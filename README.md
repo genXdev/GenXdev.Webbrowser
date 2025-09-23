@@ -750,10 +750,48 @@ Get-EdgeRemoteDebuggingPort [<CommonParameters>]
 
 ### SYNTAX 
 ```PowerShell 
-Get-Webbrowser [<CommonParameters>] 
+Get-Webbrowser [<CommonParameters>]
+Get-Webbrowser [[-Edge]] [[-Chrome]] [[-Chromium]]
+    [[-Firefox]] [<CommonParameters>] 
 ```` 
 
 ### PARAMETERS 
+    -Chrome  
+        Selects Google Chrome browser instances  
+        Required?                    false  
+        Position?                    1  
+        Accept pipeline input?       false  
+        Parameter set name           Specific  
+        Aliases                      ch  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -Chromium  
+        Selects default chromium-based browser  
+        Required?                    false  
+        Position?                    2  
+        Accept pipeline input?       false  
+        Parameter set name           Specific  
+        Aliases                      c  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -Edge  
+        Selects Microsoft Edge browser instances  
+        Required?                    false  
+        Position?                    0  
+        Accept pipeline input?       false  
+        Parameter set name           Specific  
+        Aliases                      e  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -Firefox  
+        Selects Firefox browser instances  
+        Required?                    false  
+        Position?                    3  
+        Accept pipeline input?       false  
+        Parameter set name           Specific  
+        Aliases                      ff  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
     <CommonParameters>  
         This cmdlet supports the common parameters: Verbose, Debug,  
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
@@ -4027,10 +4065,48 @@ Get-EdgeRemoteDebuggingPort [<CommonParameters>]
 
 ### SYNTAX 
 ```PowerShell 
-Get-Webbrowser [<CommonParameters>] 
+Get-Webbrowser [<CommonParameters>]
+Get-Webbrowser [[-Edge]] [[-Chrome]] [[-Chromium]]
+    [[-Firefox]] [<CommonParameters>] 
 ```` 
 
 ### PARAMETERS 
+    -Chrome  
+        Selects Google Chrome browser instances  
+        Required?                    false  
+        Position?                    1  
+        Accept pipeline input?       false  
+        Parameter set name           Specific  
+        Aliases                      ch  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -Chromium  
+        Selects default chromium-based browser  
+        Required?                    false  
+        Position?                    2  
+        Accept pipeline input?       false  
+        Parameter set name           Specific  
+        Aliases                      c  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -Edge  
+        Selects Microsoft Edge browser instances  
+        Required?                    false  
+        Position?                    0  
+        Accept pipeline input?       false  
+        Parameter set name           Specific  
+        Aliases                      e  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -Firefox  
+        Selects Firefox browser instances  
+        Required?                    false  
+        Position?                    3  
+        Accept pipeline input?       false  
+        Parameter set name           Specific  
+        Aliases                      ff  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
     <CommonParameters>  
         This cmdlet supports the common parameters: Verbose, Debug,  
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,  

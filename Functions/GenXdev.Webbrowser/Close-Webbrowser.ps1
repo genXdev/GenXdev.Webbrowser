@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Close-Webbrowser.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.284.2025
+Version                   : 1.286.2025
 ################################################################################
 MIT License
 
@@ -126,7 +126,12 @@ function Close-Webbrowser {
 
     begin {
         # query system for installed browser information
-        $installedBrowsers = GenXdev.Webbrowser\Get-Webbrowser
+        $params = GenXdev.Helpers\Copy-IdenticalParamValues `
+            -BoundParameters $PSBoundParameters `
+            -FunctionName "GenXdev.Webbrowser\Get-Webbrowser" `
+            -DefaultValues (Get-Variable -Scope Local -ErrorAction SilentlyContinue)
+
+        $installedBrowsers = GenXdev.Webbrowser\Get-Webbrowser @params
 
         # determine system default browser
         $defaultBrowser = GenXdev.Webbrowser\Get-DefaultWebbrowser
@@ -210,7 +215,7 @@ function Close-Webbrowser {
         }
 
         # handle default chromium browser closure
-        if ($Chromium) {
+        if ($Chromium -and -not ($Chrome -or $Edge)) {
             if ($defaultBrowser.Name -like '*Chrome*' -or
                 $defaultBrowser.Name -like '*Edge*') {
 

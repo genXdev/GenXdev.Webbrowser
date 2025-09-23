@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Get-Webbrowser.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.284.2025
+Version                   : 1.286.2025
 ################################################################################
 MIT License
 
@@ -58,9 +58,46 @@ Requires Windows 10 or later Operating System
 #>
 function Get-Webbrowser {
 
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'Default', SupportsShouldProcess = $false, ConfirmImpact = 'None')]
     [OutputType([System.Collections.Hashtable[]])]
-    param()
+    param(
+         ########################################################################
+        [Alias('e')]
+        [parameter(
+            Mandatory = $false,
+            Position = 0,
+            ParameterSetName = 'Specific',
+            HelpMessage = 'Selects Microsoft Edge browser instances'
+        )]
+        [switch] $Edge,
+        ########################################################################
+        [Alias('ch')]
+        [parameter(
+            Mandatory = $false,
+            Position = 1,
+            ParameterSetName = 'Specific',
+            HelpMessage = 'Selects Google Chrome browser instances'
+        )]
+        [switch] $Chrome,
+        ########################################################################
+        [Alias('c')]
+        [parameter(
+            Mandatory = $false,
+            Position = 2,
+            ParameterSetName = 'Specific',
+            HelpMessage = 'Selects default chromium-based browser'
+        )]
+        [switch] $Chromium,
+        ########################################################################
+        [Alias('ff')]
+        [parameter(
+            Mandatory = $false,
+            Position = 3,
+            ParameterSetName = 'Specific',
+            HelpMessage = 'Selects Firefox browser instances'
+        )]
+        [switch] $Firefox
+    )
 
     begin {
         # ensure the HKEY_CURRENT_USER registry drive is mounted
@@ -122,6 +159,23 @@ function Get-Webbrowser {
                                 Icon             = $capabilities.ApplicationIcon
                                 Path             = $browserPath
                                 IsDefaultBrowser = $isDefault
+                            } | Where-Object {
+
+                                $IsEdge = ($capabilities.ApplicationName -like '*Edge*');
+                                $IsChrome = ($capabilities.ApplicationName -like '*Chrome*');
+                                $IsFirefox = ($capabilities.ApplicationName -like '*Firefox*');
+                                $IsChromium = $IsEdge -or $IsChrome;
+
+                                # if no specific browser is requested, return all
+                                # filter results based on parameters
+                                ($PSCmdlet.ParameterSetName -eq 'Specific' -and
+                                    ( ($Edge -and $IsEdge) -or
+                                      ($Chrome -and $IsChrome) -or
+                                      ($Chromium -and $IsChromium) -or
+                                      ($Firefox -and $IsFirefox)
+                                    )
+                                ) -or
+                                ($PSCmdlet.ParameterSetName -eq 'Default' )
                             }
                         }
                     }
