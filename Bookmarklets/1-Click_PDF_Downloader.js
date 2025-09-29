@@ -1,0 +1,1 @@
+void(document.location.href='https://v2.convertapi.com/web/to/pdf?download=attachment&secret=5LIWRmsz4uKJCITZ&url=%27+encodeURIComponent(location.href));

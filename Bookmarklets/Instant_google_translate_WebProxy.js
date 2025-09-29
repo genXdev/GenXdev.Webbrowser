@@ -1,0 +1,1 @@
+void(document.location.href='https://translate.google.co.in/translate?hl=en&sl=auto&tl=en&u=%27+location.href);

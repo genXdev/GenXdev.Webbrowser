@@ -228,6 +228,7 @@ Update-Module
 | [Get-Webbrowser](#get-webbrowser) | &nbsp; | Returns a collection of installed modern web browsers. |
 | [Get-WebbrowserTabDomNodes](#get-webbrowsertabdomnodes) | wl | Queries and manipulates DOM nodes in the active browser tab using CSS selectors. |
 | [Import-BrowserBookmarks](#import-browserbookmarks) | &nbsp; | Imports bookmarks from a file or collection into a web browser. |
+| [Import-GenXdevBookmarkletMenu](#import-genxdevbookmarkletmenu) | &nbsp; | Imports GenXdev JavaScript bookmarklets into browser bookmark collections. |
 | [Invoke-WebbrowserEvaluation](#invoke-webbrowserevaluation) | et, Eval | Executes JavaScript code in a selected web browser tab. |
 | [Open-BrowserBookmarks](#open-browserbookmarks) | sites | Opens browser bookmarks that match specified search criteria. |
 | [Open-Webbrowser](#open-webbrowser) | wb | Opens URLs in one or more browser windows with optional positioning and styling. |
@@ -980,6 +981,83 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
 <br/><hr/><br/>
  
 
+##	Import-GenXdevBookmarkletMenu 
+```PowerShell 
+
+   Import-GenXdevBookmarkletMenu  
+```` 
+
+### SYNTAX 
+```PowerShell 
+Import-GenXdevBookmarkletMenu [[-SnippetsPath] <string>]
+    [[-TargetFolder] <string>] [-Edge] [-Chrome] [-Firefox]
+    [-WhatIf] [<CommonParameters>] 
+```` 
+
+### PARAMETERS 
+    -Chrome  
+        Import bookmarklets into Google Chrome browser  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -Edge  
+        Import bookmarklets into Microsoft Edge browser  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -Firefox  
+        Import bookmarklets into Mozilla Firefox browser  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -SnippetsPath <string>  
+        Path to directory containing bookmarklet snippet files  
+        Required?                    false  
+        Position?                    0  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -TargetFolder <string>  
+        Target bookmark folder in browser bookmark structure  
+        Required?                    false  
+        Position?                    1  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -WhatIf  
+        Preview import operation without making changes  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    <CommonParameters>  
+        This cmdlet supports the common parameters: Verbose, Debug,  
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+
+<br/><hr/><br/>
+ 
+
 ##	Invoke-WebbrowserEvaluation 
 ```PowerShell 
 
@@ -1700,11 +1778,11 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
 ### SYNTAX 
 ```PowerShell 
 Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
-    [-Width <int>] [-Height <int>] [-X <int>] [-Y <int>]
-    [-AcceptLang <string>] [-Force] [-Edge] [-Chrome]
-    [-Chromium] [-Firefox] [-All] [-Left] [-Right] [-Top]
-    [-Bottom] [-Centered] [-FullScreen] [-Private]
-    [-ApplicationMode] [-NoBrowserExtensions]
+    [-Input <string>] [-Width <int>] [-Height <int>] [-X
+    <int>] [-Y <int>] [-AcceptLang <string>] [-Force]
+    [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Left]
+    [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen]
+    [-Private] [-ApplicationMode] [-NoBrowserExtensions]
     [-DisablePopupBlocker] [-NewWindow] [-FocusWindow]
     [-SetForeground] [-Maximize] [-PassThru] [-NoBorders]
     [-RestoreFocus] [-SideBySide] [-KeysToSend <string[]>]
@@ -1848,6 +1926,15 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Accept pipeline input?       false  
         Parameter set name           (All)  
         Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -Input <string>  
+        The URLs to open in the browser  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       true (ByValue, ByPropertyName)  
+        Parameter set name           (All)  
+        Aliases                      Value, Uri, FullName, Website, WebsiteUrl  
         Dynamic?                     false  
         Accept wildcard characters?  false  
     -KeysToSend <string[]>  
@@ -2034,9 +2121,9 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         The URLs to open in the browser  
         Required?                    false  
         Position?                    0  
-        Accept pipeline input?       true (ByValue)  
+        Accept pipeline input?       false  
         Parameter set name           (All)  
-        Aliases                      Value, Uri, FullName, Website, WebsiteUrl  
+        Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
     -Width <int>  
@@ -4295,6 +4382,83 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
 <br/><hr/><br/>
  
 
+##	Import-GenXdevBookmarkletMenu 
+```PowerShell 
+
+   Import-GenXdevBookmarkletMenu  
+```` 
+
+### SYNTAX 
+```PowerShell 
+Import-GenXdevBookmarkletMenu [[-SnippetsPath] <string>]
+    [[-TargetFolder] <string>] [-Edge] [-Chrome] [-Firefox]
+    [-WhatIf] [<CommonParameters>] 
+```` 
+
+### PARAMETERS 
+    -Chrome  
+        Import bookmarklets into Google Chrome browser  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -Edge  
+        Import bookmarklets into Microsoft Edge browser  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -Firefox  
+        Import bookmarklets into Mozilla Firefox browser  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -SnippetsPath <string>  
+        Path to directory containing bookmarklet snippet files  
+        Required?                    false  
+        Position?                    0  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -TargetFolder <string>  
+        Target bookmark folder in browser bookmark structure  
+        Required?                    false  
+        Position?                    1  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -WhatIf  
+        Preview import operation without making changes  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    <CommonParameters>  
+        This cmdlet supports the common parameters: Verbose, Debug,  
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+
+<br/><hr/><br/>
+ 
+
 ##	Invoke-WebbrowserEvaluation 
 ```PowerShell 
 
@@ -5015,11 +5179,11 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
 ### SYNTAX 
 ```PowerShell 
 Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
-    [-Width <int>] [-Height <int>] [-X <int>] [-Y <int>]
-    [-AcceptLang <string>] [-Force] [-Edge] [-Chrome]
-    [-Chromium] [-Firefox] [-All] [-Left] [-Right] [-Top]
-    [-Bottom] [-Centered] [-FullScreen] [-Private]
-    [-ApplicationMode] [-NoBrowserExtensions]
+    [-Input <string>] [-Width <int>] [-Height <int>] [-X
+    <int>] [-Y <int>] [-AcceptLang <string>] [-Force]
+    [-Edge] [-Chrome] [-Chromium] [-Firefox] [-All] [-Left]
+    [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen]
+    [-Private] [-ApplicationMode] [-NoBrowserExtensions]
     [-DisablePopupBlocker] [-NewWindow] [-FocusWindow]
     [-SetForeground] [-Maximize] [-PassThru] [-NoBorders]
     [-RestoreFocus] [-SideBySide] [-KeysToSend <string[]>]
@@ -5163,6 +5327,15 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Accept pipeline input?       false  
         Parameter set name           (All)  
         Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -Input <string>  
+        The URLs to open in the browser  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       true (ByValue, ByPropertyName)  
+        Parameter set name           (All)  
+        Aliases                      Value, Uri, FullName, Website, WebsiteUrl  
         Dynamic?                     false  
         Accept wildcard characters?  false  
     -KeysToSend <string[]>  
@@ -5349,9 +5522,9 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         The URLs to open in the browser  
         Required?                    false  
         Position?                    0  
-        Accept pipeline input?       true (ByValue)  
+        Accept pipeline input?       false  
         Parameter set name           (All)  
-        Aliases                      Value, Uri, FullName, Website, WebsiteUrl  
+        Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
     -Width <int>  

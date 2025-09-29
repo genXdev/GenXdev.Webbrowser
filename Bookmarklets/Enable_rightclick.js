@@ -1,0 +1,1 @@
+void(document.oncontextmenu=null)

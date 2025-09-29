@@ -27,6 +27,7 @@ if ($major -ne 10) {
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser\Get-Webbrowser.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser\Get-WebbrowserTabDomNodes.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser\Import-BrowserBookmarks.ps1"
+. "$PSScriptRoot\Functions\GenXdev.Webbrowser\Import-GenXdevBookmarkletMenu.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser\Invoke-WebbrowserEvaluation.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser\Open-BrowserBookmarks.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser\Open-Webbrowser.ps1"

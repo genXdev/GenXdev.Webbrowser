@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Close-Webbrowser.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.286.2025
+Version                   : 1.288.2025
 ################################################################################
 MIT License
 
@@ -129,7 +129,7 @@ function Close-Webbrowser {
         $params = GenXdev.Helpers\Copy-IdenticalParamValues `
             -BoundParameters $PSBoundParameters `
             -FunctionName "GenXdev.Webbrowser\Get-Webbrowser" `
-            -DefaultValues (Get-Variable -Scope Local -ErrorAction SilentlyContinue)
+            -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable -Scope Local -ErrorAction SilentlyContinue)
 
         $installedBrowsers = GenXdev.Webbrowser\Get-Webbrowser @params
 

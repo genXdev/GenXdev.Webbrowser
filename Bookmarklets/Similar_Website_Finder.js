@@ -1,0 +1,1 @@
+void(document.location.href='https://www.google.com/search?q=related:%27+location.href);

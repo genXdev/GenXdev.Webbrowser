@@ -1,0 +1,1 @@
+void(document.location.href='http://whois.domaintools.com/'+encodeURIComponent(location.href));

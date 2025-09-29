@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Open-Webbrowser.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.286.2025
+Version                   : 1.288.2025
 ################################################################################
 MIT License
 
@@ -253,12 +253,19 @@ function Open-Webbrowser {
         [Parameter(
             Mandatory = $false,
             Position = 0,
+            ValueFromPipeline = $false,
+            HelpMessage = 'The URLs to open in the browser'
+        )]
+        [string[]] $Url,
+        #######################################################################
+        [Parameter(
+            Mandatory = $false,
             ValueFromPipeline = $true,
-            ValueFromPipelineByPropertyName = $false,
+            ValueFromPipelineByPropertyName = $true,
             HelpMessage = 'The URLs to open in the browser'
         )]
         [Alias('Value', 'Uri', 'FullName', 'Website', 'WebsiteUrl')]
-        [string[]] $Url,
+        [string] $Input,
         #######################################################################
         [Parameter(
             Mandatory = $false,
@@ -532,6 +539,13 @@ function Open-Webbrowser {
 
     begin {
 
+        if ($null -eq $Url) {
+
+            $Url = @()
+        }
+
+        [System.Collections.Generic.List[string]] $UrlList = @($Url)
+
         # force new window creation if keystrokes need to be sent to browser
         if ($KeysToSend -and ($KeysToSend.Count -gt 0)) {
 
@@ -550,23 +564,23 @@ function Open-Webbrowser {
 
         # output diagnostic information about the function call
         Microsoft.PowerShell.Utility\Write-Verbose ("Open-Webbrowser " +
-            "monitor = $Monitor, urls=$($Url |Microsoft.PowerShell.Utility\ConvertTo-Json)")
+            "monitor = $Monitor, urls=$($UrlList |Microsoft.PowerShell.Utility\ConvertTo-Json)")
 
         # track if url parameter was explicitly provided by user
         [bool] $urlSpecified = $true
 
         # check if no url was specified by the user
-        if (($null -eq $Url) -or ($Url.Length -lt 1)) {
+        if (($null -eq $UrlList) -or ($UrlList.Length -lt 1)) {
 
             $urlSpecified = $false
 
             # show the default help page from github when no url provided
-            $Url = @('https://powershell.genxdev.net/')
+            $UrlList = @('https://powershell.genxdev.net/')
         }
         else {
 
             # process and normalize each url provided
-            $Url = $($Url |
+            $UrlList = $($UrlList |
                     Microsoft.PowerShell.Core\ForEach-Object {
 
                         # clean up url by trimming quotes and spaces
@@ -975,6 +989,16 @@ function Open-Webbrowser {
 
     ########################################################################
     process {
+
+        if ([string]::IsNullOrEmpty($Input)) { return }
+
+        $null = $UrlList.Add($_)
+    }
+
+    ########################################################################
+    end {
+
+        $Url = $UrlList.ToArray() | Microsoft.PowerShell.Utility\Select-Object -Unique
 
         #######################################################################
         <#
@@ -1729,6 +1753,12 @@ function Open-Webbrowser {
                         ($state.BrowserWindow.Handle)
 
                         $focusedWindowProcess = GenXdev.Windows\Get-CurrentFocusedProcess
+                        if ($null -eq $focusedWindowProcess) { break }
+
+                        if ($focusedWindowProcess.MainWindowHandle -ne $state.BrowserWindow.Handle) {
+
+                            $null = [System.Threading.Thread]::Sleep(500)
+                        }
                     }
                 }
                 else {
@@ -1749,7 +1779,14 @@ function Open-Webbrowser {
                         $null = [System.Threading.Thread]::Sleep(500)
 
                         $focusedWindowProcess = GenXdev.Windows\Get-CurrentFocusedProcess
+
                         $powershellWindow = GenXdev.Windows\Get-PowershellMainWindow
+                         if ($null -eq $focusedWindowProcess) { break }
+
+                        if ($null -ne $powershellWindow -and $focusedWindowProcess.MainWindowHandle -ne $powerShellWindow.Handle) {
+
+                            $null = [System.Threading.Thread]::Sleep(500)
+                        }
                     }
                 }
                 $w = (GenXdev.Windows\Get-PowershellMainWindow);
@@ -1772,15 +1809,11 @@ function Open-Webbrowser {
                 }
             }
         }
-    }
-
-    ########################################################################
-    end {
 
         # restore powershell window focus if requested
         if ($RestoreFocus) {
 
-            GenXdev.Windows\Set-WindowPosition -SetForeground -FocusWindow
+            GenXdev.Windows\Set-WindowPosition -SetForeground
         }
     }
 }
