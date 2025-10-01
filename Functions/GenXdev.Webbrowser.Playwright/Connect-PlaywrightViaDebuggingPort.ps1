@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser.Playwright
 Original cmdlet filename  : Connect-PlaywrightViaDebuggingPort.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.288.2025
+Version                   : 1.290.2025
 ################################################################################
 MIT License
 
@@ -39,15 +39,27 @@ Connects to an existing browser instance via debugging port.
 Establishes a connection to a running Chromium-based browser instance using the
 WebSocket debugger URL. Creates a Playwright instance and connects over CDP
 (Chrome DevTools Protocol). The connected browser instance is stored in a global
-dictionary for later reference.
+dictionary for later reference. Automatically handles consent for
+Microsoft.Playwright NuGet package installation.
 
 .PARAMETER WsEndpoint
 The WebSocket URL for connecting to the browser's debugging port. This URL
 typically follows the format 'ws://hostname:port/devtools/browser/<id>'.
 
+.PARAMETER ForceConsent
+Force consent for third-party software installation without prompting.
+
+.PARAMETER ConsentToThirdPartySoftwareInstallation
+Provide consent to third-party software installation.
+
 .EXAMPLE
 Connect-PlaywrightViaDebuggingPort `
     -WsEndpoint "ws://localhost:9222/devtools/browser/abc123"
+
+.EXAMPLE
+Connect-PlaywrightViaDebuggingPort `
+    -WsEndpoint "ws://localhost:9222/devtools/browser/abc123" `
+    -ConsentToThirdPartySoftwareInstallation
 ###############################################################################>
 function Connect-PlaywrightViaDebuggingPort {
 
@@ -61,7 +73,19 @@ function Connect-PlaywrightViaDebuggingPort {
             HelpMessage = 'WebSocket URL for browser debugging connection'
         )]
         [ValidateNotNullOrEmpty()]
-        [string]$WsEndpoint
+        [string]$WsEndpoint,
+        ########################################################################
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = 'Force consent for third-party software installation'
+        )]
+        [switch]$ForceConsent,
+        ########################################################################
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = 'Consent to third-party software installation'
+        )]
+        [switch]$ConsentToThirdPartySoftwareInstallation
         ########################################################################
     )
 
@@ -69,7 +93,15 @@ function Connect-PlaywrightViaDebuggingPort {
         # log connection attempt for debugging purposes
         Microsoft.PowerShell.Utility\Write-Verbose "Attempting to connect to browser at: $WsEndpoint"
 
-        GenXdev.Helpers\EnsureNuGetAssembly -PackageKey 'Microsoft.Playwright'
+        # prepare parameters for EnsureNuGetAssembly with embedded consent
+        $params = GenXdev.Helpers\Copy-IdenticalParamValues `
+            -BoundParameters $PSBoundParameters `
+            -FunctionName 'GenXdev.Helpers\EnsureNuGetAssembly' `
+            -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable -Scope Local -ErrorAction SilentlyContinue)
+
+        GenXdev.Helpers\EnsureNuGetAssembly -PackageKey 'Microsoft.Playwright' `
+            -Description 'Browser automation library required for connecting to browser instances via CDP' `
+            -Publisher 'Microsoft' @params
 
        $Global:GenXdevPlaywrightBrowserDictionary = $Global:GenXdevPlaywrightBrowserDictionary ?
        $Global:GenXdevPlaywrightBrowserDictionary :

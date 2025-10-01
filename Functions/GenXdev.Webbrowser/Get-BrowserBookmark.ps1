@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Get-BrowserBookmark.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.288.2025
+Version                   : 1.290.2025
 ################################################################################
 MIT License
 
@@ -35,7 +35,8 @@ Returns all bookmarks from installed web browsers.
 Retrieves bookmarks from Microsoft Edge, Google Chrome, or Mozilla Firefox
 browsers installed on the system. The function can filter by browser type and
 returns detailed bookmark information including name, URL, folder location, and
-timestamps.
+timestamps. Automatically handles consent for System.Data.SQLite NuGet package
+installation when reading Firefox bookmarks.
 
 .PARAMETER Chrome
 Retrieves bookmarks specifically from Google Chrome browser.
@@ -46,6 +47,12 @@ Retrieves bookmarks specifically from Microsoft Edge browser.
 .PARAMETER Firefox
 Retrieves bookmarks specifically from Mozilla Firefox browser.
 
+.PARAMETER ForceConsent
+Force consent for third-party software installation without prompting.
+
+.PARAMETER ConsentToThirdPartySoftwareInstallation
+Provide consent to third-party software installation.
+
 .EXAMPLE
 Get-BrowserBookmark -Edge | Format-Table Name, URL, Folder
 Returns Edge bookmarks formatted as a table showing name, URL and folder.
@@ -53,6 +60,10 @@ Returns Edge bookmarks formatted as a table showing name, URL and folder.
 .EXAMPLE
 gbm -Chrome | Where-Object URL -like "*github*"
 Returns Chrome bookmarks filtered to only show GitHub-related URLs.
+
+.EXAMPLE
+Get-BrowserBookmark -Firefox -ConsentToThirdPartySoftwareInstallation
+Returns Firefox bookmarks with automatic consent to SQLite package installation.
 #>
 function Get-BrowserBookmark {
 
@@ -84,12 +95,32 @@ function Get-BrowserBookmark {
             Position = 2,
             HelpMessage = 'Returns bookmarks from Mozilla Firefox'
         )]
-        [switch] $Firefox
+        [switch] $Firefox,
+        ########################################################################
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = 'Force consent for third-party software installation'
+        )]
+        [switch]$ForceConsent,
+        ########################################################################
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = 'Consent to third-party software installation'
+        )]
+        [switch]$ConsentToThirdPartySoftwareInstallation
     )
 
     begin {
-        # load SQLite client assembly
-        GenXdev.Helpers\EnsureNuGetAssembly -PackageKey 'System.Data.Sqlite'
+        # prepare parameters for EnsureNuGetAssembly with embedded consent
+        $params = GenXdev.Helpers\Copy-IdenticalParamValues `
+            -BoundParameters $PSBoundParameters `
+            -FunctionName 'GenXdev.Helpers\EnsureNuGetAssembly' `
+            -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable -Scope Local -ErrorAction SilentlyContinue)
+
+        # load SQLite client assembly with embedded consent
+        GenXdev.Helpers\EnsureNuGetAssembly -PackageKey 'System.Data.Sqlite' `
+            -Description 'Required for reading Firefox bookmark database files' `
+            -Publisher 'SQLite Development Team' @params
 
         # ensure filesystem module is loaded for path handling
         if (-not (Microsoft.PowerShell.Core\Get-Command -Name GenXdev.FileSystem\Expand-Path -ErrorAction SilentlyContinue)) {

@@ -578,9 +578,12 @@ Find-BrowserBookmark [[-Queries] <string[]>] [-Edge]
 
 ### SYNTAX 
 ```PowerShell 
-Get-BrowserBookmark [[-Chrome]] [[-Edge]]
+Get-BrowserBookmark [[-Chrome]] [[-Edge]] [-ForceConsent]
+    [-ConsentToThirdPartySoftwareInstallation]
     [<CommonParameters>]
 Get-BrowserBookmark [[-Chrome]] [[-Edge]] [[-Firefox]]
+    [-ForceConsent]
+    [-ConsentToThirdPartySoftwareInstallation]
     [<CommonParameters>] 
 ```` 
 
@@ -589,6 +592,15 @@ Get-BrowserBookmark [[-Chrome]] [[-Edge]] [[-Firefox]]
         Returns bookmarks from Google Chrome  
         Required?                    false  
         Position?                    0  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -ConsentToThirdPartySoftwareInstallation  
+        Consent to third-party software installation  
+        Required?                    false  
+        Position?                    Named  
         Accept pipeline input?       false  
         Parameter set name           (All)  
         Aliases                      None  
@@ -609,6 +621,15 @@ Get-BrowserBookmark [[-Chrome]] [[-Edge]] [[-Firefox]]
         Position?                    2  
         Accept pipeline input?       false  
         Parameter set name           Firefox  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -ForceConsent  
+        Force consent for third-party software installation  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
@@ -3478,6 +3499,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
 ### SYNTAX 
 ```PowerShell 
 Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String>
+    [-ForceConsent]
+    [-ConsentToThirdPartySoftwareInstallation]
     [<CommonParameters>] 
 ```` 
 
@@ -3485,7 +3508,8 @@ Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String>
     Establishes a connection to a running Chromium-based browser instance using the  
     WebSocket debugger URL. Creates a Playwright instance and connects over CDP  
     (Chrome DevTools Protocol). The connected browser instance is stored in a global  
-    dictionary for later reference.  
+    dictionary for later reference. Automatically handles consent for  
+    Microsoft.Playwright NuGet package installation.  
 
 ### PARAMETERS 
     -WsEndpoint <String>  
@@ -3494,6 +3518,22 @@ Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String>
         Required?                    true  
         Position?                    1  
         Default value                  
+        Accept pipeline input?       false  
+        Aliases                        
+        Accept wildcard characters?  false  
+    -ForceConsent [<SwitchParameter>]  
+        Force consent for third-party software installation without prompting.  
+        Required?                    false  
+        Position?                    named  
+        Default value                False  
+        Accept pipeline input?       false  
+        Aliases                        
+        Accept wildcard characters?  false  
+    -ConsentToThirdPartySoftwareInstallation [<SwitchParameter>]  
+        Provide consent to third-party software installation.  
+        Required?                    false  
+        Position?                    named  
+        Default value                False  
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
@@ -3979,9 +4019,12 @@ Find-BrowserBookmark [[-Queries] <string[]>] [-Edge]
 
 ### SYNTAX 
 ```PowerShell 
-Get-BrowserBookmark [[-Chrome]] [[-Edge]]
+Get-BrowserBookmark [[-Chrome]] [[-Edge]] [-ForceConsent]
+    [-ConsentToThirdPartySoftwareInstallation]
     [<CommonParameters>]
 Get-BrowserBookmark [[-Chrome]] [[-Edge]] [[-Firefox]]
+    [-ForceConsent]
+    [-ConsentToThirdPartySoftwareInstallation]
     [<CommonParameters>] 
 ```` 
 
@@ -3990,6 +4033,15 @@ Get-BrowserBookmark [[-Chrome]] [[-Edge]] [[-Firefox]]
         Returns bookmarks from Google Chrome  
         Required?                    false  
         Position?                    0  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -ConsentToThirdPartySoftwareInstallation  
+        Consent to third-party software installation  
+        Required?                    false  
+        Position?                    Named  
         Accept pipeline input?       false  
         Parameter set name           (All)  
         Aliases                      None  
@@ -4010,6 +4062,15 @@ Get-BrowserBookmark [[-Chrome]] [[-Edge]] [[-Firefox]]
         Position?                    2  
         Accept pipeline input?       false  
         Parameter set name           Firefox  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -ForceConsent  
+        Force consent for third-party software installation  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
@@ -6879,6 +6940,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
 ### SYNTAX 
 ```PowerShell 
 Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String>
+    [-ForceConsent]
+    [-ConsentToThirdPartySoftwareInstallation]
     [<CommonParameters>] 
 ```` 
 
@@ -6886,7 +6949,8 @@ Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String>
     Establishes a connection to a running Chromium-based browser instance using the  
     WebSocket debugger URL. Creates a Playwright instance and connects over CDP  
     (Chrome DevTools Protocol). The connected browser instance is stored in a global  
-    dictionary for later reference.  
+    dictionary for later reference. Automatically handles consent for  
+    Microsoft.Playwright NuGet package installation.  
 
 ### PARAMETERS 
     -WsEndpoint <String>  
@@ -6895,6 +6959,22 @@ Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String>
         Required?                    true  
         Position?                    1  
         Default value                  
+        Accept pipeline input?       false  
+        Aliases                        
+        Accept wildcard characters?  false  
+    -ForceConsent [<SwitchParameter>]  
+        Force consent for third-party software installation without prompting.  
+        Required?                    false  
+        Position?                    named  
+        Default value                False  
+        Accept pipeline input?       false  
+        Aliases                        
+        Accept wildcard characters?  false  
+    -ConsentToThirdPartySoftwareInstallation [<SwitchParameter>]  
+        Provide consent to third-party software installation.  
+        Required?                    false  
+        Position?                    named  
+        Default value                False  
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
