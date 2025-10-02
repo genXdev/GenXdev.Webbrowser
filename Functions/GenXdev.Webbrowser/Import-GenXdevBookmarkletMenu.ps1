@@ -82,7 +82,7 @@ Google Chrome without actually performing the import operation.
 #>
 function Import-GenXdevBookmarkletMenu {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
 
     param(
         ###############################################################################
@@ -116,13 +116,7 @@ function Import-GenXdevBookmarkletMenu {
             Mandatory = $false,
             HelpMessage = "Import bookmarklets into Mozilla Firefox browser"
         )]
-        [switch] $Firefox,
-        ###############################################################################
-        [Parameter(
-            Mandatory = $false,
-            HelpMessage = "Preview import operation without making changes"
-        )]
-        [switch] $WhatIf
+        [switch] $Firefox
         ###############################################################################
     )
 
@@ -218,17 +212,11 @@ function Import-GenXdevBookmarkletMenu {
                 }
             }
 
-        # handle preview mode when whatif parameter is specified
-        if ($WhatIf) {
-
-            Microsoft.PowerShell.Utility\Write-Host "`nBookmarks that would be imported:" -ForegroundColor Cyan
-
-            $bookmarksToImport |
-                Microsoft.PowerShell.Utility\Format-Table Name, URL, Folder -AutoSize
-
-            Microsoft.PowerShell.Utility\Write-Host (
-                "`nUse without -WhatIf to actually import these bookmarks"
-            ) -ForegroundColor Yellow
+        # check if user wants to proceed with the import operation
+        if (-not $PSCmdlet.ShouldProcess(
+            "Import $($bookmarksToImport.Count) bookmarklets to ${TargetFolder}",
+            "Import bookmarklets",
+            "Confirm Bookmarklet Import")) {
 
             return
         }
