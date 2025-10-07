@@ -1,8 +1,8 @@
-<##############################################################################
+﻿<##############################################################################
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Import-GenXdevBookmarkletMenu.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.292.2025
+Version                   : 1.296.2025
 ################################################################################
 MIT License
 
@@ -278,7 +278,7 @@ function Import-GenXdevBookmarkletMenu {
         $params = GenXdev.Helpers\Copy-IdenticalParamValues `
             -BoundParameters $PSBoundParameters `
             -FunctionName 'GenXdev.Webbrowser\Close-Webbrowser' `
-            -DefaultValues (Get-Variable -Scope Local -ErrorAction SilentlyContinue);
+            -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable -Scope Local -ErrorAction SilentlyContinue);
 
         GenXdev.Webbrowser\Close-Webbrowser @params
     }

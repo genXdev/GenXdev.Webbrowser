@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Open-Webbrowser.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.292.2025
+Version                   : 1.296.2025
 ################################################################################
 MIT License
 
@@ -660,11 +660,22 @@ function Open-Webbrowser {
             $Maximize = $Monitor -ne -1
             $wpparams.Maximize = $Maximize
         }
+        else {
+            Microsoft.PowerShell.Utility\Write-Verbose ("Window positioning " +
+                "parameters provided, using user settings")
+        }
 
         # determine if side-by-side positioning should be forced
+        [int] $setDefaultMonitor = $Global:DefaultSecondaryMonitor -is [int] ?
+            (
+                $Global:DefaultSecondaryMonitor
+            ):
+            2;
+
+        # determine if side-by-side mode should be forced due to monitor limitations
         $ForcedSideBySide = ($Monitor -eq -2) -and (
-               ($allScreens.Count -lt 2)  -or
-               (-not ($Global:DefaultSecondaryMonitor -is [int] -and ($Global:DefaultSecondaryMonitor -gt 0)))
+          ($allScreens.Count -lt 2)  -or
+               (-not ($setDefaultMonitor -is [int] -and ($setDefaultMonitor -gt 0)))
         )
 
         if ($ForcedSideBySide) {
@@ -672,7 +683,7 @@ function Open-Webbrowser {
             Microsoft.PowerShell.Utility\Write-Verbose ("Forcing side-by-side " +
                 "positioning: insufficient monitors ($($allScreens.Count)) or " +
                 "invalid DefaultSecondaryMonitor " +
-                "($Global:DefaultSecondaryMonitor)")
+                "($setDefaultMonitor)")
         }
 
         # configure side-by-side positioning if requested or forced
@@ -715,14 +726,14 @@ function Open-Webbrowser {
         else {
 
             # check if secondary monitor was requested and global variable is set
-            if ((-not $SideBySide) -and $Monitor -eq -2 -and $Global:DefaultSecondaryMonitor -is [int] -and
-                $Global:DefaultSecondaryMonitor -ge 0) {
+            if ((-not $SideBySide) -and $Monitor -eq -2 -and $setDefaultMonitor -is [int] -and
+                $setDefaultMonitor -ge 0) {
 
-                $selectedIndex = ($Global:DefaultSecondaryMonitor - 1) % $allScreens.Length
+                $selectedIndex = ($setDefaultMonitor - 1) % $allScreens.Length
                 Microsoft.PowerShell.Utility\Write-Verbose ('Picking monitor ' +
                     "$selectedIndex as secondary (requested with -monitor -2) " +
-                    "set by `$Global:DefaultSecondaryMonitor=" +
-                    "$Global:DefaultSecondaryMonitor")
+                    "set by `$setDefaultMonitor=" +
+                    "$setDefaultMonitor")
                 $screen = $allScreens[$selectedIndex]
                 Microsoft.PowerShell.Utility\Write-Verbose ("Selected monitor " +
                     "working area: $($screen.WorkingArea.Width)x" +
@@ -730,13 +741,13 @@ function Open-Webbrowser {
                     "($($screen.WorkingArea.X),$($screen.WorkingArea.Y))")
             }
             elseif ((-not $SideBySide) -and $Monitor -eq -2 -and
-                (-not ($Global:DefaultSecondaryMonitor -is [int] -and
-                    $Global:DefaultSecondaryMonitor -ge 0)) -and
+                (-not ($setDefaultMonitor -is [int] -and
+                    $setDefaultMonitor -ge 0)) -and
                 ((GenXdev.Windows\Get-MonitorCount) -gt 1)) {
 
                 Microsoft.PowerShell.Utility\Write-Verbose (('Picking monitor ' +
                         '#1 as default secondary (requested with -monitor -2), ' +
-                        "because `$Global:DefaultSecondaryMonitor not set"))
+                        "because `$setDefaultMonitor not set"))
                 $screen = $allScreens[1]
                 Microsoft.PowerShell.Utility\Write-Verbose ("Secondary monitor " +
                     "working area: $($screen.WorkingArea.Width)x" +

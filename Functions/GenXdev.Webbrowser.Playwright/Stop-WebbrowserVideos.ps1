@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser.Playwright
 Original cmdlet filename  : Stop-WebbrowserVideos.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.292.2025
+Version                   : 1.296.2025
 ################################################################################
 MIT License
 
