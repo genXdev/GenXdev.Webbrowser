@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Select-WebbrowserTab.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.290.2025
+Version                   : 1.292.2025
 ################################################################################
 MIT License
 
@@ -134,7 +134,10 @@ Gives focus to the browser window after opening.
 Brings the browser window to the foreground after opening.
 
 .PARAMETER Maximize
-Maximizes the browser window after positioning.
+Maximize the window after positioning
+
+.PARAMETER SetRestored
+Restore the window to normal state after positioning
 
 .PARAMETER KeysToSend
 Keystrokes to send to the browser window after opening.
@@ -392,6 +395,12 @@ function Select-WebbrowserTab {
             HelpMessage = 'Maximize the window after positioning'
         )]
         [switch] $Maximize,
+        ########################################################################
+        [Parameter(
+            Mandatory = $false,
+            HelpMessage = 'Restore the window to normal state after positioning'
+        )]
+        [switch] $SetRestored,
 
         ########################################################################
         [Parameter(

@@ -1012,7 +1012,7 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
 ```PowerShell 
 Import-GenXdevBookmarkletMenu [[-SnippetsPath] <string>]
     [[-TargetFolder] <string>] [-Edge] [-Chrome] [-Firefox]
-    [-WhatIf] [<CommonParameters>] 
+    [-WhatIf] [-Confirm] [<CommonParameters>] 
 ```` 
 
 ### PARAMETERS 
@@ -1023,6 +1023,14 @@ Import-GenXdevBookmarkletMenu [[-SnippetsPath] <string>]
         Accept pipeline input?       false  
         Parameter set name           (All)  
         Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -Confirm  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      cf  
         Dynamic?                     false  
         Accept wildcard characters?  false  
     -Edge  
@@ -1062,12 +1070,11 @@ Import-GenXdevBookmarkletMenu [[-SnippetsPath] <string>]
         Dynamic?                     false  
         Accept wildcard characters?  false  
     -WhatIf  
-        Preview import operation without making changes  
         Required?                    false  
         Position?                    Named  
         Accept pipeline input?       false  
         Parameter set name           (All)  
-        Aliases                      None  
+        Aliases                      wi  
         Dynamic?                     false  
         Accept wildcard characters?  false  
     <CommonParameters>  
@@ -1403,12 +1410,13 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
     [-Y <int>] [-Left] [-Right] [-Top] [-Bottom] [-Centered]
     [-ApplicationMode] [-NoBrowserExtensions] [-AcceptLang
     <string>] [-KeysToSend <string[]>] [-FocusWindow]
-    [-SetForeground] [-Minimize] [-Maximize] [-RestoreFocus]
-    [-NewWindow] [-Chromium] [-All] [-DisablePopupBlocker]
-    [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
-    [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
-    <int>] [-NoBorders] [-SessionOnly] [-ClearSession]
-    [-SkipSession] [<CommonParameters>] 
+    [-SetForeground] [-Minimize] [-Maximize] [-SetRestored]
+    [-RestoreFocus] [-NewWindow] [-Chromium] [-All]
+    [-DisablePopupBlocker] [-SendKeyEscape]
+    [-SendKeyHoldKeyboardFocus] [-SendKeyUseShiftEnter]
+    [-SendKeyDelayMilliSeconds <int>] [-NoBorders]
+    [-SessionOnly] [-ClearSession] [-SkipSession]
+    [<CommonParameters>] 
 ```` 
 
 ### PARAMETERS 
@@ -1718,6 +1726,15 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      fg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+    -SetRestored  
+        Restore the window to normal state after positioning  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
     -ShowWindow  
         Show the browser window (not 1d or hidden)  
         Required?                    false  
@@ -1805,9 +1822,9 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
     [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen]
     [-Private] [-ApplicationMode] [-NoBrowserExtensions]
     [-DisablePopupBlocker] [-NewWindow] [-FocusWindow]
-    [-SetForeground] [-Maximize] [-PassThru] [-NoBorders]
-    [-RestoreFocus] [-SideBySide] [-KeysToSend <string[]>]
-    [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
+    [-SetForeground] [-Maximize] [-SetRestored] [-PassThru]
+    [-NoBorders] [-RestoreFocus] [-SideBySide] [-KeysToSend
+    <string[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
     [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
     <int>] [-SessionOnly] [-ClearSession] [-SkipSession]
     [<CommonParameters>] 
@@ -2111,6 +2128,15 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      fg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+    -SetRestored  
+        Restore the window to normal state after positioning  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
     -SideBySide  
         Position browser window either fullscreen on different monitor than PowerShell, or side by side with PowerShell on the same monitor  
         Required?                    false  
@@ -2198,9 +2224,9 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
     [-Bottom] [-Centered] [-FullScreen] [-Private]
     [-ApplicationMode] [-NoBrowserExtensions]
     [-DisablePopupBlocker] [-NewWindow] [-FocusWindow]
-    [-SetForeground] [-Maximize] [-PassThru] [-NoBorders]
-    [-RestoreFocus] [-SideBySide] [-KeysToSend <string[]>]
-    [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
+    [-SetForeground] [-Maximize] [-SetRestored] [-PassThru]
+    [-NoBorders] [-RestoreFocus] [-SideBySide] [-KeysToSend
+    <string[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
     [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
     <int>] [-SessionOnly] [-ClearSession] [-SkipSession]
     [<CommonParameters>] 
@@ -2495,6 +2521,15 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      fg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+    -SetRestored  
+        Restore the window to normal state after positioning  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
     -SideBySide  
         Position browser window either fullscreen on different monitor than PowerShell, or side by side with PowerShell on the same monitor  
         Required?                    false  
@@ -2582,8 +2617,8 @@ Select-WebbrowserTab [[-Id] <int>] [-Monitor <int>] [-Width
     [-Bottom] [-Centered] [-ApplicationMode]
     [-NoBrowserExtensions] [-DisablePopupBlocker]
     [-RestoreFocus] [-NewWindow] [-FocusWindow]
-    [-SetForeground] [-Maximize] [-KeysToSend <string[]>]
-    [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
+    [-SetForeground] [-Maximize] [-SetRestored] [-KeysToSend
+    <string[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
     [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
     <int>] [-Edge] [-Chrome] [-Force] [<CommonParameters>]
 Select-WebbrowserTab [-Name] <string> [-Monitor <int>]
@@ -2593,8 +2628,8 @@ Select-WebbrowserTab [-Name] <string> [-Monitor <int>]
     [-Bottom] [-Centered] [-ApplicationMode]
     [-NoBrowserExtensions] [-DisablePopupBlocker]
     [-RestoreFocus] [-NewWindow] [-FocusWindow]
-    [-SetForeground] [-Maximize] [-KeysToSend <string[]>]
-    [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
+    [-SetForeground] [-Maximize] [-SetRestored] [-KeysToSend
+    <string[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
     [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
     <int>] [-Edge] [-Chrome] [-Force] [<CommonParameters>]
 Select-WebbrowserTab -ByReference <psobject> [-Monitor
@@ -2604,8 +2639,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
     [-Bottom] [-Centered] [-ApplicationMode]
     [-NoBrowserExtensions] [-DisablePopupBlocker]
     [-RestoreFocus] [-NewWindow] [-FocusWindow]
-    [-SetForeground] [-Maximize] [-KeysToSend <string[]>]
-    [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
+    [-SetForeground] [-Maximize] [-SetRestored] [-KeysToSend
+    <string[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
     [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
     <int>] [-Edge] [-Chrome] [-Force] [<CommonParameters>] 
 ```` 
@@ -2890,6 +2925,15 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      fg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+    -SetRestored  
+        Restore the window to normal state after positioning  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
     -Top  
         Place browser window on the top side of the screen  
         Required?                    false  
@@ -3125,8 +3169,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
     [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode]
     [-NoBrowserExtensions] [-DisablePopupBlocker]
     [-RestoreFocus] [-NewWindow] [-FocusWindow]
-    [-SetForeground] [-Maximize] [-KeysToSend <string[]>]
-    [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
+    [-SetForeground] [-Maximize] [-SetRestored] [-KeysToSend
+    <string[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
     [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
     <int>] [-NoBorders] [-SideBySide] [-SessionOnly]
     [-ClearSession] [-SkipSession] [<CommonParameters>] 
@@ -3410,6 +3454,15 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Accept pipeline input?       false  
         Parameter set name           (All)  
         Aliases                      fg  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -SetRestored  
+        Restore the window to normal state after positioning  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
     -SideBySide  
@@ -4453,7 +4506,7 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
 ```PowerShell 
 Import-GenXdevBookmarkletMenu [[-SnippetsPath] <string>]
     [[-TargetFolder] <string>] [-Edge] [-Chrome] [-Firefox]
-    [-WhatIf] [<CommonParameters>] 
+    [-WhatIf] [-Confirm] [<CommonParameters>] 
 ```` 
 
 ### PARAMETERS 
@@ -4464,6 +4517,14 @@ Import-GenXdevBookmarkletMenu [[-SnippetsPath] <string>]
         Accept pipeline input?       false  
         Parameter set name           (All)  
         Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -Confirm  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      cf  
         Dynamic?                     false  
         Accept wildcard characters?  false  
     -Edge  
@@ -4503,12 +4564,11 @@ Import-GenXdevBookmarkletMenu [[-SnippetsPath] <string>]
         Dynamic?                     false  
         Accept wildcard characters?  false  
     -WhatIf  
-        Preview import operation without making changes  
         Required?                    false  
         Position?                    Named  
         Accept pipeline input?       false  
         Parameter set name           (All)  
-        Aliases                      None  
+        Aliases                      wi  
         Dynamic?                     false  
         Accept wildcard characters?  false  
     <CommonParameters>  
@@ -4844,12 +4904,13 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
     [-Y <int>] [-Left] [-Right] [-Top] [-Bottom] [-Centered]
     [-ApplicationMode] [-NoBrowserExtensions] [-AcceptLang
     <string>] [-KeysToSend <string[]>] [-FocusWindow]
-    [-SetForeground] [-Minimize] [-Maximize] [-RestoreFocus]
-    [-NewWindow] [-Chromium] [-All] [-DisablePopupBlocker]
-    [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
-    [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
-    <int>] [-NoBorders] [-SessionOnly] [-ClearSession]
-    [-SkipSession] [<CommonParameters>] 
+    [-SetForeground] [-Minimize] [-Maximize] [-SetRestored]
+    [-RestoreFocus] [-NewWindow] [-Chromium] [-All]
+    [-DisablePopupBlocker] [-SendKeyEscape]
+    [-SendKeyHoldKeyboardFocus] [-SendKeyUseShiftEnter]
+    [-SendKeyDelayMilliSeconds <int>] [-NoBorders]
+    [-SessionOnly] [-ClearSession] [-SkipSession]
+    [<CommonParameters>] 
 ```` 
 
 ### PARAMETERS 
@@ -5159,6 +5220,15 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      fg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+    -SetRestored  
+        Restore the window to normal state after positioning  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
     -ShowWindow  
         Show the browser window (not 1d or hidden)  
         Required?                    false  
@@ -5246,9 +5316,9 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
     [-Right] [-Top] [-Bottom] [-Centered] [-FullScreen]
     [-Private] [-ApplicationMode] [-NoBrowserExtensions]
     [-DisablePopupBlocker] [-NewWindow] [-FocusWindow]
-    [-SetForeground] [-Maximize] [-PassThru] [-NoBorders]
-    [-RestoreFocus] [-SideBySide] [-KeysToSend <string[]>]
-    [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
+    [-SetForeground] [-Maximize] [-SetRestored] [-PassThru]
+    [-NoBorders] [-RestoreFocus] [-SideBySide] [-KeysToSend
+    <string[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
     [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
     <int>] [-SessionOnly] [-ClearSession] [-SkipSession]
     [<CommonParameters>] 
@@ -5552,6 +5622,15 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      fg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+    -SetRestored  
+        Restore the window to normal state after positioning  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
     -SideBySide  
         Position browser window either fullscreen on different monitor than PowerShell, or side by side with PowerShell on the same monitor  
         Required?                    false  
@@ -5639,9 +5718,9 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
     [-Bottom] [-Centered] [-FullScreen] [-Private]
     [-ApplicationMode] [-NoBrowserExtensions]
     [-DisablePopupBlocker] [-NewWindow] [-FocusWindow]
-    [-SetForeground] [-Maximize] [-PassThru] [-NoBorders]
-    [-RestoreFocus] [-SideBySide] [-KeysToSend <string[]>]
-    [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
+    [-SetForeground] [-Maximize] [-SetRestored] [-PassThru]
+    [-NoBorders] [-RestoreFocus] [-SideBySide] [-KeysToSend
+    <string[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
     [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
     <int>] [-SessionOnly] [-ClearSession] [-SkipSession]
     [<CommonParameters>] 
@@ -5936,6 +6015,15 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      fg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+    -SetRestored  
+        Restore the window to normal state after positioning  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
     -SideBySide  
         Position browser window either fullscreen on different monitor than PowerShell, or side by side with PowerShell on the same monitor  
         Required?                    false  
@@ -6023,8 +6111,8 @@ Select-WebbrowserTab [[-Id] <int>] [-Monitor <int>] [-Width
     [-Bottom] [-Centered] [-ApplicationMode]
     [-NoBrowserExtensions] [-DisablePopupBlocker]
     [-RestoreFocus] [-NewWindow] [-FocusWindow]
-    [-SetForeground] [-Maximize] [-KeysToSend <string[]>]
-    [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
+    [-SetForeground] [-Maximize] [-SetRestored] [-KeysToSend
+    <string[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
     [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
     <int>] [-Edge] [-Chrome] [-Force] [<CommonParameters>]
 Select-WebbrowserTab [-Name] <string> [-Monitor <int>]
@@ -6034,8 +6122,8 @@ Select-WebbrowserTab [-Name] <string> [-Monitor <int>]
     [-Bottom] [-Centered] [-ApplicationMode]
     [-NoBrowserExtensions] [-DisablePopupBlocker]
     [-RestoreFocus] [-NewWindow] [-FocusWindow]
-    [-SetForeground] [-Maximize] [-KeysToSend <string[]>]
-    [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
+    [-SetForeground] [-Maximize] [-SetRestored] [-KeysToSend
+    <string[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
     [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
     <int>] [-Edge] [-Chrome] [-Force] [<CommonParameters>]
 Select-WebbrowserTab -ByReference <psobject> [-Monitor
@@ -6045,8 +6133,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
     [-Bottom] [-Centered] [-ApplicationMode]
     [-NoBrowserExtensions] [-DisablePopupBlocker]
     [-RestoreFocus] [-NewWindow] [-FocusWindow]
-    [-SetForeground] [-Maximize] [-KeysToSend <string[]>]
-    [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
+    [-SetForeground] [-Maximize] [-SetRestored] [-KeysToSend
+    <string[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
     [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
     <int>] [-Edge] [-Chrome] [-Force] [<CommonParameters>] 
 ```` 
@@ -6331,6 +6419,15 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      fg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+    -SetRestored  
+        Restore the window to normal state after positioning  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
     -Top  
         Place browser window on the top side of the screen  
         Required?                    false  
@@ -6566,8 +6663,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
     [-Right] [-Top] [-Bottom] [-Centered] [-ApplicationMode]
     [-NoBrowserExtensions] [-DisablePopupBlocker]
     [-RestoreFocus] [-NewWindow] [-FocusWindow]
-    [-SetForeground] [-Maximize] [-KeysToSend <string[]>]
-    [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
+    [-SetForeground] [-Maximize] [-SetRestored] [-KeysToSend
+    <string[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
     [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
     <int>] [-NoBorders] [-SideBySide] [-SessionOnly]
     [-ClearSession] [-SkipSession] [<CommonParameters>] 
@@ -6851,6 +6948,15 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Accept pipeline input?       false  
         Parameter set name           (All)  
         Aliases                      fg  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+    -SetRestored  
+        Restore the window to normal state after positioning  
+        Required?                    false  
+        Position?                    Named  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
     -SideBySide  

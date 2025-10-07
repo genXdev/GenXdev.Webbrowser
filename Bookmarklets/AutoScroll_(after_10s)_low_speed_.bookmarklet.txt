@@ -1,1 +1,0 @@
-javascript:fetch('https://raw.githubusercontent.com/genXdev/GenXdev.Webbrowser/Bookmarklets/AutoScroll_(after_10s)_low_speed.js').then(r=>r.text()).then(eval)
