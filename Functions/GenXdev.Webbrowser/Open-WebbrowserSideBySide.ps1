@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Open-WebbrowserSideBySide.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.296.2025
+Version                   : 1.298.2025
 ################################################################################
 MIT License
 
@@ -355,7 +355,7 @@ function Open-WebbrowserSideBySide {
         $Right = $true
         $RestoreFocus = $true
 
-        $params = GenXdev.Helpers\Copy-IdenticalParamValues `
+        $params = GenXdev.FileSystem\Copy-IdenticalParamValues `
             -BoundParameters $PSBoundParameters `
             -FunctionName "GenXdev.Webbrowser\Open-Webbrowser" `
             -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable -Scope Local -ErrorAction SilentlyContinue)
@@ -369,7 +369,7 @@ function Open-WebbrowserSideBySide {
 
         if ($Force) {
 
-            $params = GenXdev.Helpers\Copy-IdenticalParamValues `
+            $params = GenXdev.FileSystem\Copy-IdenticalParamValues `
                 -BoundParameters $PSBoundParameters `
                 -FunctionName "GenXdev.Webbrowser\Select-WebbrowserTab" `
                 -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable -Scope Local -ErrorAction SilentlyContinue)

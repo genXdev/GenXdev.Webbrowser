@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Open-Webbrowser.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.296.2025
+Version                   : 1.298.2025
 ################################################################################
 MIT License
 
@@ -548,7 +548,14 @@ function Open-Webbrowser {
 
     begin {
 
-        if ($null -eq $Url) {
+        # determine if side-by-side positioning should be forced
+        [int] $setDefaultMonitor = $Global:DefaultSecondaryMonitor -is [int] ?
+            (
+                $Global:DefaultSecondaryMonitor
+            ):
+            2;
+
+            if ($null -eq $Url) {
 
             $Url = @()
         }
@@ -640,7 +647,7 @@ function Open-Webbrowser {
             "monitors available for window positioning")
 
         # copy window positioning parameters for later use
-        $wpparams = GenXdev.Helpers\Copy-IdenticalParamValues `
+        $wpparams = GenXdev.FileSystem\Copy-IdenticalParamValues `
             -BoundParameters $wbParams `
             -FunctionName 'GenXdev.Windows\Set-WindowPosition'
 
@@ -665,16 +672,9 @@ function Open-Webbrowser {
                 "parameters provided, using user settings")
         }
 
-        # determine if side-by-side positioning should be forced
-        [int] $setDefaultMonitor = $Global:DefaultSecondaryMonitor -is [int] ?
-            (
-                $Global:DefaultSecondaryMonitor
-            ):
-            2;
-
         # determine if side-by-side mode should be forced due to monitor limitations
         $ForcedSideBySide = ($Monitor -eq -2) -and (
-          ($allScreens.Count -lt 2)  -or
+               ($allScreens.Count -lt 2)  -or
                (-not ($setDefaultMonitor -is [int] -and ($setDefaultMonitor -gt 0)))
         )
 
@@ -1373,7 +1373,7 @@ function Open-Webbrowser {
                 Microsoft.PowerShell.Utility\Start-Sleep 6
 
                 # copy key sending parameters
-                $invocationParams = GenXdev.Helpers\Copy-IdenticalParamValues `
+                $invocationParams = GenXdev.FileSystem\Copy-IdenticalParamValues `
                     -BoundParameters $wbParams `
                     -FunctionName 'GenXdev.Windows\Send-Key'
 

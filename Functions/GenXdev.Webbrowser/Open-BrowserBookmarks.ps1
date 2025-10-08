@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Open-BrowserBookmarks.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.296.2025
+Version                   : 1.298.2025
 ################################################################################
 MIT License
 
@@ -493,7 +493,7 @@ function Open-BrowserBookmarks {
             'parameters for bookmark search...')
 
         # copy identical parameters between functions for passing to open-webbrowser
-        $invocationParams = GenXdev.Helpers\Copy-IdenticalParamValues `
+        $invocationParams = GenXdev.FileSystem\Copy-IdenticalParamValues `
             -BoundParameters $PSBoundParameters `
             -FunctionName 'GenXdev.Webbrowser\Open-Webbrowser' `
             -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable `
@@ -514,7 +514,7 @@ function Open-BrowserBookmarks {
             'with criteria: ' + ($Queries -join ', '))
 
         # copy identical parameters between functions for bookmark searching
-        $findParams = GenXdev.Helpers\Copy-IdenticalParamValues `
+        $findParams = GenXdev.FileSystem\Copy-IdenticalParamValues `
             -BoundParameters $PSBoundParameters `
             -FunctionName 'GenXdev.Webbrowser\Find-BrowserBookmark' `
             -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable `

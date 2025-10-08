@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Find-BrowserBookmark.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.296.2025
+Version                   : 1.298.2025
 ################################################################################
 MIT License
 
@@ -127,7 +127,7 @@ function Find-BrowserBookmark {
 
     begin {
         Microsoft.PowerShell.Utility\Write-Verbose 'Initializing browser bookmark search'
-        $bookmarksArguments = GenXdev.Helpers\Copy-IdenticalParamValues `
+        $bookmarksArguments = GenXdev.FileSystem\Copy-IdenticalParamValues `
             -BoundParameters $PSBoundParameters `
             -FunctionName 'GenXdev.Webbrowser\Get-BrowserBookmark' `
             -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable -Scope Local -ErrorAction SilentlyContinue)

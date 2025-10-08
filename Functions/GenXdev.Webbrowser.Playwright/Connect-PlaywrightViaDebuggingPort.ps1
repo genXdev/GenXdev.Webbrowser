@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser.Playwright
 Original cmdlet filename  : Connect-PlaywrightViaDebuggingPort.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.296.2025
+Version                   : 1.298.2025
 ################################################################################
 MIT License
 
@@ -94,7 +94,7 @@ function Connect-PlaywrightViaDebuggingPort {
         Microsoft.PowerShell.Utility\Write-Verbose "Attempting to connect to browser at: $WsEndpoint"
 
         # prepare parameters for EnsureNuGetAssembly with embedded consent
-        $params = GenXdev.Helpers\Copy-IdenticalParamValues `
+        $params = GenXdev.FileSystem\Copy-IdenticalParamValues `
             -BoundParameters $PSBoundParameters `
             -FunctionName 'GenXdev.Helpers\EnsureNuGetAssembly' `
             -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable -Scope Local -ErrorAction SilentlyContinue)

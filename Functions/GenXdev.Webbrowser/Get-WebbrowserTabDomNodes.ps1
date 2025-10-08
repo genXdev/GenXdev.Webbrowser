@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Get-WebbrowserTabDomNodes.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.296.2025
+Version                   : 1.298.2025
 ################################################################################
 MIT License
 
@@ -192,7 +192,7 @@ for await (let result of traverseNodes(document, 0)) {
         Microsoft.PowerShell.Utility\Write-Verbose "Executing query '$QuerySelector' with modifier script:`n$ModifyScript"
 
         # execute the javascript in browser and return results
-        $invocationParams = GenXdev.Helpers\Copy-IdenticalParamValues `
+        $invocationParams = GenXdev.FileSystem\Copy-IdenticalParamValues `
             -BoundParameters $PSBoundParameters `
             -FunctionName 'GenXdev.Webbrowser\Invoke-WebbrowserEvaluation'
 

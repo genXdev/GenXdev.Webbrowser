@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Select-WebbrowserTab.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.296.2025
+Version                   : 1.298.2025
 ################################################################################
 MIT License
 
@@ -561,7 +561,7 @@ function Select-WebbrowserTab {
                     $null = GenXdev.Webbrowser\Close-Webbrowser -Chrome:$Chrome -Edge:$Edge -Force -Chromium
 
                     # copy identical parameters between functions
-                    $invocationArguments = GenXdev.Helpers\Copy-IdenticalParamValues `
+                    $invocationArguments = GenXdev.FileSystem\Copy-IdenticalParamValues `
                         -BoundParameters $PSBoundParameters `
                         -FunctionName 'GenXdev.Webbrowser\Open-Webbrowser' `
                         -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable -Scope Local -Name * `
@@ -578,7 +578,7 @@ function Select-WebbrowserTab {
                     $null = GenXdev.Webbrowser\Open-Webbrowser @invocationArguments
 
                     # prepare parameters for recursive call
-                    $invocationArguments = GenXdev.Helpers\Copy-IdenticalParamValues `
+                    $invocationArguments = GenXdev.FileSystem\Copy-IdenticalParamValues `
                         -BoundParameters $PSBoundParameters `
                         -FunctionName 'GenXdev.Webbrowser\Select-WebbrowserTab' `
                         -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable -Scope Local -Name * `

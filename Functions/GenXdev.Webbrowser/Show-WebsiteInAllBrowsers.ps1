@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Show-WebsiteInAllBrowsers.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.296.2025
+Version                   : 1.298.2025
 ################################################################################
 MIT License
 
@@ -464,7 +464,7 @@ function Show-WebsiteInAllBrowsers {
     process {
 
         # copy identical parameters between functions
-        $params = GenXdev.Helpers\Copy-IdenticalParamValues `
+        $params = GenXdev.FileSystem\Copy-IdenticalParamValues `
             -FunctionName 'GenXdev.Webbrowser\Open-Webbrowser' `
             -BoundParameters $PSBoundParameters `
             -DefaultValues (Microsoft.PowerShell.Utility\Get-Variable -Scope Local -ErrorAction SilentlyContinue)
