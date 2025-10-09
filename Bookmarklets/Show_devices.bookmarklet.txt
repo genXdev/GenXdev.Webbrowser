@@ -1,1 +1,0 @@
-chrome://inspect/#devices

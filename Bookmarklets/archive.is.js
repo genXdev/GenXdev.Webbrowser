@@ -1,1 +1,0 @@
-document.location.href="https://archive.is/"+document.location.href.substr(document.location.protocol.length+2)

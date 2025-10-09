@@ -1,1 +1,0 @@
-void(document.location.href='https://developers.google.com/speed/pagespeed/insights/?url=%27+encodeURIComponent(location.href));

@@ -1,1 +1,0 @@
-javascript:(function(){void(q=prompt('What are you looking for?%27,%27%27));if(q)document.location.href=%27http://www.google.com/search?q=site%3A%27+document.location.host+%27%20%27+escape(q)})()

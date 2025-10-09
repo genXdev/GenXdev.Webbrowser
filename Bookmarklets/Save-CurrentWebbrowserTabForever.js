@@ -1,1 +1,0 @@
-location.href='https://web.archive.org/save/'+document.location.href;

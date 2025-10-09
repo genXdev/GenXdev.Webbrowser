@@ -1,1 +1,0 @@
-void(document.location.href='https://tbvd.herokuapp.com/redirect?url=%27+encodeURIComponent(location.href));
