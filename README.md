@@ -209,10 +209,10 @@ Update-Module
 | [Approve-FirefoxDebugging](#approve-firefoxdebugging) | &nbsp; | Configures Firefox's debugging and standalone app mode features. |
 | [Clear-WebbrowserTabSiteApplicationData](#clear-webbrowsertabsiteapplicationdata) | clearsitedata | Clears all browser storage data for the current tab in Edge or Chrome. |
 | [Close-Webbrowser](#close-webbrowser) | wbc | Closes one or more webbrowser instances selectively. |
-| [Close-WebbrowserTab](#close-webbrowsertab) | CloseTab, ct | Closes the currently selected webbrowser tab. |
+| [Close-WebbrowserTab](#close-webbrowsertab) | &nbsp; | Closes the currently selected webbrowser tab. |
 | [Export-BrowserBookmarks](#export-browserbookmarks) | &nbsp; | Exports browser bookmarks to a JSON file. |
 | [Find-BrowserBookmark](#find-browserbookmark) | bookmarks | Finds bookmarks from one or more web browsers. |
-| [Get-BrowserBookmark](#get-browserbookmark) | gbm | Returns all bookmarks from installed web browsers. |
+| [Get-BrowserBookmark](#get-browserbookmark) | gbm | &nbsp; |
 | [Get-ChromeRemoteDebuggingPort](#get-chromeremotedebuggingport) | &nbsp; | Returns the configured remote debugging port for Google Chrome. |
 | [Get-ChromiumRemoteDebuggingPort](#get-chromiumremotedebuggingport) | &nbsp; | Returns the remote debugging port for the system's default Chromium browser. |
 | [Get-ChromiumSessionReference](#get-chromiumsessionreference) | &nbsp; | Gets a serializable reference to the current browser tab session. |
@@ -220,17 +220,17 @@ Update-Module
 | [Get-EdgeRemoteDebuggingPort](#get-edgeremotedebuggingport) | &nbsp; | Returns the configured remote debugging port for Microsoft Edge browser. |
 | [Get-Webbrowser](#get-webbrowser) | &nbsp; | Returns a collection of installed modern web browsers. |
 | [Get-WebbrowserTabDomNodes](#get-webbrowsertabdomnodes) | wl | Queries and manipulates DOM nodes in the active browser tab using CSS selectors. |
-| [Import-BrowserBookmarks](#import-browserbookmarks) | &nbsp; | Imports bookmarks from a file or collection into a web browser. |
+| [Import-BrowserBookmarks](#import-browserbookmarks) | &nbsp; | &nbsp; |
 | [Import-GenXdevBookmarkletMenu](#import-genxdevbookmarkletmenu) | &nbsp; | Imports GenXdev JavaScript bookmarklets into browser bookmark collections. |
-| [Invoke-WebbrowserEvaluation](#invoke-webbrowserevaluation) | et, Eval | Executes JavaScript code in a selected web browser tab. |
-| [Open-BrowserBookmarks](#open-browserbookmarks) | sites | Opens browser bookmarks that match specified search criteria. |
-| [Open-Webbrowser](#open-webbrowser) | wb | Opens URLs in one or more browser windows with optional positioning and styling. |
-| [Open-WebbrowserSideBySide](#open-webbrowsersidebyside) | wbn | Launches a new web browser window with specific positioning. |
+| [Invoke-WebbrowserEvaluation](#invoke-webbrowserevaluation) | et, Eval | &nbsp; |
+| [Open-BrowserBookmarks](#open-browserbookmarks) | sites | &nbsp; |
+| [Open-Webbrowser](#open-webbrowser) | wb | &nbsp; |
+| [Open-WebbrowserSideBySide](#open-webbrowsersidebyside) | wbn | &nbsp; |
 | [Select-WebbrowserTab](#select-webbrowsertab) | st | Selects a browser tab for automation in Chrome or Edge. |
-| [Set-BrowserVideoFullscreen](#set-browservideofullscreen) | fsvideo | Maximizes the first video element found in the current browser tab. |
+| [Set-BrowserVideoFullscreen](#set-browservideofullscreen) | fsvideo | &nbsp; |
 | [Set-RemoteDebuggerPortInBrowserShortcuts](#set-remotedebuggerportinbrowsershortcuts) | &nbsp; | Updates browser shortcuts to enable remote debugging ports. |
 | [Set-WebbrowserTabLocation](#set-webbrowsertablocation) | lt, Nav | Navigates the current webbrowser tab to a specified URL. |
-| [Show-WebsiteInAllBrowsers](#show-websiteinallbrowsers) | &nbsp; | Opens a URL in multiple browsers simultaneously in a mosaic layout. |
+| [Show-WebsiteInAllBrowsers](#show-websiteinallbrowsers) | &nbsp; | &nbsp; |
 
 ### GenXdev.Webbrowser.Playwright
 | Command | Aliases | Description |
@@ -239,7 +239,7 @@ Update-Module
 | [Get-PlaywrightProfileDirectory](#get-playwrightprofiledirectory) | &nbsp; | Gets the Playwright browser profile directory for persistent sessions. |
 | [Resume-WebbrowserTabVideo](#resume-webbrowsertabvideo) | wbvideoplay | Resumes video playback in a YouTube browser tab. |
 | [Stop-WebbrowserVideos](#stop-webbrowservideos) | ssst, wbsst, wbvideostop | Pauses video playback in all active browser sessions. |
-| [Unprotect-WebbrowserTab](#unprotect-webbrowsertab) | wbctrl | Takes control of a selected web browser tab for interactive manipulation. |
+| [Unprotect-WebbrowserTab](#unprotect-webbrowsertab) | &nbsp; | Takes control of a selected web browser tab for interactive manipulation. |
 
 <br/><hr/><br/>
 
@@ -249,325 +249,11 @@ Update-Module
 &nbsp;<hr/>
 ###	GenXdev.Webbrowser<hr/> 
 
-##	Approve-FirefoxDebugging 
-```PowerShell 
-
-   Approve-FirefoxDebugging  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Approve-FirefoxDebugging [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Clear-WebbrowserTabSiteApplicationData 
-```PowerShell 
-
-   Clear-WebbrowserTabSiteApplicationData --> clearsitedata  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Clear-WebbrowserTabSiteApplicationData [-Edge] [-Chrome]
-    [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -Chrome  
-        Clear in Google Chrome  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Clear in Microsoft Edge  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Close-Webbrowser 
-```PowerShell 
-
-   Close-Webbrowser                     --> wbc  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Close-Webbrowser [[-Edge]] [[-Chrome]] [[-Chromium]]
-    [[-Firefox]] [[-IncludeBackgroundProcesses]]
-    [<CommonParameters>]
-Close-Webbrowser [[-All]] [[-IncludeBackgroundProcesses]]
-    [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -All  
-        Closes all registered modern browsers  
-        Required?                    false  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           All  
-        Aliases                      a  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Chrome  
-        Closes Google Chrome browser instances  
-        Required?                    false  
-        Position?                    1  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      ch  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Chromium  
-        Closes default chromium-based browser  
-        Required?                    false  
-        Position?                    2  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      c  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Closes Microsoft Edge browser instances  
-        Required?                    false  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      e  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Firefox  
-        Closes Firefox browser instances  
-        Required?                    false  
-        Position?                    3  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      ff  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -IncludeBackgroundProcesses  
-        Closes all instances including background tasks  
-        Required?                    false  
-        Position?                    4  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      bg, Force  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Close-WebbrowserTab 
-```PowerShell 
-
-   Close-WebbrowserTab                  --> CloseTab, ct  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Close-WebbrowserTab [-Edge] [-Chrome] [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -Chrome  
-        Navigate using Google Chrome browser  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      ch  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Navigate using Microsoft Edge browser  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      e  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Export-BrowserBookmarks 
-```PowerShell 
-
-   Export-BrowserBookmarks  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Export-BrowserBookmarks [-OutputFile] <string> [-Chrome]
-    [-Edge] [-Firefox] [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -Chrome  
-        Export bookmarks from Google Chrome  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Export bookmarks from Microsoft Edge  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Firefox  
-        Export bookmarks from Mozilla Firefox  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           Firefox  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -OutputFile <string>  
-        Path to the JSON file where bookmarks will be saved  
-        Required?                    true  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Find-BrowserBookmark 
-```PowerShell 
-
-   Find-BrowserBookmark                 --> bookmarks  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Find-BrowserBookmark [[-Queries] <string[]>] [-Edge]
-    [-Chrome] [-Firefox] [-Count <int>] [-PassThru]
-    [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -Chrome  
-        Search through Google Chrome bookmarks  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      ch  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Count <int>  
-        Maximum number of results to return  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Search through Microsoft Edge bookmarks  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      e  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Firefox  
-        Search through Firefox bookmarks  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      ff  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -PassThru  
-        Return bookmark objects instead of just URLs  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Queries <string[]>  
-        Search terms to find matching bookmarks  
-        Required?                    false  
-        Position?                    0  
-        Accept pipeline input?       true (ByValue, ByPropertyName)  
-        Parameter set name           (All)  
-        Aliases                      q, Name, Text, Query  
-        Dynamic?                     false  
-        Accept wildcard characters?  true  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
 ##	Get-BrowserBookmark 
 ```PowerShell 
 
    Get-BrowserBookmark                  --> gbm  
-```` 
+``` 
 
 ### SYNTAX 
 ```PowerShell 
@@ -578,9 +264,13 @@ Get-BrowserBookmark [[-Chrome]] [[-Edge]] [[-Firefox]]
     [-ForceConsent]
     [-ConsentToThirdPartySoftwareInstallation]
     [<CommonParameters>] 
-```` 
+``` 
 
 ### PARAMETERS 
+```yaml 
+ 
+``` 
+```yaml 
     -Chrome  
         Returns bookmarks from Google Chrome  
         Required?                    false  
@@ -590,6 +280,8 @@ Get-BrowserBookmark [[-Chrome]] [[-Edge]] [[-Firefox]]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ConsentToThirdPartySoftwareInstallation  
         Consent to third-party software installation  
         Required?                    false  
@@ -599,6 +291,8 @@ Get-BrowserBookmark [[-Chrome]] [[-Edge]] [[-Firefox]]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Edge  
         Returns bookmarks from Microsoft Edge  
         Required?                    false  
@@ -608,6 +302,8 @@ Get-BrowserBookmark [[-Chrome]] [[-Edge]] [[-Firefox]]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Firefox  
         Returns bookmarks from Mozilla Firefox  
         Required?                    false  
@@ -617,6 +313,8 @@ Get-BrowserBookmark [[-Chrome]] [[-Edge]] [[-Firefox]]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ForceConsent  
         Force consent for third-party software installation  
         Required?                    false  
@@ -626,279 +324,14 @@ Get-BrowserBookmark [[-Chrome]] [[-Edge]] [[-Firefox]]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     <CommonParameters>  
         This cmdlet supports the common parameters: Verbose, Debug,  
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Get-ChromeRemoteDebuggingPort 
-```PowerShell 
-
-   Get-ChromeRemoteDebuggingPort  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Get-ChromeRemoteDebuggingPort [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Get-ChromiumRemoteDebuggingPort 
-```PowerShell 
-
-   Get-ChromiumRemoteDebuggingPort  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Get-ChromiumRemoteDebuggingPort [-Chrome] [-Edge]
-    [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -Chrome  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Get-ChromiumSessionReference 
-```PowerShell 
-
-   Get-ChromiumSessionReference  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Get-ChromiumSessionReference [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Get-DefaultWebbrowser 
-```PowerShell 
-
-   Get-DefaultWebbrowser  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Get-DefaultWebbrowser [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Get-EdgeRemoteDebuggingPort 
-```PowerShell 
-
-   Get-EdgeRemoteDebuggingPort  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Get-EdgeRemoteDebuggingPort [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Get-Webbrowser 
-```PowerShell 
-
-   Get-Webbrowser  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Get-Webbrowser [<CommonParameters>]
-Get-Webbrowser [[-Edge]] [[-Chrome]] [[-Chromium]]
-    [[-Firefox]] [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -Chrome  
-        Selects Google Chrome browser instances  
-        Required?                    false  
-        Position?                    1  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      ch  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Chromium  
-        Selects default chromium-based browser  
-        Required?                    false  
-        Position?                    2  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      c  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Selects Microsoft Edge browser instances  
-        Required?                    false  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      e  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Firefox  
-        Selects Firefox browser instances  
-        Required?                    false  
-        Position?                    3  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      ff  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Get-WebbrowserTabDomNodes 
-```PowerShell 
-
-   Get-WebbrowserTabDomNodes            --> wl  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Get-WebbrowserTabDomNodes [-QuerySelector] <string[]>
-    [[-ModifyScript] <string>] [-Edge] [-Chrome] [-Page
-    <Object>] [-ByReference <psobject>] [-NoAutoSelectTab]
-    [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -ByReference <psobject>  
-        Browser session reference object  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Chrome  
-        Use Google Chrome browser  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      ch  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Use Microsoft Edge browser  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      e  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -ModifyScript <string>  
-        The script to modify the output of the query selector, e.g. e.outerHTML or e.outerHTML='hello world'  
-        Required?                    false  
-        Position?                    1  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -NoAutoSelectTab  
-        Prevent automatic tab selection  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Page <Object>  
-        Browser page object reference  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -QuerySelector <string[]>  
-        The query selector string or array of strings to use for selecting DOM nodes  
-        Required?                    true  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+``` 
 
 <br/><hr/><br/>
  
@@ -907,7 +340,7 @@ Get-WebbrowserTabDomNodes [-QuerySelector] <string[]>
 ```PowerShell 
 
    Import-BrowserBookmarks  
-```` 
+``` 
 
 ### SYNOPSIS 
     Imports bookmarks from a file or collection into a web browser.  
@@ -922,7 +355,7 @@ Import-BrowserBookmarks [[-InputFile] <String>] [-Chrome]
 Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
     [-Edge] [-Firefox] [-WhatIf] [-Confirm]
     [<CommonParameters>] 
-```` 
+``` 
 
 ### DESCRIPTION 
     Imports bookmarks into Microsoft Edge or Google Chrome from either a CSV file or  
@@ -930,6 +363,10 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
     bookmark bar or specified folders. Firefox import is not currently supported.  
 
 ### PARAMETERS 
+```yaml 
+ 
+``` 
+```yaml 
     -InputFile <String>  
         The path to a CSV file containing bookmarks to import. The CSV should have  
         columns for Name, URL, Folder, DateAdded, and DateModified.  
@@ -939,6 +376,8 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Bookmarks <Array>  
         An array of bookmark objects to import. Each object should have properties for  
         Name, URL, Folder, DateAdded, and DateModified.  
@@ -948,6 +387,8 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chrome [<SwitchParameter>]  
         Switch to import bookmarks into Google Chrome.  
         Required?                    false  
@@ -956,6 +397,8 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Edge [<SwitchParameter>]  
         Switch to import bookmarks into Microsoft Edge.  
         Required?                    false  
@@ -964,6 +407,8 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Firefox [<SwitchParameter>]  
         Switch to indicate Firefox as target (currently not supported).  
         Required?                    false  
@@ -972,6 +417,8 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -WhatIf [<SwitchParameter>]  
         Required?                    false  
         Position?                    named  
@@ -979,6 +426,8 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Confirm [<SwitchParameter>]  
         Required?                    false  
         Position?                    named  
@@ -986,95 +435,14 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     <CommonParameters>  
         This cmdlet supports the common parameters: Verbose, Debug,  
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Import-GenXdevBookmarkletMenu 
-```PowerShell 
-
-   Import-GenXdevBookmarkletMenu  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Import-GenXdevBookmarkletMenu [[-SnippetsPath] <string>]
-    [[-TargetFolder] <string>] [-Edge] [-Chrome] [-Firefox]
-    [-WhatIf] [-Confirm] [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -Chrome  
-        Import bookmarklets into Google Chrome browser  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Confirm  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      cf  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Import bookmarklets into Microsoft Edge browser  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Firefox  
-        Import bookmarklets into Mozilla Firefox browser  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -SnippetsPath <string>  
-        Path to directory containing bookmarklet snippet files  
-        Required?                    false  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -TargetFolder <string>  
-        Target bookmark folder in browser bookmark structure  
-        Required?                    false  
-        Position?                    1  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -WhatIf  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      wi  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+``` 
 
 <br/><hr/><br/>
  
@@ -1083,7 +451,7 @@ Import-GenXdevBookmarkletMenu [[-SnippetsPath] <string>]
 ```PowerShell 
 
    Invoke-WebbrowserEvaluation          --> et, Eval  
-```` 
+``` 
 
 ### SYNOPSIS 
     Executes JavaScript code in a selected web browser tab.  
@@ -1093,7 +461,7 @@ Import-GenXdevBookmarkletMenu [[-SnippetsPath] <string>]
 Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
     [-Inspect] [-NoAutoSelectTab] [-Edge] [-Chrome] [-Page
     <Object>] [-ByReference <PSObject>] [<CommonParameters>] 
-```` 
+``` 
 
 ### DESCRIPTION 
     Executes JavaScript code in a selected browser tab with support for async/await,  
@@ -1118,6 +486,10 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
     - Error handling and timeout management  
 
 ### PARAMETERS 
+```yaml 
+ 
+``` 
+```yaml 
     -Scripts <Object[]>  
         JavaScript code to execute. Can be string content, file paths, or URLs.  
         Accepts pipeline input.  
@@ -1127,6 +499,8 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
         Accept pipeline input?       true (ByValue, ByPropertyName)  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Inspect [<SwitchParameter>]  
         Adds debugger statement before executing to enable debugging.  
         Required?                    false  
@@ -1135,6 +509,8 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NoAutoSelectTab [<SwitchParameter>]  
         Prevents automatic tab selection if no tab is currently selected.  
         Required?                    false  
@@ -1143,6 +519,8 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Edge [<SwitchParameter>]  
         Selects Microsoft Edge browser for execution.  
         Required?                    false  
@@ -1151,6 +529,8 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chrome [<SwitchParameter>]  
         Selects Google Chrome browser for execution.  
         Required?                    false  
@@ -1159,6 +539,8 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Page <Object>  
         Browser page object for execution when using ByReference mode.  
         Required?                    false  
@@ -1167,6 +549,8 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ByReference <PSObject>  
         Session reference object when using ByReference mode.  
         Required?                    false  
@@ -1175,11 +559,14 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     <CommonParameters>  
         This cmdlet supports the common parameters: Verbose, Debug,  
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+``` 
 
 ### NOTES 
 ```PowerShell 
@@ -1383,7 +770,7 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
    PS>Get-ChildItem *.js | Invoke-WebbrowserEvaluation -Edge  
    -------------------------- EXAMPLE 8 --------------------------  
    PS>ls *.js | et -e  
-```` 
+``` 
 
 <br/><hr/><br/>
  
@@ -1392,7 +779,7 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
 ```PowerShell 
 
    Open-BrowserBookmarks                --> sites  
-```` 
+``` 
 
 ### SYNTAX 
 ```PowerShell 
@@ -1410,9 +797,13 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
     [-SendKeyDelayMilliSeconds <int>] [-NoBorders]
     [-SessionOnly] [-ClearSession] [-SkipSession]
     [<CommonParameters>] 
-```` 
+``` 
 
 ### PARAMETERS 
+```yaml 
+ 
+``` 
+```yaml 
     -AcceptLang <string>  
         Set the browser accept-lang http header  
         Required?                    false  
@@ -1422,6 +813,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      lang, locale  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -All  
         Opens in all registered modern browsers  
         Required?                    false  
@@ -1431,6 +824,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ApplicationMode  
         Hide the browser controls  
         Required?                    false  
@@ -1440,6 +835,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      a, app, appmode  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Bottom  
         Place browser window on the bottom side of the screen  
         Required?                    false  
@@ -1449,6 +846,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Centered  
         Place browser window in the center of the screen  
         Required?                    false  
@@ -1458,6 +857,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chrome  
         Select in Google Chrome  
         Required?                    false  
@@ -1467,6 +868,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      ch  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chromium  
         Opens in Microsoft Edge or Google Chrome, depending on what the default browser is  
         Required?                    false  
@@ -1476,6 +879,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      c  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ClearSession  
         Clear alternative settings stored in session for AI preferences  
         Required?                    false  
@@ -1485,6 +890,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Count <int>  
         Maximum number of urls to open  
         Required?                    false  
@@ -1494,6 +901,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -DisablePopupBlocker  
         Disable the popup blocker  
         Required?                    false  
@@ -1503,6 +912,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      allowpopups  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Edge  
         Select in Microsoft Edge  
         Required?                    false  
@@ -1512,6 +923,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      e  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Firefox  
         Select in Firefox  
         Required?                    false  
@@ -1521,6 +934,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      ff  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -FocusWindow  
         Focus the browser window after opening  
         Required?                    false  
@@ -1530,6 +945,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      fw, focus  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Force  
         Force enable debugging port, stopping existing browsers if needed  
         Required?                    false  
@@ -1539,6 +956,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -FullScreen  
         Opens in fullscreen mode  
         Required?                    false  
@@ -1548,6 +967,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      fs, f  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Height <int>  
         The initial height of the webbrowser window  
         Required?                    false  
@@ -1557,6 +978,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -KeysToSend <string[]>  
         Keystrokes to send to the Browser window, see documentation for cmdlet GenXdev.Windows\Send-Key  
         Required?                    false  
@@ -1566,6 +989,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Left  
         Place browser window on the left side of the screen  
         Required?                    false  
@@ -1575,6 +1000,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Maximize  
         Maximize the window after positioning  
         Required?                    false  
@@ -1584,6 +1011,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Minimize  
         Minimize the window after positioning  
         Required?                    false  
@@ -1593,6 +1022,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Monitor <int>  
         The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor  
         Required?                    false  
@@ -1602,6 +1033,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      m, mon  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NewWindow  
         Do not re-use existing browser window, instead, create a new one  
         Required?                    false  
@@ -1611,6 +1044,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      nw, new  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NoBorders  
         Removes the borders of the browser window  
         Required?                    false  
@@ -1620,6 +1055,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      nb  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NoBrowserExtensions  
         Prevent loading of browser extensions  
         Required?                    false  
@@ -1629,6 +1066,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      de, ne, NoExtensions  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Private  
         Opens in incognito/private browsing mode  
         Required?                    false  
@@ -1638,6 +1077,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      incognito, inprivate  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Queries <string[]>  
         Search terms to filter bookmarks  
         Required?                    false  
@@ -1647,6 +1088,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      q, Name, Text, Query  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -RestoreFocus  
         Restore PowerShell window focus  
         Required?                    false  
@@ -1656,6 +1099,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      rf, bg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Right  
         Place browser window on the right side of the screen  
         Required?                    false  
@@ -1665,6 +1110,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyDelayMilliSeconds <int>  
         Delay between sending different key sequences in milliseconds  
         Required?                    false  
@@ -1674,6 +1121,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      DelayMilliSeconds  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyEscape  
         Escape control characters when sending keys  
         Required?                    false  
@@ -1683,6 +1132,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      Escape  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyHoldKeyboardFocus  
         Prevent returning keyboard focus to PowerShell after sending keys  
         Required?                    false  
@@ -1692,6 +1143,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      HoldKeyboardFocus  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyUseShiftEnter  
         Send Shift+Enter instead of regular Enter for line breaks  
         Required?                    false  
@@ -1701,6 +1154,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      UseShiftEnter  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SessionOnly  
         Use alternative settings stored in session for AI preferences  
         Required?                    false  
@@ -1710,6 +1165,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SetForeground  
         Set the browser window to foreground after opening  
         Required?                    false  
@@ -1719,6 +1176,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      fg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SetRestored  
         Restore the window to normal state after positioning  
         Required?                    false  
@@ -1728,6 +1187,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ShowWindow  
         Show the browser window (not 1d or hidden)  
         Required?                    false  
@@ -1737,6 +1198,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      sw  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SideBySide  
         Will either set the window fullscreen on a different monitor than Powershell, or side by side with Powershell on the same monitor  
         Required?                    false  
@@ -1746,6 +1209,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      sbs  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SkipSession  
         Store settings only in persistent preferences without affecting session  
         Required?                    false  
@@ -1755,6 +1220,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      FromPreferences  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Top  
         Place browser window on the top side of the screen  
         Required?                    false  
@@ -1764,6 +1231,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Width <int>  
         The initial width of the webbrowser window  
         Required?                    false  
@@ -1773,6 +1242,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -X <int>  
         The initial X position of the webbrowser window  
         Required?                    false  
@@ -1782,6 +1253,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Y <int>  
         The initial Y position of the webbrowser window  
         Required?                    false  
@@ -1791,11 +1264,14 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     <CommonParameters>  
         This cmdlet supports the common parameters: Verbose, Debug,  
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+``` 
 
 <br/><hr/><br/>
  
@@ -1804,7 +1280,7 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
 ```PowerShell 
 
    Open-Webbrowser                      --> wb  
-```` 
+``` 
 
 ### SYNTAX 
 ```PowerShell 
@@ -1821,9 +1297,13 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
     [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
     <int>] [-SessionOnly] [-ClearSession] [-SkipSession]
     [<CommonParameters>] 
-```` 
+``` 
 
 ### PARAMETERS 
+```yaml 
+ 
+``` 
+```yaml 
     -AcceptLang <string>  
         Set the browser accept-lang http header  
         Required?                    false  
@@ -1833,6 +1313,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      lang, locale  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -All  
         Opens in all registered modern browsers  
         Required?                    false  
@@ -1842,6 +1324,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ApplicationMode  
         Hide the browser controls  
         Required?                    false  
@@ -1851,6 +1335,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      a, app, appmode  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Bottom  
         Place browser window on the bottom side of the screen  
         Required?                    false  
@@ -1860,6 +1346,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Centered  
         Place browser window in the center of the screen  
         Required?                    false  
@@ -1869,6 +1357,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chrome  
         Opens in Google Chrome  
         Required?                    false  
@@ -1878,6 +1368,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      ch  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chromium  
         Opens in Microsoft Edge or Google Chrome, depending on what the default browser is  
         Required?                    false  
@@ -1887,6 +1379,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      c  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ClearSession  
         Clear alternative settings stored in session for AI preferences  
         Required?                    false  
@@ -1896,6 +1390,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -DisablePopupBlocker  
         Disable the popup blocker  
         Required?                    false  
@@ -1905,6 +1401,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      allowpopups  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Edge  
         Opens in Microsoft Edge  
         Required?                    false  
@@ -1914,6 +1412,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      e  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Firefox  
         Opens in Firefox  
         Required?                    false  
@@ -1923,6 +1423,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      ff  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -FocusWindow  
         Focus the browser window after opening  
         Required?                    false  
@@ -1932,6 +1434,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      fw, focus  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Force  
         Force enable debugging port, stopping existing browsers if needed  
         Required?                    false  
@@ -1941,6 +1445,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -FullScreen  
         Opens in fullscreen mode  
         Required?                    false  
@@ -1950,6 +1456,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      fs, f  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Height <int>  
         The initial height of the webbrowser window  
         Required?                    false  
@@ -1959,6 +1467,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Input <string>  
         The URLs to open in the browser  
         Required?                    false  
@@ -1968,6 +1478,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      Value, Uri, FullName, Website, WebsiteUrl  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -KeysToSend <string[]>  
         Keystrokes to send to the Window, see documentation for cmdlet GenXdev.Windows\Send-Key  
         Required?                    false  
@@ -1977,6 +1489,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Left  
         Place browser window on the left side of the screen  
         Required?                    false  
@@ -1986,6 +1500,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Maximize  
         Maximize the window after positioning  
         Required?                    false  
@@ -1995,6 +1511,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Monitor <int>  
         The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to $Global:DefaultSecondaryMonitor or 2 if not found  
         Required?                    false  
@@ -2004,6 +1522,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      m, mon  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NewWindow  
         Do not re-use existing browser window, instead, create a new one  
         Required?                    false  
@@ -2013,6 +1533,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      nw, new  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NoBorders  
         Removes the borders of the window  
         Required?                    false  
@@ -2022,6 +1544,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      nb  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NoBrowserExtensions  
         Prevent loading of browser extensions  
         Required?                    false  
@@ -2031,6 +1555,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      de, ne, NoExtensions  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -PassThru  
         Returns a PowerShell object of the browserprocess  
         Required?                    false  
@@ -2040,6 +1566,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      pt  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Private  
         Opens in incognito/private browsing mode  
         Required?                    false  
@@ -2049,6 +1577,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      incognito, inprivate  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -RestoreFocus  
         Restore PowerShell window focus  
         Required?                    false  
@@ -2058,6 +1588,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      rf, bg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Right  
         Place browser window on the right side of the screen  
         Required?                    false  
@@ -2067,6 +1599,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyDelayMilliSeconds <int>  
         Delay between different input strings in milliseconds when sending keys  
         Required?                    false  
@@ -2076,6 +1610,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      DelayMilliSeconds  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyEscape  
         Escape control characters and modifiers when sending keys  
         Required?                    false  
@@ -2085,6 +1621,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      Escape  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyHoldKeyboardFocus  
         Hold keyboard focus on target window when sending keys  
         Required?                    false  
@@ -2094,6 +1632,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      HoldKeyboardFocus  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyUseShiftEnter  
         Use Shift+Enter instead of Enter when sending keys  
         Required?                    false  
@@ -2103,6 +1643,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      UseShiftEnter  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SessionOnly  
         Use alternative settings stored in session for AI preferences  
         Required?                    false  
@@ -2112,6 +1654,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SetForeground  
         Set the browser window to foreground after opening  
         Required?                    false  
@@ -2121,6 +1665,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      fg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SetRestored  
         Restore the window to normal state after positioning  
         Required?                    false  
@@ -2130,6 +1676,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SideBySide  
         Position browser window either fullscreen on different monitor than PowerShell, or side by side with PowerShell on the same monitor  
         Required?                    false  
@@ -2139,6 +1687,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      sbs  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SkipSession  
         Store settings only in persistent preferences without affecting session  
         Required?                    false  
@@ -2148,6 +1698,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      FromPreferences  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Top  
         Place browser window on the top side of the screen  
         Required?                    false  
@@ -2157,6 +1709,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Url <string[]>  
         The URLs to open in the browser  
         Required?                    false  
@@ -2166,6 +1720,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Width <int>  
         The initial width of the webbrowser window  
         Required?                    false  
@@ -2175,6 +1731,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -X <int>  
         The initial X position of the webbrowser window  
         Required?                    false  
@@ -2184,6 +1742,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Y <int>  
         The initial Y position of the webbrowser window  
         Required?                    false  
@@ -2193,11 +1753,14 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     <CommonParameters>  
         This cmdlet supports the common parameters: Verbose, Debug,  
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+``` 
 
 <br/><hr/><br/>
  
@@ -2206,7 +1769,7 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
 ```PowerShell 
 
    Open-WebbrowserSideBySide            --> wbn  
-```` 
+``` 
 
 ### SYNTAX 
 ```PowerShell 
@@ -2223,9 +1786,13 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
     [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
     <int>] [-SessionOnly] [-ClearSession] [-SkipSession]
     [<CommonParameters>] 
-```` 
+``` 
 
 ### PARAMETERS 
+```yaml 
+ 
+``` 
+```yaml 
     -AcceptLang <string>  
         Set the browser accept-lang http header  
         Required?                    false  
@@ -2235,6 +1802,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      lang, locale  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -All  
         Opens in all registered modern browsers  
         Required?                    false  
@@ -2244,6 +1813,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ApplicationMode  
         Hide the browser controls  
         Required?                    false  
@@ -2253,6 +1824,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      a, app, appmode  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Bottom  
         Place browser window on the bottom side of the screen  
         Required?                    false  
@@ -2262,6 +1835,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Centered  
         Place browser window in the center of the screen  
         Required?                    false  
@@ -2271,6 +1846,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chrome  
         Opens in Google Chrome  
         Required?                    false  
@@ -2280,6 +1857,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      ch  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chromium  
         Opens in Microsoft Edge or Google Chrome, depending on what the default browser is  
         Required?                    false  
@@ -2289,6 +1868,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      c  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ClearSession  
         Clear alternative settings stored in session for AI preferences  
         Required?                    false  
@@ -2298,6 +1879,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -DisablePopupBlocker  
         Disable the popup blocker  
         Required?                    false  
@@ -2307,6 +1890,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      allowpopups  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Edge  
         Opens in Microsoft Edge  
         Required?                    false  
@@ -2316,6 +1901,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      e  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Firefox  
         Opens in Firefox  
         Required?                    false  
@@ -2325,6 +1912,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      ff  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -FocusWindow  
         Focus the browser window after opening  
         Required?                    false  
@@ -2334,6 +1923,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      fw, focus  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Force  
         Force enable debugging port, stopping existing browsers if needed  
         Required?                    false  
@@ -2343,6 +1934,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -FullScreen  
         Opens in fullscreen mode  
         Required?                    false  
@@ -2352,6 +1945,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      fs, f  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Height <int>  
         The initial height of the webbrowser window  
         Required?                    false  
@@ -2361,6 +1956,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -KeysToSend <string[]>  
         Keystrokes to send to the Window, see documentation for cmdlet GenXdev.Windows\Send-Key  
         Required?                    false  
@@ -2370,6 +1967,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Left  
         Place browser window on the left side of the screen  
         Required?                    false  
@@ -2379,6 +1978,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Maximize  
         Maximize the window after positioning  
         Required?                    false  
@@ -2388,6 +1989,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Monitor <int>  
         The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to $Global:DefaultSecondaryMonitor or 2 if not found  
         Required?                    false  
@@ -2397,6 +2000,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      m, mon  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NewWindow  
         Do not re-use existing browser window, instead, create a new one  
         Required?                    false  
@@ -2406,6 +2011,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      nw, new  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NoBorders  
         Removes the borders of the window  
         Required?                    false  
@@ -2415,6 +2022,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      nb  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NoBrowserExtensions  
         Prevent loading of browser extensions  
         Required?                    false  
@@ -2424,6 +2033,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      de, ne, NoExtensions  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -PassThru  
         Returns a PowerShell object of the browserprocess  
         Required?                    false  
@@ -2433,6 +2044,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      pt  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Private  
         Opens in incognito/private browsing mode  
         Required?                    false  
@@ -2442,6 +2055,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      incognito, inprivate  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -RestoreFocus  
         Restore PowerShell window focus  
         Required?                    false  
@@ -2451,6 +2066,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      rf, bg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Right  
         Place browser window on the right side of the screen  
         Required?                    false  
@@ -2460,6 +2077,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyDelayMilliSeconds <int>  
         Delay between different input strings in milliseconds when sending keys  
         Required?                    false  
@@ -2469,6 +2088,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      DelayMilliSeconds  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyEscape  
         Escape control characters and modifiers when sending keys  
         Required?                    false  
@@ -2478,6 +2099,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      Escape  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyHoldKeyboardFocus  
         Hold keyboard focus on target window when sending keys  
         Required?                    false  
@@ -2487,6 +2110,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      HoldKeyboardFocus  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyUseShiftEnter  
         Use Shift+Enter instead of Enter when sending keys  
         Required?                    false  
@@ -2496,6 +2121,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      UseShiftEnter  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SessionOnly  
         Use alternative settings stored in session for AI preferences  
         Required?                    false  
@@ -2505,6 +2132,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SetForeground  
         Set the browser window to foreground after opening  
         Required?                    false  
@@ -2514,6 +2143,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      fg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SetRestored  
         Restore the window to normal state after positioning  
         Required?                    false  
@@ -2523,6 +2154,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SideBySide  
         Position browser window either fullscreen on different monitor than PowerShell, or side by side with PowerShell on the same monitor  
         Required?                    false  
@@ -2532,6 +2165,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      sbs  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SkipSession  
         Store settings only in persistent preferences without affecting session  
         Required?                    false  
@@ -2541,6 +2176,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      FromPreferences  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Top  
         Place browser window on the top side of the screen  
         Required?                    false  
@@ -2550,6 +2187,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Url <string[]>  
         The URLs to open in the browser  
         Required?                    false  
@@ -2559,6 +2198,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      Value, Uri, FullName, Website, WebsiteUrl  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Width <int>  
         The initial width of the webbrowser window  
         Required?                    false  
@@ -2568,6 +2209,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -X <int>  
         The initial X position of the webbrowser window  
         Required?                    false  
@@ -2577,6 +2220,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Y <int>  
         The initial Y position of the webbrowser window  
         Required?                    false  
@@ -2586,11 +2231,14 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     <CommonParameters>  
         This cmdlet supports the common parameters: Verbose, Debug,  
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+``` 
 
 <br/><hr/><br/>
  
@@ -2599,7 +2247,7 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
 ```PowerShell 
 
    Select-WebbrowserTab                 --> st  
-```` 
+``` 
 
 ### SYNTAX 
 ```PowerShell 
@@ -2636,9 +2284,13 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
     <string[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
     [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
     <int>] [-Edge] [-Chrome] [-Force] [<CommonParameters>] 
-```` 
+``` 
 
 ### PARAMETERS 
+```yaml 
+ 
+``` 
+```yaml 
     -AcceptLang <string>  
         Set the browser accept-lang http header  
         Required?                    false  
@@ -2648,6 +2300,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      lang, locale  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -All  
         Opens in all registered modern browsers  
         Required?                    false  
@@ -2657,6 +2311,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ApplicationMode  
         Hide the browser controls  
         Required?                    false  
@@ -2666,6 +2322,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      a, app, appmode  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Bottom  
         Place browser window on the bottom side of the screen  
         Required?                    false  
@@ -2675,6 +2333,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ByReference <psobject>  
         Select tab using reference from Get-ChromiumSessionReference  
         Required?                    true  
@@ -2684,6 +2344,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Centered  
         Place browser window in the center of the screen  
         Required?                    false  
@@ -2693,6 +2355,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chrome  
         Opens in Google Chrome  
         Required?                    false  
@@ -2702,6 +2366,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      ch  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chromium  
         Opens in Microsoft Edge or Google Chrome, depending on what the default browser is  
         Required?                    false  
@@ -2711,6 +2377,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      c  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -DisablePopupBlocker  
         Disable the popup blocker  
         Required?                    false  
@@ -2720,6 +2388,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      allowpopups  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Edge  
         Opens in Microsoft Edge  
         Required?                    false  
@@ -2729,6 +2399,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      e  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Firefox  
         Opens in Firefox  
         Required?                    false  
@@ -2738,6 +2410,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      ff  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -FocusWindow  
         Focus the browser window after opening  
         Required?                    false  
@@ -2747,6 +2421,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      fw, focus  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Force  
         Forces browser restart if needed  
         Required?                    false  
@@ -2756,6 +2432,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -FullScreen  
         Opens in fullscreen mode  
         Required?                    false  
@@ -2765,6 +2443,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      fs, f  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Height <int>  
         The initial height of the webbrowser window  
         Required?                    false  
@@ -2774,6 +2454,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Id <int>  
         Tab identifier from the shown list  
         Required?                    false  
@@ -2783,6 +2465,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -KeysToSend <string[]>  
         Keystrokes to send to the Browser window, see documentation for cmdlet GenXdev.Windows\Send-Key  
         Required?                    false  
@@ -2792,6 +2476,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Left  
         Place browser window on the left side of the screen  
         Required?                    false  
@@ -2801,6 +2487,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Maximize  
         Maximize the window after positioning  
         Required?                    false  
@@ -2810,6 +2498,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Monitor <int>  
         The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to $Global:DefaultSecondaryMonitor or 2 if not found  
         Required?                    false  
@@ -2819,6 +2509,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      m, mon  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Name <string>  
         Selects first tab containing this name in URL  
         Required?                    true  
@@ -2828,6 +2520,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      Pattern  
         Dynamic?                     false  
         Accept wildcard characters?  true  
+``` 
+```yaml 
     -NewWindow  
         Do not re-use existing browser window, instead, create a new one  
         Required?                    false  
@@ -2837,6 +2531,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      nw, new  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NoBrowserExtensions  
         Prevent loading of browser extensions  
         Required?                    false  
@@ -2846,6 +2542,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      de, ne, NoExtensions  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Private  
         Opens in incognito/private browsing mode  
         Required?                    false  
@@ -2855,6 +2553,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      incognito, inprivate  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -RestoreFocus  
         Restore PowerShell window focus  
         Required?                    false  
@@ -2864,6 +2564,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      rf, bg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Right  
         Place browser window on the right side of the screen  
         Required?                    false  
@@ -2873,6 +2575,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyDelayMilliSeconds <int>  
         Delay between sending different key sequences in milliseconds  
         Required?                    false  
@@ -2882,6 +2586,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      DelayMilliSeconds  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyEscape  
         Escape control characters when sending keys  
         Required?                    false  
@@ -2891,6 +2597,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      Escape  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyHoldKeyboardFocus  
         Prevent returning keyboard focus to PowerShell after sending keys  
         Required?                    false  
@@ -2900,6 +2608,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      HoldKeyboardFocus  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyUseShiftEnter  
         Send Shift+Enter instead of regular Enter for line breaks  
         Required?                    false  
@@ -2909,6 +2619,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      UseShiftEnter  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SetForeground  
         Set the browser window to foreground after opening  
         Required?                    false  
@@ -2918,6 +2630,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      fg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SetRestored  
         Restore the window to normal state after positioning  
         Required?                    false  
@@ -2927,6 +2641,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Top  
         Place browser window on the top side of the screen  
         Required?                    false  
@@ -2936,6 +2652,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Width <int>  
         The initial width of the webbrowser window  
         Required?                    false  
@@ -2945,6 +2663,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -X <int>  
         The initial X position of the webbrowser window  
         Required?                    false  
@@ -2954,6 +2674,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Y <int>  
         The initial Y position of the webbrowser window  
         Required?                    false  
@@ -2963,186 +2685,14 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     <CommonParameters>  
         This cmdlet supports the common parameters: Verbose, Debug,  
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Set-BrowserVideoFullscreen 
-```PowerShell 
-
-   Set-BrowserVideoFullscreen           --> fsvideo  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Set-BrowserVideoFullscreen [-WhatIf] [-Confirm]
-    [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -Confirm  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      cf  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -WhatIf  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      wi  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Set-RemoteDebuggerPortInBrowserShortcuts 
-```PowerShell 
-
-   Set-RemoteDebuggerPortInBrowserShortcuts  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Set-RemoteDebuggerPortInBrowserShortcuts [-WhatIf]
-    [-Confirm] [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -Confirm  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      cf  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -WhatIf  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      wi  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Set-WebbrowserTabLocation 
-```PowerShell 
-
-   Set-WebbrowserTabLocation            --> lt, Nav  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Set-WebbrowserTabLocation [-Url] <string> [-NoAutoSelectTab]
-    [-Page <Object>] [-ByReference <psobject>] [-WhatIf]
-    [-Confirm] [<CommonParameters>]
-Set-WebbrowserTabLocation [-Url] <string> [-NoAutoSelectTab]
-    [-Edge] [-Page <Object>] [-ByReference <psobject>]
-    [-WhatIf] [-Confirm] [<CommonParameters>]
-Set-WebbrowserTabLocation [-Url] <string> [-NoAutoSelectTab]
-    [-Chrome] [-Page <Object>] [-ByReference <psobject>]
-    [-WhatIf] [-Confirm] [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -ByReference <psobject>  
-        Browser session reference object  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Chrome  
-        Navigate using Google Chrome browser  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           Chrome  
-        Aliases                      ch  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Confirm  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      cf  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Navigate using Microsoft Edge browser  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           Edge  
-        Aliases                      e  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -NoAutoSelectTab  
-        Prevent automatic tab selection  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Page <Object>  
-        Browser page object reference  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Url <string>  
-        The URL to navigate to  
-        Required?                    true  
-        Position?                    0  
-        Accept pipeline input?       true (ByValue, ByPropertyName)  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -WhatIf  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      wi  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+``` 
 
 <br/><hr/><br/>
  
@@ -3151,7 +2701,7 @@ Set-WebbrowserTabLocation [-Url] <string> [-NoAutoSelectTab]
 ```PowerShell 
 
    Show-WebsiteInAllBrowsers  
-```` 
+``` 
 
 ### SYNTAX 
 ```PowerShell 
@@ -3167,9 +2717,13 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
     [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
     <int>] [-NoBorders] [-SideBySide] [-SessionOnly]
     [-ClearSession] [-SkipSession] [<CommonParameters>] 
-```` 
+``` 
 
 ### PARAMETERS 
+```yaml 
+ 
+``` 
+```yaml 
     -AcceptLang <string>  
         Set the browser accept-lang http header  
         Required?                    false  
@@ -3179,6 +2733,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      lang, locale  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -All  
         Opens in all registered modern browsers  
         Required?                    false  
@@ -3188,6 +2744,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ApplicationMode  
         Hide the browser controls  
         Required?                    false  
@@ -3197,6 +2755,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      a, app, appmode  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Bottom  
         Place browser window on the bottom side of the screen  
         Required?                    false  
@@ -3206,6 +2766,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Centered  
         Place browser window in the center of the screen  
         Required?                    false  
@@ -3215,6 +2777,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chrome  
         Opens in Google Chrome  
         Required?                    false  
@@ -3224,6 +2788,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      ch  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chromium  
         Opens in Microsoft Edge or Google Chrome, depending on what the default browser is  
         Required?                    false  
@@ -3233,6 +2799,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      c  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ClearSession  
         Clear alternative settings stored in session for AI preferences.  
         Required?                    false  
@@ -3242,6 +2810,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -DisablePopupBlocker  
         Disable the popup blocker  
         Required?                    false  
@@ -3251,6 +2821,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      allowpopups  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Edge  
         Opens in Microsoft Edge  
         Required?                    false  
@@ -3260,6 +2832,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      e  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Firefox  
         Opens in Firefox  
         Required?                    false  
@@ -3269,6 +2843,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      ff  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -FocusWindow  
         Focus the browser window after opening  
         Required?                    false  
@@ -3278,6 +2854,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      fw, focus  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Force  
         Force enable debugging port, stopping existing browsers if needed  
         Required?                    false  
@@ -3287,6 +2865,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -FullScreen  
         Opens in fullscreen mode  
         Required?                    false  
@@ -3296,6 +2876,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      fs, f  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Height <int>  
         The initial height of the webbrowser window  
         Required?                    false  
@@ -3305,6 +2887,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -KeysToSend <string[]>  
         Keystrokes to send to the Browser window, see documentation for cmdlet GenXdev.Windows\Send-Key  
         Required?                    false  
@@ -3314,6 +2898,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Left  
         Place browser window on the left side of the screen  
         Required?                    false  
@@ -3323,6 +2909,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Maximize  
         Maximize the window after positioning  
         Required?                    false  
@@ -3332,6 +2920,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Monitor <int>  
         The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to $Global:DefaultSecondaryMonitor or 2 if not found  
         Required?                    false  
@@ -3341,6 +2931,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      m, mon  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NewWindow  
         Do not re-use existing browser window, instead, create a new one  
         Required?                    false  
@@ -3350,6 +2942,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      nw, new  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NoBorders  
         Removes the borders of the browser window.  
         Required?                    false  
@@ -3359,6 +2953,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      nb  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NoBrowserExtensions  
         Prevent loading of browser extensions  
         Required?                    false  
@@ -3368,6 +2964,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      de, ne, NoExtensions  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Private  
         Opens in incognito/private browsing mode  
         Required?                    false  
@@ -3377,6 +2975,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      incognito, inprivate  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -RestoreFocus  
         Restore PowerShell window focus  
         Required?                    false  
@@ -3386,6 +2986,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      rf, bg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Right  
         Place browser window on the right side of the screen  
         Required?                    false  
@@ -3395,6 +2997,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyDelayMilliSeconds <int>  
         Delay between sending different key sequences in milliseconds  
         Required?                    false  
@@ -3404,6 +3008,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      DelayMilliSeconds  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyEscape  
         Escape control characters when sending keys  
         Required?                    false  
@@ -3413,6 +3019,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      Escape  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyHoldKeyboardFocus  
         Prevent returning keyboard focus to PowerShell after sending keys  
         Required?                    false  
@@ -3422,6 +3030,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      HoldKeyboardFocus  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyUseShiftEnter  
         Send Shift+Enter instead of regular Enter for line breaks  
         Required?                    false  
@@ -3431,6 +3041,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      UseShiftEnter  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SessionOnly  
         Use alternative settings stored in session for AI preferences.  
         Required?                    false  
@@ -3440,6 +3052,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SetForeground  
         Set the browser window to foreground after opening  
         Required?                    false  
@@ -3449,6 +3063,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      fg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SetRestored  
         Restore the window to normal state after positioning  
         Required?                    false  
@@ -3458,6 +3074,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SideBySide  
         Position browser window either fullscreen on different monitor than PowerShell, or side by side with PowerShell on the same monitor.  
         Required?                    false  
@@ -3467,6 +3085,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      sbs  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SkipSession  
         Store settings only in persistent preferences without affecting session.  
         Required?                    false  
@@ -3476,6 +3096,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      FromPreferences  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Top  
         Place browser window on the top side of the screen  
         Required?                    false  
@@ -3485,6 +3107,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Url <string>  
         The URLs to open in all browsers simultaneously  
         Required?                    true  
@@ -3494,6 +3118,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      Value, Uri, FullName, Website, WebsiteUrl  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Width <int>  
         The initial width of the webbrowser window  
         Required?                    false  
@@ -3503,6 +3129,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -X <int>  
         The initial X position of the webbrowser window  
         Required?                    false  
@@ -3512,6 +3140,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Y <int>  
         The initial Y position of the webbrowser window  
         Required?                    false  
@@ -3521,11 +3151,405 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     <CommonParameters>  
         This cmdlet supports the common parameters: Verbose, Debug,  
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Approve-FirefoxDebugging 
+```PowerShell 
+
+   Approve-FirefoxDebugging  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Clear-WebbrowserTabSiteApplicationData 
+```PowerShell 
+
+   Clear-WebbrowserTabSiteApplicationData --> clearsitedata  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Close-Webbrowser 
+```PowerShell 
+
+   Close-Webbrowser                     --> wbc  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Close-WebbrowserTab 
+```PowerShell 
+
+   Close-WebbrowserTab  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Export-BrowserBookmarks 
+```PowerShell 
+
+   Export-BrowserBookmarks  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Find-BrowserBookmark 
+```PowerShell 
+
+   Find-BrowserBookmark                 --> bookmarks  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Get-ChromeRemoteDebuggingPort 
+```PowerShell 
+
+   Get-ChromeRemoteDebuggingPort  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Get-ChromiumRemoteDebuggingPort 
+```PowerShell 
+
+   Get-ChromiumRemoteDebuggingPort  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Get-ChromiumSessionReference 
+```PowerShell 
+
+   Get-ChromiumSessionReference  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Get-DefaultWebbrowser 
+```PowerShell 
+
+   Get-DefaultWebbrowser  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Get-EdgeRemoteDebuggingPort 
+```PowerShell 
+
+   Get-EdgeRemoteDebuggingPort  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Get-Webbrowser 
+```PowerShell 
+
+   Get-Webbrowser  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Get-WebbrowserTabDomNodes 
+```PowerShell 
+
+   Get-WebbrowserTabDomNodes            --> wl  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Import-GenXdevBookmarkletMenu 
+```PowerShell 
+
+   Import-GenXdevBookmarkletMenu  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Set-BrowserVideoFullscreen 
+```PowerShell 
+
+   Set-BrowserVideoFullscreen           --> fsvideo  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Set-RemoteDebuggerPortInBrowserShortcuts 
+```PowerShell 
+
+   Set-RemoteDebuggerPortInBrowserShortcuts  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Set-WebbrowserTabLocation 
+```PowerShell 
+
+   Set-WebbrowserTabLocation            --> lt, Nav  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
 
 <br/><hr/><br/>
  
@@ -3537,57 +3561,21 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
 ```PowerShell 
 
    Connect-PlaywrightViaDebuggingPort  
-```` 
+``` 
 
 ### SYNOPSIS 
-    Connects to an existing browser instance via debugging port.  
 
 ### SYNTAX 
 ```PowerShell 
-Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String>
-    [-ForceConsent]
-    [-ConsentToThirdPartySoftwareInstallation]
-    [<CommonParameters>] 
-```` 
+ 
+``` 
 
 ### DESCRIPTION 
-    Establishes a connection to a running Chromium-based browser instance using the  
-    WebSocket debugger URL. Creates a Playwright instance and connects over CDP  
-    (Chrome DevTools Protocol). The connected browser instance is stored in a global  
-    dictionary for later reference. Automatically handles consent for  
-    Microsoft.Playwright NuGet package installation.  
 
 ### PARAMETERS 
-    -WsEndpoint <String>  
-        The WebSocket URL for connecting to the browser's debugging port. This URL  
-        typically follows the format 'ws://hostname:port/devtools/browser/<id>'.  
-        Required?                    true  
-        Position?                    1  
-        Default value                  
-        Accept pipeline input?       false  
-        Aliases                        
-        Accept wildcard characters?  false  
-    -ForceConsent [<SwitchParameter>]  
-        Force consent for third-party software installation without prompting.  
-        Required?                    false  
-        Position?                    named  
-        Default value                False  
-        Accept pipeline input?       false  
-        Aliases                        
-        Accept wildcard characters?  false  
-    -ConsentToThirdPartySoftwareInstallation [<SwitchParameter>]  
-        Provide consent to third-party software installation.  
-        Required?                    false  
-        Position?                    named  
-        Default value                False  
-        Accept pipeline input?       false  
-        Aliases                        
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+```yaml 
+ 
+``` 
 
 <br/><hr/><br/>
  
@@ -3596,29 +3584,21 @@ Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String>
 ```PowerShell 
 
    Get-PlaywrightProfileDirectory  
-```` 
+``` 
+
+### SYNOPSIS 
 
 ### SYNTAX 
 ```PowerShell 
-Get-PlaywrightProfileDirectory [[-BrowserType] {Chromium |
-    Firefox | Webkit}] [<CommonParameters>] 
-```` 
+ 
+``` 
+
+### DESCRIPTION 
 
 ### PARAMETERS 
-    -BrowserType <string>  
-        The browser type (Chromium, Firefox, or Webkit)  
-        Required?                    false  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+```yaml 
+ 
+``` 
 
 <br/><hr/><br/>
  
@@ -3627,19 +3607,21 @@ Get-PlaywrightProfileDirectory [[-BrowserType] {Chromium |
 ```PowerShell 
 
    Resume-WebbrowserTabVideo            --> wbvideoplay  
-```` 
+``` 
+
+### SYNOPSIS 
 
 ### SYNTAX 
 ```PowerShell 
-Resume-WebbrowserTabVideo [<CommonParameters>] 
-```` 
+ 
+``` 
+
+### DESCRIPTION 
 
 ### PARAMETERS 
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+```yaml 
+ 
+``` 
 
 <br/><hr/><br/>
  
@@ -3648,54 +3630,21 @@ Resume-WebbrowserTabVideo [<CommonParameters>]
 ```PowerShell 
 
    Stop-WebbrowserVideos                --> ssst, wbsst, wbvideostop  
-```` 
+``` 
+
+### SYNOPSIS 
 
 ### SYNTAX 
 ```PowerShell 
-Stop-WebbrowserVideos [-Edge] [-Chrome] [-WhatIf] [-Confirm]
-    [<CommonParameters>] 
-```` 
+ 
+``` 
+
+### DESCRIPTION 
 
 ### PARAMETERS 
-    -Chrome  
-        Opens in Google Chrome  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      ch  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Confirm  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      cf  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Opens in Microsoft Edge  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      e  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -WhatIf  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      wi  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+```yaml 
+ 
+``` 
 
 <br/><hr/><br/>
  
@@ -3703,39 +3652,22 @@ Stop-WebbrowserVideos [-Edge] [-Chrome] [-WhatIf] [-Confirm]
 ##	Unprotect-WebbrowserTab 
 ```PowerShell 
 
-   Unprotect-WebbrowserTab              --> wbctrl  
-```` 
+   Unprotect-WebbrowserTab  
+``` 
+
+### SYNOPSIS 
 
 ### SYNTAX 
 ```PowerShell 
-Unprotect-WebbrowserTab [[-UseCurrent]] [[-Force]]
-    [<CommonParameters>] 
-```` 
+ 
+``` 
+
+### DESCRIPTION 
 
 ### PARAMETERS 
-    -Force  
-        Restart browser if no debugging server detected  
-        Required?                    false  
-        Position?                    1  
-        Accept pipeline input?       false  
-        Parameter set name           Default  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -UseCurrent  
-        Use current tab instead of selecting a new one  
-        Required?                    false  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           Default  
-        Aliases                      current  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+```yaml 
+ 
+``` 
 
 <br/><hr/><br/>
  
@@ -3743,325 +3675,11 @@ Unprotect-WebbrowserTab [[-UseCurrent]] [[-Force]]
 &nbsp;<hr/>
 ###	GenXdev.Webbrowser<hr/> 
 
-##	Approve-FirefoxDebugging 
-```PowerShell 
-
-   Approve-FirefoxDebugging  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Approve-FirefoxDebugging [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Clear-WebbrowserTabSiteApplicationData 
-```PowerShell 
-
-   Clear-WebbrowserTabSiteApplicationData --> clearsitedata  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Clear-WebbrowserTabSiteApplicationData [-Edge] [-Chrome]
-    [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -Chrome  
-        Clear in Google Chrome  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Clear in Microsoft Edge  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Close-Webbrowser 
-```PowerShell 
-
-   Close-Webbrowser                     --> wbc  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Close-Webbrowser [[-Edge]] [[-Chrome]] [[-Chromium]]
-    [[-Firefox]] [[-IncludeBackgroundProcesses]]
-    [<CommonParameters>]
-Close-Webbrowser [[-All]] [[-IncludeBackgroundProcesses]]
-    [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -All  
-        Closes all registered modern browsers  
-        Required?                    false  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           All  
-        Aliases                      a  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Chrome  
-        Closes Google Chrome browser instances  
-        Required?                    false  
-        Position?                    1  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      ch  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Chromium  
-        Closes default chromium-based browser  
-        Required?                    false  
-        Position?                    2  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      c  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Closes Microsoft Edge browser instances  
-        Required?                    false  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      e  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Firefox  
-        Closes Firefox browser instances  
-        Required?                    false  
-        Position?                    3  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      ff  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -IncludeBackgroundProcesses  
-        Closes all instances including background tasks  
-        Required?                    false  
-        Position?                    4  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      bg, Force  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Close-WebbrowserTab 
-```PowerShell 
-
-   Close-WebbrowserTab                  --> CloseTab, ct  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Close-WebbrowserTab [-Edge] [-Chrome] [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -Chrome  
-        Navigate using Google Chrome browser  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      ch  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Navigate using Microsoft Edge browser  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      e  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Export-BrowserBookmarks 
-```PowerShell 
-
-   Export-BrowserBookmarks  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Export-BrowserBookmarks [-OutputFile] <string> [-Chrome]
-    [-Edge] [-Firefox] [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -Chrome  
-        Export bookmarks from Google Chrome  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Export bookmarks from Microsoft Edge  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Firefox  
-        Export bookmarks from Mozilla Firefox  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           Firefox  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -OutputFile <string>  
-        Path to the JSON file where bookmarks will be saved  
-        Required?                    true  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Find-BrowserBookmark 
-```PowerShell 
-
-   Find-BrowserBookmark                 --> bookmarks  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Find-BrowserBookmark [[-Queries] <string[]>] [-Edge]
-    [-Chrome] [-Firefox] [-Count <int>] [-PassThru]
-    [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -Chrome  
-        Search through Google Chrome bookmarks  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      ch  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Count <int>  
-        Maximum number of results to return  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Search through Microsoft Edge bookmarks  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      e  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Firefox  
-        Search through Firefox bookmarks  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      ff  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -PassThru  
-        Return bookmark objects instead of just URLs  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Queries <string[]>  
-        Search terms to find matching bookmarks  
-        Required?                    false  
-        Position?                    0  
-        Accept pipeline input?       true (ByValue, ByPropertyName)  
-        Parameter set name           (All)  
-        Aliases                      q, Name, Text, Query  
-        Dynamic?                     false  
-        Accept wildcard characters?  true  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
 ##	Get-BrowserBookmark 
 ```PowerShell 
 
    Get-BrowserBookmark                  --> gbm  
-```` 
+``` 
 
 ### SYNTAX 
 ```PowerShell 
@@ -4072,9 +3690,13 @@ Get-BrowserBookmark [[-Chrome]] [[-Edge]] [[-Firefox]]
     [-ForceConsent]
     [-ConsentToThirdPartySoftwareInstallation]
     [<CommonParameters>] 
-```` 
+``` 
 
 ### PARAMETERS 
+```yaml 
+ 
+``` 
+```yaml 
     -Chrome  
         Returns bookmarks from Google Chrome  
         Required?                    false  
@@ -4084,6 +3706,8 @@ Get-BrowserBookmark [[-Chrome]] [[-Edge]] [[-Firefox]]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ConsentToThirdPartySoftwareInstallation  
         Consent to third-party software installation  
         Required?                    false  
@@ -4093,6 +3717,8 @@ Get-BrowserBookmark [[-Chrome]] [[-Edge]] [[-Firefox]]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Edge  
         Returns bookmarks from Microsoft Edge  
         Required?                    false  
@@ -4102,6 +3728,8 @@ Get-BrowserBookmark [[-Chrome]] [[-Edge]] [[-Firefox]]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Firefox  
         Returns bookmarks from Mozilla Firefox  
         Required?                    false  
@@ -4111,6 +3739,8 @@ Get-BrowserBookmark [[-Chrome]] [[-Edge]] [[-Firefox]]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ForceConsent  
         Force consent for third-party software installation  
         Required?                    false  
@@ -4120,279 +3750,14 @@ Get-BrowserBookmark [[-Chrome]] [[-Edge]] [[-Firefox]]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     <CommonParameters>  
         This cmdlet supports the common parameters: Verbose, Debug,  
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Get-ChromeRemoteDebuggingPort 
-```PowerShell 
-
-   Get-ChromeRemoteDebuggingPort  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Get-ChromeRemoteDebuggingPort [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Get-ChromiumRemoteDebuggingPort 
-```PowerShell 
-
-   Get-ChromiumRemoteDebuggingPort  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Get-ChromiumRemoteDebuggingPort [-Chrome] [-Edge]
-    [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -Chrome  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Get-ChromiumSessionReference 
-```PowerShell 
-
-   Get-ChromiumSessionReference  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Get-ChromiumSessionReference [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Get-DefaultWebbrowser 
-```PowerShell 
-
-   Get-DefaultWebbrowser  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Get-DefaultWebbrowser [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Get-EdgeRemoteDebuggingPort 
-```PowerShell 
-
-   Get-EdgeRemoteDebuggingPort  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Get-EdgeRemoteDebuggingPort [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Get-Webbrowser 
-```PowerShell 
-
-   Get-Webbrowser  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Get-Webbrowser [<CommonParameters>]
-Get-Webbrowser [[-Edge]] [[-Chrome]] [[-Chromium]]
-    [[-Firefox]] [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -Chrome  
-        Selects Google Chrome browser instances  
-        Required?                    false  
-        Position?                    1  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      ch  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Chromium  
-        Selects default chromium-based browser  
-        Required?                    false  
-        Position?                    2  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      c  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Selects Microsoft Edge browser instances  
-        Required?                    false  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      e  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Firefox  
-        Selects Firefox browser instances  
-        Required?                    false  
-        Position?                    3  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      ff  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Get-WebbrowserTabDomNodes 
-```PowerShell 
-
-   Get-WebbrowserTabDomNodes            --> wl  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Get-WebbrowserTabDomNodes [-QuerySelector] <string[]>
-    [[-ModifyScript] <string>] [-Edge] [-Chrome] [-Page
-    <Object>] [-ByReference <psobject>] [-NoAutoSelectTab]
-    [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -ByReference <psobject>  
-        Browser session reference object  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Chrome  
-        Use Google Chrome browser  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      ch  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Use Microsoft Edge browser  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      e  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -ModifyScript <string>  
-        The script to modify the output of the query selector, e.g. e.outerHTML or e.outerHTML='hello world'  
-        Required?                    false  
-        Position?                    1  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -NoAutoSelectTab  
-        Prevent automatic tab selection  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Page <Object>  
-        Browser page object reference  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -QuerySelector <string[]>  
-        The query selector string or array of strings to use for selecting DOM nodes  
-        Required?                    true  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+``` 
 
 <br/><hr/><br/>
  
@@ -4401,7 +3766,7 @@ Get-WebbrowserTabDomNodes [-QuerySelector] <string[]>
 ```PowerShell 
 
    Import-BrowserBookmarks  
-```` 
+``` 
 
 ### SYNOPSIS 
     Imports bookmarks from a file or collection into a web browser.  
@@ -4416,7 +3781,7 @@ Import-BrowserBookmarks [[-InputFile] <String>] [-Chrome]
 Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
     [-Edge] [-Firefox] [-WhatIf] [-Confirm]
     [<CommonParameters>] 
-```` 
+``` 
 
 ### DESCRIPTION 
     Imports bookmarks into Microsoft Edge or Google Chrome from either a CSV file or  
@@ -4424,6 +3789,10 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
     bookmark bar or specified folders. Firefox import is not currently supported.  
 
 ### PARAMETERS 
+```yaml 
+ 
+``` 
+```yaml 
     -InputFile <String>  
         The path to a CSV file containing bookmarks to import. The CSV should have  
         columns for Name, URL, Folder, DateAdded, and DateModified.  
@@ -4433,6 +3802,8 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Bookmarks <Array>  
         An array of bookmark objects to import. Each object should have properties for  
         Name, URL, Folder, DateAdded, and DateModified.  
@@ -4442,6 +3813,8 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chrome [<SwitchParameter>]  
         Switch to import bookmarks into Google Chrome.  
         Required?                    false  
@@ -4450,6 +3823,8 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Edge [<SwitchParameter>]  
         Switch to import bookmarks into Microsoft Edge.  
         Required?                    false  
@@ -4458,6 +3833,8 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Firefox [<SwitchParameter>]  
         Switch to indicate Firefox as target (currently not supported).  
         Required?                    false  
@@ -4466,6 +3843,8 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -WhatIf [<SwitchParameter>]  
         Required?                    false  
         Position?                    named  
@@ -4473,6 +3852,8 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Confirm [<SwitchParameter>]  
         Required?                    false  
         Position?                    named  
@@ -4480,95 +3861,14 @@ Import-BrowserBookmarks [[-Bookmarks] <Array>] [-Chrome]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     <CommonParameters>  
         This cmdlet supports the common parameters: Verbose, Debug,  
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Import-GenXdevBookmarkletMenu 
-```PowerShell 
-
-   Import-GenXdevBookmarkletMenu  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Import-GenXdevBookmarkletMenu [[-SnippetsPath] <string>]
-    [[-TargetFolder] <string>] [-Edge] [-Chrome] [-Firefox]
-    [-WhatIf] [-Confirm] [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -Chrome  
-        Import bookmarklets into Google Chrome browser  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Confirm  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      cf  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Import bookmarklets into Microsoft Edge browser  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Firefox  
-        Import bookmarklets into Mozilla Firefox browser  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -SnippetsPath <string>  
-        Path to directory containing bookmarklet snippet files  
-        Required?                    false  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -TargetFolder <string>  
-        Target bookmark folder in browser bookmark structure  
-        Required?                    false  
-        Position?                    1  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -WhatIf  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      wi  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+``` 
 
 <br/><hr/><br/>
  
@@ -4577,7 +3877,7 @@ Import-GenXdevBookmarkletMenu [[-SnippetsPath] <string>]
 ```PowerShell 
 
    Invoke-WebbrowserEvaluation          --> et, Eval  
-```` 
+``` 
 
 ### SYNOPSIS 
     Executes JavaScript code in a selected web browser tab.  
@@ -4587,7 +3887,7 @@ Import-GenXdevBookmarkletMenu [[-SnippetsPath] <string>]
 Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
     [-Inspect] [-NoAutoSelectTab] [-Edge] [-Chrome] [-Page
     <Object>] [-ByReference <PSObject>] [<CommonParameters>] 
-```` 
+``` 
 
 ### DESCRIPTION 
     Executes JavaScript code in a selected browser tab with support for async/await,  
@@ -4612,6 +3912,10 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
     - Error handling and timeout management  
 
 ### PARAMETERS 
+```yaml 
+ 
+``` 
+```yaml 
     -Scripts <Object[]>  
         JavaScript code to execute. Can be string content, file paths, or URLs.  
         Accepts pipeline input.  
@@ -4621,6 +3925,8 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
         Accept pipeline input?       true (ByValue, ByPropertyName)  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Inspect [<SwitchParameter>]  
         Adds debugger statement before executing to enable debugging.  
         Required?                    false  
@@ -4629,6 +3935,8 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NoAutoSelectTab [<SwitchParameter>]  
         Prevents automatic tab selection if no tab is currently selected.  
         Required?                    false  
@@ -4637,6 +3945,8 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Edge [<SwitchParameter>]  
         Selects Microsoft Edge browser for execution.  
         Required?                    false  
@@ -4645,6 +3955,8 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chrome [<SwitchParameter>]  
         Selects Google Chrome browser for execution.  
         Required?                    false  
@@ -4653,6 +3965,8 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Page <Object>  
         Browser page object for execution when using ByReference mode.  
         Required?                    false  
@@ -4661,6 +3975,8 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ByReference <PSObject>  
         Session reference object when using ByReference mode.  
         Required?                    false  
@@ -4669,11 +3985,14 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
         Accept pipeline input?       false  
         Aliases                        
         Accept wildcard characters?  false  
+``` 
+```yaml 
     <CommonParameters>  
         This cmdlet supports the common parameters: Verbose, Debug,  
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+``` 
 
 ### NOTES 
 ```PowerShell 
@@ -4877,7 +4196,7 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
    PS>Get-ChildItem *.js | Invoke-WebbrowserEvaluation -Edge  
    -------------------------- EXAMPLE 8 --------------------------  
    PS>ls *.js | et -e  
-```` 
+``` 
 
 <br/><hr/><br/>
  
@@ -4886,7 +4205,7 @@ Invoke-WebbrowserEvaluation [[-Scripts] <Object[]>]
 ```PowerShell 
 
    Open-BrowserBookmarks                --> sites  
-```` 
+``` 
 
 ### SYNTAX 
 ```PowerShell 
@@ -4904,9 +4223,13 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
     [-SendKeyDelayMilliSeconds <int>] [-NoBorders]
     [-SessionOnly] [-ClearSession] [-SkipSession]
     [<CommonParameters>] 
-```` 
+``` 
 
 ### PARAMETERS 
+```yaml 
+ 
+``` 
+```yaml 
     -AcceptLang <string>  
         Set the browser accept-lang http header  
         Required?                    false  
@@ -4916,6 +4239,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      lang, locale  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -All  
         Opens in all registered modern browsers  
         Required?                    false  
@@ -4925,6 +4250,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ApplicationMode  
         Hide the browser controls  
         Required?                    false  
@@ -4934,6 +4261,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      a, app, appmode  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Bottom  
         Place browser window on the bottom side of the screen  
         Required?                    false  
@@ -4943,6 +4272,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Centered  
         Place browser window in the center of the screen  
         Required?                    false  
@@ -4952,6 +4283,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chrome  
         Select in Google Chrome  
         Required?                    false  
@@ -4961,6 +4294,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      ch  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chromium  
         Opens in Microsoft Edge or Google Chrome, depending on what the default browser is  
         Required?                    false  
@@ -4970,6 +4305,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      c  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ClearSession  
         Clear alternative settings stored in session for AI preferences  
         Required?                    false  
@@ -4979,6 +4316,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Count <int>  
         Maximum number of urls to open  
         Required?                    false  
@@ -4988,6 +4327,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -DisablePopupBlocker  
         Disable the popup blocker  
         Required?                    false  
@@ -4997,6 +4338,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      allowpopups  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Edge  
         Select in Microsoft Edge  
         Required?                    false  
@@ -5006,6 +4349,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      e  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Firefox  
         Select in Firefox  
         Required?                    false  
@@ -5015,6 +4360,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      ff  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -FocusWindow  
         Focus the browser window after opening  
         Required?                    false  
@@ -5024,6 +4371,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      fw, focus  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Force  
         Force enable debugging port, stopping existing browsers if needed  
         Required?                    false  
@@ -5033,6 +4382,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -FullScreen  
         Opens in fullscreen mode  
         Required?                    false  
@@ -5042,6 +4393,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      fs, f  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Height <int>  
         The initial height of the webbrowser window  
         Required?                    false  
@@ -5051,6 +4404,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -KeysToSend <string[]>  
         Keystrokes to send to the Browser window, see documentation for cmdlet GenXdev.Windows\Send-Key  
         Required?                    false  
@@ -5060,6 +4415,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Left  
         Place browser window on the left side of the screen  
         Required?                    false  
@@ -5069,6 +4426,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Maximize  
         Maximize the window after positioning  
         Required?                    false  
@@ -5078,6 +4437,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Minimize  
         Minimize the window after positioning  
         Required?                    false  
@@ -5087,6 +4448,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Monitor <int>  
         The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor  
         Required?                    false  
@@ -5096,6 +4459,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      m, mon  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NewWindow  
         Do not re-use existing browser window, instead, create a new one  
         Required?                    false  
@@ -5105,6 +4470,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      nw, new  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NoBorders  
         Removes the borders of the browser window  
         Required?                    false  
@@ -5114,6 +4481,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      nb  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NoBrowserExtensions  
         Prevent loading of browser extensions  
         Required?                    false  
@@ -5123,6 +4492,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      de, ne, NoExtensions  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Private  
         Opens in incognito/private browsing mode  
         Required?                    false  
@@ -5132,6 +4503,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      incognito, inprivate  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Queries <string[]>  
         Search terms to filter bookmarks  
         Required?                    false  
@@ -5141,6 +4514,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      q, Name, Text, Query  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -RestoreFocus  
         Restore PowerShell window focus  
         Required?                    false  
@@ -5150,6 +4525,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      rf, bg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Right  
         Place browser window on the right side of the screen  
         Required?                    false  
@@ -5159,6 +4536,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyDelayMilliSeconds <int>  
         Delay between sending different key sequences in milliseconds  
         Required?                    false  
@@ -5168,6 +4547,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      DelayMilliSeconds  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyEscape  
         Escape control characters when sending keys  
         Required?                    false  
@@ -5177,6 +4558,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      Escape  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyHoldKeyboardFocus  
         Prevent returning keyboard focus to PowerShell after sending keys  
         Required?                    false  
@@ -5186,6 +4569,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      HoldKeyboardFocus  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyUseShiftEnter  
         Send Shift+Enter instead of regular Enter for line breaks  
         Required?                    false  
@@ -5195,6 +4580,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      UseShiftEnter  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SessionOnly  
         Use alternative settings stored in session for AI preferences  
         Required?                    false  
@@ -5204,6 +4591,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SetForeground  
         Set the browser window to foreground after opening  
         Required?                    false  
@@ -5213,6 +4602,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      fg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SetRestored  
         Restore the window to normal state after positioning  
         Required?                    false  
@@ -5222,6 +4613,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ShowWindow  
         Show the browser window (not 1d or hidden)  
         Required?                    false  
@@ -5231,6 +4624,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      sw  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SideBySide  
         Will either set the window fullscreen on a different monitor than Powershell, or side by side with Powershell on the same monitor  
         Required?                    false  
@@ -5240,6 +4635,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      sbs  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SkipSession  
         Store settings only in persistent preferences without affecting session  
         Required?                    false  
@@ -5249,6 +4646,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      FromPreferences  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Top  
         Place browser window on the top side of the screen  
         Required?                    false  
@@ -5258,6 +4657,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Width <int>  
         The initial width of the webbrowser window  
         Required?                    false  
@@ -5267,6 +4668,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -X <int>  
         The initial X position of the webbrowser window  
         Required?                    false  
@@ -5276,6 +4679,8 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Y <int>  
         The initial Y position of the webbrowser window  
         Required?                    false  
@@ -5285,11 +4690,14 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     <CommonParameters>  
         This cmdlet supports the common parameters: Verbose, Debug,  
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+``` 
 
 <br/><hr/><br/>
  
@@ -5298,7 +4706,7 @@ Open-BrowserBookmarks [[-Queries] <string[]>] [[-Count]
 ```PowerShell 
 
    Open-Webbrowser                      --> wb  
-```` 
+``` 
 
 ### SYNTAX 
 ```PowerShell 
@@ -5315,9 +4723,13 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
     [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
     <int>] [-SessionOnly] [-ClearSession] [-SkipSession]
     [<CommonParameters>] 
-```` 
+``` 
 
 ### PARAMETERS 
+```yaml 
+ 
+``` 
+```yaml 
     -AcceptLang <string>  
         Set the browser accept-lang http header  
         Required?                    false  
@@ -5327,6 +4739,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      lang, locale  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -All  
         Opens in all registered modern browsers  
         Required?                    false  
@@ -5336,6 +4750,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ApplicationMode  
         Hide the browser controls  
         Required?                    false  
@@ -5345,6 +4761,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      a, app, appmode  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Bottom  
         Place browser window on the bottom side of the screen  
         Required?                    false  
@@ -5354,6 +4772,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Centered  
         Place browser window in the center of the screen  
         Required?                    false  
@@ -5363,6 +4783,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chrome  
         Opens in Google Chrome  
         Required?                    false  
@@ -5372,6 +4794,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      ch  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chromium  
         Opens in Microsoft Edge or Google Chrome, depending on what the default browser is  
         Required?                    false  
@@ -5381,6 +4805,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      c  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ClearSession  
         Clear alternative settings stored in session for AI preferences  
         Required?                    false  
@@ -5390,6 +4816,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -DisablePopupBlocker  
         Disable the popup blocker  
         Required?                    false  
@@ -5399,6 +4827,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      allowpopups  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Edge  
         Opens in Microsoft Edge  
         Required?                    false  
@@ -5408,6 +4838,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      e  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Firefox  
         Opens in Firefox  
         Required?                    false  
@@ -5417,6 +4849,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      ff  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -FocusWindow  
         Focus the browser window after opening  
         Required?                    false  
@@ -5426,6 +4860,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      fw, focus  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Force  
         Force enable debugging port, stopping existing browsers if needed  
         Required?                    false  
@@ -5435,6 +4871,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -FullScreen  
         Opens in fullscreen mode  
         Required?                    false  
@@ -5444,6 +4882,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      fs, f  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Height <int>  
         The initial height of the webbrowser window  
         Required?                    false  
@@ -5453,6 +4893,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Input <string>  
         The URLs to open in the browser  
         Required?                    false  
@@ -5462,6 +4904,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      Value, Uri, FullName, Website, WebsiteUrl  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -KeysToSend <string[]>  
         Keystrokes to send to the Window, see documentation for cmdlet GenXdev.Windows\Send-Key  
         Required?                    false  
@@ -5471,6 +4915,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Left  
         Place browser window on the left side of the screen  
         Required?                    false  
@@ -5480,6 +4926,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Maximize  
         Maximize the window after positioning  
         Required?                    false  
@@ -5489,6 +4937,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Monitor <int>  
         The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to $Global:DefaultSecondaryMonitor or 2 if not found  
         Required?                    false  
@@ -5498,6 +4948,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      m, mon  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NewWindow  
         Do not re-use existing browser window, instead, create a new one  
         Required?                    false  
@@ -5507,6 +4959,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      nw, new  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NoBorders  
         Removes the borders of the window  
         Required?                    false  
@@ -5516,6 +4970,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      nb  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NoBrowserExtensions  
         Prevent loading of browser extensions  
         Required?                    false  
@@ -5525,6 +4981,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      de, ne, NoExtensions  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -PassThru  
         Returns a PowerShell object of the browserprocess  
         Required?                    false  
@@ -5534,6 +4992,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      pt  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Private  
         Opens in incognito/private browsing mode  
         Required?                    false  
@@ -5543,6 +5003,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      incognito, inprivate  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -RestoreFocus  
         Restore PowerShell window focus  
         Required?                    false  
@@ -5552,6 +5014,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      rf, bg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Right  
         Place browser window on the right side of the screen  
         Required?                    false  
@@ -5561,6 +5025,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyDelayMilliSeconds <int>  
         Delay between different input strings in milliseconds when sending keys  
         Required?                    false  
@@ -5570,6 +5036,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      DelayMilliSeconds  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyEscape  
         Escape control characters and modifiers when sending keys  
         Required?                    false  
@@ -5579,6 +5047,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      Escape  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyHoldKeyboardFocus  
         Hold keyboard focus on target window when sending keys  
         Required?                    false  
@@ -5588,6 +5058,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      HoldKeyboardFocus  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyUseShiftEnter  
         Use Shift+Enter instead of Enter when sending keys  
         Required?                    false  
@@ -5597,6 +5069,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      UseShiftEnter  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SessionOnly  
         Use alternative settings stored in session for AI preferences  
         Required?                    false  
@@ -5606,6 +5080,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SetForeground  
         Set the browser window to foreground after opening  
         Required?                    false  
@@ -5615,6 +5091,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      fg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SetRestored  
         Restore the window to normal state after positioning  
         Required?                    false  
@@ -5624,6 +5102,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SideBySide  
         Position browser window either fullscreen on different monitor than PowerShell, or side by side with PowerShell on the same monitor  
         Required?                    false  
@@ -5633,6 +5113,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      sbs  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SkipSession  
         Store settings only in persistent preferences without affecting session  
         Required?                    false  
@@ -5642,6 +5124,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      FromPreferences  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Top  
         Place browser window on the top side of the screen  
         Required?                    false  
@@ -5651,6 +5135,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Url <string[]>  
         The URLs to open in the browser  
         Required?                    false  
@@ -5660,6 +5146,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Width <int>  
         The initial width of the webbrowser window  
         Required?                    false  
@@ -5669,6 +5157,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -X <int>  
         The initial X position of the webbrowser window  
         Required?                    false  
@@ -5678,6 +5168,8 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Y <int>  
         The initial Y position of the webbrowser window  
         Required?                    false  
@@ -5687,11 +5179,14 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     <CommonParameters>  
         This cmdlet supports the common parameters: Verbose, Debug,  
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+``` 
 
 <br/><hr/><br/>
  
@@ -5700,7 +5195,7 @@ Open-Webbrowser [[-Url] <string[]>] [[-Monitor] <int>]
 ```PowerShell 
 
    Open-WebbrowserSideBySide            --> wbn  
-```` 
+``` 
 
 ### SYNTAX 
 ```PowerShell 
@@ -5717,9 +5212,13 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
     [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
     <int>] [-SessionOnly] [-ClearSession] [-SkipSession]
     [<CommonParameters>] 
-```` 
+``` 
 
 ### PARAMETERS 
+```yaml 
+ 
+``` 
+```yaml 
     -AcceptLang <string>  
         Set the browser accept-lang http header  
         Required?                    false  
@@ -5729,6 +5228,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      lang, locale  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -All  
         Opens in all registered modern browsers  
         Required?                    false  
@@ -5738,6 +5239,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ApplicationMode  
         Hide the browser controls  
         Required?                    false  
@@ -5747,6 +5250,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      a, app, appmode  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Bottom  
         Place browser window on the bottom side of the screen  
         Required?                    false  
@@ -5756,6 +5261,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Centered  
         Place browser window in the center of the screen  
         Required?                    false  
@@ -5765,6 +5272,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chrome  
         Opens in Google Chrome  
         Required?                    false  
@@ -5774,6 +5283,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      ch  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chromium  
         Opens in Microsoft Edge or Google Chrome, depending on what the default browser is  
         Required?                    false  
@@ -5783,6 +5294,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      c  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ClearSession  
         Clear alternative settings stored in session for AI preferences  
         Required?                    false  
@@ -5792,6 +5305,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -DisablePopupBlocker  
         Disable the popup blocker  
         Required?                    false  
@@ -5801,6 +5316,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      allowpopups  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Edge  
         Opens in Microsoft Edge  
         Required?                    false  
@@ -5810,6 +5327,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      e  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Firefox  
         Opens in Firefox  
         Required?                    false  
@@ -5819,6 +5338,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      ff  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -FocusWindow  
         Focus the browser window after opening  
         Required?                    false  
@@ -5828,6 +5349,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      fw, focus  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Force  
         Force enable debugging port, stopping existing browsers if needed  
         Required?                    false  
@@ -5837,6 +5360,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -FullScreen  
         Opens in fullscreen mode  
         Required?                    false  
@@ -5846,6 +5371,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      fs, f  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Height <int>  
         The initial height of the webbrowser window  
         Required?                    false  
@@ -5855,6 +5382,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -KeysToSend <string[]>  
         Keystrokes to send to the Window, see documentation for cmdlet GenXdev.Windows\Send-Key  
         Required?                    false  
@@ -5864,6 +5393,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Left  
         Place browser window on the left side of the screen  
         Required?                    false  
@@ -5873,6 +5404,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Maximize  
         Maximize the window after positioning  
         Required?                    false  
@@ -5882,6 +5415,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Monitor <int>  
         The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to $Global:DefaultSecondaryMonitor or 2 if not found  
         Required?                    false  
@@ -5891,6 +5426,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      m, mon  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NewWindow  
         Do not re-use existing browser window, instead, create a new one  
         Required?                    false  
@@ -5900,6 +5437,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      nw, new  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NoBorders  
         Removes the borders of the window  
         Required?                    false  
@@ -5909,6 +5448,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      nb  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NoBrowserExtensions  
         Prevent loading of browser extensions  
         Required?                    false  
@@ -5918,6 +5459,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      de, ne, NoExtensions  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -PassThru  
         Returns a PowerShell object of the browserprocess  
         Required?                    false  
@@ -5927,6 +5470,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      pt  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Private  
         Opens in incognito/private browsing mode  
         Required?                    false  
@@ -5936,6 +5481,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      incognito, inprivate  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -RestoreFocus  
         Restore PowerShell window focus  
         Required?                    false  
@@ -5945,6 +5492,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      rf, bg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Right  
         Place browser window on the right side of the screen  
         Required?                    false  
@@ -5954,6 +5503,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyDelayMilliSeconds <int>  
         Delay between different input strings in milliseconds when sending keys  
         Required?                    false  
@@ -5963,6 +5514,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      DelayMilliSeconds  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyEscape  
         Escape control characters and modifiers when sending keys  
         Required?                    false  
@@ -5972,6 +5525,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      Escape  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyHoldKeyboardFocus  
         Hold keyboard focus on target window when sending keys  
         Required?                    false  
@@ -5981,6 +5536,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      HoldKeyboardFocus  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyUseShiftEnter  
         Use Shift+Enter instead of Enter when sending keys  
         Required?                    false  
@@ -5990,6 +5547,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      UseShiftEnter  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SessionOnly  
         Use alternative settings stored in session for AI preferences  
         Required?                    false  
@@ -5999,6 +5558,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SetForeground  
         Set the browser window to foreground after opening  
         Required?                    false  
@@ -6008,6 +5569,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      fg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SetRestored  
         Restore the window to normal state after positioning  
         Required?                    false  
@@ -6017,6 +5580,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SideBySide  
         Position browser window either fullscreen on different monitor than PowerShell, or side by side with PowerShell on the same monitor  
         Required?                    false  
@@ -6026,6 +5591,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      sbs  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SkipSession  
         Store settings only in persistent preferences without affecting session  
         Required?                    false  
@@ -6035,6 +5602,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      FromPreferences  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Top  
         Place browser window on the top side of the screen  
         Required?                    false  
@@ -6044,6 +5613,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Url <string[]>  
         The URLs to open in the browser  
         Required?                    false  
@@ -6053,6 +5624,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      Value, Uri, FullName, Website, WebsiteUrl  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Width <int>  
         The initial width of the webbrowser window  
         Required?                    false  
@@ -6062,6 +5635,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -X <int>  
         The initial X position of the webbrowser window  
         Required?                    false  
@@ -6071,6 +5646,8 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Y <int>  
         The initial Y position of the webbrowser window  
         Required?                    false  
@@ -6080,11 +5657,14 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     <CommonParameters>  
         This cmdlet supports the common parameters: Verbose, Debug,  
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+``` 
 
 <br/><hr/><br/>
  
@@ -6093,7 +5673,7 @@ Open-WebbrowserSideBySide [[-Url] <string[]>] [[-Monitor]
 ```PowerShell 
 
    Select-WebbrowserTab                 --> st  
-```` 
+``` 
 
 ### SYNTAX 
 ```PowerShell 
@@ -6130,9 +5710,13 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
     <string[]>] [-SendKeyEscape] [-SendKeyHoldKeyboardFocus]
     [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
     <int>] [-Edge] [-Chrome] [-Force] [<CommonParameters>] 
-```` 
+``` 
 
 ### PARAMETERS 
+```yaml 
+ 
+``` 
+```yaml 
     -AcceptLang <string>  
         Set the browser accept-lang http header  
         Required?                    false  
@@ -6142,6 +5726,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      lang, locale  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -All  
         Opens in all registered modern browsers  
         Required?                    false  
@@ -6151,6 +5737,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ApplicationMode  
         Hide the browser controls  
         Required?                    false  
@@ -6160,6 +5748,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      a, app, appmode  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Bottom  
         Place browser window on the bottom side of the screen  
         Required?                    false  
@@ -6169,6 +5759,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ByReference <psobject>  
         Select tab using reference from Get-ChromiumSessionReference  
         Required?                    true  
@@ -6178,6 +5770,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Centered  
         Place browser window in the center of the screen  
         Required?                    false  
@@ -6187,6 +5781,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chrome  
         Opens in Google Chrome  
         Required?                    false  
@@ -6196,6 +5792,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      ch  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chromium  
         Opens in Microsoft Edge or Google Chrome, depending on what the default browser is  
         Required?                    false  
@@ -6205,6 +5803,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      c  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -DisablePopupBlocker  
         Disable the popup blocker  
         Required?                    false  
@@ -6214,6 +5814,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      allowpopups  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Edge  
         Opens in Microsoft Edge  
         Required?                    false  
@@ -6223,6 +5825,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      e  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Firefox  
         Opens in Firefox  
         Required?                    false  
@@ -6232,6 +5836,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      ff  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -FocusWindow  
         Focus the browser window after opening  
         Required?                    false  
@@ -6241,6 +5847,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      fw, focus  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Force  
         Forces browser restart if needed  
         Required?                    false  
@@ -6250,6 +5858,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -FullScreen  
         Opens in fullscreen mode  
         Required?                    false  
@@ -6259,6 +5869,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      fs, f  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Height <int>  
         The initial height of the webbrowser window  
         Required?                    false  
@@ -6268,6 +5880,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Id <int>  
         Tab identifier from the shown list  
         Required?                    false  
@@ -6277,6 +5891,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -KeysToSend <string[]>  
         Keystrokes to send to the Browser window, see documentation for cmdlet GenXdev.Windows\Send-Key  
         Required?                    false  
@@ -6286,6 +5902,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Left  
         Place browser window on the left side of the screen  
         Required?                    false  
@@ -6295,6 +5913,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Maximize  
         Maximize the window after positioning  
         Required?                    false  
@@ -6304,6 +5924,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Monitor <int>  
         The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to $Global:DefaultSecondaryMonitor or 2 if not found  
         Required?                    false  
@@ -6313,6 +5935,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      m, mon  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Name <string>  
         Selects first tab containing this name in URL  
         Required?                    true  
@@ -6322,6 +5946,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      Pattern  
         Dynamic?                     false  
         Accept wildcard characters?  true  
+``` 
+```yaml 
     -NewWindow  
         Do not re-use existing browser window, instead, create a new one  
         Required?                    false  
@@ -6331,6 +5957,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      nw, new  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NoBrowserExtensions  
         Prevent loading of browser extensions  
         Required?                    false  
@@ -6340,6 +5968,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      de, ne, NoExtensions  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Private  
         Opens in incognito/private browsing mode  
         Required?                    false  
@@ -6349,6 +5979,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      incognito, inprivate  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -RestoreFocus  
         Restore PowerShell window focus  
         Required?                    false  
@@ -6358,6 +5990,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      rf, bg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Right  
         Place browser window on the right side of the screen  
         Required?                    false  
@@ -6367,6 +6001,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyDelayMilliSeconds <int>  
         Delay between sending different key sequences in milliseconds  
         Required?                    false  
@@ -6376,6 +6012,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      DelayMilliSeconds  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyEscape  
         Escape control characters when sending keys  
         Required?                    false  
@@ -6385,6 +6023,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      Escape  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyHoldKeyboardFocus  
         Prevent returning keyboard focus to PowerShell after sending keys  
         Required?                    false  
@@ -6394,6 +6034,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      HoldKeyboardFocus  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyUseShiftEnter  
         Send Shift+Enter instead of regular Enter for line breaks  
         Required?                    false  
@@ -6403,6 +6045,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      UseShiftEnter  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SetForeground  
         Set the browser window to foreground after opening  
         Required?                    false  
@@ -6412,6 +6056,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      fg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SetRestored  
         Restore the window to normal state after positioning  
         Required?                    false  
@@ -6421,6 +6067,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Top  
         Place browser window on the top side of the screen  
         Required?                    false  
@@ -6430,6 +6078,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Width <int>  
         The initial width of the webbrowser window  
         Required?                    false  
@@ -6439,6 +6089,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -X <int>  
         The initial X position of the webbrowser window  
         Required?                    false  
@@ -6448,6 +6100,8 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Y <int>  
         The initial Y position of the webbrowser window  
         Required?                    false  
@@ -6457,186 +6111,14 @@ Select-WebbrowserTab -ByReference <psobject> [-Monitor
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     <CommonParameters>  
         This cmdlet supports the common parameters: Verbose, Debug,  
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Set-BrowserVideoFullscreen 
-```PowerShell 
-
-   Set-BrowserVideoFullscreen           --> fsvideo  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Set-BrowserVideoFullscreen [-WhatIf] [-Confirm]
-    [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -Confirm  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      cf  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -WhatIf  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      wi  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Set-RemoteDebuggerPortInBrowserShortcuts 
-```PowerShell 
-
-   Set-RemoteDebuggerPortInBrowserShortcuts  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Set-RemoteDebuggerPortInBrowserShortcuts [-WhatIf]
-    [-Confirm] [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -Confirm  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      cf  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -WhatIf  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      wi  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-
-<br/><hr/><br/>
- 
-
-##	Set-WebbrowserTabLocation 
-```PowerShell 
-
-   Set-WebbrowserTabLocation            --> lt, Nav  
-```` 
-
-### SYNTAX 
-```PowerShell 
-Set-WebbrowserTabLocation [-Url] <string> [-NoAutoSelectTab]
-    [-Page <Object>] [-ByReference <psobject>] [-WhatIf]
-    [-Confirm] [<CommonParameters>]
-Set-WebbrowserTabLocation [-Url] <string> [-NoAutoSelectTab]
-    [-Edge] [-Page <Object>] [-ByReference <psobject>]
-    [-WhatIf] [-Confirm] [<CommonParameters>]
-Set-WebbrowserTabLocation [-Url] <string> [-NoAutoSelectTab]
-    [-Chrome] [-Page <Object>] [-ByReference <psobject>]
-    [-WhatIf] [-Confirm] [<CommonParameters>] 
-```` 
-
-### PARAMETERS 
-    -ByReference <psobject>  
-        Browser session reference object  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Chrome  
-        Navigate using Google Chrome browser  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           Chrome  
-        Aliases                      ch  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Confirm  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      cf  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Navigate using Microsoft Edge browser  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           Edge  
-        Aliases                      e  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -NoAutoSelectTab  
-        Prevent automatic tab selection  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Page <Object>  
-        Browser page object reference  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Url <string>  
-        The URL to navigate to  
-        Required?                    true  
-        Position?                    0  
-        Accept pipeline input?       true (ByValue, ByPropertyName)  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -WhatIf  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      wi  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+``` 
 
 <br/><hr/><br/>
  
@@ -6645,7 +6127,7 @@ Set-WebbrowserTabLocation [-Url] <string> [-NoAutoSelectTab]
 ```PowerShell 
 
    Show-WebsiteInAllBrowsers  
-```` 
+``` 
 
 ### SYNTAX 
 ```PowerShell 
@@ -6661,9 +6143,13 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
     [-SendKeyUseShiftEnter] [-SendKeyDelayMilliSeconds
     <int>] [-NoBorders] [-SideBySide] [-SessionOnly]
     [-ClearSession] [-SkipSession] [<CommonParameters>] 
-```` 
+``` 
 
 ### PARAMETERS 
+```yaml 
+ 
+``` 
+```yaml 
     -AcceptLang <string>  
         Set the browser accept-lang http header  
         Required?                    false  
@@ -6673,6 +6159,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      lang, locale  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -All  
         Opens in all registered modern browsers  
         Required?                    false  
@@ -6682,6 +6170,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ApplicationMode  
         Hide the browser controls  
         Required?                    false  
@@ -6691,6 +6181,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      a, app, appmode  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Bottom  
         Place browser window on the bottom side of the screen  
         Required?                    false  
@@ -6700,6 +6192,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Centered  
         Place browser window in the center of the screen  
         Required?                    false  
@@ -6709,6 +6203,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chrome  
         Opens in Google Chrome  
         Required?                    false  
@@ -6718,6 +6214,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      ch  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Chromium  
         Opens in Microsoft Edge or Google Chrome, depending on what the default browser is  
         Required?                    false  
@@ -6727,6 +6225,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      c  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -ClearSession  
         Clear alternative settings stored in session for AI preferences.  
         Required?                    false  
@@ -6736,6 +6236,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -DisablePopupBlocker  
         Disable the popup blocker  
         Required?                    false  
@@ -6745,6 +6247,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      allowpopups  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Edge  
         Opens in Microsoft Edge  
         Required?                    false  
@@ -6754,6 +6258,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      e  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Firefox  
         Opens in Firefox  
         Required?                    false  
@@ -6763,6 +6269,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      ff  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -FocusWindow  
         Focus the browser window after opening  
         Required?                    false  
@@ -6772,6 +6280,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      fw, focus  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Force  
         Force enable debugging port, stopping existing browsers if needed  
         Required?                    false  
@@ -6781,6 +6291,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -FullScreen  
         Opens in fullscreen mode  
         Required?                    false  
@@ -6790,6 +6302,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      fs, f  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Height <int>  
         The initial height of the webbrowser window  
         Required?                    false  
@@ -6799,6 +6313,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -KeysToSend <string[]>  
         Keystrokes to send to the Browser window, see documentation for cmdlet GenXdev.Windows\Send-Key  
         Required?                    false  
@@ -6808,6 +6324,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Left  
         Place browser window on the left side of the screen  
         Required?                    false  
@@ -6817,6 +6335,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Maximize  
         Maximize the window after positioning  
         Required?                    false  
@@ -6826,6 +6346,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Monitor <int>  
         The monitor to use, 0 = default, -1 is discard, -2 = Configured secondary monitor, defaults to $Global:DefaultSecondaryMonitor or 2 if not found  
         Required?                    false  
@@ -6835,6 +6357,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      m, mon  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NewWindow  
         Do not re-use existing browser window, instead, create a new one  
         Required?                    false  
@@ -6844,6 +6368,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      nw, new  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NoBorders  
         Removes the borders of the browser window.  
         Required?                    false  
@@ -6853,6 +6379,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      nb  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -NoBrowserExtensions  
         Prevent loading of browser extensions  
         Required?                    false  
@@ -6862,6 +6390,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      de, ne, NoExtensions  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Private  
         Opens in incognito/private browsing mode  
         Required?                    false  
@@ -6871,6 +6401,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      incognito, inprivate  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -RestoreFocus  
         Restore PowerShell window focus  
         Required?                    false  
@@ -6880,6 +6412,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      rf, bg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Right  
         Place browser window on the right side of the screen  
         Required?                    false  
@@ -6889,6 +6423,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyDelayMilliSeconds <int>  
         Delay between sending different key sequences in milliseconds  
         Required?                    false  
@@ -6898,6 +6434,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      DelayMilliSeconds  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyEscape  
         Escape control characters when sending keys  
         Required?                    false  
@@ -6907,6 +6445,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      Escape  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyHoldKeyboardFocus  
         Prevent returning keyboard focus to PowerShell after sending keys  
         Required?                    false  
@@ -6916,6 +6456,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      HoldKeyboardFocus  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SendKeyUseShiftEnter  
         Send Shift+Enter instead of regular Enter for line breaks  
         Required?                    false  
@@ -6925,6 +6467,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      UseShiftEnter  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SessionOnly  
         Use alternative settings stored in session for AI preferences.  
         Required?                    false  
@@ -6934,6 +6478,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SetForeground  
         Set the browser window to foreground after opening  
         Required?                    false  
@@ -6943,6 +6489,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      fg  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SetRestored  
         Restore the window to normal state after positioning  
         Required?                    false  
@@ -6952,6 +6500,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SideBySide  
         Position browser window either fullscreen on different monitor than PowerShell, or side by side with PowerShell on the same monitor.  
         Required?                    false  
@@ -6961,6 +6511,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      sbs  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -SkipSession  
         Store settings only in persistent preferences without affecting session.  
         Required?                    false  
@@ -6970,6 +6522,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      FromPreferences  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Top  
         Place browser window on the top side of the screen  
         Required?                    false  
@@ -6979,6 +6533,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Url <string>  
         The URLs to open in all browsers simultaneously  
         Required?                    true  
@@ -6988,6 +6544,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      Value, Uri, FullName, Website, WebsiteUrl  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Width <int>  
         The initial width of the webbrowser window  
         Required?                    false  
@@ -6997,6 +6555,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -X <int>  
         The initial X position of the webbrowser window  
         Required?                    false  
@@ -7006,6 +6566,8 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     -Y <int>  
         The initial Y position of the webbrowser window  
         Required?                    false  
@@ -7015,11 +6577,405 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
         Aliases                      None  
         Dynamic?                     false  
         Accept wildcard characters?  false  
+``` 
+```yaml 
     <CommonParameters>  
         This cmdlet supports the common parameters: Verbose, Debug,  
         ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
         OutBuffer, PipelineVariable, and OutVariable. For more information, see  
         about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Approve-FirefoxDebugging 
+```PowerShell 
+
+   Approve-FirefoxDebugging  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Clear-WebbrowserTabSiteApplicationData 
+```PowerShell 
+
+   Clear-WebbrowserTabSiteApplicationData --> clearsitedata  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Close-Webbrowser 
+```PowerShell 
+
+   Close-Webbrowser                     --> wbc  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Close-WebbrowserTab 
+```PowerShell 
+
+   Close-WebbrowserTab  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Export-BrowserBookmarks 
+```PowerShell 
+
+   Export-BrowserBookmarks  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Find-BrowserBookmark 
+```PowerShell 
+
+   Find-BrowserBookmark                 --> bookmarks  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Get-ChromeRemoteDebuggingPort 
+```PowerShell 
+
+   Get-ChromeRemoteDebuggingPort  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Get-ChromiumRemoteDebuggingPort 
+```PowerShell 
+
+   Get-ChromiumRemoteDebuggingPort  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Get-ChromiumSessionReference 
+```PowerShell 
+
+   Get-ChromiumSessionReference  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Get-DefaultWebbrowser 
+```PowerShell 
+
+   Get-DefaultWebbrowser  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Get-EdgeRemoteDebuggingPort 
+```PowerShell 
+
+   Get-EdgeRemoteDebuggingPort  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Get-Webbrowser 
+```PowerShell 
+
+   Get-Webbrowser  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Get-WebbrowserTabDomNodes 
+```PowerShell 
+
+   Get-WebbrowserTabDomNodes            --> wl  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Import-GenXdevBookmarkletMenu 
+```PowerShell 
+
+   Import-GenXdevBookmarkletMenu  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Set-BrowserVideoFullscreen 
+```PowerShell 
+
+   Set-BrowserVideoFullscreen           --> fsvideo  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Set-RemoteDebuggerPortInBrowserShortcuts 
+```PowerShell 
+
+   Set-RemoteDebuggerPortInBrowserShortcuts  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+
+<br/><hr/><br/>
+ 
+
+##	Set-WebbrowserTabLocation 
+```PowerShell 
+
+   Set-WebbrowserTabLocation            --> lt, Nav  
+``` 
+
+### SYNOPSIS 
+
+### SYNTAX 
+```PowerShell 
+ 
+``` 
+
+### DESCRIPTION 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
 
 <br/><hr/><br/>
  
@@ -7031,57 +6987,21 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
 ```PowerShell 
 
    Connect-PlaywrightViaDebuggingPort  
-```` 
+``` 
 
 ### SYNOPSIS 
-    Connects to an existing browser instance via debugging port.  
 
 ### SYNTAX 
 ```PowerShell 
-Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String>
-    [-ForceConsent]
-    [-ConsentToThirdPartySoftwareInstallation]
-    [<CommonParameters>] 
-```` 
+ 
+``` 
 
 ### DESCRIPTION 
-    Establishes a connection to a running Chromium-based browser instance using the  
-    WebSocket debugger URL. Creates a Playwright instance and connects over CDP  
-    (Chrome DevTools Protocol). The connected browser instance is stored in a global  
-    dictionary for later reference. Automatically handles consent for  
-    Microsoft.Playwright NuGet package installation.  
 
 ### PARAMETERS 
-    -WsEndpoint <String>  
-        The WebSocket URL for connecting to the browser's debugging port. This URL  
-        typically follows the format 'ws://hostname:port/devtools/browser/<id>'.  
-        Required?                    true  
-        Position?                    1  
-        Default value                  
-        Accept pipeline input?       false  
-        Aliases                        
-        Accept wildcard characters?  false  
-    -ForceConsent [<SwitchParameter>]  
-        Force consent for third-party software installation without prompting.  
-        Required?                    false  
-        Position?                    named  
-        Default value                False  
-        Accept pipeline input?       false  
-        Aliases                        
-        Accept wildcard characters?  false  
-    -ConsentToThirdPartySoftwareInstallation [<SwitchParameter>]  
-        Provide consent to third-party software installation.  
-        Required?                    false  
-        Position?                    named  
-        Default value                False  
-        Accept pipeline input?       false  
-        Aliases                        
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+```yaml 
+ 
+``` 
 
 <br/><hr/><br/>
  
@@ -7090,29 +7010,21 @@ Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String>
 ```PowerShell 
 
    Get-PlaywrightProfileDirectory  
-```` 
+``` 
+
+### SYNOPSIS 
 
 ### SYNTAX 
 ```PowerShell 
-Get-PlaywrightProfileDirectory [[-BrowserType] {Chromium |
-    Firefox | Webkit}] [<CommonParameters>] 
-```` 
+ 
+``` 
+
+### DESCRIPTION 
 
 ### PARAMETERS 
-    -BrowserType <string>  
-        The browser type (Chromium, Firefox, or Webkit)  
-        Required?                    false  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+```yaml 
+ 
+``` 
 
 <br/><hr/><br/>
  
@@ -7121,19 +7033,21 @@ Get-PlaywrightProfileDirectory [[-BrowserType] {Chromium |
 ```PowerShell 
 
    Resume-WebbrowserTabVideo            --> wbvideoplay  
-```` 
+``` 
+
+### SYNOPSIS 
 
 ### SYNTAX 
 ```PowerShell 
-Resume-WebbrowserTabVideo [<CommonParameters>] 
-```` 
+ 
+``` 
+
+### DESCRIPTION 
 
 ### PARAMETERS 
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+```yaml 
+ 
+``` 
 
 <br/><hr/><br/>
  
@@ -7142,54 +7056,21 @@ Resume-WebbrowserTabVideo [<CommonParameters>]
 ```PowerShell 
 
    Stop-WebbrowserVideos                --> ssst, wbsst, wbvideostop  
-```` 
+``` 
+
+### SYNOPSIS 
 
 ### SYNTAX 
 ```PowerShell 
-Stop-WebbrowserVideos [-Edge] [-Chrome] [-WhatIf] [-Confirm]
-    [<CommonParameters>] 
-```` 
+ 
+``` 
+
+### DESCRIPTION 
 
 ### PARAMETERS 
-    -Chrome  
-        Opens in Google Chrome  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      ch  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Confirm  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      cf  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -Edge  
-        Opens in Microsoft Edge  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      e  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -WhatIf  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      wi  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+```yaml 
+ 
+``` 
 
 <br/><hr/><br/>
  
@@ -7197,38 +7078,21 @@ Stop-WebbrowserVideos [-Edge] [-Chrome] [-WhatIf] [-Confirm]
 ##	Unprotect-WebbrowserTab 
 ```PowerShell 
 
-   Unprotect-WebbrowserTab              --> wbctrl  
-```` 
+   Unprotect-WebbrowserTab  
+``` 
+
+### SYNOPSIS 
 
 ### SYNTAX 
 ```PowerShell 
-Unprotect-WebbrowserTab [[-UseCurrent]] [[-Force]]
-    [<CommonParameters>] 
-```` 
+ 
+``` 
+
+### DESCRIPTION 
 
 ### PARAMETERS 
-    -Force  
-        Restart browser if no debugging server detected  
-        Required?                    false  
-        Position?                    1  
-        Accept pipeline input?       false  
-        Parameter set name           Default  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    -UseCurrent  
-        Use current tab instead of selecting a new one  
-        Required?                    false  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           Default  
-        Aliases                      current  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+```yaml 
+ 
+``` 
 
 <br/><hr/><br/>

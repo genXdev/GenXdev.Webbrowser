@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Open-WebbrowserSideBySide.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.300.2025
+Version                   : 1.302.2025
 ################################################################################
 Copyright (c)  René Vaessen / GenXdev
 
@@ -216,7 +216,7 @@ function Open-WebbrowserSideBySide {
             Mandatory = $false,
             HelpMessage = 'Focus the browser window after opening'
         )]
-        [Alias('fw','focus')]
+        [Alias('fw', 'focus')]
         [switch] $FocusWindow,
         #######################################################################
         [Parameter(
@@ -344,7 +344,7 @@ function Open-WebbrowserSideBySide {
 
         $NewWindow = $true
         $Monitor = 0
-        $Right = $true
+        $SideBySide = $true;
         $RestoreFocus = $true
 
         $params = GenXdev.FileSystem\Copy-IdenticalParamValues `
