@@ -1,8 +1,8 @@
-﻿###############################################################################
+###############################################################################
 # Part of PowerShell module : GenXdev.Webbrowser
 # Original cmdlet filename  : Get-Webbrowser.Tests.ps1
 # Original author           : René Vaessen / GenXdev
-# Version                   : 1.302.2025
+# Version                   : 1.304.2025
 ###############################################################################
 
 Pester\BeforeAll {
