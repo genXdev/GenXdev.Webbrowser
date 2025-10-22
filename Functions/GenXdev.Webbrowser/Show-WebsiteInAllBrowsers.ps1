@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Show-WebsiteInAllBrowsers.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 1.304.2025
+Version                   : 1.308.2025
 ################################################################################
 Copyright (c)  René Vaessen / GenXdev
 
