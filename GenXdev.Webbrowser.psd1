@@ -12,7 +12,7 @@
 RootModule = 'GenXdev.Webbrowser.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.308.2025'
+ModuleVersion = '2.1.2025'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Core'
@@ -33,7 +33,7 @@ Copyright = 'Copyright 2021-2025 GenXdev'
 Description = 'A Windows PowerShell module that allows you to run scripts against your casual desktop webbrowser-tab'
 
 # Minimum version of the PowerShell engine required by this module
-PowerShellVersion = '7.5.0'
+PowerShellVersion = '7.5.4'
 
 # Name of the PowerShell host required by this module
 # PowerShellHostName = ''
@@ -51,7 +51,7 @@ ClrVersion = '9.0.0.1'
 ProcessorArchitecture = 'Amd64'
 
 # Modules that must be imported into the global environment prior to importing this module
-RequiredModules = @(@{ModuleName = 'GenXdev.Windows'; ModuleVersion = '1.308.2025'; })
+RequiredModules = @(@{ModuleName = 'GenXdev.Windows'; ModuleVersion = '2.1.2025'; })
 
 # Assemblies that must be loaded prior to importing this module
 RequiredAssemblies = 'lib\GenXdev.Webbrowser.dll'
@@ -111,15 +111,14 @@ FileList = '.gitignore', 'GenXdev.Webbrowser.csproj',
                'GenXdev.Webbrowser.psm1', 'LICENSE', 'powershell.jpg', 'README.md', 
                'lib\GenXdev.Webbrowser.deps.json', 'lib\GenXdev.Webbrowser.dll', 
                'Functions\GenXdev.Webbrowser.Playwright\Connect-PlaywrightViaDebuggingPort.cs', 
-               'Functions\GenXdev.Webbrowser\Approve-FirefoxDebugging.cs', 
                'Functions\GenXdev.Webbrowser.Playwright\Get-PlaywrightProfileDirectory.cs', 
-               'Functions\GenXdev.Webbrowser\Clear-WebbrowserTabSiteApplicationData.cs', 
                'Functions\GenXdev.Webbrowser.Playwright\Resume-WebbrowserTabVideo.cs', 
-               'Functions\GenXdev.Webbrowser\Close-Webbrowser.cs', 
                'Functions\GenXdev.Webbrowser.Playwright\Stop-WebbrowserVideos.cs', 
-               'Functions\GenXdev.Webbrowser\Close-WebbrowserTab.cs', 
-               'lib\lib\Microsoft.Extensions.Configuration.UserSecrets.dll', 
                'Functions\GenXdev.Webbrowser.Playwright\Unprotect-WebbrowserTab.cs', 
+               'Functions\GenXdev.Webbrowser\Approve-FirefoxDebugging.cs', 
+               'Functions\GenXdev.Webbrowser\Clear-WebbrowserTabSiteApplicationData.cs', 
+               'Functions\GenXdev.Webbrowser\Close-Webbrowser.cs', 
+               'Functions\GenXdev.Webbrowser\Close-WebbrowserTab.cs', 
                'Functions\GenXdev.Webbrowser\Export-BrowserBookmarks.cs', 
                'Functions\GenXdev.Webbrowser\Find-BrowserBookmark.cs', 
                'Functions\GenXdev.Webbrowser\Get-BrowserBookmark.ps1', 
@@ -141,19 +140,7 @@ FileList = '.gitignore', 'GenXdev.Webbrowser.csproj',
                'Functions\GenXdev.Webbrowser\Set-RemoteDebuggerPortInBrowserShortcuts.cs', 
                'Functions\GenXdev.Webbrowser\Set-WebbrowserTabLocation.cs', 
                'Functions\GenXdev.Webbrowser\Show-WebsiteInAllBrowsers.ps1', 
-               'Tests\GenXdev.Webbrowser\Get-Webbrowser.Tests.ps1', 
-               'lib\runtimes\win-arm64\ggml-base-whisper.dll', 
-               'lib\runtimes\win-arm64\ggml-cpu-whisper.dll', 
-               'lib\runtimes\win-arm64\ggml-whisper.dll', 
-               'lib\runtimes\win-arm64\whisper.dll', 
-               'lib\runtimes\win-x64\ggml-base-whisper.dll', 
-               'lib\runtimes\win-x64\ggml-cpu-whisper.dll', 
-               'lib\runtimes\win-x64\ggml-whisper.dll', 
-               'lib\runtimes\win-x64\whisper.dll', 
-               'lib\runtimes\win-x86\ggml-base-whisper.dll', 
-               'lib\runtimes\win-x86\ggml-cpu-whisper.dll', 
-               'lib\runtimes\win-x86\ggml-whisper.dll', 
-               'lib\runtimes\win-x86\whisper.dll'
+               'Tests\GenXdev.Webbrowser\Get-Webbrowser.Tests.ps1'
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
 PrivateData = @{

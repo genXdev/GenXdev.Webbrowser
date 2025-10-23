@@ -227,7 +227,7 @@ Update-Module
 | [Open-Webbrowser](#open-webbrowser) | wb | &nbsp; |
 | [Open-WebbrowserSideBySide](#open-webbrowsersidebyside) | wbn | &nbsp; |
 | [Select-WebbrowserTab](#select-webbrowsertab) | st | Selects a browser tab for automation in Chrome or Edge. |
-| [Set-BrowserVideoFullscreen](#set-browservideofullscreen) | fsvideo | &nbsp; |
+| [Set-BrowserVideoFullscreen](#set-browservideofullscreen) | fsvideo | Sets the first video element on the current webpage to fullscreen mode by manipulating its CSS properties and DOM position. |
 | [Set-RemoteDebuggerPortInBrowserShortcuts](#set-remotedebuggerportinbrowsershortcuts) | &nbsp; | Updates browser shortcuts to enable remote debugging ports. |
 | [Set-WebbrowserTabLocation](#set-webbrowsertablocation) | lt, Nav | Navigates the current webbrowser tab to a specified URL. |
 | [Show-WebsiteInAllBrowsers](#show-websiteinallbrowsers) | &nbsp; | &nbsp; |
