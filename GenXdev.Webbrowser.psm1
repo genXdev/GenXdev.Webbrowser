@@ -11,6 +11,7 @@ if ($major -ne 10) {
 
 
 
+. "$PSScriptRoot\Functions\GenXdev.Webbrowser\Close-Webbrowser.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser\Get-BrowserBookmark.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser\Import-BrowserBookmarks.ps1"
 . "$PSScriptRoot\Functions\GenXdev.Webbrowser\Invoke-WebbrowserEvaluation.ps1"

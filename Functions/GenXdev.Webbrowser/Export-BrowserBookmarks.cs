@@ -2,7 +2,7 @@
 // Part of PowerShell module : GenXdev.Webbrowser
 // Original cmdlet filename  : Export-BrowserBookmarks.cs
 // Original author           : René Vaessen / GenXdev
-// Version                   : 2.1.2025
+// Version                   : 2.3.2026
 // ################################################################################
 // Copyright (c)  René Vaessen / GenXdev
 //
@@ -21,7 +21,6 @@
 
 
 
-using System;
 using System.Collections;
 using System.Management.Automation;
 
@@ -195,8 +194,21 @@ namespace GenXdev.Webbrowser
                 args: new object[] { bookmarkArguments }
             );
 
+            // Convert PSObjects to dictionaries to avoid deep serialization issues.
+            var simpleResults = new System.Collections.Generic.List<System.Collections.Generic.Dictionary<string, object>>();
+            foreach (var result in bookmarkResults)
+            {
+                var dict = new System.Collections.Generic.Dictionary<string, object>();
+                var psObj = result as PSObject ?? PSObject.AsPSObject(result);
+                foreach (var prop in psObj.Properties)
+                {
+                    dict[prop.Name] = prop.Value;
+                }
+                simpleResults.Add(dict);
+            }
+
             // Convert bookmark data to JSON using base class method.
-            string jsonContent = ConvertToJson(bookmarkResults, 100);
+            string jsonContent = ConvertToJson(simpleResults, 100);
 
             // Write JSON content to the output file.
             System.IO.File.WriteAllText(resolvedOutputFilePath, jsonContent);

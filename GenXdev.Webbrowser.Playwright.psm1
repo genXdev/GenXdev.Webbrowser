@@ -11,3 +11,4 @@ if ($major -ne 10) {
 
 
 
+. "$PSScriptRoot\Functions\GenXdev.Webbrowser.Playwright\Connect-PlaywrightViaDebuggingPort.ps1"

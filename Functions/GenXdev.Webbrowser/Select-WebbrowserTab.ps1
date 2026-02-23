@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Select-WebbrowserTab.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 2.1.2025
+Version                   : 2.3.2026
 ################################################################################
 Copyright (c)  René Vaessen / GenXdev
 
@@ -210,35 +210,35 @@ function Select-WebbrowserTab {
                 "`$Global:DefaultSecondaryMonitor or 2 if not found")
         )]
         [Alias('m', 'mon')]
-        [int] $Monitor,
+        [int] $Monitor = -1,
 
         ########################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = 'The initial width of the webbrowser window'
         )]
-        [int] $Width,
+        [int] $Width = -1,
 
         ########################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = 'The initial height of the webbrowser window'
         )]
-        [int] $Height,
+        [int] $Height = -1,
 
         ########################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = 'The initial X position of the webbrowser window'
         )]
-        [int] $X,
+        [int] $X = -999999,
 
         ########################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = 'The initial Y position of the webbrowser window'
         )]
-        [int] $Y,
+        [int] $Y = -999999,
 
         ########################################################################
         [Parameter(
@@ -369,7 +369,7 @@ function Select-WebbrowserTab {
             Mandatory = $false,
             HelpMessage = 'Focus the browser window after opening'
         )]
-        [Alias('fw','focus')]
+        [Alias('fw', 'focus')]
         [switch] $FocusWindow,
 
         ########################################################################
@@ -521,12 +521,12 @@ function Select-WebbrowserTab {
             (-not $Global:chrome.Browser.IsConnected)) {
 
             Microsoft.PowerShell.Utility\Write-Verbose 'Establishing new browser automation connection'
-                $Global:chrome = @{
-                    Debugurl = "http://localhost:$debugPort"
-                    Port     = $debugPort
-                    Browser  = GenXdev.Webbrowser\Connect-PlaywrightViaDebuggingPort `
-                        -WsEndpoint "http://localhost:$debugPort"
-                }
+            $Global:chrome = @{
+                Debugurl = "http://localhost:$debugPort"
+                Port     = $debugPort
+                Browser  = GenXdev.Webbrowser\Connect-PlaywrightViaDebuggingPort `
+                    -WsEndpoint "http://localhost:$debugPort"
+            }
 
             $Global:CurrentChromiumDebugPort = $debugPort
         }
@@ -539,7 +539,7 @@ function Select-WebbrowserTab {
             try {
                 # get all page tabs from browser
                 $sessions = @(
-                        (Microsoft.PowerShell.Utility\Invoke-WebRequest -Uri "http://localhost:$debugPort/json").Content |
+                    (Microsoft.PowerShell.Utility\Invoke-WebRequest -Uri "http://localhost:$debugPort/json").Content |
                         Microsoft.PowerShell.Utility\ConvertFrom-Json |
                         Microsoft.PowerShell.Core\Where-Object -Property 'type' -EQ 'page'
                 )
@@ -660,9 +660,9 @@ function Select-WebbrowserTab {
 
             # connect to selected tab via automation
             if (($null -ne $Global:chrome) -and
-                    ($null -ne $Global:chrome.Browser) -and
-                    ($null -ne $Global:chrome.Browser.Contexts) -and
-                    ($null -ne $Global:chrome.Browser.Contexts[0])) {
+                ($null -ne $Global:chrome.Browser) -and
+                ($null -ne $Global:chrome.Browser.Contexts) -and
+                ($null -ne $Global:chrome.Browser.Contexts[0])) {
 
                 $Global:chromeController = $Global:chrome.Browser.Contexts[0].Pages |
                     Microsoft.PowerShell.Core\ForEach-Object {
@@ -671,16 +671,16 @@ function Select-WebbrowserTab {
                             if ($null -ne $session) {
                                 $info = $session.sendAsync('Target.getTargetInfo').Result |
                                     Microsoft.PowerShell.Utility\ConvertFrom-Json
-                                if ($info.targetInfo.targetId -eq $Global:chromeSession.id) {
-                                    $PSItem
+                                    if ($info.targetInfo.targetId -eq $Global:chromeSession.id) {
+                                        $PSItem
+                                    }
                                 }
                             }
-                        }
-                        catch {
-                            Microsoft.PowerShell.Utility\Write-Verbose "Failed to create session for page: $($_.Exception.Message)"
-                        }
-                    } |
-                    Microsoft.PowerShell.Utility\Select-Object -First 1;
+                            catch {
+                                Microsoft.PowerShell.Utility\Write-Verbose "Failed to create session for page: $($_.Exception.Message)"
+                            }
+                        } |
+                        Microsoft.PowerShell.Utility\Select-Object -First 1;
 
                 Microsoft.PowerShell.Utility\Write-Verbose "Connected to tab: $($sessions[$sessionId].url)"
             }
@@ -716,16 +716,16 @@ function Select-WebbrowserTab {
                             if ($null -ne $session) {
                                 $info = $session.sendAsync('Target.getTargetInfo').Result |
                                     Microsoft.PowerShell.Utility\ConvertFrom-Json
-                                if ($info.targetInfo.targetId -eq $Global:chromeSession.id) {
-                                    $PSItem
+                                    if ($info.targetInfo.targetId -eq $Global:chromeSession.id) {
+                                        $PSItem
+                                    }
                                 }
                             }
-                        }
-                        catch {
-                            Microsoft.PowerShell.Utility\Write-Verbose "Failed to create session for page: $($_.Exception.Message)"
-                        }
-                    } |
-                    Microsoft.PowerShell.Utility\Select-Object -First 1;
+                            catch {
+                                Microsoft.PowerShell.Utility\Write-Verbose "Failed to create session for page: $($_.Exception.Message)"
+                            }
+                        } |
+                        Microsoft.PowerShell.Utility\Select-Object -First 1;
 
                 # refresh session list
                 try {
@@ -754,16 +754,16 @@ function Select-WebbrowserTab {
                         if ($null -ne $session) {
                             $info = $session.sendAsync('Target.getTargetInfo').Result |
                                 Microsoft.PowerShell.Utility\ConvertFrom-Json
-                            if ($info.targetInfo.targetId -eq $Global:chromeSession.id) {
-                                $PSItem
+                                if ($info.targetInfo.targetId -eq $Global:chromeSession.id) {
+                                    $PSItem
+                                }
                             }
                         }
-                    }
-                    catch {
-                        Microsoft.PowerShell.Utility\Write-Verbose "Failed to create session for page: $($_.Exception.Message)"
-                    }
-                } |
-                Microsoft.PowerShell.Utility\Select-Object -First 1;
+                        catch {
+                            Microsoft.PowerShell.Utility\Write-Verbose "Failed to create session for page: $($_.Exception.Message)"
+                        }
+                    } |
+                    Microsoft.PowerShell.Utility\Select-Object -First 1;
 
             # verify tab still exists
             $found = $null -ne $Global:chromeController

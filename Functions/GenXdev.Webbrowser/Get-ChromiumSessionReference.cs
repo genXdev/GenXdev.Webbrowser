@@ -2,7 +2,7 @@
 // Part of PowerShell module : GenXdev.Webbrowser
 // Original cmdlet filename  : Get-ChromiumSessionReference.cs
 // Original author           : René Vaessen / GenXdev
-// Version                   : 2.1.2025
+// Version                   : 2.3.2026
 // ################################################################################
 // Copyright (c)  René Vaessen / GenXdev
 //
@@ -21,8 +21,6 @@
 
 
 
-using System;
-using System.Collections;
 using System.Management.Automation;
 
 namespace GenXdev.Webbrowser

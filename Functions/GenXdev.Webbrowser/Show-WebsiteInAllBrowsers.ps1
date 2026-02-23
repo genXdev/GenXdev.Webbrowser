@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Show-WebsiteInAllBrowsers.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 2.1.2025
+Version                   : 2.3.2026
 ################################################################################
 Copyright (c)  René Vaessen / GenXdev
 
@@ -191,31 +191,31 @@ function Show-WebsiteInAllBrowsers {
                 "`$Global:DefaultSecondaryMonitor or 2 if not found")
         )]
         [Alias('m', 'mon')]
-        [int] $Monitor,
+        [int] $Monitor = -1,
         ########################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = 'The initial width of the webbrowser window'
         )]
-        [int] $Width,
+        [int] $Width = -1,
         ########################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = 'The initial height of the webbrowser window'
         )]
-        [int] $Height,
+        [int] $Height = -1,
         ########################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = 'The initial X position of the webbrowser window'
         )]
-        [int] $X,
+        [int] $X = -999999,
         ########################################################################
         [Parameter(
             Mandatory = $false,
             HelpMessage = 'The initial Y position of the webbrowser window'
         )]
-        [int] $Y,
+        [int] $Y = -999999,
         ########################################################################
         [Parameter(
             Mandatory = $false,

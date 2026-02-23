@@ -2,7 +2,7 @@
 // Part of PowerShell module : GenXdev.Webbrowser.Playwright
 // Original cmdlet filename  : Get-PlaywrightProfileDirectory.cs
 // Original author           : René Vaessen / GenXdev
-// Version                   : 2.1.2025
+// Version                   : 2.3.2026
 // ################################################################################
 // Copyright (c)  René Vaessen / GenXdev
 //
@@ -21,8 +21,6 @@
 
 
 
-using System;
-using System.IO;
 using System.Management.Automation;
 
 namespace GenXdev.Webbrowser.Playwright

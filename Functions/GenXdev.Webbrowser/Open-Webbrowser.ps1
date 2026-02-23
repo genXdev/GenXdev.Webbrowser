@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser
 Original cmdlet filename  : Open-Webbrowser.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 2.1.2025
+Version                   : 2.3.2026
 ################################################################################
 Copyright (c)  René Vaessen / GenXdev
 
@@ -422,7 +422,7 @@ function Open-Webbrowser {
             Mandatory = $false,
             HelpMessage = 'Focus the browser window after opening'
         )]
-        [Alias('fw','focus')]
+        [Alias('fw', 'focus')]
         [switch] $FocusWindow,
         #######################################################################
         [Parameter(
@@ -542,12 +542,12 @@ function Open-Webbrowser {
 
         # determine if side-by-side positioning should be forced
         [int] $setDefaultMonitor = $Global:DefaultSecondaryMonitor -is [int] ?
-            (
-                $Global:DefaultSecondaryMonitor
-            ):
-            2;
+        (
+            $Global:DefaultSecondaryMonitor
+        ):
+        2;
 
-            if ($null -eq $Url) {
+        if ($null -eq $Url) {
 
             $Url = @()
         }
@@ -666,8 +666,8 @@ function Open-Webbrowser {
 
         # determine if side-by-side mode should be forced due to monitor limitations
         $ForcedSideBySide = ($Monitor -eq -2) -and (
-               ($allScreens.Count -lt 2)  -or
-               (-not ($setDefaultMonitor -is [int] -and ($setDefaultMonitor -gt 0)))
+            ($allScreens.Count -lt 2) -or
+            (-not ($setDefaultMonitor -is [int] -and ($setDefaultMonitor -gt 0)))
         )
 
         if ($ForcedSideBySide) {
@@ -789,8 +789,8 @@ function Open-Webbrowser {
         # determine if any window positioning parameters were provided
         [bool] $havePositioning = (($Monitor -ge 0 -or $Monitor -eq -2) -or
             ($Left -or $Right -or $Top -or $Bottom -or $Centered -or $SideBySide -or $Maximize -or $FullScreen -or
-                (($X -is [int]) -and ($X -gt -999999)) -or
-                (($Y -is [int]) -and ($Y -gt -999999))))
+            (($X -is [int]) -and ($X -gt -999999)) -or
+            (($Y -is [int]) -and ($Y -gt -999999))))
 
         Microsoft.PowerShell.Utility\Write-Verbose ("Window positioning " +
             "required: $havePositioning (Monitor=$Monitor, Left=$Left, " +
@@ -851,7 +851,7 @@ function Open-Webbrowser {
             Browser           = $null
             IsDefaultBrowser  = ((-not $All) -and
                 ((-not $Chromium) -or ($defaultBrowser.Name -like '*chrome*') -or
-                    ($defaultBrowser.Name -like '*edge*')) -and
+                ($defaultBrowser.Name -like '*edge*')) -and
                 ((-not $Chrome) -or ($defaultBrowser.Name -like '*chrome*')) -and
                 ((-not $Edge) -or ($defaultBrowser.Name -like '*edge*')) -and
                 ((-not $Firefox) -or ($defaultBrowser.Name -like '*firefox*')))
@@ -1122,32 +1122,18 @@ function Open-Webbrowser {
                 }
                 else {
 
-                    # handle application mode for firefox
-                    if ($ApplicationMode -eq $true) {
+                    # handle new window creation for firefox
+                    if ((-not $state.PositioningDone) -and
+                        ($NewWindow -eq $true)) {
 
-                        Microsoft.PowerShell.Utility\Write-Warning ('Firefox ' +
-                            'does not support -ApplicationMode at this time')
-
-                        GenXdev.Webbrowser\Approve-FirefoxDebugging
-
-                        # use single site browser mode for firefox app mode
-                        $argumentList = $argumentList + @('--ssb', $currentUrl)
+                        # create new firefox window with url
+                        $argumentList = $argumentList + @('--new-window',
+                            $currentUrl)
                     }
                     else {
 
-                        # handle new window creation for firefox
-                        if ((-not $state.PositioningDone) -and
-                            ($NewWindow -eq $true)) {
-
-                            # create new firefox window with url
-                            $argumentList = $argumentList + @('--new-window',
-                                $currentUrl)
-                        }
-                        else {
-
-                            # open url in existing or new firefox tab
-                            $argumentList = $argumentList + @('-url', $currentUrl)
-                        }
+                        # open url in existing or new firefox tab
+                        $argumentList = $argumentList + @('-url', $currentUrl)
                     }
                 }
             }
@@ -1442,7 +1428,8 @@ function Open-Webbrowser {
                     $startBrowser = $false
                     $process = if ($state.FirstProcess) {
                         $state.FirstProcess
-                    } else {
+                    }
+                    else {
                         $prcBefore[0]
                     }
                 }
@@ -1512,7 +1499,7 @@ function Open-Webbrowser {
             # skip positioning if not needed or already done
             if ((-not $PassThru) -and
                 ((-not ($havePositioning -or ($FullScreen -and
-                  -not $state.PositioningDone))) -or $state.PositioningDone)) {
+                            -not $state.PositioningDone))) -or $state.PositioningDone)) {
 
                 sendKeysIfSpecified $window
 
@@ -1567,7 +1554,7 @@ function Open-Webbrowser {
 
             # skip positioning if not required or already completed
             if ((-not ($havePositioning -or ($FullScreen -and
-                 (-not $state.PositioningDone)))) -or $state.PositioningDone) {
+                            (-not $state.PositioningDone)))) -or $state.PositioningDone) {
                 sendKeysIfSpecified $window
 
                 Microsoft.PowerShell.Utility\Write-Verbose ('No positioning ' +
@@ -1585,7 +1572,7 @@ function Open-Webbrowser {
                     $null = $wpparams.Remove('KeysToSend')
                 }
                 $null = GenXdev.Windows\Set-WindowPosition @wpparams `
-                    -WindowHelper:$window[0]
+                    -WindowHelper:$window[0] -ErrorAction SilentlyContinue
             }
 
             # wait for window positioning to complete
@@ -1746,7 +1733,7 @@ function Open-Webbrowser {
                     # wait for browser window to receive focus
                     while (($tt++ -lt 20) -and
                         (($null -eq $focusedWindowProcess) -or
-                            ($focusedWindowProcess.MainWindowHandle -ne
+                        ($focusedWindowProcess.MainWindowHandle -ne
                         $state.BrowserWindow.Handle))) {
 
                         Microsoft.PowerShell.Utility\Write-Verbose ('have browser ' +
@@ -1783,8 +1770,8 @@ function Open-Webbrowser {
                     # wait for powershell window focus before sending f11
                     while (($tt++ -lt 20) -and
                         (($null -eq $focusedWindowProcess) -or
-                            ($null -eq $powerShellWindow) -or
-                            ($focusedWindowProcess.MainWindowHandle -ne
+                        ($null -eq $powerShellWindow) -or
+                        ($focusedWindowProcess.MainWindowHandle -ne
                         $powerShellWindow.Handle))) {
                         Microsoft.PowerShell.Utility\Write-Verbose ('no browser ' +
                             'window, sleeping 500ms')
@@ -1793,7 +1780,7 @@ function Open-Webbrowser {
                         $focusedWindowProcess = GenXdev.Windows\Get-CurrentFocusedProcess
 
                         $powershellWindow = GenXdev.Windows\Get-PowershellMainWindow
-                         if ($null -eq $focusedWindowProcess) { break }
+                        if ($null -eq $focusedWindowProcess) { break }
 
                         if ($null -ne $powershellWindow -and $focusedWindowProcess.MainWindowHandle -ne $powerShellWindow.Handle) {
 

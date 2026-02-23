@@ -208,7 +208,7 @@ Update-Module
 | :--- | :--- | :--- |
 | [Approve-FirefoxDebugging](#approve-firefoxdebugging) | &nbsp; | Configures Firefox's debugging and standalone app mode features. |
 | [Clear-WebbrowserTabSiteApplicationData](#clear-webbrowsertabsiteapplicationdata) | clearsitedata | Clears all browser storage data for the current tab in Edge or Chrome. |
-| [Close-Webbrowser](#close-webbrowser) | wbc | Closes one or more webbrowser instances selectively. |
+| [Close-Webbrowser](#close-webbrowser) | wbc | &nbsp; |
 | [Close-WebbrowserTab](#close-webbrowsertab) | &nbsp; | Closes the currently selected webbrowser tab. |
 | [Export-BrowserBookmarks](#export-browserbookmarks) | &nbsp; | Exports browser bookmarks to a JSON file. |
 | [Find-BrowserBookmark](#find-browserbookmark) | bookmarks | Finds bookmarks from one or more web browsers. |
@@ -235,7 +235,7 @@ Update-Module
 ### GenXdev.Webbrowser.Playwright
 | Command | Aliases | Description |
 | :--- | :--- | :--- |
-| [Connect-PlaywrightViaDebuggingPort](#connect-playwrightviadebuggingport) | &nbsp; | Connects to an existing browser instance via debugging port. |
+| [Connect-PlaywrightViaDebuggingPort](#connect-playwrightviadebuggingport) | &nbsp; | &nbsp; |
 | [Get-PlaywrightProfileDirectory](#get-playwrightprofiledirectory) | &nbsp; | Gets the Playwright browser profile directory for persistent sessions. |
 | [Resume-WebbrowserTabVideo](#resume-webbrowsertabvideo) | wbvideoplay | Resumes video playback in a YouTube browser tab. |
 | [Stop-WebbrowserVideos](#stop-webbrowservideos) | ssst, wbsst, wbvideostop | Pauses video playback in all active browser sessions. |
@@ -248,6 +248,102 @@ Update-Module
 
 &nbsp;<hr/>
 ###	GenXdev.Webbrowser<hr/> 
+
+##	Close-Webbrowser 
+```PowerShell 
+
+   Close-Webbrowser                     --> wbc  
+``` 
+
+### SYNTAX 
+```PowerShell 
+Close-Webbrowser [[-Edge]] [[-Chrome]] [[-Chromium]]
+    [[-Firefox]] [[-IncludeBackgroundProcesses]]
+    [<CommonParameters>]
+Close-Webbrowser [[-All]] [[-IncludeBackgroundProcesses]]
+    [<CommonParameters>] 
+``` 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+```yaml 
+    -All  
+        Closes all registered modern browsers  
+        Required?                    false  
+        Position?                    0  
+        Accept pipeline input?       false  
+        Parameter set name           All  
+        Aliases                      a  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+``` 
+```yaml 
+    -Chrome  
+        Closes Google Chrome browser instances  
+        Required?                    false  
+        Position?                    1  
+        Accept pipeline input?       false  
+        Parameter set name           Specific  
+        Aliases                      ch  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+``` 
+```yaml 
+    -Chromium  
+        Closes default chromium-based browser  
+        Required?                    false  
+        Position?                    2  
+        Accept pipeline input?       false  
+        Parameter set name           Specific  
+        Aliases                      c  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+``` 
+```yaml 
+    -Edge  
+        Closes Microsoft Edge browser instances  
+        Required?                    false  
+        Position?                    0  
+        Accept pipeline input?       false  
+        Parameter set name           Specific  
+        Aliases                      e  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+``` 
+```yaml 
+    -Firefox  
+        Closes Firefox browser instances  
+        Required?                    false  
+        Position?                    3  
+        Accept pipeline input?       false  
+        Parameter set name           Specific  
+        Aliases                      ff  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+``` 
+```yaml 
+    -IncludeBackgroundProcesses  
+        Closes all instances including background tasks  
+        Required?                    false  
+        Position?                    4  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      bg, Force  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+``` 
+```yaml 
+    <CommonParameters>  
+        This cmdlet supports the common parameters: Verbose, Debug,  
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+``` 
+
+<br/><hr/><br/>
+ 
 
 ##	Get-BrowserBookmark 
 ```PowerShell 
@@ -3163,6 +3259,59 @@ Show-WebsiteInAllBrowsers [-Url] <string> [-Monitor <int>]
 <br/><hr/><br/>
  
 
+&nbsp;<hr/>
+###	GenXdev.Webbrowser.Playwright<hr/> 
+
+##	Connect-PlaywrightViaDebuggingPort 
+```PowerShell 
+
+   Connect-PlaywrightViaDebuggingPort  
+``` 
+
+### SYNOPSIS 
+    Connects to an existing browser instance via debugging port.  
+
+### SYNTAX 
+```PowerShell 
+Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String>
+    [<CommonParameters>] 
+``` 
+
+### DESCRIPTION 
+    Establishes a connection to a running Chromium-based browser instance using the  
+    WebSocket debugger URL. Creates a Playwright instance and connects over CDP  
+    (Chrome DevTools Protocol). The connected browser instance is stored in a global  
+    dictionary for later reference.  
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+```yaml 
+    -WsEndpoint <String>  
+        The WebSocket URL for connecting to the browser's debugging port. This URL  
+        typically follows the format 'ws://hostname:port/devtools/browser/<id>'.  
+        Required?                    true  
+        Position?                    1  
+        Default value                  
+        Accept pipeline input?       false  
+        Aliases                        
+        Accept wildcard characters?  false  
+``` 
+```yaml 
+    <CommonParameters>  
+        This cmdlet supports the common parameters: Verbose, Debug,  
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+``` 
+
+<br/><hr/><br/>
+ 
+
+&nbsp;<hr/>
+###	GenXdev.Webbrowser<hr/> 
+
 ##	Approve-FirefoxDebugging 
 ```PowerShell 
 
@@ -3224,102 +3373,6 @@ Clear-WebbrowserTabSiteApplicationData [-Edge] [-Chrome]
         Accept pipeline input?       false  
         Parameter set name           (All)  
         Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-``` 
-```yaml 
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-``` 
-
-<br/><hr/><br/>
- 
-
-##	Close-Webbrowser 
-```PowerShell 
-
-   Close-Webbrowser                     --> wbc  
-``` 
-
-### SYNTAX 
-```PowerShell 
-Close-Webbrowser [[-Edge]] [[-Chrome]] [[-Chromium]]
-    [[-Firefox]] [[-IncludeBackgroundProcesses]]
-    [<CommonParameters>]
-Close-Webbrowser [[-All]] [[-IncludeBackgroundProcesses]]
-    [<CommonParameters>] 
-``` 
-
-### PARAMETERS 
-```yaml 
- 
-``` 
-```yaml 
-    -All  
-        Closes all registered modern browsers  
-        Required?                    false  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           All  
-        Aliases                      a  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-``` 
-```yaml 
-    -Chrome  
-        Closes Google Chrome browser instances  
-        Required?                    false  
-        Position?                    1  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      ch  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-``` 
-```yaml 
-    -Chromium  
-        Closes default chromium-based browser  
-        Required?                    false  
-        Position?                    2  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      c  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-``` 
-```yaml 
-    -Edge  
-        Closes Microsoft Edge browser instances  
-        Required?                    false  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      e  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-``` 
-```yaml 
-    -Firefox  
-        Closes Firefox browser instances  
-        Required?                    false  
-        Position?                    3  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      ff  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-``` 
-```yaml 
-    -IncludeBackgroundProcesses  
-        Closes all instances including background tasks  
-        Required?                    false  
-        Position?                    4  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      bg, Force  
         Dynamic?                     false  
         Accept wildcard characters?  false  
 ``` 
@@ -4153,68 +4206,6 @@ Set-WebbrowserTabLocation [-Url] <string> [-NoAutoSelectTab]
 
 &nbsp;<hr/>
 ###	GenXdev.Webbrowser.Playwright<hr/> 
-
-##	Connect-PlaywrightViaDebuggingPort 
-```PowerShell 
-
-   Connect-PlaywrightViaDebuggingPort  
-``` 
-
-### SYNTAX 
-```PowerShell 
-Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <string>
-    [-ForceConsent]
-    [-ConsentToThirdPartySoftwareInstallation]
-    [<CommonParameters>] 
-``` 
-
-### PARAMETERS 
-```yaml 
- 
-``` 
-```yaml 
-    -ConsentToThirdPartySoftwareInstallation  
-        Consent to third-party software installation  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-``` 
-```yaml 
-    -ForceConsent  
-        Force consent for third-party software installation  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-``` 
-```yaml 
-    -WsEndpoint <string>  
-        WebSocket URL for browser debugging connection  
-        Required?                    true  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-``` 
-```yaml 
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-``` 
-
-<br/><hr/><br/>
- 
 
 ##	Get-PlaywrightProfileDirectory 
 ```PowerShell 
@@ -4401,6 +4392,102 @@ Unprotect-WebbrowserTab [[-UseCurrent]] [[-Force]]
 &nbsp;<hr/>
 ###	GenXdev.Webbrowser<hr/> 
 
+##	Close-Webbrowser 
+```PowerShell 
+
+   Close-Webbrowser                     --> wbc  
+``` 
+
+### SYNTAX 
+```PowerShell 
+Close-Webbrowser [[-Edge]] [[-Chrome]] [[-Chromium]]
+    [[-Firefox]] [[-IncludeBackgroundProcesses]]
+    [<CommonParameters>]
+Close-Webbrowser [[-All]] [[-IncludeBackgroundProcesses]]
+    [<CommonParameters>] 
+``` 
+
+### PARAMETERS 
+```yaml 
+ 
+``` 
+```yaml 
+    -All  
+        Closes all registered modern browsers  
+        Required?                    false  
+        Position?                    0  
+        Accept pipeline input?       false  
+        Parameter set name           All  
+        Aliases                      a  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+``` 
+```yaml 
+    -Chrome  
+        Closes Google Chrome browser instances  
+        Required?                    false  
+        Position?                    1  
+        Accept pipeline input?       false  
+        Parameter set name           Specific  
+        Aliases                      ch  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+``` 
+```yaml 
+    -Chromium  
+        Closes default chromium-based browser  
+        Required?                    false  
+        Position?                    2  
+        Accept pipeline input?       false  
+        Parameter set name           Specific  
+        Aliases                      c  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+``` 
+```yaml 
+    -Edge  
+        Closes Microsoft Edge browser instances  
+        Required?                    false  
+        Position?                    0  
+        Accept pipeline input?       false  
+        Parameter set name           Specific  
+        Aliases                      e  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+``` 
+```yaml 
+    -Firefox  
+        Closes Firefox browser instances  
+        Required?                    false  
+        Position?                    3  
+        Accept pipeline input?       false  
+        Parameter set name           Specific  
+        Aliases                      ff  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+``` 
+```yaml 
+    -IncludeBackgroundProcesses  
+        Closes all instances including background tasks  
+        Required?                    false  
+        Position?                    4  
+        Accept pipeline input?       false  
+        Parameter set name           (All)  
+        Aliases                      bg, Force  
+        Dynamic?                     false  
+        Accept wildcard characters?  false  
+``` 
+```yaml 
+    <CommonParameters>  
+        This cmdlet supports the common parameters: Verbose, Debug,  
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
+        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
+``` 
+
+<br/><hr/><br/>
+ 
+
 ##	Get-BrowserBookmark 
 ```PowerShell 
 
@@ -7390,102 +7477,6 @@ Clear-WebbrowserTabSiteApplicationData [-Edge] [-Chrome]
 <br/><hr/><br/>
  
 
-##	Close-Webbrowser 
-```PowerShell 
-
-   Close-Webbrowser                     --> wbc  
-``` 
-
-### SYNTAX 
-```PowerShell 
-Close-Webbrowser [[-Edge]] [[-Chrome]] [[-Chromium]]
-    [[-Firefox]] [[-IncludeBackgroundProcesses]]
-    [<CommonParameters>]
-Close-Webbrowser [[-All]] [[-IncludeBackgroundProcesses]]
-    [<CommonParameters>] 
-``` 
-
-### PARAMETERS 
-```yaml 
- 
-``` 
-```yaml 
-    -All  
-        Closes all registered modern browsers  
-        Required?                    false  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           All  
-        Aliases                      a  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-``` 
-```yaml 
-    -Chrome  
-        Closes Google Chrome browser instances  
-        Required?                    false  
-        Position?                    1  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      ch  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-``` 
-```yaml 
-    -Chromium  
-        Closes default chromium-based browser  
-        Required?                    false  
-        Position?                    2  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      c  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-``` 
-```yaml 
-    -Edge  
-        Closes Microsoft Edge browser instances  
-        Required?                    false  
-        Position?                    0  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      e  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-``` 
-```yaml 
-    -Firefox  
-        Closes Firefox browser instances  
-        Required?                    false  
-        Position?                    3  
-        Accept pipeline input?       false  
-        Parameter set name           Specific  
-        Aliases                      ff  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-``` 
-```yaml 
-    -IncludeBackgroundProcesses  
-        Closes all instances including background tasks  
-        Required?                    false  
-        Position?                    4  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      bg, Force  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-``` 
-```yaml 
-    <CommonParameters>  
-        This cmdlet supports the common parameters: Verbose, Debug,  
-        ErrorAction, ErrorVariable, WarningAction, WarningVariable,  
-        OutBuffer, PipelineVariable, and OutVariable. For more information, see  
-        about_CommonParameters     (https://go.microsoft.com/fwlink/?LinkID=113216).   
-``` 
-
-<br/><hr/><br/>
- 
-
 ##	Close-WebbrowserTab 
 ```PowerShell 
 
@@ -8312,49 +8303,34 @@ Set-WebbrowserTabLocation [-Url] <string> [-NoAutoSelectTab]
    Connect-PlaywrightViaDebuggingPort  
 ``` 
 
+### SYNOPSIS 
+    Connects to an existing browser instance via debugging port.  
+
 ### SYNTAX 
 ```PowerShell 
-Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <string>
-    [-ForceConsent]
-    [-ConsentToThirdPartySoftwareInstallation]
+Connect-PlaywrightViaDebuggingPort [-WsEndpoint] <String>
     [<CommonParameters>] 
 ``` 
+
+### DESCRIPTION 
+    Establishes a connection to a running Chromium-based browser instance using the  
+    WebSocket debugger URL. Creates a Playwright instance and connects over CDP  
+    (Chrome DevTools Protocol). The connected browser instance is stored in a global  
+    dictionary for later reference.  
 
 ### PARAMETERS 
 ```yaml 
  
 ``` 
 ```yaml 
-    -ConsentToThirdPartySoftwareInstallation  
-        Consent to third-party software installation  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-``` 
-```yaml 
-    -ForceConsent  
-        Force consent for third-party software installation  
-        Required?                    false  
-        Position?                    Named  
-        Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
-        Accept wildcard characters?  false  
-``` 
-```yaml 
-    -WsEndpoint <string>  
-        WebSocket URL for browser debugging connection  
+    -WsEndpoint <String>  
+        The WebSocket URL for connecting to the browser's debugging port. This URL  
+        typically follows the format 'ws://hostname:port/devtools/browser/<id>'.  
         Required?                    true  
-        Position?                    0  
+        Position?                    1  
+        Default value                  
         Accept pipeline input?       false  
-        Parameter set name           (All)  
-        Aliases                      None  
-        Dynamic?                     false  
+        Aliases                        
         Accept wildcard characters?  false  
 ``` 
 ```yaml 
