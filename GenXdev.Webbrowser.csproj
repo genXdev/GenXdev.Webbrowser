@@ -12,8 +12,8 @@
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <NeutralLanguage>en</NeutralLanguage>
-        <AssemblyVersion>2.3.2026</AssemblyVersion>
-        <FileVersion>2.3.2026</FileVersion>
+        <AssemblyVersion>3.3.2026</AssemblyVersion>
+        <FileVersion>3.3.2026</FileVersion>
         <Description>A Windows PowerShell module for basic and advanced file management tasks</Description>
         <Copyright>Copyright (c) 2024 GenXdev</Copyright>
         <PackageProjectUrl>https://github.com/genXdev/GenXdev.Helpers</PackageProjectUrl>
@@ -59,13 +59,13 @@
         </PackageReference>
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\GenXdev.FileSystem\2.3.2026\GenXdev.FileSystem.csproj">
+        <ProjectReference Include="..\..\GenXdev.FileSystem\3.3.2026\GenXdev.FileSystem.csproj">
             <PrivateAssets>None</PrivateAssets>
             <IncludeAssets>compile;analyzers;none</IncludeAssets>
         </ProjectReference>
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\GenXdev.Helpers\2.3.2026\GenXdev.Helpers.csProj">
+        <ProjectReference Include="..\..\GenXdev.Helpers\3.3.2026\GenXdev.Helpers.csProj">
             <PrivateAssets>None</PrivateAssets>
             <IncludeAssets>compile;analyzers;none</IncludeAssets>
         </ProjectReference>
