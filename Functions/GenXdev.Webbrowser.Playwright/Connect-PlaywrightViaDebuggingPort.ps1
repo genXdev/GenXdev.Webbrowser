@@ -2,7 +2,7 @@
 Part of PowerShell module : GenXdev.Webbrowser.Playwright
 Original cmdlet filename  : Connect-PlaywrightViaDebuggingPort.ps1
 Original author           : René Vaessen / GenXdev
-Version                   : 3.3.2026
+Version                   : 3.23.2026
 ################################################################################
 Copyright (c)  René Vaessen / GenXdev
 
